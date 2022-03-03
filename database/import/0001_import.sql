@@ -24,3 +24,11 @@ CREATE TABLE user_role (
 
 INSERT INTO roles (name) VALUES ('normal');
 INSERT INTO roles (name) VALUES ('admin');
+
+CREATE TABLE posts (
+    id int(11) AUTO_INCREMENT PRIMARY KEY,
+    title VARCHAR(50) NOT NULL,
+    body MEDIUMTEXT NOT NULL,
+    created_at DATE NOT NULL,
+    updated_at DATE NOT NULL
+);
