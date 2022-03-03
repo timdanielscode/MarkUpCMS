@@ -11,9 +11,10 @@
             <img class="" src="/assets/img/independentphp-logo.png">
         </a>
     </div>
-    <div id="navbarLogin">
-        <a href="/login">Login</a>
-        <a href="/login">Create account</a>
-    </div>
+    <ul class="navbarItems">
+        <li class="navbarItem">Login</li>
+        <li class="navbarItem">test</li>
+        <li class="navbarItem">test</li>
+    </ul>
 
 </nav>
