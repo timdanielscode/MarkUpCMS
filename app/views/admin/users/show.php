@@ -3,54 +3,54 @@
     $this->include('navbar');
 ?>
 
-<div class="container">
+<div class="con">
     
     <h1 class="my-5 text-color-pri"><?php echo $current[0]['username']; ?></h1>
     <table class="table table-striped mt-3 w-100">
         <thead>
             <tr>
-                <th scope="col" class="w-25">#</th>
-                <th scope="col">Details</th>
+                <th>#</th>
+                <th>Details</th>
             </tr>
         </thead>
         <tbody>
             <?php foreach($current as $value) { ?>
                 <tr>
-                    <th>
+                    <td>
                         Id
-                    </th>
-                    <th>
+                    </td>
+                    <td>
                         <?php echo $value['id']; ?>
-                    </th>
+                    </td>
                 </tr>
                 <tr>
-                    <th>
+                    <td>
                         Username
-                    </th>
-                    <th>
+                    </td>
+                    <td>
                         <?php echo $value['username']; ?>
-                    </th>
+                    </td>
                 </tr>
                 <tr>
-                    <th>
+                    <td>
                         Email
-                    </th>
-                    <th>
+            </td>
+                    <td>
                         <?php echo $value['email']; ?>
-                    </th>
+                    </td>
                 </tr>
                 <tr>
-                    <th>
+                    <td>
                         Role
-                    </th>
-                    <th>
+                    </td>
+                    <td>
                         <?php echo $value['name']; ?>
-                    </th>
+                    </td>
                 </tr>
             <?php } ?>
         </tbody>
     </table>
-    <a class="btn bg-color-sec text-white" href="/admin/users">Back</a>
+    <a class="button margin-t-50" href="/admin/users">Back</a>
 </div>
 
 <?php 
