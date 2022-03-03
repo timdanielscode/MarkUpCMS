@@ -11,11 +11,11 @@
 <div class="con">
 
     <?php if(parts\Session::exists("updated")) { ?>
-        <div class=""><?php echo parts\Alert::display("success", "updated"); ?></div>
+        <div class="margin-t-50"><?php echo parts\Alert::display("success", "updated"); ?></div>
     <?php parts\Session::delete('updated');  } ?>
 
     <?php if(Session::exists("registered")) { ?>
-        <div class=""><?php echo Alert::display("warning", "registered"); ?></div>
+        <div class="margin-t-50"><?php echo Alert::display("warning", "registered"); ?></div>
     <?php Session::delete('registered'); } ?>
 
     <a class="button margin-t-50" href="/admin/users/create">Add user</a>
