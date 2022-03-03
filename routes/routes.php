@@ -36,6 +36,8 @@ if(AuthMiddleware::auth('admin') === true) {
     Route::get('/admin/users/[id]/username/[username]/edit')->add('admin\UserController', 'edit');
     Route::post('/admin/users/[id]/username/[username]/edit')->add('admin\UserController', 'update');
     Route::get('/admin/users/[id]/username/[username]/delete')->add('admin\UserController', 'delete');
+
+    Route::get('/admin/posts/create')->add('admin\PostController', 'create');
 }
 
 
