@@ -374,3 +374,44 @@ h3 {
     }
     
 }
+
+form label {
+    font-size: 20px;
+    margin-top: 10px;
+}
+form input {
+    width: 100%;
+    padding: 8px 20px;
+    margin: 8px 0;
+    box-sizing: border-box;
+    font-size: 18px;
+  }
+
+  .form-parts {
+      margin-bottom: 20px;
+  }
+
+  form button {
+      width: 200px;
+      height: 50px;
+      background: #013c8f;
+      border: none;
+      border-radius: 5px;
+      color: #fff;
+      font-size: 20px;
+  }
+  form select {
+      display: block;
+      padding-left: 20px;
+    padding-right: 20px;
+    margin-top: 10px;
+    font-size: 18px;
+    padding-top: 5px;
+    padding-bottom: 5px;
+    height: auto;
+  }
+.error-messages {
+    margin-top: 5px;
+    font-size: 16px;
+    color: red;
+}
