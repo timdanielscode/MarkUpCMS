@@ -13,7 +13,7 @@
     </div>
     <ul class="navbarItems">
         <li class="navbarItem"><a href="/admin/users">Users</a></li>
-        <li class="navbarItem">test</li>
+        <li class="navbarItem"><a href="/admin/posts">Posts</a></li>
         <li class="navbarItem">test</li>
     </ul>
 
