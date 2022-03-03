@@ -8,7 +8,9 @@ class PostController extends Controller {
 
     public function create() {
         
-        return $this->view('admin/posts/index');
+        $data['rules'] = [];
+
+        return $this->view('admin/posts/create', $data);
     }
 
 }

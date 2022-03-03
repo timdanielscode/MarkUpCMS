@@ -76,6 +76,16 @@ class Rules {
         return $this;
     }
 
+    public function create_post() {
+        
+        $validation = new Validate();
+        
+        $validation->input('title')->as('Title')->rules(['required' => true, 'min' => 5, 'max' => 40, 'special' => true]);
+        $validation->input('body')->as('Body')->rules(['required' => true, 'min' => 5, 'max' => 40]);
+        
+        $this->errors = $validation->errors;
+        return $this;
+    }
 
     /**
      * @return bool
