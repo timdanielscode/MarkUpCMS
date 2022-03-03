@@ -23,7 +23,10 @@ class Pagination {
             for($i = 1; $i <= $max; $i++) {
                 self::$_page[] = $arr[$i];
             }
+        } else {
+            return $arr;
         }
+
         
         if(submitted('page')) {
             for($i = 1; $i <= self::$_countPages; $i++) {
