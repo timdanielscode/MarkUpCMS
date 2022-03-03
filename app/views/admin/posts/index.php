@@ -18,7 +18,7 @@
         <div class="margin-t-50"><?php echo Alert::display("warning", "registered"); ?></div>
     <?php Session::delete('registered'); } ?>
 
-    <a class="button margin-t-50" href="/admin/users/create">Create new post</a>
+    <a class="button margin-t-50" href="/admin/posts/create">Create new post</a>
 
     <table class="margin-t-50">
         
