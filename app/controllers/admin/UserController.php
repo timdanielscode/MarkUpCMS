@@ -41,7 +41,8 @@ class UserController extends Controller {
 
     public function create() {
 
-        return $this->view('admin/users/create');
+        $data["rules"] = [];
+        return $this->view('admin/users/create', $data);
     }
 
     public function store() {
