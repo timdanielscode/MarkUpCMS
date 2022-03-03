@@ -4,7 +4,7 @@ echo '<!DOCTYPE html>
 <html>
 <head>';
 
-$files = ["script.js","style.css"];
+$files = ["script.js", "wysiwyg.js","style.css"];
 foreach($files as $file) {
 
     if (file_exists('assets/css/' . $file)) {

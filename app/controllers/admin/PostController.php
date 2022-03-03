@@ -47,16 +47,16 @@ class PostController extends Controller {
                     ]);
 
                     Session::set('create', 'You have successfully created a new post!');            
-                    redirect('/admin/posts');
+                    //redirect('/admin/posts');
 
                 } else {
 
                     $data['rules'] = $rules->errors;
-                    return $this->view('admin/users/create', $data);
+                    //return $this->view('admin/users/create', $data);
                 }
             } else {
                 Session::set('csrf', 'Cross site request forgery!');
-                redirect('/admin/users/create');
+                //redirect('/admin/users/create');
             }
         }
     }

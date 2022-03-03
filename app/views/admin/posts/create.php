@@ -23,9 +23,12 @@
                 <?php echo Errors::get($rules, 'title'); ?>
             </div>
         </div>
+        <div id="wysiwg">
+            <button>p</button>
+        </div>
         <div class="form-parts">
             <label for="body">Body:</label>
-            <input name="body" type="body" id="body" value="<?php echo post('body'); ?>">
+            <textarea name="body" type="body" id="body" rows="5" cols="50"></textarea>
             <div class="error-messages">
                 <?php echo Errors::get($rules, 'body'); ?>
             </div>
