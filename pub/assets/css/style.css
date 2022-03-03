@@ -1,0 +1,64 @@
+body {
+    font-family: 'Roboto', sans-serif !important;
+}
+
+.navbar-brand img {
+    margin-left: 50px;
+}
+
+.text-color-pri {
+    color: #0047AB !important
+}
+
+.bg-color-pri {
+    background: #0047AB !important
+}
+
+h2 {
+    font-size: 30px !important;
+}
+.container {
+    margin-top: 100px;
+}
+.my-100 {
+    margin-top: 100px;
+    margin-bottom: 100px;
+}
+
+.my-150 {
+    margin-top: 200px;
+    margin-bottom: 200px;
+}
+
+.py-100 {
+    padding-top: 100px;
+    padding-bottom: 100px;
+}
+
+.mt-100 {
+    margin-top: 100px;
+}
+
+.text-color-sec {
+    color: #0047AB !important;
+}
+
+.bg-color-sec {
+    background: #0047AB !important
+}
+.p-100 {
+    padding: 100px;
+}
+
+p {
+    font-size: 21px !important;
+}
+
+.navbar-expand-lg .navbar-collapse {
+    display: inline !important;
+    margin-right: 50px;
+}
+
+.navbar-collapse li {
+    float: right;
+}
