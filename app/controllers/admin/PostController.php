@@ -11,6 +11,15 @@ use database\DB;
 
 class PostController extends Controller {
 
+    public function index() {
+
+        $post = new Post();
+        $posts = DB::try()->all($post->t)->fetch();
+        $data["posts"] = $posts;
+
+        return $this->view('admin/posts/index', $data);
+    }
+
     public function create() {
         
         $data['rules'] = [];
