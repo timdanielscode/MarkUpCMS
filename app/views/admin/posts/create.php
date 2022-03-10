@@ -17,7 +17,11 @@
 
 
     <div id="wysiwg">
-        <button id="pTag">p</button>
+        <button onclick="clickHandler('p')" id="pTag" value="p">p</button>
+        <button onclick="clickHandler('div')" id="pTag" value="div">div</button>
+        <button onclick="clickHandler('h1')" id="pTag" value="h1">h1</button>
+        <button onclick="clickHandler('h2')" id="pTag" value="h2">h2</button>
+        <button onclick="clickHandler('h3')" id="pTag" value="h3">h3</button>
     </div>
 
 
