@@ -14,6 +14,13 @@
         <div class="my-5 w-75 mx-auto"><?php echo Alert::display("warning", "csrf"); ?></div>
     <?php Session::delete('csrf'); } ?>
 
+
+
+    <div id="wysiwg">
+        <button id="pTag">p</button>
+    </div>
+
+
     <form action="" method="POST" class="">
     <h1 class="text-color-sec mb-5">Add post</h1>
     <div class="form-parts">
@@ -23,9 +30,7 @@
                 <?php echo Errors::get($rules, 'title'); ?>
             </div>
         </div>
-        <div id="wysiwg">
-            <button>p</button>
-        </div>
+
         <div class="form-parts">
             <label for="body">Body:</label>
             <textarea name="body" type="body" id="body" rows="5" cols="50"></textarea>

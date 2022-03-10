@@ -1,5 +1,17 @@
-var body = document.getElementById("body");
+var selected = "";
 
 document.addEventListener("selectionchange", e => {
-    console.log(getSelection().toString());
+    selection = document.getSelection().toString();
+    selected = selection;
 })
+
+var pTag = document.getElementById("pTag");
+
+pTag.addEventListener('click', clickHandler);
+
+function clickHandler() {
+    console.log(selected);
+}
+
+
+   
