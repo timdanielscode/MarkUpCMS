@@ -26,6 +26,7 @@
                 <tr>
                     <th>#</th>
                     <th>Title</th>
+                    <th>Edit</th>
                 </tr>
             </thead>
             <tbody>
@@ -36,6 +37,9 @@
                         </td>
                         <td>
                             <?php echo $post['title']; ?>
+                        </td>
+                        <td>
+                            <a href="/admin/posts/<?php echo $post['id']; ?>/edit">edit</a>
                         </td>
                     </tr>
                 <?php } ?>

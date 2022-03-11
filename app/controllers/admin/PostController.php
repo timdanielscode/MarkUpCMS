@@ -47,16 +47,53 @@ class PostController extends Controller {
                     ]);
 
                     Session::set('create', 'You have successfully created a new post!');            
-                    //redirect('/admin/posts');
+                    redirect('/admin/posts');
 
                 } else {
 
                     $data['rules'] = $rules->errors;
-                    //return $this->view('admin/users/create', $data);
+                    return $this->view('admin/users/create', $data);
                 }
             } else {
                 Session::set('csrf', 'Cross site request forgery!');
-                //redirect('/admin/users/create');
+                redirect('/admin/users/create');
+            }
+        }
+    }
+
+    public function edit($request) {
+
+        $posts = new Post();
+        $post = DB::try()->select('*')->from($posts->t)->where($posts->id, '=', $request['id'])->first();
+        $data['post'] = $post;
+        $data['rules'] = [];
+
+        return $this->view('admin/posts/edit', $data);
+    }
+
+    public function update($request) {
+
+        if(submitted('submit')) {
+
+            if(CSRF::validate(CSRF::token('get'), post('token'))) {
+                
+                $post = new Post();
+
+                $id = $request['id'];
+                $title = $request["title"];
+                $body = $request["body"];
+
+                DB::try()->update($post->t)->set([
+                    $post->title => $title,
+                    $post->body => $body,
+                ])->where($post->id, '=', $id)->run();              
+
+                Session::set('updated', 'User updated successfully!');
+                redirect("/admin/posts/$id/edit");
+
+            } else {
+                Session::set('csrf', 'Cross site request forgery!');
+                redirect("/admin/posts/$id");
             }
         }
     }
