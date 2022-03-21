@@ -459,6 +459,12 @@ table {
     border: none;
     margin-left: 45px;
 }
+#builder {
+    width: 100%;
+    height: 100vh;
+    margin: 0px;
+    margin-left: 45px;
+}
 #body:focus {
     outline: none;
 }
