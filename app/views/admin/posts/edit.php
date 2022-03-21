@@ -29,7 +29,12 @@
         
         <textarea name="body" id="body"><?php echo htmlspecialchars_decode($post['body']); ?></textarea>
 
-        <div name="builder" id="builder" class="display-none"><?php echo $post['body']; ?></div>
+        <div class="empty"><div name="builder" id="builder" class="display-none"  draggable="true"><?php echo $post['body']; ?></div></div>
+
+
+
+
+
 
         <button name="submit" id="submit" type="submit" class="display-none">Create</button>
         <input type="hidden" name="token" value="<?php Csrf::token('add');?>" />
@@ -54,13 +59,33 @@
         </div>
     </div>
 
-    
-    <div id="wysiwg" class="margin-t-50">
-        <button onclick="clickHandler('p')" id="pTag" value="p">p</button>
-        <button onclick="clickHandler('div')" id="pTag" value="div">div</button>
-        <button onclick="clickHandler('h1')" id="pTag" value="h1">h1</button>
-        <button onclick="clickHandler('h2')" id="pTag" value="h2">h2</button>
-        <button onclick="clickHandler('h3')" id="pTag" value="h3">h3</button>
+    <div id="containterVisualBuilder" class="display-none">
+        <div class="empty">
+            <div class="fill" draggable="true"></div>
+        </div>
+        <div class="empty">
+            <div class="fill" draggable="true"></div>
+        </div>
+        <div class="empty">
+            <div class="fill" draggable="true"></div>
+        </div>
+        <div class="empty">
+            <div class="fill" draggable="true"></div>
+        </div>
+        <div class="empty">
+            <div class="fill" draggable="true"></div>
+        </div>
+    </div>
+
+
+    <div id="containterBuilder">
+        <div id="wysiwg" class="margin-t-50">
+            <button onclick="clickHandler('p')" id="pTag" value="p">p</button>
+            <button onclick="clickHandler('div')" id="pTag" value="div">div</button>
+            <button onclick="clickHandler('h1')" id="pTag" value="h1">h1</button>
+            <button onclick="clickHandler('h2')" id="pTag" value="h2">h2</button>
+            <button onclick="clickHandler('h3')" id="pTag" value="h3">h3</button>
+        </div>
     </div>
     </div>
 </div>

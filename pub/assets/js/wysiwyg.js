@@ -14,6 +14,12 @@ function toVisualBuilder() {
     builder.classList.add("display-block");
 
     body.classList.remove("display-block");
+
+    var containterVisualBuilder = document.getElementById('containterVisualBuilder');
+    containterVisualBuilder.classList.add("display-block");
+
+    var containterBuilder = document.getElementById('containterBuilder');
+    containterBuilder.classList.add("display-none");
 }
 
 function toBuilder() {
@@ -25,6 +31,12 @@ function toBuilder() {
     body.classList.remove("display-none");
 
     body.classList.add("display-block");
+
+    var containterVisualBuilder = document.getElementById('containterVisualBuilder');
+    containterVisualBuilder.classList.remove("display-block");
+
+    var containterBuilder = document.getElementById('containterBuilder');
+    containterBuilder.classList.remove("display-none");
 }
 
 
