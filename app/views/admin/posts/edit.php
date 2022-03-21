@@ -26,12 +26,11 @@
         </div>
 
 
-        <div class="form-parts">
-            <textarea name="body" id="body" rows="5" cols="50"><?php echo $post['body']; ?></textarea>
-            <div class="error-messages">
-                <?php echo Errors::get($rules, 'body'); ?>
-            </div>
-        </div>
+        
+        <textarea name="body" id="body"><?php echo htmlspecialchars_decode($post['body']); ?></textarea>
+
+        <div name="builder" id="builder" class="display-none"><?php echo $post['body']; ?></div>
+
         <button name="submit" id="submit" type="submit" class="display-none">Create</button>
         <input type="hidden" name="token" value="<?php Csrf::token('add');?>" />
     </form>
@@ -46,13 +45,16 @@
             <label for="submit" class="button margin-t-50">Submit</label>
         </div>
     </div>
+    <div class="row">
+        <div class="col6">
+            <button onclick="toVisualBuilder();" class="button margin-t-50">Visual Builder</button>
+        </div>  
+        <div class="col6">
+            <button  onclick="toBuilder();" class="button margin-t-50">Builder</button>
+        </div>
+    </div>
 
-    <form action="" method="POST" class="margin-t-50">
-        <button name="submit" id="submit" type="submit">Code</button>
-        <input type="hidden" name="token" value="<?php Csrf::token('add');?>" />
-    </form>
-
-
+    
     <div id="wysiwg" class="margin-t-50">
         <button onclick="clickHandler('p')" id="pTag" value="p">p</button>
         <button onclick="clickHandler('div')" id="pTag" value="div">div</button>

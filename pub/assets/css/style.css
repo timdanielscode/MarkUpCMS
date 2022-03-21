@@ -572,3 +572,7 @@ height: 100%;
 .display-none {
     display: none;
 }
+
+.display-block {
+    display: block;
+}
