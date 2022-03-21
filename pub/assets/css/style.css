@@ -459,11 +459,7 @@ table {
     border: none;
     margin-left: 45px;
 }
-#builder {
-    width: 100%;
-    margin: 0px;
-    margin-left: 45px;
-}
+
 #body:focus {
     outline: none;
 }
@@ -489,26 +485,7 @@ height: 100%;
     width: 50px;
 }
 
-/* draggable */
 
-.fill {
-    background-image: url('/assets/img/independentphp-logo.png');
-    position: relative;
-    height: 150px;
-    width: 150px;
-    top: 5px;
-    left: 5px;
-    cursor: pointer;
-}
-
-.empty {
-    display: inline-block;
-    height: 160px;
-    width: 160px;
-    margin: 10px;
-    border: 3px grey solid;
-    background: green;
-}
 
 .hold {
     border: solid #ccc 4px;
@@ -521,6 +498,12 @@ height: 100%;
 .invisible {
     display: none;
 }
+
+#row {
+    width: 170px;
+    height: 50px;
+}
+
 
 
 
