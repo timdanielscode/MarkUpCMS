@@ -4,8 +4,12 @@
 <?php use parts\Alert; ?>
 
 <?php 
-    $this->include('header');  
+    $this->include('headerOpen');  
+    $this->title("IndependentCMS");
+    $this->script("https://cdn.tiny.cloud/1/yjrgki0oubi33qi9ebe57t1lz8lw9nbe3xbnfrv5893n4oqb/tinymce/5/tinymce.min.js");
+    $this->include("headerClose");
     $this->include('navbar');
+    
 ?>
 
     

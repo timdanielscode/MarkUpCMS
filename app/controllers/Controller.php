@@ -60,4 +60,13 @@ class Controller {
     public function meta($name, $content) {
         echo '<meta name="'.$name.'" content="'.$content.'">';
     } 
+
+    /**
+     * @param string $src src of script
+     * @param string $defer defer
+     * @return void
+     */
+    public function script($src, $defer = false) {
+        echo '<script '.$defer.' src='.'"'.$src.'"'.'></script>';
+    }
 }
