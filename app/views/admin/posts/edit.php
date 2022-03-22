@@ -32,6 +32,7 @@
             <div id="postSidebar">
                 <a href="/admin/posts" class="button margin-t-50">Back</a>
                 <label for="submit" class="button margin-t-50">Submit</label>
+                <a href="/admin/posts/<?php echo $post['id']; ?>/preview" class="button margin-t-50">Preview</a>
             </div>
         </div>
     </div>

@@ -98,5 +98,15 @@ class PostController extends Controller {
         }
     }
 
+    public function read($request) {
+
+        $posts = new Post();
+        $post = DB::try()->select('*')->from($posts->t)->where($posts->id, '=', $request['id'])->first();
+        $data['post'] = $post;
+
+        return $this->view('admin/posts/read', $data);
+
+    }
+
 
 }
