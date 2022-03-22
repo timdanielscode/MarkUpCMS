@@ -32,3 +32,6 @@ CREATE TABLE posts (
     created_at DATE NOT NULL,
     updated_at DATE NOT NULL
 );
+
+ALTER TABLE posts ADD metaTitle varchar(255) AFTER body;
+ALTER TABLE posts ADD metaDescription varchar(255) AFTER metaTitle;

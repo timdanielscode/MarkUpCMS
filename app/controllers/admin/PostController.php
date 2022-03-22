@@ -78,7 +78,6 @@ class PostController extends Controller {
             if(CSRF::validate(CSRF::token('get'), post('token'))) {
                 
                 $post = new Post();
-
                 $id = $request['id'];
                 $title = $request["title"];
                 $body = $request["body"];
@@ -94,6 +93,31 @@ class PostController extends Controller {
             } else {
                 Session::set('csrf', 'Cross site request forgery!');
                 redirect("/admin/posts/$id");
+            }
+        }
+
+        if(submitted('meta')) {
+
+            if(CSRF::validate(CSRF::token('get'), post('tokenMeta'))) {
+                
+                $post = new Post();
+                $id = $request['id'];
+                $metaTitle = $request["metaTitle"];
+                $metaDescription = $request["metaDescription"];
+
+                if(!empty($metaTitle) ) {
+                    DB::try()->update($post->t)->set([
+                        $post->metaTitle => $metaTitle
+                    ])->where($post->id, '=', $id)->run(); 
+                }
+                if(!empty($metaDescription) ) {
+                    DB::try()->update($post->t)->set([
+                        $post->metaDescription => $metaDescription
+                    ])->where($post->id, '=', $id)->run(); 
+                }
+
+                Session::set('updated', 'User updated successfully!');
+                redirect("/admin/posts/$id/edit");
             }
         }
     }

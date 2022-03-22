@@ -31,6 +31,14 @@
                 <button name="submit" id="submit" type="submit" class="display-none">Create</button>
                 <input type="hidden" name="token" value="<?php Csrf::token('add');?>" />
             </form>
+            <form action="" method="POST">
+                    <label>Meta title</label>    
+                    <input name="metaTitle" type="text" value="<?php echo $post['metaTitle']; ?>">
+                    <label>Meta description</label>    
+                    <textarea name="metaDescription" type="text"><?php echo $post['metaDescription']; ?></textarea>
+                    <button name="meta" id="meta" type="submit">Update</button>
+                    <input type="hidden" name="tokenMeta" value="<?php Csrf::token('add');?>" />
+                </form>
         </div>
         <div class="col2">
             <div id="postSidebar">
