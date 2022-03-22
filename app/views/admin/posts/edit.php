@@ -30,14 +30,8 @@
         </div>
         <div class="col2">
             <div id="postSidebar">
-                <div class="row">
-                    <div class="col6">
-                        <a href="/admin/posts" class="button margin-t-50">Back</a>
-                    </div>
-                    <div class="col6">
-                        <label for="submit" class="button margin-t-50">Submit</label>
-                    </div>
-                </div>
+                <a href="/admin/posts" class="button margin-t-50">Back</a>
+                <label for="submit" class="button margin-t-50">Submit</label>
             </div>
         </div>
     </div>
