@@ -120,6 +120,25 @@ class PostController extends Controller {
                 redirect("/admin/posts/$id/edit");
             }
         }
+
+        if(submitted('submitSlug')) {
+
+            if(CSRF::validate(CSRF::token('get'), post('tokenSlug'))) {
+                
+                $post = new Post();
+                $id = $request['id'];
+                $slug = $request["slug"];
+
+                if(!empty($slug) ) {
+                    DB::try()->update($post->t)->set([
+                        $post->slug => $slug
+                    ])->where($post->id, '=', $id)->run(); 
+                }
+
+                Session::set('updated', 'User updated successfully!');
+                redirect("/admin/posts/$id/edit");
+            }
+        }
     }
 
     public function read($request) {

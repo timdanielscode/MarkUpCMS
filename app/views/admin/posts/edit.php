@@ -45,6 +45,12 @@
                 <a href="/admin/posts" class="button margin-t-50">Back</a>
                 <label for="submit" class="button margin-t-50">Submit</label>
                 <a href="/admin/posts/<?php echo $post['id']; ?>/preview" class="button margin-t-50">Preview</a>
+                <form action="" method="POST">
+                    <label>Slug</label>    
+                    <input name="slug" type="text" value="<?php echo $post['slug']; ?>">
+                    <button name="submitSlug" id="submitSlug" type="submit">Update</button>
+                    <input type="hidden" name="tokenSlug" value="<?php Csrf::token('add');?>" />
+                </form>
             </div>
         </div>
     </div>

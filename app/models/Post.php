@@ -8,6 +8,7 @@ class Post {
 
         $id = 'id', 
         $title = 'title', 
+        $slug = 'slug',
         $body = 'body', 
         $metaTitle = 'metaTitle',
         $metaDescription = 'metaDescription',

@@ -35,3 +35,4 @@ CREATE TABLE posts (
 
 ALTER TABLE posts ADD metaTitle varchar(255) AFTER body;
 ALTER TABLE posts ADD metaDescription varchar(255) AFTER metaTitle;
+ALTER TABLE posts ADD slug varchar(255) AFTER title;
