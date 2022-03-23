@@ -56,8 +56,8 @@
                             <span class="display-block padding-y-2">Status: </span><?php if(!empty($post['metaTitle']) ) { echo '<span class="font-weight-300">ok</span>'; } else {echo '<span class="font-weight-300">-</span>'; } ?>
                         </td>
                         <td class="width-10">
-                            <span class="padding-b-2">Created:</span> <span class="font-weight-300"><?php echo $post['created_at']; ?></span><br>
-                            <span>Updated:</span> <span class="font-weight-300"><?php echo $post['updated_at']; ?></span>
+                            <span class="padding-b-2">Created:</span> <span class="font-weight-300"><?php echo date("d/m/Y H:i:s", strtotime($post['created_at'])); ?></span><br>
+                            <span>Updated:</span> <span class="font-weight-300"><?php echo date("d/m/Y H:i:s", strtotime($post['updated_at'])); ?></span>
                         </td>
                     </tr>
                 <?php } ?>
