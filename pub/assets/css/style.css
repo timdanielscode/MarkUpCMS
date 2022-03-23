@@ -524,6 +524,11 @@ table {
     margin-left: 70px;
     position: absolute;
 }
+.postContainterCount {
+    margin-left: 5%;
+    font-size: 13px;
+    font-weight: 500;
+}
 
 
 /*

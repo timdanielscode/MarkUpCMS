@@ -24,7 +24,10 @@
     <div class="row postHeaderContainer">
         <h1>Posts</h1>
         <a class="button postsButton margin-t-20" href="/admin/posts/create">Add new</a>
-  
+    </div>
+    <div class="postContainterCount">
+        <span>All</span>
+        <span>(<?php echo $count; ?>)</span>
     </div>
     <table class="tablePosts margin-y-20">
         

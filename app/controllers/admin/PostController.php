@@ -18,12 +18,15 @@ class PostController extends Controller {
 
         $post = new Post();
         $posts = DB::try()->all($post->t)->fetch();
+
+        $count = count($posts);
         
         $posts = Pagination::set($posts, 10);
         $numberOfPages = Pagination::getPages();
 
         $data["posts"] = $posts;
         $data['numberOfPages'] = $numberOfPages;
+        $data['count'] = $count;
 
         return $this->view('admin/posts/index', $data);
     }
