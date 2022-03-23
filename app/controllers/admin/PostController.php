@@ -21,7 +21,7 @@ class PostController extends Controller {
 
         $count = count($posts);
         
-        $posts = Pagination::set($posts, 10);
+        $posts = Pagination::set($posts, 20);
         $numberOfPages = Pagination::getPages();
 
         $data["posts"] = $posts;

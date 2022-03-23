@@ -88,16 +88,19 @@ h3 {
 */
 
 #mainNav {
-    position: relative;
+    position: fixed;
     box-shadow: 0 2px 2px -2px rgba(0,0,0,.2);
     height: 50px;
     background: #0c203d;
+    width: 100%;
+    z-index: 9999;
 }
 
 
 .navbarItems {
     display: inline-block;
     position: absolute;
+    left: 0;
 }
 
 .navbarItem {
@@ -425,6 +428,29 @@ form input {
     color: red;
 }
 
+/* 
+pagination
+*/
+.pagination {
+    padding: 0;
+    margin-bottom: 30px;
+}
+.page-item a {
+    color: #fff;
+    background: #0c203d;
+    padding: 8px;
+    margin: 0;
+    text-decoration: none;
+    font-weight: 300;
+}
+
+.previous a {
+    border-radius: 3px;
+}
+.next a {
+    border-radius: 3px;
+}
+
 /*
   posts area
 */
@@ -521,10 +547,12 @@ table {
 .postHeaderContainer h1 {
     font-size: 23px;
     margin-top: 25px;
+    margin-top: 70px;
 }
 .postHeaderContainer a {
     margin-left: 70px;
     position: absolute;
+    margin-top: 70px;
 }
 .postContainterCount {
     margin-left: 5%;
