@@ -87,6 +87,16 @@ class Rules {
         return $this;
     }
 
+    public function slug() {
+        
+        $validation = new Validate();
+        
+        $validation->input('slug')->as('Slug')->rules(['first' => '/']);
+        
+        $this->errors = $validation->errors;
+        return $this;
+    }
+
     /**
      * @return bool
     */     

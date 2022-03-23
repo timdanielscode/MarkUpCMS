@@ -114,6 +114,11 @@ class Validate {
                             $_POST[$this->_inputName] = "";
                         }
                     break;
+                    case 'first':
+                        if($this->_inputValue[0] !== $value) {
+                            $this->message($this->_inputName, "$this->_alias does not start with a $value.");
+                        }
+                    break;
                     default:
                         echo $this->error("Validation rule: '$rule' does not exist!");
                         exit();

@@ -125,14 +125,21 @@ class PostController extends Controller {
 
             if(CSRF::validate(CSRF::token('get'), post('tokenSlug'))) {
                 
+                $rules = new Rules();
                 $post = new Post();
                 $id = $request['id'];
                 $slug = $request["slug"];
 
-                if(!empty($slug) ) {
-                    DB::try()->update($post->t)->set([
-                        $post->slug => $slug
-                    ])->where($post->id, '=', $id)->run(); 
+                if($rules->slug()->validated()) {
+                    if(!empty($slug) ) {
+                        DB::try()->update($post->t)->set([
+                            $post->slug => $slug
+                        ])->where($post->id, '=', $id)->run(); 
+                    }
+                } else {
+                    $data['rules'] = $rules->errors;
+                    $data['post'] = DB::try()->select('*')->from($post->t)->where($post->id, '=', $id)->first();
+                    return $this->view("/admin/posts/edit", $data);
                 }
 
                 Session::set('updated', 'User updated successfully!');

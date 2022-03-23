@@ -56,7 +56,7 @@ class RouteBinder {
      */ 
     public function postRequestVariables() {
         
-        if($_POST[$this->_pathRouteKeyValues]) {
+        if(!empty($_POST[$this->_pathRouteKeyValues]) ) {
             return $this->_requestVariables[$this->_pathRouteKeyValues] = $_POST[$this->_pathRouteKeyValues];
         }
     }
