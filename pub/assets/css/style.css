@@ -424,34 +424,46 @@ form input {
 }
 
 /*
-    style tables
+  posts area
 */
 
 table {
     border-collapse: collapse;
     width: 100%;
+    border: 1px solid #ddd;
+  }
+
+  table td a {
+      text-decoration: none;
   }
   
   table td, table th {
-    border: 1px solid #ddd;
-    padding: 8px;
+    padding-left: 20px;
+    padding-top: 8px;
+    padding-bottom: 30px;
   }
   
-  table tr:nth-child(even){background-color: #f2f2f2;}
+  table tr:nth-child(even){
+      background-color: #f2f2f2;
+      border: 1px solid #ddd;
+}
   
-  table tr:hover {background-color: #ddd;}
+  table tr:hover {
+      background-color: #ddd;
+    }
   
   table th {
     padding-top: 12px;
     padding-bottom: 12px;
     text-align: left;
-    background-color: #013c8f;
-    color: white;
+    background-color: #ffffff;
+    color: rgb(0, 0, 0);
+    font-weight: 300;
   }
-
-/*
-  posts area
-*/
+  table thead {
+    border: 1px solid #ddd;
+    
+  }
 
 #title {
     border: 0;
@@ -479,7 +491,37 @@ table {
     background: #bfbfbf;
     height: 100%;
 }
+.tablePosts {
+    width: 95%;
+    float: right;
+}
 
+.postsButton {
+    margin-left: 5%;
+}
+
+.paginationPosts {
+    margin-left: 5%;
+}
+
+.paginationPosts ul {
+    list-style-type: none;
+}
+
+.paginationPosts li {
+    display: inline-block;
+}
+.postHeaderContainer {
+    margin-left: 5%;
+}
+.postHeaderContainer h1 {
+    font-size: 23px;
+    margin-top: 25px;
+}
+.postHeaderContainer a {
+    margin-left: 70px;
+    position: absolute;
+}
 
 
 /*
@@ -501,6 +543,15 @@ table {
 
 .margin-t-50 {
     margin-top: 50px;
+}
+
+.margin-t-20 {
+    margin-top: 20px;
+}
+
+.margin-y-20 {
+    margin-top: 20px;
+    margin-bottom: 20px;
 }
 
 .row {

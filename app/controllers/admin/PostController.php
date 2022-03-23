@@ -10,6 +10,7 @@ use parts\Session;
 use database\DB;
 use core\Request;
 use parts\Pagination;
+use core\Response;
 
 class PostController extends Controller {
 
@@ -23,7 +24,7 @@ class PostController extends Controller {
 
         $data["posts"] = $posts;
         $data['numberOfPages'] = $numberOfPages;
-        
+
         return $this->view('admin/posts/index', $data);
     }
 
@@ -171,9 +172,15 @@ class PostController extends Controller {
         $req = new Request();
 
         $post = DB::try()->select('*')->from($posts->t)->where($posts->slug, '=', $req->getUri())->first();
-        $data['post'] = $post;
+        if(empty($post) ) {
+            //return Response::statusCode(404)->view("/404/404");
+            // return 404 of posts..
+            // and or could create a default 404 page..
+        } else {
+            $data['post'] = $post;
+            return $this->view('/admin/posts/page', $data);
+        }
 
-        return $this->view('/admin/posts/page', $data);
     }
 
 

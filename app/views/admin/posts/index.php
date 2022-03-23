@@ -19,13 +19,17 @@
         <div class="margin-t-50"><?php echo Alert::display("warning", "registered"); ?></div>
     <?php Session::delete('registered'); } ?>
 
-    <a class="button margin-t-50" href="/admin/posts/create">Create new post</a>
-
-    <table class="margin-t-50">
+    
+    </div>
+    <div class="row postHeaderContainer">
+        <h1>Posts</h1>
+        <a class="button postsButton margin-t-20" href="/admin/posts/create">Add new</a>
+  
+    </div>
+    <table class="tablePosts margin-y-20">
         
             <thead>
                 <tr>
-                    <th>#</th>
                     <th>Title</th>
                     <th>Slug</th>
                 </tr>
@@ -33,9 +37,6 @@
             <tbody>
                 <?php foreach($posts as $post) { ?>
                     <tr>
-                        <td>
-                            <?php echo $post['id']; ?>
-                        </td>
                         <td>
                             <a href="/admin/posts/<?php echo $post['id']; ?>/edit"><?php echo $post['title']; ?></a>
                         </td>
@@ -46,7 +47,7 @@
                 <?php } ?>
             </tbody>
         </table>
-        <nav>
+        <nav class="paginationPosts">
             <ul class="pagination">
                 <li class="page-item"><a href="/admin/posts?back=1">Previous</a></li>
                 <?php 
@@ -57,7 +58,7 @@
                 <li><a href="/admin/posts?next=1">Next</a></li>
             </ul>
         </nav>
-</div>
+
 
 <?php 
     $this->include('footer');
