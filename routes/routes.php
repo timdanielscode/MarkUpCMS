@@ -1,15 +1,15 @@
 <?php
 
 use core\Route;
+use core\Request;
 use middleware\LoginMiddleware;
 use middleware\AuthMiddleware;
+
+$req = new Request();
  
 Route::setRouteKeys(['id', 'username']);
 
-Route::get('/')->add('HomeController', 'index');
-
 Route::view('/example-route-view', '/route/route-view');
-
 
 if(LoginMiddleware::logged_in() === true) {
     Route::get('/profile/[username]')->add('UserController', 'read');
@@ -45,5 +45,6 @@ if(AuthMiddleware::auth('admin') === true) {
     Route::get('/admin/posts/[id]/preview')->add('admin\PostController', 'read');
 }
 
+    Route::get($req->getUri())->add('admin\PostController', 'renderPage');
 
 

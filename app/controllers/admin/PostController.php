@@ -8,6 +8,7 @@ use validation\Rules;
 use app\models\Post;
 use parts\Session;
 use database\DB;
+use core\Request;
 
 class PostController extends Controller {
 
@@ -154,8 +155,19 @@ class PostController extends Controller {
         $post = DB::try()->select('*')->from($posts->t)->where($posts->id, '=', $request['id'])->first();
         $data['post'] = $post;
 
-        return $this->view('admin/posts/read', $data);
+        return $this->view('/admin/posts/read', $data);
 
+    }
+
+    public function renderPage() {
+
+        $posts = new Post();
+        $req = new Request();
+
+        $post = DB::try()->select('*')->from($posts->t)->where($posts->slug, '=', $req->getUri())->first();
+        $data['post'] = $post;
+
+        return $this->view('/admin/posts/page', $data);
     }
 
 
