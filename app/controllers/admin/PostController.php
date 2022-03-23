@@ -17,7 +17,7 @@ class PostController extends Controller {
     public function index() {
 
         $post = new Post();
-        $posts = DB::try()->all($post->t)->fetch();
+        $posts = DB::try()->all($post->t)->order('created_at')->fetch();
 
         $count = count($posts);
         
