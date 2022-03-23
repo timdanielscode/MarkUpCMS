@@ -90,6 +90,8 @@ h3 {
 #mainNav {
     position: relative;
     box-shadow: 0 2px 2px -2px rgba(0,0,0,.2);
+    height: 50px;
+    background: #0c203d;
 }
 
 
@@ -101,14 +103,15 @@ h3 {
 .navbarItem {
     list-style-type: none;
     display: inline-block;
-    margin-top: 20px;
-    margin-left: 20px;
-    margin-right: 20px;
+    margin-left: 10px;
+    margin-right: 10px;
 }
 
 .navbarItem a {
     padding-left: 20px;
-
+    color: #fff;
+    text-decoration: none;
+    font-weight: 300;
 }
 
 .navbarItem span {
@@ -117,7 +120,6 @@ h3 {
 	
 
 .navbarLink {
-    color: #fff;
     text-decoration: none;
 }
 
@@ -441,7 +443,7 @@ table {
   table td, table th {
     padding-left: 20px;
     padding-top: 8px;
-    padding-bottom: 30px;
+    padding-bottom: 10px;
   }
   
   table tr:nth-child(even){

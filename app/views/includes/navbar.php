@@ -8,7 +8,7 @@
     </div> 
     <div id="navbarLogo">
         <a class="" href="/">
-            <img class="" src="/assets/img/independentphp-logo.png">
+            <!--<img class="" src="/assets/img/">-->
         </a>
     </div>
     <ul class="navbarItems">
