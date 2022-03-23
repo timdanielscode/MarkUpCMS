@@ -109,31 +109,6 @@ class PostController extends Controller {
             }
         }
 
-        if(submitted('meta')) {
-
-            if(CSRF::validate(CSRF::token('get'), post('tokenMeta'))) {
-                
-                $post = new Post();
-                $id = $request['id'];
-                $metaTitle = $request["metaTitle"];
-                $metaDescription = $request["metaDescription"];
-
-                if(!empty($metaTitle) ) {
-                    DB::try()->update($post->t)->set([
-                        $post->metaTitle => $metaTitle
-                    ])->where($post->id, '=', $id)->run(); 
-                }
-                if(!empty($metaDescription) ) {
-                    DB::try()->update($post->t)->set([
-                        $post->metaDescription => $metaDescription
-                    ])->where($post->id, '=', $id)->run(); 
-                }
-
-                Session::set('updated', 'User updated successfully!');
-                redirect("/admin/posts/$id/edit");
-            }
-        }
-
         if(submitted('submitSlug')) {
 
             if(CSRF::validate(CSRF::token('get'), post('tokenSlug'))) {
@@ -157,6 +132,44 @@ class PostController extends Controller {
 
                 Session::set('updated', 'User updated successfully!');
                 redirect("/admin/posts/$id/edit");
+            }
+        }
+    }
+
+    public function metaData($request) {
+            
+        $posts = new Post();
+        $post = DB::try()->select('*')->from($posts->t)->where($posts->id, '=', $request['id'])->first();
+        $data['post'] = $post;
+        $data['rules'] = [];
+
+        return $this->view('admin/posts/meta', $data);
+    }
+
+    public function metaDataUpdate($request) {
+
+        if(submitted('meta')) {
+
+            if(CSRF::validate(CSRF::token('get'), post('tokenMeta'))) {
+                
+                $post = new Post();
+                $id = $request['id'];
+                $metaTitle = $request["metaTitle"];
+                $metaDescription = $request["metaDescription"];
+
+                if(!empty($metaTitle) ) {
+                    DB::try()->update($post->t)->set([
+                        $post->metaTitle => $metaTitle
+                    ])->where($post->id, '=', $id)->run(); 
+                }
+                if(!empty($metaDescription) ) {
+                    DB::try()->update($post->t)->set([
+                        $post->metaDescription => $metaDescription
+                    ])->where($post->id, '=', $id)->run(); 
+                }
+
+                Session::set('updated', 'User updated successfully!');
+                redirect("/admin/posts/$id/meta/edit");
             }
         }
     }
@@ -197,6 +210,8 @@ class PostController extends Controller {
 
         redirect("/admin/posts");
     }
+
+
 
 
 }
