@@ -48,14 +48,14 @@
                             <a href="/admin/posts/<?php echo $post['id']; ?>/preview" class="font-weight-300">Preview</a> |
                             <a href="/admin/posts/<?php echo $post['id']; ?>/delete" class="font-weight-300 color-red">Remove</a>
                         </td>
-                        <td class="width-10">
+                        <td class="width-15">
                             <?php echo $post['author']; ?>
                         </td>
-                        <td class="width-10">
+                        <td class="width-15">
                             <a href="/admin/posts/<?php echo $post['id']; ?>/meta/edit" class="font-weight-300">Edit</a> 
                             <span class="display-block padding-y-2">Status: </span><?php if(!empty($post['metaTitle']) ) { echo '<span class="font-weight-300">ok</span>'; } else {echo '<span class="font-weight-300">-</span>'; } ?>
                         </td>
-                        <td class="width-10">
+                        <td class="width-15">
                             <span class="padding-b-2">Created:</span> <span class="font-weight-300"><?php echo date("d/m/Y H:i:s", strtotime($post['created_at'])); ?></span><br>
                             <span>Updated:</span> <span class="font-weight-300"><?php echo date("d/m/Y H:i:s", strtotime($post['updated_at'])); ?></span>
                         </td>
