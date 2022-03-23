@@ -2,7 +2,8 @@
 <?php use parts\Alert; ?>
 
 <?php 
-    $this->include('header');
+    $this->include('headerOpen');  
+    $this->include('headerClose');
     $this->include('navbar');
 ?>
 

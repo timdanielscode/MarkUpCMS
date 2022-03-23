@@ -2,7 +2,8 @@
 <?php use core\Csrf; ?>
 
 <?php 
-    $this->include('header');
+    $this->include('headerOpen');  
+    $this->include('headerClose');
     $this->include('navbar');
 ?>
        

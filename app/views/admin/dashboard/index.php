@@ -1,6 +1,7 @@
 <?php use parts\Session; ?>
 <?php 
-    $this->include('header');
+    $this->include('headerOpen');  
+    $this->include('headerClose');
     $this->include('navbar');
 ?>
 <div class="container">
