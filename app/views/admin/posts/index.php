@@ -45,18 +45,19 @@
                         <td class="width-50">
                             <a href="/admin/posts/<?php echo $post['id']; ?>/edit" class="font-weight-500"><?php echo $post['title']; ?></a> |
                             <a href="/admin/posts/<?php echo $post['id']; ?>/edit" class="font-weight-300">Edit</a> |
-                            <a href="/admin/posts/<?php echo $post['id']; ?>/preview" class="font-weight-300" target="_blank">Preview</a> |
+                            <a href="/admin/posts/<?php echo $post['id']; ?>/preview" class="font-weight-300">Preview</a> |
                             <a href="/admin/posts/<?php echo $post['id']; ?>/delete" class="font-weight-300 color-red">Remove</a>
                         </td>
                         <td class="width-10">
                             <?php echo $post['author']; ?>
                         </td>
                         <td class="width-10">
-                            <?php if(!empty($post['metaTitle']) ) { echo 'ok'; } else {echo '-'; } ?>
+                            <a href="/admin/posts/<?php echo $post['id']; ?>/meta/edit" class="font-weight-300">Edit</a> 
+                            <span class="display-block padding-y-2">Status: </span><?php if(!empty($post['metaTitle']) ) { echo '<span class="font-weight-300">ok</span>'; } else {echo '<span class="font-weight-300">-</span>'; } ?>
                         </td>
                         <td class="width-10">
-                            <span>Created</span> <span class="font-weight-300"><?php echo $post['created_at']; ?></span><br>
-                            <span>Updated</span> <span class="font-weight-300"><?php echo $post['updated_at']; ?></span>
+                            <span class="padding-b-2">Created:</span> <span class="font-weight-300"><?php echo $post['created_at']; ?></span><br>
+                            <span>Updated:</span> <span class="font-weight-300"><?php echo $post['updated_at']; ?></span>
                         </td>
                     </tr>
                 <?php } ?>
