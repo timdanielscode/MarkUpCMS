@@ -97,6 +97,7 @@ class PostController extends Controller {
                 DB::try()->update($post->t)->set([
                     $post->title => $title,
                     $post->body => $body,
+                    $post->updated_at => date("Y-m-d H:i:s")
                 ])->where($post->id, '=', $id)->run();              
 
                 Session::set('updated', 'User updated successfully!');

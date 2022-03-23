@@ -609,3 +609,15 @@ table {
 .color-red {
     color: rgb(199, 48, 48);
 }
+.width-50 {
+    width: 50%;
+}
+.width-10 {
+    width: 10%;
+}
+.width-40 {
+    width: 40%;
+}
+.float-right {
+    float: right;
+}
