@@ -431,6 +431,7 @@ table {
     border-collapse: collapse;
     width: 100%;
     border: 1px solid #ddd;
+    font-size: 13px;
   }
 
   table td a {
@@ -464,6 +465,7 @@ table {
     border: 1px solid #ddd;
     
   }
+
 
 #title {
     border: 0;
@@ -589,4 +591,16 @@ table {
 
 .display-block {
     display: block;
+}
+
+.font-weight-500 {
+    font-weight: 500;
+}
+
+.font-weight-300 {
+    font-weight: 300;
+}
+
+.color-red {
+    color: rgb(199, 48, 48);
 }

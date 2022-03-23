@@ -31,17 +31,16 @@
             <thead>
                 <tr>
                     <th>Title</th>
-                    <th>Slug</th>
                 </tr>
             </thead>
             <tbody>
                 <?php foreach($posts as $post) { ?>
                     <tr>
                         <td>
-                            <a href="/admin/posts/<?php echo $post['id']; ?>/edit"><?php echo $post['title']; ?></a>
-                        </td>
-                        <td>
-                            <?php echo $post['slug']; ?>
+                            <a href="/admin/posts/<?php echo $post['id']; ?>/edit" class="font-weight-500"><?php echo $post['title']; ?></a> |
+                            <a href="/admin/posts/<?php echo $post['id']; ?>/edit" class="font-weight-300" target="_blank">Edit</a> |
+                            <a href="/admin/posts/<?php echo $post['id']; ?>/preview" class="font-weight-300" target="_blank">Preview</a> |
+                            <a href="/admin/posts/<?php echo $post['id']; ?>/delete" class="font-weight-300 color-red">Remove</a>
                         </td>
                     </tr>
                 <?php } ?>

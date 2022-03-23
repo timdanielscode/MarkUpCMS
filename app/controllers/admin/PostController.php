@@ -183,5 +183,15 @@ class PostController extends Controller {
 
     }
 
+    public function delete($request) {
+
+        $id = $request['id'];
+
+        $post = new Post();
+        $post = DB::try()->delete($post->t)->where($post->id, "=", $id)->run();
+
+        redirect("/admin/posts");
+    }
+
 
 }
