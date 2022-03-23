@@ -53,6 +53,7 @@ class PostController extends Controller {
 
                         $post->title => post('title'),
                         $post->body => post('body'),
+                        $post->author => Session::get('username'),
                         $post->created_at => date("Y-m-d H:i:s"),
                         $post->updated_at => date("Y-m-d H:i:s")
                     ]);

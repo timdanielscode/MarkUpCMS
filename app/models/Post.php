@@ -10,6 +10,7 @@ class Post {
         $title = 'title', 
         $slug = 'slug',
         $body = 'body', 
+        $author = 'author', 
         $metaTitle = 'metaTitle',
         $metaDescription = 'metaDescription',
         $created_at = 'created_at', 

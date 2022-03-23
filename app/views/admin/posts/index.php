@@ -34,6 +34,7 @@
             <thead>
                 <tr>
                     <th>Title</th>
+                    <th>Author</th>
                 </tr>
             </thead>
             <tbody>
@@ -44,6 +45,9 @@
                             <a href="/admin/posts/<?php echo $post['id']; ?>/edit" class="font-weight-300" target="_blank">Edit</a> |
                             <a href="/admin/posts/<?php echo $post['id']; ?>/preview" class="font-weight-300" target="_blank">Preview</a> |
                             <a href="/admin/posts/<?php echo $post['id']; ?>/delete" class="font-weight-300 color-red">Remove</a>
+                        </td>
+                        <td>
+                            <?php echo $post['author']; ?>
                         </td>
                     </tr>
                 <?php } ?>
