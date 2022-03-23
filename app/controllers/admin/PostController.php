@@ -9,6 +9,7 @@ use app\models\Post;
 use parts\Session;
 use database\DB;
 use core\Request;
+use parts\Pagination;
 
 class PostController extends Controller {
 
@@ -16,8 +17,13 @@ class PostController extends Controller {
 
         $post = new Post();
         $posts = DB::try()->all($post->t)->fetch();
-        $data["posts"] = $posts;
+        
+        $posts = Pagination::set($posts, 10);
+        $numberOfPages = Pagination::getPages();
 
+        $data["posts"] = $posts;
+        $data['numberOfPages'] = $numberOfPages;
+        
         return $this->view('admin/posts/index', $data);
     }
 

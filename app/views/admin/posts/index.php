@@ -46,6 +46,17 @@
                 <?php } ?>
             </tbody>
         </table>
+        <nav>
+            <ul class="pagination">
+                <li class="page-item"><a href="/admin/posts?back=1">Previous</a></li>
+                <?php 
+                    foreach($numberOfPages as $page) {
+                        echo '<li><a href="/admin/posts?page='.$page.'">'.$page.'</a></li>';
+                    }  
+                ?>
+                <li><a href="/admin/posts?next=1">Next</a></li>
+            </ul>
+        </nav>
 </div>
 
 <?php 
