@@ -537,15 +537,16 @@ table {
 
 */
 .button {
-    background: #013c8f;
-    padding-left: 10px;
-    padding-right: 10px;
-    padding-top: 10px;
-    padding-bottom: 10px;
-    border-radius: 5px;
-    color: #fff;
+    background: #fff;
+    padding-left: 8px;
+    padding-right: 8px;
+    padding-top: 5px;
+    padding-bottom: 5px;
+    border-radius: 3px;
+    color: #013c8f;
     text-decoration: none;
     display: inline-block;
+    border: 2px solid #013c8f;
 }
 
 .margin-t-50 {
