@@ -28,7 +28,6 @@
                     <th>#</th>
                     <th>Title</th>
                     <th>Slug</th>
-                    <th>Edit</th>
                 </tr>
             </thead>
             <tbody>
@@ -38,13 +37,10 @@
                             <?php echo $post['id']; ?>
                         </td>
                         <td>
-                            <?php echo $post['title']; ?>
+                            <a href="/admin/posts/<?php echo $post['id']; ?>/edit"><?php echo $post['title']; ?></a>
                         </td>
                         <td>
                             <?php echo $post['slug']; ?>
-                        </td>
-                        <td>
-                            <a href="/admin/posts/<?php echo $post['id']; ?>/edit">edit</a>
                         </td>
                     </tr>
                 <?php } ?>
