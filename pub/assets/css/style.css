@@ -94,6 +94,7 @@ h3 {
     background: #0c203d;
     width: 100%;
     z-index: 9999;
+    top: 0;
 }
 
 
@@ -399,10 +400,6 @@ form input {
     font-size: 18px;
   }
 
-  .form-parts {
-      margin-bottom: 20px;
-  }
-
   form button {
       width: 200px;
       height: 50px;
@@ -423,8 +420,8 @@ form input {
     height: auto;
   }
 .error-messages {
-    margin-top: 5px;
-    font-size: 16px;
+    margin-left: 50px;
+    font-size: 13px;
     color: red;
 }
 
@@ -464,6 +461,7 @@ table {
 
   table td a {
       text-decoration: none;
+      color: #0c203d;
   }
   
   table td, table th {
@@ -498,19 +496,19 @@ table {
 #title {
     border: 0;
     font-size: 30px;
-    margin-left: 30px;
-}
-
-#body {
-    height: 500px;
+    margin-left: 50px;
+    padding: 0;
+    margin-top: 10px;
 }
 
 .tox-tinymce {
     width: 90%;
     margin-left: 50px;
+    height: 75vh !important;
+    margin-top: 10px;
 }
 
-#title:focus  {
+#title,#slug:focus  {
     outline: none;
 }
 
@@ -518,8 +516,40 @@ table {
     position: absolute;
     top: 0;
     width: 100%;
-    background: #bfbfbf;
+    background: #0c203d;
     height: 100%;
+}
+#postSidebar a {
+    border: none;
+    border-radius: 2px;
+}
+#postSidebar .back {
+    position: absolute;
+    top: 60px;
+    left: 10px;
+}
+#postSidebar .create {
+    position: absolute;
+    top: 60px;
+    left: 70px;
+}
+#postSidebar .preview {
+    position: absolute;
+    top: 97px;
+    left: 85px;
+}
+#postSidebar .update {
+    position: absolute;
+    top: 97px;
+    left: 10px;
+    border: none;
+    border-radius: 2px;
+}
+#postSidebar .update:hover {
+    cursor: pointer;
+}
+#postSidebar .create:hover {
+    cursor: pointer;
 }
 .tablePosts {
     width: 95%;
@@ -548,6 +578,7 @@ table {
     font-size: 23px;
     margin-top: 25px;
     margin-top: 70px;
+    color: #0c203d;
 }
 .postHeaderContainer a {
     margin-left: 70px;
@@ -559,7 +590,18 @@ table {
     font-size: 13px;
     font-weight: 500;
 }
+.containerPost {
+    margin-top: 50px;
+}
 
+#slug {
+    border: none;
+    width: 100%;
+    margin-left: 50px;
+    font-size: 13px;
+    padding: 0;
+    margin-top: 0;
+}
 
 /*
 
@@ -573,10 +615,10 @@ table {
     padding-top: 5px;
     padding-bottom: 5px;
     border-radius: 3px;
-    color: #013c8f;
+    color: #0c203d;
     text-decoration: none;
-    display: inline-block;
-    border: 2px solid #013c8f;
+    border: 2px solid #0c203d;
+    display: block;
 }
 
 .margin-t-50 {

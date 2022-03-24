@@ -49,9 +49,13 @@ class PostController extends Controller {
 
                 if($rules->create_post()->validated()) {
                     
+                    $slug = "/".post('title');
+                    $slug = str_replace(" ", "-", $slug);
+
                     DB::try()->insert($post->t, [
 
                         $post->title => post('title'),
+                        $post->slug => $slug,
                         $post->body => post('body'),
                         $post->author => Session::get('username'),
                         $post->created_at => date("Y-m-d H:i:s"),
@@ -90,39 +94,27 @@ class PostController extends Controller {
             if(CSRF::validate(CSRF::token('get'), post('token'))) {
                 
                 $post = new Post();
+                $rules = new Rules();
                 $id = $request['id'];
                 $title = $request["title"];
+                $slug = $request["slug"];
                 $body = $request["body"];
 
-                DB::try()->update($post->t)->set([
-                    $post->title => $title,
-                    $post->body => $body,
-                    $post->updated_at => date("Y-m-d H:i:s")
-                ])->where($post->id, '=', $id)->run();              
-
-                Session::set('updated', 'User updated successfully!');
-                redirect("/admin/posts/$id/edit");
-
-            } else {
-                Session::set('csrf', 'Cross site request forgery!');
-                redirect("/admin/posts/$id");
-            }
-        }
-
-        if(submitted('submitSlug')) {
-
-            if(CSRF::validate(CSRF::token('get'), post('tokenSlug'))) {
-                
-                $rules = new Rules();
-                $post = new Post();
-                $id = $request['id'];
-                $slug = $request["slug"];
-
                 if($rules->slug()->validated()) {
+
+                    $slug = str_replace(" ", "-", $slug);
+
                     if(!empty($slug) ) {
+
                         DB::try()->update($post->t)->set([
-                            $post->slug => $slug
-                        ])->where($post->id, '=', $id)->run(); 
+                            $post->title => $title,
+                            $post->slug => $slug,
+                            $post->body => $body,
+                            $post->updated_at => date("Y-m-d H:i:s")
+                        ])->where($post->id, '=', $id)->run();              
+
+                        Session::set('updated', 'User updated successfully!');
+                        redirect("/admin/posts/$id/edit");
                     }
                 } else {
                     $data['rules'] = $rules->errors;
@@ -130,8 +122,9 @@ class PostController extends Controller {
                     return $this->view("/admin/posts/edit", $data);
                 }
 
-                Session::set('updated', 'User updated successfully!');
-                redirect("/admin/posts/$id/edit");
+            } else {
+                Session::set('csrf', 'Cross site request forgery!');
+                redirect("/admin/posts/$id");
             }
         }
     }

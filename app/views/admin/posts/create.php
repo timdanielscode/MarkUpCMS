@@ -5,8 +5,11 @@
 
 <?php 
     $this->include('headerOpen');  
-    $this->include('headerClose');  
+    $this->title("IndependentCMS");
+    $this->script("https://cdn.tiny.cloud/1/yjrgki0oubi33qi9ebe57t1lz8lw9nbe3xbnfrv5893n4oqb/tinymce/5/tinymce.min.js");
+    $this->include("headerClose");
     $this->include('navbar');
+    
 ?>
 
     
@@ -14,53 +17,36 @@
         <div class="my-5 w-75 mx-auto"><?php echo Alert::display("warning", "csrf"); ?></div>
     <?php Session::delete('csrf'); } ?>
 
-
-
-    <!--<div id="wysiwg">
-        <button onclick="clickHandler('p')" id="pTag" value="p">p</button>
-        <button onclick="clickHandler('div')" id="pTag" value="div">div</button>
-        <button onclick="clickHandler('h1')" id="pTag" value="h1">h1</button>
-        <button onclick="clickHandler('h2')" id="pTag" value="h2">h2</button>
-        <button onclick="clickHandler('h3')" id="pTag" value="h3">h3</button>
-    </div>-->
-
-
-    <div class="row">
-        <div class="col10">
-    <form action="" method="POST" class="">
-        <div class="form-parts">
-            <label for="title">Title:</label>
-            <input name="title" type="title" id="title">
-            <div class="error-messages">
-                <?php echo Errors::get($rules, 'title'); ?>
+    <div class="containerPost">
+        <div class="row">
+            <div class="col10">
+                <form action="" method="POST" class="">
+                    <div class="form-parts">
+                        <input name="title" type="title" id="title" autofocus>
+                        <div class="error-messages">
+                            <?php echo Errors::get($rules, 'title'); ?>
+                        </div>
+                    </div>
+                    <div class="form-parts">
+                        <textarea name="body" type="body" id="body" class="empty" rows="5" cols="50"></textarea>
+                        <div class="error-messages">
+                            <?php echo Errors::get($rules, 'body'); ?>
+                        </div>
+                    </div>
+                    <div class="form-parts">
+                        <button name="submit" id="submit" type="submit" class="display-none">Create</button>
+                        <input type="hidden" name="token" value="<?php Csrf::token('add');?>" />
+                    </div>
+                </form>
+            </div>
+            <div class="col2">
+                <div id="postSidebar">
+                    <a href="/admin/posts" class="button back">Back</a>
+                    <label for="submit" class="button create">Create</label>
+                </div>
             </div>
         </div>
-
-        <div class="form-parts">
-            <textarea name="body" type="body" id="body" class="empty" rows="5" cols="50"></textarea>
-            <div class="error-messages">
-                <?php echo Errors::get($rules, 'body'); ?>
-            </div>
-        </div>
-        <div class="form-parts">
-            <button name="submit" type="submit">Create</button>
-            <input type="hidden" name="token" value="<?php Csrf::token('add');?>" />
-        </div>
-        <div class="empty"></div>
-    </form>
     </div>
-    <div class="col2">
-
-
-    <div class="empty">
-        <div class="fill" draggable="true"></div>
-    </div>
-    <div class="empty"></div>
-    <div class="empty"></div>
-    <div class="empty"></div>
-    <div class="empty"></div>
-</div>
-</div>
 
 
     
