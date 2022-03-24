@@ -46,6 +46,8 @@ if(AuthMiddleware::auth('admin') === true) {
     Route::post('/admin/posts/[id]/meta/edit')->add('admin\PostController', 'metaDataUpdate');
     Route::get('/admin/posts/[id]/preview')->add('admin\PostController', 'read');
     Route::get('/admin/posts/[id]/delete')->add('admin\PostController', 'delete');
+
+    Route::get('/admin/assets')->add('admin\AssetsController', 'index');
 }
 
     Route::get($req->getUri())->add('admin\PostController', 'renderPage');
