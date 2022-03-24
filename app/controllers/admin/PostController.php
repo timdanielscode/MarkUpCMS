@@ -188,23 +188,6 @@ class PostController extends Controller {
 
     }
 
-    public function renderPage() {
-
-        $posts = new Post();
-        $req = new Request();
-
-        $post = DB::try()->select('*')->from($posts->t)->where($posts->slug, '=', $req->getUri())->first();
-        if(empty($post) ) {
-            //return Response::statusCode(404)->view("/404/404");
-            // return 404 of posts..
-            // and or could create a default 404 page..
-        } else {
-            $data['post'] = $post;
-            return $this->view('/admin/posts/page', $data);
-        }
-
-    }
-
     public function delete($request) {
 
         $id = $request['id'];
@@ -214,8 +197,5 @@ class PostController extends Controller {
 
         redirect("/admin/posts");
     }
-
-
-
 
 }

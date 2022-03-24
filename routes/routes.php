@@ -11,6 +11,7 @@ Route::setRouteKeys(['id', 'username']);
 
 Route::view('/example-route-view', '/route/route-view');
 
+
 if(LoginMiddleware::logged_in() === true) {
     Route::get('/profile/[username]')->add('UserController', 'read');
     Route::get('/profile/[username]/edit')->add('UserController', 'edit');
@@ -52,6 +53,7 @@ if(AuthMiddleware::auth('admin') === true) {
     Route::post('/admin/css/create')->add('admin\CssController', 'store');
 }
 
-    Route::get($req->getUri())->add('admin\PostController', 'renderPage');
+    
+Route::get($req->getUri())->add('RenderPageController', 'render');
 
 
