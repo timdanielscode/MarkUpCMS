@@ -21,10 +21,11 @@
             <div class="col10">
                 <form action="" method="POST" class="">
                     <div class="form-parts">
-                        <input name="file_name" type="file_name" id="title" placeholder="Filename" autofocus>
+                        <input name="filename" type="text" id="title" placeholder="Filename" autofocus>
                         <div class="error-messages">
-                            <?php echo Errors::get($rules, 'file_name'); ?>
+                            <?php echo Errors::get($rules, 'filename'); ?>
                         </div>
+                        <textarea name="content"></textarea>
                     </div>
                     <div class="form-parts">
                         <button name="submit" id="submit" type="submit" class="display-none">Create</button>

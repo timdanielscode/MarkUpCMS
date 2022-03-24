@@ -54,12 +54,19 @@ class CssController extends Controller {
 
                 if($rules->css()->validated()) {
                     
-                    $file_name = "/".post('file_name');
-                    $file_name = str_replace(" ", "-", $file_name);
+                    $filename = "/".post('filename');
+                    $filename = str_replace(" ", "-", $filename);
 
+                    $content = post('content');
+            
+                    $extension = ".css";
+                    $file = fopen("website/assets/css/" . $filename . $extension, "w");
+                    fwrite($file, $content);
+                    fclose($file);
+                    
                     DB::try()->insert($css->t, [
 
-                        $css->file_name => post('file_name'),
+                        $css->file_name => post('filename'),
                         $css->extension => '.css',
                         $css->date_created_at => date("d/m/Y"),
                         $css->time_created_at => date("H:i"),
