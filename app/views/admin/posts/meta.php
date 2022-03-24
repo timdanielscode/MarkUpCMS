@@ -17,9 +17,9 @@
 
     <div class="row">
         <div class="col10">
-            <form action="" method="POST">
-                <label>Meta title</label>    
-                <input name="metaTitle" type="text" value="<?php echo $post['metaTitle']; ?>">
+            <form action="" method="POST" class="metaDataForm">   
+                <label>Meta title</label>
+                <input name="metaTitle" type="text" value="<?php echo $post['metaTitle']; ?>" autofocus>
                 <label>Meta description</label>    
                 <textarea name="metaDescription" type="text"><?php echo $post['metaDescription']; ?></textarea>
                 <button name="meta" id="meta" type="submit">Update</button>
@@ -28,7 +28,7 @@
         </div>
         <div class="col2">
             <div id="postSidebar">
-                <a href="/admin/posts" class="button margin-t-50">Back</a>
+                <a href="/admin/posts" class="button back">Back</a>
             </div>
         </div>
     </div>
