@@ -642,6 +642,19 @@ table {
 #search:focus {
     outline: none;
 }
+.containerCss {
+    margin-top: 50px;
+}
+.containerCss textarea {
+    width: 90%;
+    height: 75vh;
+    margin-left: 50px;
+}
+
+.containerCss textarea:focus {
+    outline: none;
+}
+
 /*
 
     part of framework

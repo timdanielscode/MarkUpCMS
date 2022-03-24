@@ -31,10 +31,10 @@
                     <tr>
                         <?php if($cssFile["file_name"] !== "not found") {?>
                         <td class="width-50">
-                            <a href="/admin/posts/<?php echo $cssFile['id']; ?>/edit" class="font-weight-500"><?php echo $cssFile['file_name'] . $cssFile['extension']; ?></a> |
-                            <a href="/admin/posts/<?php echo $cssFile['id']; ?>/edit" class="font-weight-300">Edit</a> |
-                            <a href="/admin/posts/<?php echo $cssFile['id']; ?>/preview" class="font-weight-300">Preview</a> |
-                            <a href="/admin/posts/<?php echo $cssFile['id']; ?>/delete" class="font-weight-300 color-red">Remove</a>
+                            <a href="/admin/css/<?php echo $cssFile['id']; ?>/edit" class="font-weight-500"><?php echo $cssFile['file_name'] . $cssFile['extension']; ?></a> |
+                            <a href="/admin/css/<?php echo $cssFile['id']; ?>/edit" class="font-weight-300">Edit</a> |
+                            <a href="/admin/css/<?php echo $cssFile['id']; ?>/preview" class="font-weight-300">Preview</a> |
+                            <a href="/admin/css/<?php echo $cssFile['id']; ?>/delete" class="font-weight-300 color-red">Remove</a>
                         </td>
                         <?php } else { ?>
                         <td class="width-50">

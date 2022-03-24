@@ -21,11 +21,11 @@
             <div class="col10">
                 <form action="" method="POST" class="">
                     <div class="form-parts">
-                        <input name="filename" type="text" id="title" placeholder="Filename" autofocus>
+                        <input name="filename" type="text" id="title" placeholder="Filename" value="<?php echo $cssFile['file_name']; ?>">
                         <div class="error-messages">
                             <?php echo Errors::get($rules, 'filename'); ?>
                         </div>
-                        <textarea name="content" onkeydown="insertTab(this, event);"></textarea>
+                        <textarea name="content" id="content" onkeydown="insertTab(this, event);"><?php echo $content; ?></textarea>
                     </div>
                     <div class="form-parts">
                         <button name="submit" id="submit" type="submit" class="display-none">Create</button>
@@ -36,7 +36,7 @@
             <div class="col2">
                 <div id="postSidebar">
                     <a href="/admin/css" class="button back">Back</a>
-                    <label for="submit" class="button create">Create</label>
+                    <label for="submit" class="button update">Update</label>
                 </div>
             </div>
         </div>
