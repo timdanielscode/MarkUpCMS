@@ -33,7 +33,11 @@ CREATE TABLE posts (
     updated_at DATE NOT NULL
 );
 
-ALTER TABLE posts ADD metaTitle varchar(255) AFTER body;
-ALTER TABLE posts ADD metaDescription varchar(255) AFTER metaTitle;
-ALTER TABLE posts ADD slug varchar(255) AFTER title;
-ALTER TABLE posts ADD author varchar(255) AFTER body;
+ALTER TABLE posts ADD metaTitle varchar(255) AFTER body NOT NULL;
+ALTER TABLE posts ADD metaDescription varchar(255) AFTER metaTitle NOT NULL;
+ALTER TABLE posts ADD slug varchar(255) AFTER title NOT NULL;
+ALTER TABLE posts ADD author varchar(255) AFTER body NOT NULL;
+ALTER TABLE posts ADD date_created_at varchar(10) AFTER metaDescription;
+ALTER TABLE posts ADD time_created_at varchar(5) AFTER date_created_at;
+ALTER TABLE posts ADD date_updated_at varchar(10) AFTER time_created_at;
+ALTER TABLE posts ADD time_updated_at varchar(5) AFTER date_updated_at;

@@ -17,9 +17,17 @@ class PostController extends Controller {
     public function index() {
 
         $post = new Post();
-        $posts = DB::try()->all($post->t)->order('created_at')->fetch();
+        $posts = DB::try()->all($post->t)->order('date_created_at')->fetch();
 
         $count = count($posts);
+        $search = get('search');
+
+        if(!empty($search) ) {
+            $posts = DB::try()->all($post->t)->where($post->title, 'LIKE', '%'.$search.'%')->or($post->author, 'LIKE', '%'.$search.'%')->or($post->date_created_at, 'LIKE', '%'.$search.'%')->or($post->time_created_at, 'LIKE', '%'.$search.'%')->or($post->date_updated_at, 'LIKE', '%'.$search.'%')->or($post->time_updated_at, 'LIKE', '%'.$search.'%')->fetch();
+            if(empty($posts) ) {
+                $posts = array(["id" => "?","title" => "not found", "author" => "not found", "date_created_at" => "-", "time_created_at" => "", "date_updated_at" => "-", "time_updated_at" => ""]);
+            }
+        }
         
         $posts = Pagination::set($posts, 20);
         $numberOfPages = Pagination::getPages();
@@ -58,8 +66,10 @@ class PostController extends Controller {
                         $post->slug => $slug,
                         $post->body => post('body'),
                         $post->author => Session::get('username'),
-                        $post->created_at => date("Y-m-d H:i:s"),
-                        $post->updated_at => date("Y-m-d H:i:s")
+                        $post->date_created_at => date("d/m/Y"),
+                        $post->time_created_at => date("H:i"),
+                        $post->date_updated_at => date("d/m/Y"),
+                        $post->time_updated_at => date("H:i")
                     ]);
 
                     Session::set('create', 'You have successfully created a new post!');            
@@ -110,7 +120,8 @@ class PostController extends Controller {
                             $post->title => $title,
                             $post->slug => $slug,
                             $post->body => $body,
-                            $post->updated_at => date("Y-m-d H:i:s")
+                            $post->date_updated_at => date("d/m/Y"),
+                            $post->time_updated_at => date("H:i")
                         ])->where($post->id, '=', $id)->run();              
 
                         Session::set('updated', 'User updated successfully!');

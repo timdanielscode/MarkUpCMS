@@ -28,6 +28,12 @@
     <div class="postContainterCount">
         <span>All</span>
         <span>(<?php echo $count; ?>)</span>
+        <div id="navbarSearch">
+            <form action="" method="GET">
+                <input type="text" name="search" placeholder="Search" id="search">
+                <input type="hidden" name="submit" value="search">
+            </form>
+        </div>
     </div>
     <table class="tablePosts margin-y-20">
         
@@ -40,14 +46,21 @@
                 </tr>
             </thead>
             <tbody>
+                
                 <?php foreach($posts as $post) { ?>
                     <tr>
+                        <?php if($post["title"] !== "not found") {?>
                         <td class="width-50">
                             <a href="/admin/posts/<?php echo $post['id']; ?>/edit" class="font-weight-500"><?php echo $post['title']; ?></a> |
                             <a href="/admin/posts/<?php echo $post['id']; ?>/edit" class="font-weight-300">Edit</a> |
                             <a href="/admin/posts/<?php echo $post['id']; ?>/preview" class="font-weight-300">Preview</a> |
                             <a href="/admin/posts/<?php echo $post['id']; ?>/delete" class="font-weight-300 color-red">Remove</a>
                         </td>
+                        <?php } else { ?>
+                        <td class="width-50">
+                            <span class="font-weight-500"><?php echo $post['title']; ?></span>
+                        </td>
+                        <?php } ?>
                         <td class="width-15">
                             <?php echo $post['author']; ?>
                         </td>
@@ -56,8 +69,8 @@
                             <span class="display-block padding-y-2">Status: </span><?php if(!empty($post['metaTitle']) ) { echo '<span class="font-weight-300">ok</span>'; } else {echo '<span class="font-weight-300">-</span>'; } ?>
                         </td>
                         <td class="width-15">
-                            <span class="padding-b-2">Created:</span> <span class="font-weight-300"><?php echo date("d/m/Y H:i:s", strtotime($post['created_at'])); ?></span><br>
-                            <span>Updated:</span> <span class="font-weight-300"><?php echo date("d/m/Y H:i:s", strtotime($post['updated_at'])); ?></span>
+                            <span class="padding-b-2">Created:</span> <span class="font-weight-300"><?php echo $post["date_created_at"] . " " . $post["time_created_at"]; ?></span><br>
+                            <span>Updated:</span> <span class="font-weight-300"><?php echo $post["date_updated_at"] . " " . $post["time_updated_at"]; ?></span>
                         </td>
                     </tr>
                 <?php } ?>

@@ -13,6 +13,8 @@ class Post {
         $author = 'author', 
         $metaTitle = 'metaTitle',
         $metaDescription = 'metaDescription',
-        $created_at = 'created_at', 
-        $updated_at = 'updated_at';
+        $date_created_at = 'date_created_at', 
+        $time_created_at = 'time_created_at', 
+        $date_updated_at = 'date_updated_at', 
+        $time_updated_at = 'time_updated_at';
 }
