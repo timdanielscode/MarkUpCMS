@@ -22,7 +22,7 @@
             <div class="col10">
                 <form action="" method="POST" class="">
                     <div class="form-parts">
-                        <input name="title" type="title" id="title" autofocus>
+                        <input name="title" type="title" id="title" placeholder="Title" autofocus>
                         <div class="error-messages">
                             <?php echo Errors::get($rules, 'title'); ?>
                         </div>
