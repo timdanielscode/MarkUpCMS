@@ -53,6 +53,7 @@ if(AuthMiddleware::auth('admin') === true) {
     Route::post('/admin/css/create')->add('admin\CssController', 'store');
     Route::get('/admin/css/[id]/edit')->add('admin\CssController', 'edit');
     Route::post('/admin/css/[id]/edit')->add('admin\CssController', 'update');
+    Route::get('/admin/css/[id]/delete')->add('admin\CssController', 'delete');
 }
 
     

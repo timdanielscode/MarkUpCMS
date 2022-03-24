@@ -16,7 +16,9 @@ class CssController extends Controller {
 
         $css = new Css();
         $cssFiles = DB::try()->all($css->t)->order('date_created_at')->fetch();
-
+        if(empty($cssFiles) ) {
+            $cssFiles = array(["id" => "?","file_name" => "no css file created yet", "extension" => "","date_created_at" => "-", "time_created_at" => "", "date_updated_at" => "-", "time_updated_at" => ""]);
+        }
         $count = count($cssFiles);
         $search = get('search');
 
@@ -147,7 +149,7 @@ class CssController extends Controller {
 
                     $filePath = "website/assets/css/" . $currenCssFileName[0] . ".css"; 
                     $content = file_get_contents($filePath);
-                    
+
                     $data['content'] = $content;
                     $data['cssFile'] = DB::try()->select('*')->from($css->t)->where($css->id, '=', $id)->first();
                     return $this->view("/admin/css/edit", $data);
@@ -158,6 +160,21 @@ class CssController extends Controller {
                 redirect("/admin/posts/$id");
             }
         }
+    }
+
+    public function delete($request) {
+
+        $id = $request['id'];
+
+        $css = new Css();
+    
+        $filename = DB::try()->select('file_name')->from($css->t)->where($css->id, '=', $request['id'])->first();
+        $path = "website/assets/css/" . $filename[0] . ".css";
+        unlink($path);
+
+        $css = DB::try()->delete($css->t)->where($css->id, "=", $id)->run();
+
+        redirect("/admin/css");
     }
 
 }

@@ -29,7 +29,7 @@
                 
                 <?php foreach($cssFiles as $cssFile) { ?>
                     <tr>
-                        <?php if($cssFile["file_name"] !== "not found") {?>
+                        <?php if($cssFile["file_name"] !== "not found" && $cssFile["file_name"] !== "no css file created yet") {?>
                         <td class="width-50">
                             <a href="/admin/css/<?php echo $cssFile['id']; ?>/edit" class="font-weight-500"><?php echo $cssFile['file_name'] . $cssFile['extension']; ?></a> |
                             <a href="/admin/css/<?php echo $cssFile['id']; ?>/edit" class="font-weight-300">Edit</a> |
