@@ -14,7 +14,7 @@
     <ul class="navbarItems">
         <li class="navbarItem"><a href="/admin/posts">Posts</a></li>
         <li class="navbarItem"><a href="/admin/users">Users</a></li>
-        <li class="navbarItem"><a href="/admin/assets">Assets</a></li>
+        <li class="navbarItem"><a href="/admin/css">Css</a></li>
     </ul>
 
 </nav>

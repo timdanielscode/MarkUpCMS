@@ -47,7 +47,9 @@ if(AuthMiddleware::auth('admin') === true) {
     Route::get('/admin/posts/[id]/preview')->add('admin\PostController', 'read');
     Route::get('/admin/posts/[id]/delete')->add('admin\PostController', 'delete');
 
-    Route::get('/admin/assets')->add('admin\AssetsController', 'index');
+    Route::get('/admin/css')->add('admin\CssController', 'index');
+    Route::get('/admin/css/create')->add('admin\CssController', 'create');
+    Route::post('/admin/css/create')->add('admin\CssController', 'store');
 }
 
     Route::get($req->getUri())->add('admin\PostController', 'renderPage');

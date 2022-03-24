@@ -97,6 +97,16 @@ class Rules {
         return $this;
     }
 
+    public function css() {
+        
+        $validation = new Validate();
+        
+        $validation->input('file_name')->as('Filename')->rules(['required' => true, 'min' => 5, 'max' => 40, 'special' => true]);
+        
+        $this->errors = $validation->errors;
+        return $this;
+    }
+
     /**
      * @return bool
     */     

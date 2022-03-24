@@ -2,12 +2,13 @@
 
 namespace app\models;
 
-class Asset {
+class Css {
 
-    public $t = "assets",
+    public $t = "css",
 
         $id = 'id', 
-        $name = 'name', 
+        $file_name = 'file_name', 
+        $extension = 'extension', 
         $date_created_at = 'date_created_at', 
         $time_created_at = 'time_created_at', 
         $date_updated_at = 'date_updated_at', 

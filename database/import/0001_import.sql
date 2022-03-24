@@ -43,11 +43,13 @@ ALTER TABLE posts ADD date_updated_at varchar(10) AFTER time_created_at;
 ALTER TABLE posts ADD time_updated_at varchar(5) AFTER date_updated_at;
 
 
-CREATE TABLE assets (
+CREATE TABLE css (
     id int(11) AUTO_INCREMENT PRIMARY KEY,
-    asset_name VARCHAR(30) NOT NULL,
+    file_name VARCHAR(30) NOT NULL,
+    extension VARCHAR(30) NOT NULL,
     date_created_at VARCHAR(10) NOT NULL,
     time_created_at VARCHAR(5) NOT NULL,
     date_updated_at VARCHAR(10) NOT NULL,
     time_updated_at VARCHAR(5) NOT NULL
 );
+
