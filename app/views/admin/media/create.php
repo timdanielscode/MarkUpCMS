@@ -19,7 +19,7 @@
     <div class="containerPost">
         <div class="row">
             <div class="col10">
-                <form action="" method="POST" class="">
+                <form action="" method="POST" class="" enctype="multipart/form-data">
                     <div class="form-parts">
                         <input name="media_title" type="text" id="media_title" placeholder="Title" autofocus>
                         <div class="error-messages">
@@ -28,6 +28,12 @@
                     </div>
                     <div class="form-parts">
                         <textarea name="media_description" type="text" id="media_description" autofocus></textarea>
+                        <div class="error-messages">
+                            <?php echo Errors::get($rules, 'media_description'); ?>
+                        </div>
+                    </div>
+                    <div class="form-parts">
+                        <input type="file" class="media_filename" name="file" multiple="true">
                         <div class="error-messages">
                             <?php echo Errors::get($rules, 'media_description'); ?>
                         </div>

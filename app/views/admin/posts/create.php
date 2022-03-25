@@ -5,13 +5,15 @@
 
 <?php 
     $this->include('headerOpen');  
+    $this->stylesheet("/assets/css/codemirror/codemirror.css");
+    $this->stylesheet("/assets/css/codemirror/gruvbox-dark.css");
+    $this->script("/assets/js/codemirror/codemirror.js");
+    $this->script("/assets/js/codemirror/css.js");
+    $this->script("/assets/js/codemirror/closebrackets.js");
     $this->title("IndependentCMS");
-    $this->script("https://cdn.tiny.cloud/1/yjrgki0oubi33qi9ebe57t1lz8lw9nbe3xbnfrv5893n4oqb/tinymce/5/tinymce.min.js");
     $this->include("headerClose");
     $this->include('navbar');
-    
 ?>
-
     
 <?php if(Session::exists("csrf")) { ?>
         <div class="my-5 w-75 mx-auto"><?php echo Alert::display("warning", "csrf"); ?></div>
@@ -28,7 +30,7 @@
                         </div>
                     </div>
                     <div class="form-parts">
-                        <textarea name="body" type="body" id="body" class="empty" rows="5" cols="50"></textarea>
+                        <textarea name="body" type="body" id="code"></textarea>
                         <div class="error-messages">
                             <?php echo Errors::get($rules, 'body'); ?>
                         </div>
@@ -47,8 +49,17 @@
             </div>
         </div>
     </div>
-
-
+    <script>
+        var editor = CodeMirror.fromTextArea(document.getElementById("code"), {
+            theme: "gruvbox-dark",
+            lineNumbers: true,
+            matchBrackets: true,
+            autoCloseBrackets: true,
+            tabSize: 2
+        });
+        editor.setSize('95%', "75vh");
+    
+    </script>
     
 
 <?php 

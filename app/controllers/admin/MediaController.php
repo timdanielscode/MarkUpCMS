@@ -52,6 +52,35 @@ class MediaController extends Controller {
 
                 $rules = new Rules();
                 $media = new Media();
+                
+                $file = $_FILES['file'];
+                $filename = $_FILES['file']['name'];
+                $tmp = $_FILES['file']['tmp_name'];
+                $error = $_FILES['file']['error'];
+                $size = $_FILES['file']['size'];
+                $type = $_FILES['file']['type'];
+
+                $ext = explode(".", $filename);
+                $ext = strtolower(end($ext));
+
+                $validated = array('jpg', 'jpeg', 'png');
+
+                if(in_array($ext, $validated)) {
+                    if($error === 0) {
+                        if($size < 500000) {
+                            $fileDestination = "website/assets/img/".$filename;
+                            move_uploaded_file($tmp, $fileDestination);
+                            echo 'ok';
+                        } else {
+                            echo 'file is to big';
+                        }
+                    } else {
+                        echo 'error';
+                    }
+                } else {
+                    echo 'not validated';
+                }
+
 
                 //if($rules->create_post()->validated()) {
                     
@@ -59,6 +88,9 @@ class MediaController extends Controller {
 
                         $media->media_title => post('media_title'),
                         $media->media_description => post('media_description'),
+                        $media->media_filename => $filename,
+                        $media->media_filetype => $type,
+                        $media->media_filesize => $size,
                         $media->date_created_at => date("d/m/Y"),
                         $media->time_created_at => date("H:i"),
                         $media->date_updated_at => date("d/m/Y"),
@@ -74,8 +106,8 @@ class MediaController extends Controller {
                     //return $this->view('admin/users/create', $data);
                 //}
             } else {
-                Session::set('csrf', 'Cross site request forgery!');
-                redirect('/admin/media/create');
+                //Session::set('csrf', 'Cross site request forgery!');
+                //redirect('/admin/media/create');
             }
         }
     }
