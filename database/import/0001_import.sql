@@ -63,3 +63,17 @@ CREATE TABLE js (
     time_updated_at VARCHAR(5) NOT NULL
 );
 
+CREATE TABLE media (
+    id int(11) AUTO_INCREMENT PRIMARY KEY,
+    media_title VARCHAR(50) NOT NULL,
+    media_description VARCHAR(100) NOT NULL,
+    media_filename VARCHAR(50) NOT NULL,
+    media_filetype VARCHAR(15) NOT NULL,
+    media_filesize VARCHAR(8) NOT NULL,
+    date_created_at VARCHAR(10) NOT NULL,
+    time_created_at VARCHAR(5) NOT NULL,
+    date_updated_at VARCHAR(10) NOT NULL,
+    time_updated_at VARCHAR(5) NOT NULL
+);
+
+

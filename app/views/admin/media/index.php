@@ -23,7 +23,7 @@
     </div>
     <div class="row postHeaderContainer">
         <h1>Media</h1>
-        <a class="button postsButton margin-t-20" href="/admin/posts/create">Add new</a>
+        <a class="button postsButton margin-t-20" href="/admin/media/create">Add new</a>
     </div>
     <div class="postContainterCount">
         <span>All</span>

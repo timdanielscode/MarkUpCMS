@@ -426,6 +426,13 @@ form input {
     font-size: 13px;
     color: red;
 }
+#media_description {
+    margin-left: 50px;
+    width: 90%;
+}
+#media_description:focus {
+    outline: none;
+}
 
 /* 
 pagination
@@ -495,7 +502,7 @@ table {
   }
 
 
-#title {
+#title, #media_title {
     border: 0;
     font-size: 30px;
     margin-left: 50px;
@@ -510,7 +517,7 @@ table {
     margin-top: 10px;
 }
 
-#title,#slug:focus  {
+#title,#slug,#media_title:focus  {
     outline: none;
 }
 
