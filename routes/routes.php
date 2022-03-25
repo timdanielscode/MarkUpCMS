@@ -61,6 +61,8 @@ if(AuthMiddleware::auth('admin') === true) {
     Route::get('/admin/js/[id]/edit')->add('admin\JsController', 'edit');
     Route::post('/admin/js/[id]/edit')->add('admin\JsController', 'update');
     Route::get('/admin/js/[id]/delete')->add('admin\JsController', 'delete');
+
+    Route::get('/admin/media')->add('admin\MediaController', 'index');
 }
 
     

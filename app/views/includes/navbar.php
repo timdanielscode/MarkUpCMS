@@ -16,6 +16,7 @@
         <li class="navbarItem"><a href="/admin/users">Users</a></li>
         <li class="navbarItem"><a href="/admin/css">Css</a></li>
         <li class="navbarItem"><a href="/admin/js">Js</a></li>
+        <li class="navbarItem"><a href="/admin/media">Media</a></li>
     </ul>
 
 </nav>
