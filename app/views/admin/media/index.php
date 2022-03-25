@@ -23,7 +23,7 @@
     </div>
     <div class="row postHeaderContainer">
         <h1>Media</h1>
-        <a class="button postsButton margin-t-20" href="/admin/media/create">Add new</a>
+        <a class="button mediasButton margin-t-20" href="/admin/media/create">Add new</a>
     </div>
     <div class="postContainterCount">
         <span>All</span>
@@ -47,30 +47,27 @@
             </thead>
             <tbody>
                 
-                <?php foreach($posts as $post) { ?>
+                <?php foreach($allMedia as $media) { ?>
                     <tr>
-                        <?php if($post["title"] !== "not found") {?>
+                        <?php if($media["media_title"] !== "not found") {?>
                         <td class="width-50">
-                            <a href="/admin/posts/<?php echo $post['id']; ?>/edit" class="font-weight-500"><?php echo $post['title']; ?></a> |
-                            <a href="/admin/posts/<?php echo $post['id']; ?>/edit" class="font-weight-300">Edit</a> |
-                            <a href="/admin/posts/<?php echo $post['id']; ?>/preview" class="font-weight-300">Preview</a> |
-                            <a href="/admin/posts/<?php echo $post['id']; ?>/delete" class="font-weight-300 color-red">Remove</a>
+                            <a href="/admin/media/<?php echo $media['id']; ?>/edit" class="font-weight-500"><?php echo $media['media_title']; ?></a> |
+                            <a href="/admin/media/<?php echo $media['id']; ?>/edit" class="font-weight-300">Edit</a> |
+                            <a href="/admin/media/<?php echo $media['id']; ?>/preview" class="font-weight-300">Preview</a> |
+                            <a href="/admin/media/<?php echo $media['id']; ?>/delete" class="font-weight-300 color-red">Remove</a>
                         </td>
                         <?php } else { ?>
                         <td class="width-50">
-                            <span class="font-weight-500"><?php echo $post['title']; ?></span>
+                            <span class="font-weight-500"><?php echo $media['media_title']; ?></span>
                         </td>
                         <?php } ?>
                         <td class="width-15">
-                            <?php echo $post['author']; ?>
+                            <a href="/admin/media/<?php echo $media['id']; ?>/meta/edit" class="font-weight-300">Edit</a> 
+                            <span class="display-block padding-y-2">Status: </span><?php if(!empty($media['metaTitle']) ) { echo '<span class="font-weight-300">ok</span>'; } else {echo '<span class="font-weight-300">-</span>'; } ?>
                         </td>
                         <td class="width-15">
-                            <a href="/admin/posts/<?php echo $post['id']; ?>/meta/edit" class="font-weight-300">Edit</a> 
-                            <span class="display-block padding-y-2">Status: </span><?php if(!empty($post['metaTitle']) ) { echo '<span class="font-weight-300">ok</span>'; } else {echo '<span class="font-weight-300">-</span>'; } ?>
-                        </td>
-                        <td class="width-15">
-                            <span class="padding-b-2">Created:</span> <span class="font-weight-300"><?php echo $post["date_created_at"] . " " . $post["time_created_at"]; ?></span><br>
-                            <span>Updated:</span> <span class="font-weight-300"><?php echo $post["date_updated_at"] . " " . $post["time_updated_at"]; ?></span>
+                            <span class="padding-b-2">Created:</span> <span class="font-weight-300"><?php echo $media["date_created_at"] . " " . $media["time_created_at"]; ?></span><br>
+                            <span>Updated:</span> <span class="font-weight-300"><?php echo $media["date_updated_at"] . " " . $media["time_updated_at"]; ?></span>
                         </td>
                     </tr>
                 <?php } ?>
@@ -79,13 +76,13 @@
         <?php if(count($numberOfPages) > 1) { ?>
             <nav class="paginationPosts">
                 <ul class="pagination">
-                    <li class="page-item previous"><a href="/admin/posts?back=1">Previous</a></li>
+                    <li class="page-item previous"><a href="/admin/medias?back=1">Previous</a></li>
                     <?php 
                         foreach($numberOfPages as $page) {
-                            echo '<li class="page-item"><a href="/admin/posts?page='.$page.'">'.$page.'</a></li>';
+                            echo '<li class="page-item"><a href="/admin/medias?page='.$page.'">'.$page.'</a></li>';
                         }  
                     ?>
-                    <li class="page-item next"><a href="/admin/posts?next=1">Next</a></li>
+                    <li class="page-item next"><a href="/admin/medias?next=1">Next</a></li>
                 </ul>
             </nav>
         <?php } ?>

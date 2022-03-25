@@ -7,13 +7,34 @@ use database\DB;
 use app\models\Media;
 use parts\Session;
 use core\Csrf;
+use parts\Pagination;
 use validation\Rules;
 
 class MediaController extends Controller {
 
     public function index() {
         
-        return $this->view('admin/media/index');
+        $media = new Media();
+        $allMedia = DB::try()->all($media->t)->order('date_created_at')->fetch();
+
+        $count = count($allMedia);
+        $search = get('search');
+
+        if(!empty($search) ) {
+            $allMedia = DB::try()->all($media->t)->where($media->media_title, 'LIKE', '%'.$search.'%')->or($media->media_description, 'LIKE', '%'.$search.'%')->or($media->date_created_at, 'LIKE', '%'.$search.'%')->or($media->time_created_at, 'LIKE', '%'.$search.'%')->or($media->date_updated_at, 'LIKE', '%'.$search.'%')->or($media->time_updated_at, 'LIKE', '%'.$search.'%')->fetch();
+            if(empty($allMedia) ) {
+                $allMedia = array(["id" => "?","title" => "not found", "author" => "not found", "date_created_at" => "-", "time_created_at" => "", "date_updated_at" => "-", "time_updated_at" => ""]);
+            }
+        }
+        
+        $allMedia = Pagination::set($allMedia, 20);
+        $numberOfPages = Pagination::getPages();
+
+        $data["allMedia"] = $allMedia;
+        $data['numberOfPages'] = $numberOfPages;
+        $data['count'] = $count;
+
+        return $this->view('admin/media/index', $data);
     }
 
     public function create() {
