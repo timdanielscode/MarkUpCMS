@@ -53,3 +53,13 @@ CREATE TABLE css (
     time_updated_at VARCHAR(5) NOT NULL
 );
 
+CREATE TABLE js (
+    id int(11) AUTO_INCREMENT PRIMARY KEY,
+    file_name VARCHAR(30) NOT NULL,
+    extension VARCHAR(30) NOT NULL,
+    date_created_at VARCHAR(10) NOT NULL,
+    time_created_at VARCHAR(5) NOT NULL,
+    date_updated_at VARCHAR(10) NOT NULL,
+    time_updated_at VARCHAR(5) NOT NULL
+);
+

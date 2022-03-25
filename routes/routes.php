@@ -54,6 +54,13 @@ if(AuthMiddleware::auth('admin') === true) {
     Route::get('/admin/css/[id]/edit')->add('admin\CssController', 'edit');
     Route::post('/admin/css/[id]/edit')->add('admin\CssController', 'update');
     Route::get('/admin/css/[id]/delete')->add('admin\CssController', 'delete');
+
+    Route::get('/admin/js')->add('admin\JsController', 'index');
+    Route::get('/admin/js/create')->add('admin\JsController', 'create');
+    Route::post('/admin/js/create')->add('admin\JsController', 'store');
+    Route::get('/admin/js/[id]/edit')->add('admin\JsController', 'edit');
+    Route::post('/admin/js/[id]/edit')->add('admin\JsController', 'update');
+    Route::get('/admin/js/[id]/delete')->add('admin\JsController', 'delete');
 }
 
     

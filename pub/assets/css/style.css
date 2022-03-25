@@ -642,7 +642,7 @@ table {
 #search:focus {
     outline: none;
 }
-.containerCss {
+.containerCss,.containerJs {
     margin-top: 50px;
 }
 .containerCss textarea {

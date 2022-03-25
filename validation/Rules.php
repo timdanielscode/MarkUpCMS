@@ -107,6 +107,16 @@ class Rules {
         return $this;
     }
 
+    public function js() {
+        
+        $validation = new Validate();
+        
+        $validation->input('filename')->as('Filename')->rules(['required' => true, 'min' => 5, 'max' => 40, 'special' => true]);
+        
+        $this->errors = $validation->errors;
+        return $this;
+    }
+
     /**
      * @return bool
     */     
