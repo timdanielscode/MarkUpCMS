@@ -433,7 +433,9 @@ form input {
 #media_description:focus {
     outline: none;
 }
-
+#imageSmall {
+    width: 80px;
+}
 /* 
 pagination
 */
@@ -759,6 +761,9 @@ table {
 }
 .width-10 {
     width: 10%;
+}
+.width-30 {
+    width: 30%;
 }
 .width-40 {
     width: 40%;

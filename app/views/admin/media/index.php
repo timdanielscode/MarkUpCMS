@@ -40,8 +40,10 @@
             <thead>
                 <tr>
                     <th>Title</th>
-                    <th>Author</th>
-                    <th>Meta</th>
+                    <th>File</th>
+                    <th>Filename</th>
+                    <th>Type</th>
+                    <th>Size</th>
                     <th class="width-10">Date</th>
                 </tr>
             </thead>
@@ -50,20 +52,42 @@
                 <?php foreach($allMedia as $media) { ?>
                     <tr>
                         <?php if($media["media_title"] !== "not found") {?>
-                        <td class="width-50">
+                        <td class="width-30">
                             <a href="/admin/media/<?php echo $media['id']; ?>/edit" class="font-weight-500"><?php echo $media['media_title']; ?></a> |
                             <a href="/admin/media/<?php echo $media['id']; ?>/edit" class="font-weight-300">Edit</a> |
                             <a href="/admin/media/<?php echo $media['id']; ?>/preview" class="font-weight-300">Preview</a> |
                             <a href="/admin/media/<?php echo $media['id']; ?>/delete" class="font-weight-300 color-red">Remove</a>
                         </td>
                         <?php } else { ?>
-                        <td class="width-50">
+                        <td>
                             <span class="font-weight-500"><?php echo $media['media_title']; ?></span>
                         </td>
                         <?php } ?>
+                        <td class="width-10">
+                            <span class="font-weight-500"><?php echo '<img src="/website/assets/img/'. $media['media_filename'] .'" id="imageSmall">'; ?></span>
+                        </td>
                         <td class="width-15">
-                            <a href="/admin/media/<?php echo $media['id']; ?>/meta/edit" class="font-weight-300">Edit</a> 
-                            <span class="display-block padding-y-2">Status: </span><?php if(!empty($media['metaTitle']) ) { echo '<span class="font-weight-300">ok</span>'; } else {echo '<span class="font-weight-300">-</span>'; } ?>
+                            <span class="font-weight-400">
+                                /website/assets/img/
+                            </span><br>
+                            <span class="font-weight-500">
+                                <?php echo $media['media_filename']; ?>
+                            </span>
+                        </td>
+                        <td class="width-10">
+                            <span class="font-weight-500"><?php echo $media['media_filetype']; ?></span>
+                        </td>
+                        <td class="width-10">
+                            <span class="font-weight-400">
+                                <?php 
+                                    $filesize = $media['media_filesize'] / 1000000;
+                                    $filesize = number_format((float)$filesize, 2, '.', '');
+                                    echo $filesize;
+                                ?>
+                            </span>
+                            <span class="font-weight-500"> 
+                                mb
+                            </span>
                         </td>
                         <td class="width-15">
                             <span class="padding-b-2">Created:</span> <span class="font-weight-300"><?php echo $media["date_created_at"] . " " . $media["time_created_at"]; ?></span><br>

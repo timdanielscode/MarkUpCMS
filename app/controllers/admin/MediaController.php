@@ -53,10 +53,8 @@ class MediaController extends Controller {
                 $rules = new Rules();
                 $media = new Media();
                 
-                $file = $_FILES['file'];
                 $filename = $_FILES['file']['name'];
                 $tmp = $_FILES['file']['tmp_name'];
-                $error = $_FILES['file']['error'];
                 $size = $_FILES['file']['size'];
                 $type = $_FILES['file']['type'];
 
