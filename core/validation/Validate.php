@@ -3,7 +3,7 @@
  * Use to validate post requests
  * 
  * @author Tim Daniëls
- * @version 1.0
+ * @version 1.1
  */
 
 namespace core\validation;
