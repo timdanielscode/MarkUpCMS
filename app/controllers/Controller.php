@@ -71,8 +71,7 @@ class Controller {
     }
 
     /**
-     * @param string $src src of script
-     * @param string $defer defer
+     * @param string $href href of stylesheet
      * @return void
      */
     public function stylesheet($href) {
