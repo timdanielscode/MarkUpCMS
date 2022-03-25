@@ -36,6 +36,10 @@ class Validate {
                 if(post($inputName) !== null) {
                     $this->_inputName = $inputName;
                     $this->_inputValue = post($this->_inputName);
+                }
+                else if ($_FILES[$inputName] !== null) {
+                    $this->_inputName = $inputName;
+                    $this->_inputValue = $_FILES[$this->_inputName];
                 } else {
                     echo $this->error("Input name:$inputName is equal to null!");
                     exit();
@@ -117,6 +121,30 @@ class Validate {
                     case 'first':
                         if($this->_inputValue[0] !== $value) {
                             $this->message($this->_inputName, "$this->_alias does not start with a $value.");
+                        }
+                    break;
+                    case 'selected':
+                        if(empty($_FILES[$this->_inputName]['name']) && $value === true) {
+                            $this->message($this->_inputName, "No file is selected.");
+                        }
+                    break;
+                    case 'mimes':
+                        if(!in_array($_FILES[$this->_inputName]['type'], $value) ) {
+                            $this->message($this->_inputName, "Type of file is not valid.");
+                        }
+                    break;
+                    case 'error':
+                        if($_FILES[$this->_inputName]['error'] === 1 && $value === true) {
+                            $this->message($this->_inputName, "Error found in file.");
+                        }
+                    break;
+                    case 'size':
+                        if($_FILES[$this->_inputName]['size'] > $value) {
+                            $mbs = $value / 1000000;
+                            $mbs = number_format((float)$mbs, 1, '.', '');
+                            $filesizeInMbs = $_FILES[$this->_inputName]['size'] / 1000000;
+                            $filesizeInMbs = number_format((float)$filesizeInMbs, 1, '.', '');
+                            $this->message($this->_inputName, "$filesizeInMbs mb is to big to upload, filesize can't be bigger than $mbs mb.");
                         }
                     break;
                     default:

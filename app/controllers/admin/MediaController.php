@@ -60,30 +60,11 @@ class MediaController extends Controller {
                 $size = $_FILES['file']['size'];
                 $type = $_FILES['file']['type'];
 
-                $ext = explode(".", $filename);
-                $ext = strtolower(end($ext));
-
-                $validated = array('jpg', 'jpeg', 'png');
-
-                if(in_array($ext, $validated)) {
-                    if($error === 0) {
-                        if($size < 500000) {
-                            $fileDestination = "website/assets/img/".$filename;
-                            move_uploaded_file($tmp, $fileDestination);
-                            echo 'ok';
-                        } else {
-                            echo 'file is to big';
-                        }
-                    } else {
-                        echo 'error';
-                    }
-                } else {
-                    echo 'not validated';
-                }
-
-
-                //if($rules->create_post()->validated()) {
+                if($rules->media()->validated()) {
                     
+                    $fileDestination = "website/assets/img/".$filename;
+                    move_uploaded_file($tmp, $fileDestination);
+
                     DB::try()->insert($media->t, [
 
                         $media->media_title => post('media_title'),
@@ -100,14 +81,13 @@ class MediaController extends Controller {
                     Session::set('create', 'You have successfully created a new post!');            
                     redirect('/admin/media');
 
-                //} else {
-
-                    //$data['rules'] = $rules->errors;
-                    //return $this->view('admin/users/create', $data);
-                //}
+                } else {
+                    $data['rules'] = $rules->errors;
+                    return $this->view('admin/media/create', $data);
+                }
             } else {
-                //Session::set('csrf', 'Cross site request forgery!');
-                //redirect('/admin/media/create');
+                Session::set('csrf', 'Cross site request forgery!');
+                redirect('/admin/media/create');
             }
         }
     }

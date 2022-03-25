@@ -33,9 +33,9 @@
                         </div>
                     </div>
                     <div class="form-parts">
-                        <input type="file" class="media_filename" name="file" multiple="true">
+                        <input name="file" type="file" multiple="true" id="file">
                         <div class="error-messages">
-                            <?php echo Errors::get($rules, 'media_description'); ?>
+                            <?php echo Errors::get($rules, 'file'); ?>
                         </div>
                     </div>
                     <div class="form-parts">
