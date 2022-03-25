@@ -655,6 +655,19 @@ table {
     outline: none;
 }
 
+.form-code {
+    margin-left: 5%;
+}
+
+#filename {
+    border: 0;
+    font-size: 30px;
+    padding: 0;
+    margin-top: 10px;
+}
+#filename:focus {
+    outline: none;
+}
 /*
 
     part of framework

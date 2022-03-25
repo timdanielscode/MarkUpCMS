@@ -59,10 +59,10 @@ class CssController extends Controller {
                     $filename = "/".post('filename');
                     $filename = str_replace(" ", "-", $filename);
 
-                    $content = post('content');
+                    $code = post('code');
             
                     $file = fopen("website/assets/css/" . $filename . ".css", "w");
-                    fwrite($file, $content);
+                    fwrite($file, $code);
                     fclose($file);
                     
                     DB::try()->insert($css->t, [
@@ -98,13 +98,13 @@ class CssController extends Controller {
         $filePath = "website/assets/css/" . $cssFile["file_name"] . $cssFile["extension"]; 		
         
         if(file_exists($filePath) ) {
-            $content = file_get_contents($filePath);
+            $code = file_get_contents($filePath);
         } else {
-            $content = "";
+            $code = "";
         }
 
         $data['cssFile'] = $cssFile;
-        $data['content'] = $content;
+        $data['code'] = $code;
         $data['rules'] = [];
 
         return $this->view('admin/css/edit', $data);
@@ -121,7 +121,7 @@ class CssController extends Controller {
 
                 $id = $request['id'];
                 $filename = $request["filename"];
-                $content = $request["content"];
+                $code = $request["code"];
 
                 $currenCssFileName = DB::try()->select('file_name')->from($css->t)->where($css->id, '=', $request['id'])->first();
 
@@ -138,7 +138,7 @@ class CssController extends Controller {
                     ])->where($css->id, '=', $id)->run();    
                     		
                     $file = fopen("website/assets/css/" . $filename . ".css", "w");
-                    fwrite($file, $content);
+                    fwrite($file, $code);
                     fclose($file);
 
                     Session::set('updated', 'User updated successfully!');
@@ -148,9 +148,9 @@ class CssController extends Controller {
                     $data['rules'] = $rules->errors;
 
                     $filePath = "website/assets/css/" . $currenCssFileName[0] . ".css"; 
-                    $content = file_get_contents($filePath);
+                    $code = file_get_contents($filePath);
 
-                    $data['content'] = $content;
+                    $data['code'] = $code;
                     $data['cssFile'] = DB::try()->select('*')->from($css->t)->where($css->id, '=', $id)->first();
                     return $this->view("/admin/css/edit", $data);
                 }

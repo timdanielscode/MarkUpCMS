@@ -5,10 +5,14 @@
 
 <?php 
     $this->include('headerOpen');  
+    $this->stylesheet("/assets/css/codemirror/codemirror.css");
+    $this->stylesheet("/assets/css/codemirror/gruvbox-dark.css");
+    $this->script("/assets/js/codemirror/codemirror.js");
+    $this->script("/assets/js/codemirror/css.js");
+    $this->script("/assets/js/codemirror/closebrackets.js");
     $this->title("IndependentCMS");
     $this->include("headerClose");
     $this->include('navbar');
-    
 ?>
 
     
@@ -19,13 +23,13 @@
     <div class="containerCss">
         <div class="row">
             <div class="col10">
-                <form action="" method="POST" class="">
+                <form action="" method="POST" class="form-code">
                     <div class="form-parts">
-                        <input name="filename" type="text" id="title" placeholder="Filename" autofocus>
+                        <input name="filename" type="text" id="filename" placeholder="Filename" autofocus>
                         <div class="error-messages">
                             <?php echo Errors::get($rules, 'filename'); ?>
                         </div>
-                        <textarea name="content" onkeydown="insertTab(this, event);"></textarea>
+                        <textarea name="code" id="code"></textarea>
                     </div>
                     <div class="form-parts">
                         <button name="submit" id="submit" type="submit" class="display-none">Create</button>
@@ -41,7 +45,17 @@
             </div>
         </div>
     </div>
-
+    <script>
+        var editor = CodeMirror.fromTextArea(document.getElementById("code"), {
+            theme: "gruvbox-dark",
+            lineNumbers: true,
+            matchBrackets: true,
+            autoCloseBrackets: true,
+            tabSize: 2
+        });
+        editor.setSize('95%', "75vh");
+    
+    </script>
 
     
 
