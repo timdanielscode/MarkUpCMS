@@ -130,7 +130,8 @@ class Validate {
                     break;
                     case 'mimes':
                         if(!in_array($_FILES[$this->_inputName]['type'], $value) ) {
-                            $this->message($this->_inputName, "Type of file is not valid.");
+                            $value = implode(', ', $value);
+                            $this->message($this->_inputName, "Type of file must be one of the following: $value.");
                         }
                     break;
                     case 'error':

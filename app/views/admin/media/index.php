@@ -64,11 +64,28 @@
                         </td>
                         <?php } ?>
                         <td class="width-10">
-                            <span class="font-weight-500"><?php echo '<img src="/website/assets/img/'. $media['media_filename'] .'" id="imageSmall">'; ?></span>
+                            <?php $type = $media['media_filetype']; 
+                            if($type == 'image/png' || $type  == 'image/webp' || $type  == 'image/gif' || $type  == 'image/jpeg' || $type  == 'image/svg+xml') { ?>
+                            <?php echo '<img src="/website/assets/img/'. $media['media_filename'] .'" id="imageSmall">'; ?>
+                            <?php } else if ($type == 'application/pdf') {     
+                                echo '<iframe src="/website/assets/img/'. $media['media_filename'] .'" id="pdfSmall"></iframe>';
+                            } else if ($type == 'video/mp4' || $type == 'video/quicktime') {
+                                echo '<video src="/website/assets/video/'. $media['media_filename'] .'" id="imageSmall"></video>';
+                            }
+                            ?>
                         </td>
                         <td class="width-15">
                             <span class="font-weight-400">
-                                /website/assets/img/
+                                <?php 
+                                    $type = $media['media_filetype']; 
+                                    if($type == 'image/png' || $type  == 'image/webp' || $type  == 'image/gif' || $type  == 'image/jpeg' || $type  == 'image/svg+xml') { 
+                                        echo '/website/assets/img/';
+                                    } else if($type == 'video/mp4' || $type == 'video/quicktime') {
+                                        echo '/website/assets/video/'; 
+                                    } else if($type == 'application/pdf') {
+                                        echo '/website/assets/application/'; 
+                                    }
+                                ?>
                             </span><br>
                             <span class="font-weight-500">
                                 <?php echo $media['media_filename']; ?>

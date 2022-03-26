@@ -60,7 +60,16 @@ class MediaController extends Controller {
 
                 if($rules->media()->validated()) {
                     
-                    $fileDestination = "website/assets/img/".$filename;
+                    if($type == 'image/png' || $type  == 'image/webp' || $type  == 'image/gif' || $type  == 'image/jpeg' || $type  == 'image/svg+xml') {
+                        $fileDestination = "website/assets/img/".$filename;
+                    } else if($type == 'video/mp4' || $type == 'video/quicktime') {
+                        $fileDestination = "website/assets/video/".$filename;
+                    } else if($type == 'application/pdf') {
+                        $fileDestination = "website/assets/application/".$filename;
+                    } else {
+                        $fileDestination = '';
+                    }
+                    
                     move_uploaded_file($tmp, $fileDestination);
 
                     DB::try()->insert($media->t, [

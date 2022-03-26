@@ -433,7 +433,7 @@ form input {
 #media_description:focus {
     outline: none;
 }
-#imageSmall {
+#imageSmall, #pdfSmall {
     width: 80px;
 }
 /* 
