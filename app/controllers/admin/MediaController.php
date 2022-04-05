@@ -22,9 +22,9 @@ class MediaController extends Controller {
 
         if(!empty($search) ) {
             $allMedia = DB::try()->all($media->t)->where($media->media_title, 'LIKE', '%'.$search.'%')->or($media->media_description, 'LIKE', '%'.$search.'%')->or($media->date_created_at, 'LIKE', '%'.$search.'%')->or($media->time_created_at, 'LIKE', '%'.$search.'%')->or($media->date_updated_at, 'LIKE', '%'.$search.'%')->or($media->time_updated_at, 'LIKE', '%'.$search.'%')->fetch();
-            if(empty($allMedia) ) {
-                $allMedia = array(["id" => "?","title" => "not found", "author" => "not found", "date_created_at" => "-", "time_created_at" => "", "date_updated_at" => "-", "time_updated_at" => ""]);
-            }
+        }
+        if(empty($allMedia) ) {
+            $allMedia = array(["id" => "?","title" => "not found", "author" => "not found", "date_created_at" => "-", "time_created_at" => "", "date_updated_at" => "-", "time_updated_at" => ""]);
         }
         
         $allMedia = Pagination::set($allMedia, 20);
@@ -42,6 +42,10 @@ class MediaController extends Controller {
 
         $media = new Media();
         $allMedia = DB::try()->all($media->t)->order('date_created_at')->fetch();
+
+        if(empty($allMedia) ) {
+            $allMedia = array(["id" => "?","media_title" => "not found", "media_filetype" => "-" , "media_filename" => "-", "media_filesize" => 0, "author" => "not found", "date_created_at" => "-", "time_created_at" => "", "date_updated_at" => "-", "time_updated_at" => ""]);
+        }
 
         $data['allMedia'] = $allMedia;
 

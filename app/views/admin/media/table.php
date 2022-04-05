@@ -15,13 +15,17 @@
             </td>
         <?php } ?>
         <td class="width-10">
-            <?php $type = $media['media_filetype']; ?>
-            <?php if($type == 'image/png' || $type  == 'image/webp' || $type  == 'image/gif' || $type  == 'image/jpeg' || $type  == 'image/svg+xml') { ?>
-                <img src="/website/assets/img/<?php echo $media['media_filename']; ?>" id="imageSmall">
-            <?php } else if ($type == 'application/pdf') { ?>  
-                <iframe src="/website/assets/application/<?php echo $media['media_filename']; ?>" id="pdfSmall"></iframe>
-            <?php } else if ($type == 'video/mp4' || $type == 'video/quicktime') { ?>
-                <video src="/website/assets/video/<?php echo $media['media_filename']; ?>" id="imageSmall"></video>
+            <?php if($media["media_filename"] !== "-") { ?>
+                <?php $type = $media['media_filetype']; ?>
+                <?php if($type == 'image/png' || $type  == 'image/webp' || $type  == 'image/gif' || $type  == 'image/jpeg' || $type  == 'image/svg+xml') { ?>
+                    <img src="/website/assets/img/<?php echo $media['media_filename']; ?>" id="imageSmall">
+                <?php } else if ($type == 'application/pdf') { ?>  
+                    <iframe src="/website/assets/application/<?php echo $media['media_filename']; ?>" id="pdfSmall"></iframe>
+                <?php } else if ($type == 'video/mp4' || $type == 'video/quicktime') { ?>
+                    <video src="/website/assets/video/<?php echo $media['media_filename']; ?>" id="imageSmall"></video>
+                <?php } ?>
+            <?php } else { ?>
+                <span class="font-weight-500"><?php echo $media["media_filename"]; ?></span>
             <?php } ?>
         </td>
         <td>
@@ -35,11 +39,15 @@
                         <?php echo '/website/assets/application/'; ?>
                     <?php } ?>
             </span>
+            <?php if($media["media_filename"] !== "-") { ?>
             <form>
                 <input class="mediaFilename" name="filename" id="filename-<?php echo $media['id']; ?>" type="text" value="<?php echo $media["media_filename"]; ?>"/>
                 <a data-role="update" id="update" data-id="<?php echo $media['id']; ?>">update</a>
                 <div id="message-<?php echo $media['id'] ?>"></div>
             </form>
+            <?php } else { ?>
+                <span class="font-weight-500"><?php echo $media["media_filename"]; ?></span>
+            <?php } ?>
         </td>
         <td class="width-10">
             <span class="font-weight-500"><?php echo $media['media_filetype']; ?></span>
