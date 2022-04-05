@@ -199,30 +199,34 @@ class MediaController extends Controller {
         $data['id'] = $_POST['id'];
         $data['filename'] = $_POST['filename'];
 
-        echo json_encode($data);
+        $rules = new Rules();
 
-        $media = new Media();
+        if($rules->update_media_filename()->validated()) {
 
-        $currentFile = DB::try()->select($media->media_filename, $media->media_filetype)->from($media->t)->where($media->id, '=', $data['id'])->first();
-        $currentFileName = $currentFile[0];
-        $type = $currentFile[1];
-     
-        if($type == 'image/png' || $type  == 'image/webp' || $type  == 'image/gif' || $type  == 'image/jpeg' || $type  == 'image/svg+xml') {
-            $fileDestination = "website/assets/img/";
-        } else if($type == 'video/mp4' || $type == 'video/quicktime') {
-            $fileDestination = "website/assets/video/";
-        } else if($type == 'application/pdf') {
-            $fileDestination = "website/assets/application/";
-        } else {
-            $fileDestination = '';
-        }
+            echo json_encode($data);
 
-        rename($fileDestination.$currentFileName, $fileDestination.$data['filename']);
-
-        DB::try()->update($media->t)->set([
-            $media->media_filename => $data['filename']
-        ])->where($media->id, '=', $data['id'])->run();  
+            $media = new Media();
     
+            $currentFile = DB::try()->select($media->media_filename, $media->media_filetype)->from($media->t)->where($media->id, '=', $data['id'])->first();
+            $currentFileName = $currentFile[0];
+            $type = $currentFile[1];
+         
+            if($type == 'image/png' || $type  == 'image/webp' || $type  == 'image/gif' || $type  == 'image/jpeg' || $type  == 'image/svg+xml') {
+                $fileDestination = "website/assets/img/";
+            } else if($type == 'video/mp4' || $type == 'video/quicktime') {
+                $fileDestination = "website/assets/video/";
+            } else if($type == 'application/pdf') {
+                $fileDestination = "website/assets/application/";
+            } else {
+                $fileDestination = '';
+            }
+    
+            rename($fileDestination.$currentFileName, $fileDestination.$data['filename']);
+    
+            DB::try()->update($media->t)->set([
+                $media->media_filename => $data['filename']
+            ])->where($media->id, '=', $data['id'])->run(); 
+        }
     }
     
 }

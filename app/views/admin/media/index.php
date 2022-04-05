@@ -101,13 +101,13 @@
                         },
                             success: function(data) {
                                 
-                                message.html("Updated successfully!");
-                                message.addClass('message'); 
+                            message.html("Updated successfully!");
+                            message.addClass('message'); 
                         },
                             error: function(xhr, status, error) {
 
-                                message.html("Oops, something went wrong!");
-                                message.addClass('message'); 
+                            message.html("Oops, something went wrong!");
+                            message.addClass('message'); 
                         }
                     });
 
