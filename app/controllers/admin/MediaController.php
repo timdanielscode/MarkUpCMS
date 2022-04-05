@@ -89,7 +89,7 @@ class MediaController extends Controller {
             echo "<form>";
             echo '<input class="mediaFilename" name="filename" id="filename-'.$media['id'].'" data-target="filename" type="text"'; echo ' value="'; echo $media["media_filename"]; echo '"/>';
             echo '<a data-role="update" id="update" data-id="'; echo $media['id']; echo '">update</a>';
-            echo '<div id="successMessage-'.$media['id'].'"></div>';
+            echo '<div id="message-'.$media['id'].'"></div>';
             echo "</form>";
             echo "</td>";
             

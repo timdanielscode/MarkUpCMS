@@ -89,7 +89,8 @@
 
                     var id = $(this).data('id');
                     var filename = $("#filename-"+id).val();
- 
+                    var message = $("#message-"+id); 
+
                         $.ajax({
                             type: "POST",
                             url: "media",
@@ -99,13 +100,14 @@
                                 filename: filename
                         },
                             success: function(data) {
-                                var successMessage = $("#successMessage-"+id); 
-                                successMessage.html("Updated successfully!");
-                                successMessage.addClass('successMessage'); 
+                                
+                                message.html("Updated successfully!");
+                                message.addClass('message'); 
                         },
                             error: function(xhr, status, error) {
-                                //alert("Something went wrong!");
 
+                                message.html("Oops, something went wrong!");
+                                message.addClass('message'); 
                         }
                     });
 
