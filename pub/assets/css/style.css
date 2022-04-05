@@ -677,6 +677,29 @@ table {
 #filename:focus {
     outline: none;
 }
+
+/*
+    media
+*/
+
+.mediaFilename {
+    border: none;
+    background: none;
+    font-size: 13px;
+    margin: 0;
+    padding: 8px 0px;
+    font-weight: bold;
+    font-style: italic;
+}
+.mediaFilename:focus {
+    outline: none;
+}
+
+#update:hover {
+    cursor: pointer;
+}
+
+
 /*
 
     part of framework

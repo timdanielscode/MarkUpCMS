@@ -35,116 +35,21 @@
             </form>
         </div>
     </div>
+
     <table class="tablePosts margin-y-20">
-        
-            <thead>
-                <tr>
-                    <th>Title</th>
-                    <th>File</th>
-                    <th>Filename</th>
-                    <th>Type</th>
-                    <th>Size</th>
-                    <th class="width-10">Date</th>
-                </tr>
-            </thead>
-            <tbody>
-                
-                
-
-            <?php foreach($allMedia as $media) { ?>
-                
-                    <tr id="<?php echo $media['id']; ?>">
-                        <?php if($media["media_title"] !== "not found") {?>
-                        <td class="width-30">
-                            <a href="/admin/media/<?php echo $media['id']; ?>/edit" class="font-weight-500"><?php echo $media['media_title']; ?></a> |
-                            <a href="/admin/media/<?php echo $media['id']; ?>/edit" class="font-weight-300">Edit</a> |
-                            <a href="/admin/media/<?php echo $media['id']; ?>/preview" class="font-weight-300">Preview</a> |
-                            <a href="/admin/media/<?php echo $media['id']; ?>/delete" class="font-weight-300 color-red">Remove</a>
-                            
-                        </td>
-                        <?php } else { ?>
-                        <td>
-                            <span class="font-weight-500"><?php echo $media['media_title']; ?></span>
-                        </td>
-                        <?php } ?>
-                        <td class="width-10">
-                            <?php $type = $media['media_filetype']; 
-                            if($type == 'image/png' || $type  == 'image/webp' || $type  == 'image/gif' || $type  == 'image/jpeg' || $type  == 'image/svg+xml') { ?>
-                            <?php echo '<img src="/website/assets/img/'. $media['media_filename'] .'" id="imageSmall">'; ?>
-                            <?php } else if ($type == 'application/pdf') {     
-                                echo '<iframe src="/website/assets/application/'. $media['media_filename'] .'" id="pdfSmall"></iframe>';
-                            } else if ($type == 'video/mp4' || $type == 'video/quicktime') {
-                                echo '<video src="/website/assets/video/'. $media['media_filename'] .'" id="imageSmall"></video>';
-                            }
-                            ?>
-                        </td>
-                        <td class="width-15">
-                            <span class="font-weight-400">
-                                <?php 
-                                    $type = $media['media_filetype']; 
-                                    if($type == 'image/png' || $type  == 'image/webp' || $type  == 'image/gif' || $type  == 'image/jpeg' || $type  == 'image/svg+xml') { 
-                                        echo '/website/assets/img/';
-                                    } else if($type == 'video/mp4' || $type == 'video/quicktime') {
-                                        echo '/website/assets/video/'; 
-                                    } else if($type == 'application/pdf') {
-                                        echo '/website/assets/application/'; 
-                                    }
-                                ?>
-                            </span><br>
-                            <span class="font-weight-500">
-                                <!--<form>-->
-                                <!--<input name="filename" id="filename" type="text" value="<?php //echo $media['media_filename']; ?>"/>-->
-                                
-                                <!--<a data-role="update" data-id="<?php //echo $media['id']; ?>">update</a>-->
-                                <!--<button type="button" id="update" name="submit" data-id="<?php //echo $media['id']; ?>">update</button>-->
-                                <!--<input type="hidden" name="token" value="<?php //Csrf::token('add');?>" />-->
-                                <!--<input id="id" value="<?php //echo $media['id']; ?>">-->
-                                <!--<div class="myClass"></div>-->
-                                <!--<input class="filename_id" type="text" value="<?php //echo $media['id']; ?>"/>-->
-                                
-                                <!--</form>-->
-                            </span>
-                        </td>
-                        <td class="width-10">
-                            <span class="font-weight-500"><?php echo $media['media_filetype']; ?></span>
-                        </td>
-                        <td class="width-10">
-                            <span class="font-weight-400">
-                                <?php 
-                                    $filesize = $media['media_filesize'] / 1000000;
-                                    $filesize = number_format((float)$filesize, 2, '.', '');
-                                    echo $filesize;
-                                ?>
-                            </span>
-                            <span class="font-weight-500"> 
-                                mb
-                            </span>
-                        </td>
-                        <td class="width-15">
-                            <span class="padding-b-2">Created:</span> <span class="font-weight-300"><?php echo $media["date_created_at"] . " " . $media["time_created_at"]; ?></span><br>
-                            <span>Updated:</span> <span class="font-weight-300"><?php echo $media["date_updated_at"] . " " . $media["time_updated_at"]; ?></span>
-                        </td>
-                    </tr>
-                <?php } ?>
-
-
-
-
-            </tbody>
-        </table>
-
-
-        <table class="tablePosts margin-y-20">
-            <thead>
-                <th>id</th>
-                <th>filename</th>
-            </thead>
-            <tbody id="mydata">
+        <thead>
+            <th>Title</th>
+            <th>File</th>
+            <th>Filename</th>
+            <th>Type</th>
+            <th>Size</th>
+            <th>Date</th>
+        </thead>
+        <tbody id="mydata">
    
-            </tbody>
+        </tbody>
 
-
-        </table>
+    </table>
         
 
 
