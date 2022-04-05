@@ -35,6 +35,30 @@ class MediaController extends Controller {
         $data['count'] = $count;
 
         return $this->view('admin/media/index', $data);
+
+    }
+
+    public function fetchData() {
+
+        header('Content-Type: application/json; charset=utf-8');
+        $media = new Media();
+        $allMedia = DB::try()->all($media->t)->order('date_created_at')->fetch();
+        
+        foreach($allMedia as $media) {
+           
+            echo "<tr";
+            echo "<td>";
+            echo $media["id"];
+            echo "</td>";
+            echo "<td>";
+            echo "<form>";
+            echo '<input name="filename" id="filename-'.$media['id'].'" data-target="filename" type="text"'; echo ' value="'; echo $media["media_filename"]; echo '"/>';
+            echo '<a data-role="update" id="update" data-id="'; echo $media['id']; echo '">update</a>';
+            echo "</form>";
+            echo "</td>";
+            echo "</tr>";
+        }
+        
     }
 
     public function create() {
@@ -99,4 +123,46 @@ class MediaController extends Controller {
         }
     }
 
+
+    public function edit($request) {
+        
+        $media = new Media();
+        $media = DB::try()->all($media->t)->where($media->id, '=', $request['id'])->first();
+
+        $data['media'] = $media;
+        $data['rules'] = [];
+        return $this->view('/admin/media/edit', $data);
+    }
+
+    public function updateFilename($request) { 
+
+        $data['id'] = $_POST['id'];
+        $data['filename'] = $_POST['filename'];
+
+        echo json_encode($data);
+
+        $media = new Media();
+
+        $currentFile = DB::try()->select($media->media_filename, $media->media_filetype)->from($media->t)->where($media->id, '=', $data['id'])->first();
+        $currentFileName = $currentFile[0];
+        $type = $currentFile[1];
+     
+        if($type == 'image/png' || $type  == 'image/webp' || $type  == 'image/gif' || $type  == 'image/jpeg' || $type  == 'image/svg+xml') {
+            $fileDestination = "website/assets/img/";
+        } else if($type == 'video/mp4' || $type == 'video/quicktime') {
+            $fileDestination = "website/assets/video/";
+        } else if($type == 'application/pdf') {
+            $fileDestination = "website/assets/application/";
+        } else {
+            $fileDestination = '';
+        }
+
+        rename($fileDestination.$currentFileName, $fileDestination.$data['filename']);
+
+        DB::try()->update($media->t)->set([
+            $media->media_filename => $data['filename']
+        ])->where($media->id, '=', $data['id'])->run();  
+    
+    }
+    
 }

@@ -22,7 +22,7 @@
     <div class="containerPost">
         <div class="row">
             <div class="col10">
-                <form action="" method="POST" class="">
+                <form action="" method="POST" class="form-code">
                     <div class="form-parts">
                         <input name="title" type="title" id="title" placeholder="Title" autofocus>
                         <div class="error-messages">

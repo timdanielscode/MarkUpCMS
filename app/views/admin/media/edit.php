@@ -5,12 +5,6 @@
 
 <?php 
     $this->include('headerOpen');  
-    $this->stylesheet("/assets/css/codemirror/codemirror.css");
-    $this->stylesheet("/assets/css/codemirror/gruvbox-dark.css");
-    $this->script("/assets/js/codemirror/codemirror.js");
-    $this->script("/assets/js/codemirror/css.js");
-    $this->script("/assets/js/codemirror/closebrackets.js");
-    $this->title("IndependentCMS");
     $this->include("headerClose");
     $this->include('navbar');
     
@@ -24,18 +18,17 @@
     <div class="containerPost">
     <div class="row">
         <div class="col10">
-            <form action="" method="POST" class="form-code">
+            <form action="" method="POST">
                 <div class="form-parts">
-                    <input name="title" id="title" value="<?php echo $post['title']; ?>">
+                    <input name="media_title" id="title" value="<?php echo $media['media_title']; ?>">
                     <div class="error-messages">
                         <?php echo Errors::get($rules, 'title'); ?>
                     </div>    
-                    <input name="slug" id="slug" type="text" value="<?php echo $post['slug']; ?>">
+                    <textarea name="media_description" id="media_description" type="text"><?php echo $media['media_description']; ?></textarea>
                     <div class="error-messages">
                         <?php echo Errors::get($rules, 'slug'); ?>
                     </div>
                 </div>
-                <textarea name="body" type="body" id="code"><?php echo $post['body']; ?></textarea>
                 <button name="submit" id="submit" type="submit" class="display-none">Create</button>
                 <input type="hidden" name="token" value="<?php Csrf::token('add');?>" />
             </form>
@@ -52,17 +45,6 @@
         </div>
     </div>
 </div>
-<script>
-        var editor = CodeMirror.fromTextArea(document.getElementById("code"), {
-            theme: "gruvbox-dark",
-            lineNumbers: true,
-            matchBrackets: true,
-            autoCloseBrackets: true,
-            tabSize: 2
-        });
-        editor.setSize('95%', "75vh");
-    
-    </script>
 <?php 
     $this->include('footer');
 ?>

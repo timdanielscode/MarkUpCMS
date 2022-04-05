@@ -63,11 +63,15 @@ if(AuthMiddleware::auth('admin') === true) {
     Route::get('/admin/js/[id]/delete')->add('admin\JsController', 'delete');
 
     Route::get('/admin/media')->add('admin\MediaController', 'index');
+    Route::get('/admin/media/fetch-data')->add('admin\MediaController', 'fetchData');
+    Route::post('/admin/media')->add('admin\MediaController', 'updateFilename');
     Route::get('/admin/media/create')->add('admin\MediaController', 'create');
     Route::post('/admin/media/create')->add('admin\MediaController', 'store');
+    Route::get('/admin/media/[id]/edit')->add('admin\MediaController', 'edit');
+    Route::post('/admin/media/[id]/edit')->add('admin\MediaController', 'update');
 }
 
     
-Route::get($req->getUri())->add('RenderPageController', 'render');
+//Route::get($req->getUri())->add('RenderPageController', 'render');
 
 

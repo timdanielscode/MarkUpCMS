@@ -82,7 +82,7 @@ class PostController extends Controller {
                 }
             } else {
                 Session::set('csrf', 'Cross site request forgery!');
-                redirect('/admin/users/create');
+                return $this->view('admin/users/create', $data);
             }
         }
     }

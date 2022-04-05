@@ -6,6 +6,7 @@
 
 <?php 
     $this->include('headerOpen');  
+    $this->script('/assets/js/ajax.js');
     $this->include('headerClose');
     $this->include('navbar');
 ?>
@@ -19,7 +20,6 @@
         <div class="margin-t-50"><?php echo Alert::display("warning", "registered"); ?></div>
     <?php Session::delete('registered'); } ?>
 
-    
     </div>
     <div class="row postHeaderContainer">
         <h1>Media</h1>
@@ -49,14 +49,18 @@
             </thead>
             <tbody>
                 
-                <?php foreach($allMedia as $media) { ?>
-                    <tr>
+                
+
+            <?php foreach($allMedia as $media) { ?>
+                
+                    <tr id="<?php echo $media['id']; ?>">
                         <?php if($media["media_title"] !== "not found") {?>
                         <td class="width-30">
                             <a href="/admin/media/<?php echo $media['id']; ?>/edit" class="font-weight-500"><?php echo $media['media_title']; ?></a> |
                             <a href="/admin/media/<?php echo $media['id']; ?>/edit" class="font-weight-300">Edit</a> |
                             <a href="/admin/media/<?php echo $media['id']; ?>/preview" class="font-weight-300">Preview</a> |
                             <a href="/admin/media/<?php echo $media['id']; ?>/delete" class="font-weight-300 color-red">Remove</a>
+                            
                         </td>
                         <?php } else { ?>
                         <td>
@@ -68,7 +72,7 @@
                             if($type == 'image/png' || $type  == 'image/webp' || $type  == 'image/gif' || $type  == 'image/jpeg' || $type  == 'image/svg+xml') { ?>
                             <?php echo '<img src="/website/assets/img/'. $media['media_filename'] .'" id="imageSmall">'; ?>
                             <?php } else if ($type == 'application/pdf') {     
-                                echo '<iframe src="/website/assets/img/'. $media['media_filename'] .'" id="pdfSmall"></iframe>';
+                                echo '<iframe src="/website/assets/application/'. $media['media_filename'] .'" id="pdfSmall"></iframe>';
                             } else if ($type == 'video/mp4' || $type == 'video/quicktime') {
                                 echo '<video src="/website/assets/video/'. $media['media_filename'] .'" id="imageSmall"></video>';
                             }
@@ -88,7 +92,17 @@
                                 ?>
                             </span><br>
                             <span class="font-weight-500">
-                                <?php echo $media['media_filename']; ?>
+                                <!--<form>-->
+                                <!--<input name="filename" id="filename" type="text" value="<?php //echo $media['media_filename']; ?>"/>-->
+                                
+                                <!--<a data-role="update" data-id="<?php //echo $media['id']; ?>">update</a>-->
+                                <!--<button type="button" id="update" name="submit" data-id="<?php //echo $media['id']; ?>">update</button>-->
+                                <!--<input type="hidden" name="token" value="<?php //Csrf::token('add');?>" />-->
+                                <!--<input id="id" value="<?php //echo $media['id']; ?>">-->
+                                <!--<div class="myClass"></div>-->
+                                <!--<input class="filename_id" type="text" value="<?php //echo $media['id']; ?>"/>-->
+                                
+                                <!--</form>-->
                             </span>
                         </td>
                         <td class="width-10">
@@ -112,8 +126,30 @@
                         </td>
                     </tr>
                 <?php } ?>
+
+
+
+
             </tbody>
         </table>
+
+
+        <table class="tablePosts margin-y-20">
+            <thead>
+                <th>id</th>
+                <th>filename</th>
+            </thead>
+            <tbody id="mydata">
+   
+            </tbody>
+
+
+        </table>
+        
+
+
+
+
         <?php if(count($numberOfPages) > 1) { ?>
             <nav class="paginationPosts">
                 <ul class="pagination">
@@ -121,13 +157,53 @@
                     <?php 
                         foreach($numberOfPages as $page) {
                             echo '<li class="page-item"><a href="/admin/medias?page='.$page.'">'.$page.'</a></li>';
-                        }  
+                       }  
                     ?>
                     <li class="page-item next"><a href="/admin/medias?next=1">Next</a></li>
                 </ul>
             </nav>
         <?php } ?>
+        <script>
+            $(document).ready(function() {
 
+                $.ajax({
+                    type: "GET",
+                    url: "media/fetch-data",
+                    //dataType: "json",
+                    dataType: "html",
+                    success: function (data) {
+                       
+                        $('#mydata').html(data);
+                    }
+
+                })
+            })
+
+            $(document).ready(function() {
+                $(document).on('click', 'a[data-role=update]', function() {
+
+                    var id = $(this).data('id');
+                    var filename = $("#filename-"+id).val();
+ 
+                        $.ajax({
+                            type: "POST",
+                            url: "media",
+                            dataType: "json",
+                            data: {
+                                id: id,
+                                filename: filename
+                        },
+                            success: function(data) {
+                        },
+                            error: function(xhr, status, error) {
+                                alert("Something went wrong!");
+                        }
+                    });
+
+                });
+            });
+
+        </script>
 <?php 
     $this->include('footer');
 ?>

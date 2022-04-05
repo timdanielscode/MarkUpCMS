@@ -81,7 +81,7 @@ class Rules {
         $validation = new Validate();
         
         $validation->input('title')->as('Title')->rules(['required' => true, 'min' => 5, 'max' => 40, 'special' => true]);
-        $validation->input('body')->as('Body')->rules(['required' => true, 'min' => 5, 'max' => 40]);
+        $validation->input('body')->as('Body')->rules(['required' => true, 'min' => 5]);
         
         $this->errors = $validation->errors;
         return $this;
@@ -111,7 +111,7 @@ class Rules {
         
         $validation = new Validate();
         
-        $validation->input('filename')->as('Filename')->rules(['required' => true, 'min' => 5, 'max' => 40, 'special' => true]);
+        $validation->input('filename')->as('Filename')->rules(['required' => true, 'min' => 5, 'max' => 10, 'special' => true]);
         
         $this->errors = $validation->errors;
         return $this;
@@ -121,9 +121,19 @@ class Rules {
 
         $validation = new Validate();
         
-        $validation->input('media_title')->as('Title')->rules(['required' => true, 'min' => 5, 'max' => 40, 'special' => true]);
-        $validation->input('media_description')->as('Description')->rules(['required' => true, 'min' => 5, 'max' => 50, 'special' => true]);
+        $validation->input('media_title')->as('Title')->rules(['required' => true, 'min' => 2, 'max' => 40, 'special' => true]);
+        $validation->input('media_description')->as('Description')->rules(['required' => true, 'min' => 1, 'max' => 100, 'special' => true]);
         $validation->input('file')->as('File')->rules(['selected' => true, 'size' => 5000000, 'error' => true, 'mimes' => array('image/png', 'image/jpeg', 'image/gif', 'image/webp', 'image/svg+xml', 'application/pdf', 'video/mp4', 'video/quicktime')]);
+        
+        $this->errors = $validation->errors;
+        return $this;
+    }
+
+    public function update_media_filename() {
+
+        $validation = new Validate();
+        
+        $validation->input('filename')->as('Filename')->rules(['min' => 5, 'max' => 40, 'special' => true]);
         
         $this->errors = $validation->errors;
         return $this;
