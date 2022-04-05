@@ -703,7 +703,36 @@ table {
     display: inline-block;
     margin-left: 10px;
 }
+#modal {
+    width: 800px;
+    height: 500px;
+    background: #000;
+    z-index: 9999;
+    position: absolute;
+    transform: translateY(-50%);
+    left: 50%;
+    -webkit-transform: translateX(-50%);
+    opacity: 0.8;
+    border-radius: 10px;
+}
 
+#mediaModalClose, #updateMediaModal {
+    bottom: 50px;
+    position: absolute;
+    left: 50px;
+    color: red;
+}
+
+#updateMediaModal {
+    left: 100px;
+}
+
+.mediaModalFormContainer {
+    position: absolute;
+    left: 50px;
+    color: blue;
+    top: 50px;
+}
 
 /*
 

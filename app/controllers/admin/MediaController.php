@@ -52,6 +52,44 @@ class MediaController extends Controller {
         return $this->view('admin/media/table', $data);
     }
 
+
+
+
+
+
+
+
+
+    
+
+
+
+    public function mediaModalFetch($request) {
+
+        $id = $request['id'];
+
+        $media = new Media();
+        $media = DB::try()->select($media->media_title, $media->media_description)->from($media->t)->where($media->id, '=', $id)->first();
+
+        $mediaTitle = $media['media_title'];
+        $mediaDescription = $media['media_description'];
+
+        echo '<label>Title</label>
+        <input name="mediaModalTitle" type="text" id="mediaModalTitle" value="'; echo $mediaTitle; echo '">
+        <label>Description</label>
+        <textarea name="mediaModalDescription" type="text" id="mediaModalDescription">'; echo $mediaDescription; echo '</textarea>';
+    }
+
+
+
+
+
+
+
+
+
+
+
     public function create() {
 
         $data["rules"] = [];

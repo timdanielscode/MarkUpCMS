@@ -50,7 +50,18 @@
         </tbody>
 
     </table>
-        
+    
+    <div id="modal" class="display-none">
+        <div class="mediaModalFormContainer">
+            <form id="mediaModelForm">
+
+ 
+                
+            </form>
+        </div>
+        <a href="#" id="updateMediaModal" class="button">Update</a>
+        <a href="#" id="mediaModalClose" class="button">Exit</a>
+    </div>
 
 
 
@@ -69,12 +80,81 @@
             </nav>
         <?php } ?>
         <script>
+
+            $(document).on('click', '.mediaEdit', function() {
+
+                var modal = $('#modal');
+                modal.addClass('display-block'); 
+
+                var id = $(this).data('id');
+
+                $(document).ready(function() {
+
+                    $.ajax({
+                        type: "GET",
+                        url: "media/media-modal-fetch?id="+id,
+                        dataType: "html",
+                        success: function (data) {
+
+                            $('#mediaModelForm').html(data);
+                        },
+
+                        error: function(xhr, status, error) {
+                            alert('oeps');
+                        }
+
+                    });
+                });
+            });
+            
+            $(document).on('click', '#mediaModalClose', function() {
+                var modal = $('#modal');
+                modal.removeClass('display-block'); 
+            });
+
+
+
+            
+            $(document).ready(function() {
+                $(document).on('click', 'a[data-role=edit]', function() {
+                   
+                    var id = $(this).data('id');
+                    var mediaModalTitle = $('#mediaModalTitle');
+                    
+
+                    //alert(mediaModalTitle);
+                    //var mediaModalTitle = $("#mediaModalTitle-"+id).val(); 
+
+                    $.ajax({
+                            type: "POST",
+                            url: "media",
+                            dataType: "json",
+                            data: {
+                                //id: id,
+                                //filename: filename
+                        },
+                            success: function(data) {
+                                
+                            //message.html("Updated successfully!");
+                            //message.addClass('message'); 
+                        },
+                            error: function(xhr, status, error) {
+
+                            //message.html("Oops, something went wrong!");
+                            //message.addClass('message'); 
+                        }
+                    });
+
+
+                 
+                });
+            });
+
             $(document).ready(function() {
 
                 $.ajax({
                     type: "GET",
                     url: "media/fetch-data",
-                    //dataType: "json",
                     dataType: "html",
                     success: function (data) {
                        
