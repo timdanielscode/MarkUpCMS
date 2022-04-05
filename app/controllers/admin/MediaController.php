@@ -40,85 +40,12 @@ class MediaController extends Controller {
 
     public function fetchData() {
 
-        header('Content-Type: application/json; charset=utf-8');
         $media = new Media();
         $allMedia = DB::try()->all($media->t)->order('date_created_at')->fetch();
-        
-        foreach($allMedia as $media) {
-           
-            echo "<tr>";
-            if($media["media_title"] !== "not found") {
-                echo '<td class="width-30">
-                    <a href="/admin/media/$media["id"]/edit" class="font-weight-500">'; echo $media["media_title"]; echo '</a> |
-                    <a href="/admin/media/'; echo $media["id"]; echo '/edit" class="font-weight-300">Edit</a> |
-                    <a href="/admin/media/'; echo $media["id"]; echo '/preview" class="font-weight-300">Preview</a> |
-                    <a href="/admin/media/'; echo $media["id"]; echo '/delete" class="font-weight-300 color-red">Remove</a>
-                    
-                </td>';
-                 } else {
-                echo '<td>
-                        <span class="font-weight-500">'; echo $media["media_title"]; echo '</span>
-                    </td>';
-                }
 
+        $data['allMedia'] = $allMedia;
 
-                echo '<td class="width-10">';
-                $type = $media['media_filetype']; 
-                if($type == 'image/png' || $type  == 'image/webp' || $type  == 'image/gif' || $type  == 'image/jpeg' || $type  == 'image/svg+xml') { 
-                    echo '<img src="/website/assets/img/'. $media['media_filename'] .'" id="imageSmall">'; 
-                } else if ($type == 'application/pdf') {     
-                    echo '<iframe src="/website/assets/application/'. $media['media_filename'] .'" id="pdfSmall"></iframe>';
-                } else if ($type == 'video/mp4' || $type == 'video/quicktime') {
-                    echo '<video src="/website/assets/video/'. $media['media_filename'] .'" id="imageSmall"></video>';
-                }
-                echo '</td>';
-                echo "<td>";
-                echo '<span class="font-weight-400">';
-
-                    $type = $media['media_filetype']; 
-                    if($type == 'image/png' || $type  == 'image/webp' || $type  == 'image/gif' || $type  == 'image/jpeg' || $type  == 'image/svg+xml') { 
-                        echo '/website/assets/img/'; 
-                    } else if($type == 'video/mp4' || $type == 'video/quicktime') {
-                        echo '/website/assets/video/';
-                    } else if($type == 'application/pdf') {
-                        echo '/website/assets/application/';
-                    }
-                echo '</span>';
-
-            
-            echo "<form>";
-            echo '<input class="mediaFilename" name="filename" id="filename-'.$media['id'].'" data-target="filename" type="text"'; echo ' value="'; echo $media["media_filename"]; echo '"/>';
-            echo '<a data-role="update" id="update" data-id="'; echo $media['id']; echo '">update</a>';
-            echo '<div id="message-'.$media['id'].'"></div>';
-            echo "</form>";
-            echo "</td>";
-            
-
-            echo '<td class="width-10">
-                <span class="font-weight-500">'; echo $media['media_filetype']; echo '</span>
-            </td>';
-
-            echo '<td class="width-10">
-            <span class="font-weight-400">';
-                $filesize = $media['media_filesize'] / 1000000;
-                $filesize = number_format((float)$filesize, 2, '.', '');
-                echo $filesize;
-            echo '</span>
-            <span class="font-weight-500"> 
-                mb
-            </span>
-        </td>';
-
-
-        echo '<td class="width-15">
-        <span class="padding-b-2">Created:</span> <span class="font-weight-300">'; echo $media["date_created_at"] . " " . $media["time_created_at"]; echo '</span><br>
-        <span>Updated:</span> <span class="font-weight-300">'; echo $media["date_updated_at"] . " " . $media["time_updated_at"]; echo '</span>
-    </td>';
-
-
-            echo "</tr>";
-        }
-        
+        return $this->view('admin/media/table', $data);
     }
 
     public function create() {
