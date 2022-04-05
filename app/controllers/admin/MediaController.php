@@ -203,8 +203,6 @@ class MediaController extends Controller {
 
         if($rules->update_media_filename()->validated()) {
 
-            echo json_encode($data);
-
             $media = new Media();
     
             $currentFile = DB::try()->select($media->media_filename, $media->media_filetype)->from($media->t)->where($media->id, '=', $data['id'])->first();
@@ -226,6 +224,8 @@ class MediaController extends Controller {
             DB::try()->update($media->t)->set([
                 $media->media_filename => $data['filename']
             ])->where($media->id, '=', $data['id'])->run(); 
+
+            echo json_encode($data);
         }
     }
     

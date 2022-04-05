@@ -133,7 +133,7 @@ class Rules {
 
         $validation = new Validate();
         
-        $validation->input('filename')->as('Filename')->rules(['min' => 5, 'max' => 40]);
+        $validation->input('filename')->as('Filename')->rules(['min' => 1, 'max' => 40, 'special' => true]);
         
         $this->errors = $validation->errors;
         return $this;
