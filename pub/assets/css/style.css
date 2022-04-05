@@ -699,6 +699,11 @@ table {
     cursor: pointer;
 }
 
+.successMessage {
+    display: inline-block;
+    margin-left: 10px;
+}
+
 
 /*
 

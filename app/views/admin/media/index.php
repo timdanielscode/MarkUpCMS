@@ -99,9 +99,13 @@
                                 filename: filename
                         },
                             success: function(data) {
+                                var successMessage = $("#successMessage-"+id); 
+                                successMessage.html("Updated successfully!");
+                                successMessage.addClass('successMessage'); 
                         },
                             error: function(xhr, status, error) {
-                                alert("Something went wrong!");
+                                //alert("Something went wrong!");
+
                         }
                     });
 
