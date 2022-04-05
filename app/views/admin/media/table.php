@@ -5,8 +5,8 @@
         <?php if($media["media_title"] !== "not found") { ?>
             <td class="width-30">
                 <a href="/admin/media/<?php echo $media["id"]; ?>/edit" class="font-weight-500"><?php echo $media["media_title"]; ?></a> |
-                <a href="/admin/media/<?php echo $media["id"]; ?>/edit" class="font-weight-300">Edit</a>
-                <a href="/admin/media/<?php echo $media["id"]; ?>/preview" class="font-weight-300">Preview</a>
+                <a href="/admin/media/<?php echo $media["id"]; ?>/edit" class="font-weight-300">Edit</a> |
+                <a href="/admin/media/<?php echo $media["id"]; ?>/preview" class="font-weight-300">Preview</a> |
                 <a href="/admin/media/<?php echo $media["id"]; ?>/delete" class="font-weight-300 color-red">Remove</a>
             </td>
         <?php } else { ?>
