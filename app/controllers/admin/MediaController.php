@@ -144,10 +144,10 @@ class MediaController extends Controller {
 
     public function updateFilename($request) { 
 
-        if(!empty($_POST['filename']) && $_POST['filename'] !== null) {
+        if(!empty($request['filename']) && $request['filename'] !== null) {
 
-            $data['id'] = $_POST['id'];
-            $data['filename'] = $_POST['filename'];
+            $data['id'] = $request['id'];
+            $data['filename'] = $request['filename'];
     
             $rules = new Rules();
     
@@ -178,11 +178,11 @@ class MediaController extends Controller {
                 echo json_encode($data);
             }
 
-        } else if (!empty($_POST['title']) && $_POST['title'] !== null) {
+        } else if (!empty($request['title']) && $request['title'] !== null) {
             
-            $data['id'] = $_POST['id'];
-            $data['title'] = $_POST['title'];
-            $data['description'] = $_POST['description'];
+            $data['id'] = $request['id'];
+            $data['title'] = $request['title'];
+            $data['description'] = $request['description'];
 
             $media = new Media();
 
@@ -192,7 +192,6 @@ class MediaController extends Controller {
             ])->where($media->id, '=', $data['id'])->run(); 
 
             echo json_encode($data);
-
         }
     }
     
