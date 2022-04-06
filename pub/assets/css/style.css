@@ -2,7 +2,7 @@ body {
     margin: 0;
     font-family: Roboto;
     overflow-x: hidden;
-    background: #fff;
+    background: #eaeaea;
 }
 
 p {
@@ -397,6 +397,15 @@ h3 {
     width: 100% !important;
     height: 100% !important;
 }
+.CodeMirror.cm-s-monokai {
+    background: #161e2b !important;
+}
+.cm-s-monokai .CodeMirror-linenumber {
+    background: #161e2b !important;
+}
+
+/* main color #0c172b ? */
+
 
 /* 
     style forms
@@ -524,6 +533,8 @@ table {
     font-size: 30px;
     padding: 0;
     margin-top: 10px;
+    background: none;
+    width: 95%;
 }
 
 .tox-tinymce {
@@ -541,12 +552,12 @@ table {
     position: absolute;
     top: 0;
     width: 100%;
-    background: #0c203d;
+    background: #0b192d;
     height: 100%;
+    z-index: 9999;
 }
 #postSidebar a {
     border: none;
-    border-radius: 2px;
 }
 #postSidebar .back {
     position: absolute;
@@ -576,6 +587,31 @@ table {
 #postSidebar .create:hover {
     cursor: pointer;
 }
+.containerFirstPostButtons {
+    margin-top: 75px;
+    margin-left: 20px;
+}
+
+.containerFirstPostButtons a {
+    display: inline;
+    margin-right: 10px;
+}
+
+.containerFirstPostButtons a:hover {
+    background: #fff;
+    color: #80aaea;
+}
+
+.containerFirstPostButtons label {
+    display: inline;
+}
+
+.containerFirstPostButtons label:hover {
+    cursor: pointer;
+    background: #fff;
+    color: #80aaea;
+}
+
 .tablePosts {
     width: 95%;
     float: right;
@@ -625,10 +661,11 @@ table {
 
 #slug {
     border: none;
-    width: 100%;
+    width: 95%;
     font-size: 13px;
     padding: 0;
     margin-top: 0;
+    background: none;
 }
 .metaDataForm {
     margin-top: 65px;
@@ -818,12 +855,11 @@ table {
 
 */
 .button {
-    background: #fff;
+    background: #eaeaea;;
     padding-left: 8px;
     padding-right: 8px;
     padding-top: 5px;
     padding-bottom: 5px;
-    border-radius: 3px;
     color: #0c203d;
     text-decoration: none;
     border: 2px solid #0c203d;

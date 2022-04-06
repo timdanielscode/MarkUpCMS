@@ -9,7 +9,7 @@
     $this->script("/assets/js/codemirror/codemirror.js");
     $this->script("/assets/js/codemirror/closetag.js");
     $this->script("/assets/js/codemirror/xml.js");
-    $this->stylesheet("/assets/css/codemirror/bespin.css"); //ayu-mirage, lesser-dark, railscasts, seti
+    $this->stylesheet("/assets/css/codemirror/monokai.css"); //ayu-mirage, lesser-dark, railscasts, seti
     $this->script("/assets/js/codemirror/htmlmixed.js");
     $this->script('/assets/js/ajax.js');
     $this->script('/assets/js/fullscreen.js');
@@ -29,11 +29,11 @@
         <div class="col10">
             <form action="" method="POST" class="form-code">
                 <div class="form-parts">
-                    <input name="title" id="title" value="<?php echo $post['title']; ?>">
+                    <input type="text" autofocus name="title" id="title" value="<?php echo $post['title']; ?>">
                     <div class="error-messages">
                         <?php echo Errors::get($rules, 'title'); ?>
                     </div>    
-                    <input name="slug" id="slug" type="text" value="<?php echo $post['slug']; ?>">
+                    <input type="text" name="slug" id="slug" type="text" value="<?php echo $post['slug']; ?>">
                     <div class="error-messages">
                         <?php echo Errors::get($rules, 'slug'); ?>
                     </div>
@@ -45,31 +45,37 @@
         </div>
         <div class="col2">
             <div id="postSidebar">
+
+            <div class="containerFirstPostButtons">
+
+                        <a href="/admin/posts" class="button">Back</a>
+                  
+           
+                        <label for="submit" class="button">Update</label>
+        
+           
+            </div>
+
+                
+
+                
+
+                </ul>
                 <ul class="postSidebarButtons">
                     <li>
-                        <a href="/admin/posts" class="button">Back</a>
+                        <a href="/admin/posts/<?php echo $post['id']; ?>/preview" class="button">Preview</a>
                     </li>
                     <li>
-                    <label for="submit" class="button">Update</label>
-                    </li>
-                    <li>
-                    <a href="/admin/posts/<?php echo $post['id']; ?>/preview" class="button">Preview</a>
-                    </li>
-                    <li>
-                    <a href="#" id="codeEditorFullScreen" class="button">Full screen</a>
+                        <a href="#" id="codeEditorFullScreen" class="button">Full screen</a>
                     </li>
                 </ul>
-                    	
-                        
-                        
-
             </div>
         </div>
     </div>
 </div>
 <script>
         var editor = CodeMirror.fromTextArea(document.getElementById("code"), {
-            theme: "bespin",
+            theme: "monokai",
             lineNumbers: true,
             mode: 'text/html',
             autoCloseTags: true,
