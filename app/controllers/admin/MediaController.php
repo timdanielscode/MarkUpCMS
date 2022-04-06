@@ -52,18 +52,6 @@ class MediaController extends Controller {
         return $this->view('admin/media/table', $data);
     }
 
-
-
-
-
-
-
-
-
-    
-
-
-
     public function mediaModalFetch($request) {
 
         $id = $request['id'];
@@ -78,17 +66,8 @@ class MediaController extends Controller {
         <input name="mediaModalTitle" type="text" id="mediaModalTitle" value="'; echo $mediaTitle; echo '">
         <label>Description</label>
         <textarea name="mediaModalDescription" type="text" id="mediaModalDescription">'; echo $mediaDescription; echo '</textarea>';
+        echo '<input type="hidden" id="mediaModalId" name="" value="'; echo $id; echo '">';
     }
-
-
-
-
-
-
-
-
-
-
 
     public function create() {
 
@@ -165,36 +144,55 @@ class MediaController extends Controller {
 
     public function updateFilename($request) { 
 
-        $data['id'] = $_POST['id'];
-        $data['filename'] = $_POST['filename'];
+        if(!empty($_POST['filename']) && $_POST['filename'] !== null) {
 
-        $rules = new Rules();
+            $data['id'] = $_POST['id'];
+            $data['filename'] = $_POST['filename'];
+    
+            $rules = new Rules();
+    
+            if($rules->update_media_filename()->validated()) {
+    
+                $media = new Media();
+        
+                $currentFile = DB::try()->select($media->media_filename, $media->media_filetype)->from($media->t)->where($media->id, '=', $data['id'])->first();
+                $currentFileName = $currentFile[0];
+                $type = $currentFile[1];
+             
+                if($type == 'image/png' || $type  == 'image/webp' || $type  == 'image/gif' || $type  == 'image/jpeg' || $type  == 'image/svg+xml') {
+                    $fileDestination = "website/assets/img/";
+                } else if($type == 'video/mp4' || $type == 'video/quicktime') {
+                    $fileDestination = "website/assets/video/";
+                } else if($type == 'application/pdf') {
+                    $fileDestination = "website/assets/application/";
+                } else {
+                    $fileDestination = '';
+                }
+        
+                rename($fileDestination.$currentFileName, $fileDestination.$data['filename']);
+        
+                DB::try()->update($media->t)->set([
+                    $media->media_filename => $data['filename']
+                ])->where($media->id, '=', $data['id'])->run(); 
+    
+                echo json_encode($data);
+            }
 
-        if($rules->update_media_filename()->validated()) {
+        } else if (!empty($_POST['title']) && $_POST['title'] !== null) {
+            
+            $data['id'] = $_POST['id'];
+            $data['title'] = $_POST['title'];
+            $data['description'] = $_POST['description'];
 
             $media = new Media();
-    
-            $currentFile = DB::try()->select($media->media_filename, $media->media_filetype)->from($media->t)->where($media->id, '=', $data['id'])->first();
-            $currentFileName = $currentFile[0];
-            $type = $currentFile[1];
-         
-            if($type == 'image/png' || $type  == 'image/webp' || $type  == 'image/gif' || $type  == 'image/jpeg' || $type  == 'image/svg+xml') {
-                $fileDestination = "website/assets/img/";
-            } else if($type == 'video/mp4' || $type == 'video/quicktime') {
-                $fileDestination = "website/assets/video/";
-            } else if($type == 'application/pdf') {
-                $fileDestination = "website/assets/application/";
-            } else {
-                $fileDestination = '';
-            }
-    
-            rename($fileDestination.$currentFileName, $fileDestination.$data['filename']);
-    
+
             DB::try()->update($media->t)->set([
-                $media->media_filename => $data['filename']
+                $media->media_title => $data['title'],
+                $media->media_description => $data['description'],
             ])->where($media->id, '=', $data['id'])->run(); 
 
             echo json_encode($data);
+
         }
     }
     

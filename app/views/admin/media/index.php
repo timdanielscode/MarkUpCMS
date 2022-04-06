@@ -54,8 +54,6 @@
     <div id="modal" class="display-none">
         <div class="mediaModalFormContainer">
             <form id="mediaModelForm">
-
- 
                 
             </form>
         </div>
@@ -87,6 +85,7 @@
                 modal.addClass('display-block'); 
 
                 var id = $(this).data('id');
+                var filename = $('.mediaEdit').val();
 
                 $(document).ready(function() {
 
@@ -113,40 +112,31 @@
             });
 
 
-
             
             $(document).ready(function() {
-                $(document).on('click', 'a[data-role=edit]', function() {
+                $(document).on('click', '#updateMediaModal', function() {
                    
-                    var id = $(this).data('id');
-                    var mediaModalTitle = $('#mediaModalTitle');
-                    
-
-                    //alert(mediaModalTitle);
-                    //var mediaModalTitle = $("#mediaModalTitle-"+id).val(); 
+                    var id = $('#mediaModalId').val();
+                    var mediaModalTitle = $('#mediaModalTitle').val();
+                    var mediaModalDescription = $('#mediaModalDescription').val();
 
                     $.ajax({
                             type: "POST",
                             url: "media",
                             dataType: "json",
                             data: {
-                                //id: id,
-                                //filename: filename
+                                id: id,
+                                title: mediaModalTitle,
+                                description: mediaModalDescription
                         },
                             success: function(data) {
-                                
-                            //message.html("Updated successfully!");
-                            //message.addClass('message'); 
+                            $('#mediaTitle-'+id).text(data.title);
                         },
                             error: function(xhr, status, error) {
-
-                            //message.html("Oops, something went wrong!");
-                            //message.addClass('message'); 
+                                alert('oeps');
                         }
                     });
 
-
-                 
                 });
             });
 
@@ -161,8 +151,8 @@
                         $('#mydata').html(data);
                     }
 
-                })
-            })
+                });
+            });
 
             $(document).ready(function() {
                 $(document).on('click', 'a[data-role=update]', function() {
