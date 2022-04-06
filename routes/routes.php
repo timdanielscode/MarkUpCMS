@@ -8,9 +8,7 @@ use middleware\AuthMiddleware;
 $req = new Request();
  
 Route::setRouteKeys(['id', 'username']);
-
 Route::view('/example-route-view', '/route/route-view');
-
 
 if(LoginMiddleware::logged_in() === true) {
     Route::get('/profile/[username]')->add('UserController', 'read');
@@ -72,9 +70,9 @@ if(AuthMiddleware::auth('admin') === true) {
     Route::post('/admin/media/create')->add('admin\MediaController', 'store');
     Route::get('/admin/media/[id]/edit')->add('admin\MediaController', 'edit');
     Route::post('/admin/media/[id]/edit')->add('admin\MediaController', 'update');
+    Route::get('/admin/media/[id]/delete')->add('admin\MediaController', 'delete');
 }
 
-    
-//Route::get($req->getUri())->add('RenderPageController', 'render');
+Route::get($req->getUri())->add('RenderPageController', 'render');
 
 

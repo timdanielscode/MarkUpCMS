@@ -220,5 +220,15 @@ class MediaController extends Controller {
             echo json_encode($data);
         }
     }
+
+    public function delete($request) {
+
+        $id = $request['id'];
+
+        $media = new Media();
+        $media = DB::try()->delete($media->t)->where($media->id, "=", $id)->run();
+
+        redirect("/admin/media");
+    }
     
 }
