@@ -54,7 +54,7 @@
     <div id="modal" class="display-none">
         <div class="mediaModalFormContainer">
             <form id="mediaModelForm">
-                
+
             </form>
         </div>
         <a href="#" id="updateMediaModal" class="button">Update</a>
@@ -86,6 +86,7 @@
 
                 var id = $(this).data('id');
                 var filename = $('.mediaEdit').val();
+                var html = $('html');
 
                 $(document).ready(function() {
 
@@ -96,6 +97,7 @@
                         success: function (data) {
 
                             $('#mediaModelForm').html(data);
+                            html.addClass('dark-layer');
                         },
 
                         error: function(xhr, status, error) {
@@ -109,6 +111,8 @@
             $(document).on('click', '#mediaModalClose', function() {
                 var modal = $('#modal');
                 modal.removeClass('display-block'); 
+                var html = $('html');
+                html.removeClass('dark-layer');
             });
 
 
