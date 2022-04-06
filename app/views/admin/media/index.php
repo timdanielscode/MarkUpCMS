@@ -37,6 +37,8 @@
         </div>
     </div>
     
+    <div id="mediaPreview"></div>
+
     <table class="tablePosts margin-y-20">
         <thead>
             <th>Title</th>

@@ -69,6 +69,32 @@ class MediaController extends Controller {
         return $this->view('admin/media/modal', $data);
     }
 
+    public function mediaModalFetchPreview($request) {
+
+        $id = $request['id'];
+
+        $media = new Media();
+
+        $media = DB::try()->all($media->t)->where($media->id, '=', $id)->first();
+        
+        $filename = $media['media_filename'];
+        $type = $media['media_filetype'];
+
+        if($type == 'image/png' || $type  == 'image/webp' || $type  == 'image/gif' || $type  == 'image/jpeg' || $type  == 'image/svg+xml') {
+            $file = '<img id="mediaPreviewFile" class="display-none" src="/website/assets/img/' . $filename . '">';
+        } else if($type == 'video/mp4' || $type == 'video/quicktime') {
+            $file = '<video id="mediaPreviewFile" class="display-none" src="/website/assets/video/' . $filename . '"></video>';
+        } else if($type == 'application/pdf') {
+            $fileDestination = "website/assets/application/".$filename;
+            $file = '<iframe id="mediaPreviewFile" class="display-none" src="/website/assets/application/' . $filename . '"></iframe>';
+        } else {
+            $fileDestination = '';
+        }
+
+        echo '<a href="#" id="mediaPreviewClose">Close</a>';
+        echo $file;
+    }
+
     public function create() {
 
         $data["rules"] = [];

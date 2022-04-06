@@ -23,6 +23,35 @@ $(document).on('click', '.mediaEdit', function() {
     });
 });
 
+$(document).on('click', '.mediaPreview', function() {
+    
+    var id = $(this).data('id');
+    var html = $('html');
+
+    $(document).ready(function() {
+
+        $.ajax({
+            type: "GET",
+            url: "media/media-modal-fetch-preview?id="+id,
+            dataType: "html",
+            success: function (data) {
+                html.addClass('dark-layer');
+                $('#mediaPreview').html(data);
+                $('#mediaPreviewFile').removeClass('display-none');
+            }
+        });
+    });
+
+});
+
+
+$(document).on('click', '#mediaPreviewClose', function() {
+    var html = $('html');
+    html.removeClass('dark-layer');
+    $('#mediaPreview').html("");
+
+});
+
 $(document).on('click', '#mediaModalClose', function() {
     var modal = $('#modal');
     modal.removeClass('display-block'); 

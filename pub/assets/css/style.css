@@ -771,6 +771,30 @@ table {
     color: #000;
 }
 
+#mediaPreviewFile {
+    position: fixed;
+    left: 0;
+    right: 0;
+    top: 0;
+    bottom: 0;
+    margin: auto;
+    max-width: 60%;
+    max-height: 60%;
+    z-index: 999;
+}
+
+#mediaPreview iframe {
+    width: 60%;
+    height: 60%;
+}
+
+#mediaPreviewClose {
+    position: fixed;
+    top: 100px;
+    right: 100px;
+    z-index: 999999;
+}
+
 /*
 
     part of framework
