@@ -393,7 +393,7 @@ h3 {
     bottom: 0;
     left: 0;
     right: 0;
-    z-index: 9999;
+    z-index: 99999;
     width: 100% !important;
     height: 100% !important;
 }
