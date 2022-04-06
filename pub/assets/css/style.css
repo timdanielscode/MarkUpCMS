@@ -383,6 +383,21 @@ h3 {
     
 }
 
+/*
+    code editor
+*/
+
+.fullscreen {
+    position: absolute !important;
+    top: 0;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    z-index: 9999;
+    width: 100% !important;
+    height: 100% !important;
+}
+
 /* 
     style forms
 */
@@ -507,7 +522,6 @@ table {
 #title, #media_title {
     border: 0;
     font-size: 30px;
-    margin-left: 50px;
     padding: 0;
     margin-top: 10px;
 }
@@ -571,6 +585,10 @@ table {
     margin-left: 5%;
 }
 
+.postSidebarButtons {
+    margin-top: 100px;
+}
+
 .paginationPosts {
     margin-left: 5%;
 }
@@ -608,7 +626,6 @@ table {
 #slug {
     border: none;
     width: 100%;
-    margin-left: 50px;
     font-size: 13px;
     padding: 0;
     margin-top: 0;

@@ -6,10 +6,13 @@
 <?php 
     $this->include('headerOpen');  
     $this->stylesheet("/assets/css/codemirror/codemirror.css");
-    $this->stylesheet("/assets/css/codemirror/gruvbox-dark.css");
     $this->script("/assets/js/codemirror/codemirror.js");
-    $this->script("/assets/js/codemirror/css.js");
-    $this->script("/assets/js/codemirror/closebrackets.js");
+    $this->script("/assets/js/codemirror/closetag.js");
+    $this->script("/assets/js/codemirror/xml.js");
+    $this->stylesheet("/assets/css/codemirror/bespin.css"); //ayu-mirage, lesser-dark, railscasts, seti
+    $this->script("/assets/js/codemirror/htmlmixed.js");
+    $this->script('/assets/js/ajax.js');
+    $this->script('/assets/js/fullscreen.js');
     $this->title("IndependentCMS");
     $this->include("headerClose");
     $this->include('navbar');
@@ -42,11 +45,23 @@
         </div>
         <div class="col2">
             <div id="postSidebar">
-                <a href="/admin/posts" class="button back">Back</a>
-
-                    	<label for="submit" class="button update">Update</label>
-
-                        <a href="/admin/posts/<?php echo $post['id']; ?>/preview" class="button preview">Preview</a>
+                <ul class="postSidebarButtons">
+                    <li>
+                        <a href="/admin/posts" class="button">Back</a>
+                    </li>
+                    <li>
+                    <label for="submit" class="button">Update</label>
+                    </li>
+                    <li>
+                    <a href="/admin/posts/<?php echo $post['id']; ?>/preview" class="button">Preview</a>
+                    </li>
+                    <li>
+                    <a href="#" id="codeEditorFullScreen" class="button">Full screen</a>
+                    </li>
+                </ul>
+                    	
+                        
+                        
 
             </div>
         </div>
@@ -54,10 +69,10 @@
 </div>
 <script>
         var editor = CodeMirror.fromTextArea(document.getElementById("code"), {
-            theme: "gruvbox-dark",
+            theme: "bespin",
             lineNumbers: true,
-            matchBrackets: true,
-            autoCloseBrackets: true,
+            mode: 'text/html',
+            autoCloseTags: true,
             tabSize: 2
         });
         editor.setSize('95%', "75vh");
