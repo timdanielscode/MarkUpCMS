@@ -35,7 +35,7 @@
             </form>
         </div>
     </div>
-
+    
     <table class="tablePosts margin-y-20">
         <thead>
             <th>Title</th>
@@ -135,10 +135,11 @@
                                 description: mediaModalDescription
                         },
                             success: function(data) {
-                            $('#mediaTitle-'+id).text(data.title);
+                                $('#mediaTitle-'+id).text(data.title);
+                                $('.modalUpdateMessage').html('Updated successfully!').fadeIn(200).fadeOut(3000);
                         },
                             error: function(xhr, status, error) {
-                                alert('oeps');
+                                $('.modalUpdateMessage').html('Oops, something went wrong!').fadeIn(200).fadeOut(3000);
                         }
                     });
 
