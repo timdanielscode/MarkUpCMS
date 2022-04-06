@@ -50,7 +50,7 @@
         </tbody>
 
     </table>
-    
+
     <div id="modal" class="display-none">
         <div class="mediaModalFormContainer">
             <form id="mediaModelForm">
@@ -98,6 +98,7 @@
 
                             $('#mediaModelForm').html(data);
                             html.addClass('dark-layer');
+                            $('#mediaModalTitle').focus();
                         },
 
                         error: function(xhr, status, error) {

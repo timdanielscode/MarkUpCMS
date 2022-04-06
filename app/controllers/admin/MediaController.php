@@ -62,9 +62,8 @@ class MediaController extends Controller {
         $mediaTitle = $media['media_title'];
         $mediaDescription = $media['media_description'];
 
-        echo '<label>Title</label>
-        <input name="mediaModalTitle" type="text" id="mediaModalTitle" value="'; echo $mediaTitle; echo '">
-        <label>Description</label>
+        echo '
+        <input name="mediaModalTitle" type="text"  id="mediaModalTitle" value="'; echo $mediaTitle; echo '" autofocus="autofocus">
         <textarea name="mediaModalDescription" type="text" id="mediaModalDescription">'; echo $mediaDescription; echo '</textarea>';
         echo '<input type="hidden" id="mediaModalId" name="" value="'; echo $id; echo '">';
     }

@@ -704,8 +704,8 @@ table {
     margin-left: 10px;
 }
 #modal {
-    width: 50%;
-    height: 500px;
+    width: 25%;
+    height: 50%;
     background: #0c203d;
     z-index: 9999;
     position: fixed;
@@ -744,13 +744,31 @@ table {
     right: 50px;
 }
 
+.mediaModalFormContainer input {
+    width: 100%;
+    border: none;
+    background: none;
+    box-sizing: border-box;
+    color: #fff;
+    margin-bottom: 20px;
+    padding: 0;
+}
+
 .mediaModalFormContainer textarea {
     width: 100%;
     box-sizing: border-box;
+    height: 100px;
+    border: none;
+    background: none;
+    color: #fff;
 }
 
 .mediaModalFormContainer textarea, .mediaModalFormContainer input:focus {
     outline: none;
+}
+
+#modal a {
+    color: #000;
 }
 
 /*
