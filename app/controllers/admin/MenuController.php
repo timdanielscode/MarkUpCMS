@@ -128,5 +128,15 @@ class MenuController extends Controller {
         }
     }
 
+    public function preview($request) {
+
+        $menu = new Menu();
+        $menu = DB::try()->select('*')->from($menu->t)->where($menu->id, '=', $request['id'])->first();
+        $data['menu'] = $menu;
+
+        return $this->view('/admin/menus/preview', $data);
+
+    }
+
 
 }
