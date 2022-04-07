@@ -22,16 +22,22 @@ class RenderPageController extends Controller {
         $post = DB::try()->select('*')->from($posts->t)->where($posts->slug, '=', $req->getUri())->first();
         $cssFiles = DB::try()->select('file_name', 'extension')->from($css->t)->fetch();
         $jsFiles = DB::try()->select('file_name', 'extension')->from($js->t)->fetch();
-   
-        if(empty($post) ) {
-            //return Response::statusCode(404)->view("/404/404");
-            // return 404 of posts..
-            // and or could create a default 404 page..
-        } else {
-            $data['post'] = $post;
-            $data['cssFiles'] = $cssFiles;
-            $data['jsFiles'] = $jsFiles;
 
+        $post404 = DB::try()->select("*")->from($posts->t)->where($posts->title, '=', 404)->first();
+
+        $data['post'] = $post;
+        $data['cssFiles'] = $cssFiles;
+        $data['jsFiles'] = $jsFiles;
+
+        if(!empty($post404) && empty($post)) {
+
+            $data['post'] = $post404;
+            return Response::statusCode(404)->view('page', $data);
+
+        } else if (empty($post404) && empty($post) ) {
+
+            return Response::statusCode(404)->view("/404/404");
+        } else if (!empty($post) ) {
             return $this->view('page', $data);
         }
     }
