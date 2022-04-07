@@ -59,6 +59,7 @@ class MenuController extends Controller {
 
                         $menu->title => post('title'),
                         $menu->content => post('content'),
+                        $menu->author => Session::get('username'),
                         $menu->date_created_at => date("d/m/Y"),
                         $menu->time_created_at => date("H:i"),
                         $menu->date_updated_at => date("d/m/Y"),

@@ -89,3 +89,4 @@ CREATE TABLE menus (
     time_updated_at VARCHAR(5) NOT NULL
 );
 
+ALTER TABLE menus ADD author varchar(50) AFTER position;
