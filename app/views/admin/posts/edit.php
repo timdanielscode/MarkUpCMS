@@ -45,22 +45,10 @@
         </div>
         <div class="col2">
             <div id="postSidebar">
-
-            <div class="containerFirstPostButtons">
-
-                        <a href="/admin/posts" class="button">Back</a>
-                  
-           
-                        <label for="submit" class="button">Update</label>
-        
-           
-            </div>
-
-                
-
-                
-
-                </ul>
+                <div class="containerFirstPostButtons">
+                    <a href="/admin/posts" class="button">Back</a>
+                    <label for="submit" class="button">Update</label>
+                </div>
                 <ul class="postSidebarButtons">
                     <li>
                         <a href="/admin/posts/<?php echo $post['id']; ?>/preview" class="button">Preview</a>
@@ -68,6 +56,11 @@
                     <li>
                         <a href="#" id="codeEditorFullScreen" class="button">Full screen</a>
                     </li>
+                    <select id="pageSelectMenu">
+                        <option>    
+                            test
+                        </option>
+                    </select>
                 </ul>
             </div>
         </div>

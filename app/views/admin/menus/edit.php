@@ -45,14 +45,24 @@
                     <a href="/admin/menus" class="button">Back</a>
                     <label for="submit" class="button">Update</label>
                 </div>
+                
+                <span id="menuPosition">Position: <?php echo $menu['position']; ?></span>
+
                 <ul class="postSidebarButtons">
                     <li>
-                        <a href="/admin/posts/<?php echo $post['id']; ?>/preview" class="button">Preview</a>
+                        <a href="/admin/menus/<?php echo $post['id']; ?>/preview" class="button">Preview</a>
                     </li>
                     <li>
                         <a href="#" id="codeEditorFullScreen" class="button">Full screen</a>
                     </li>
                 </ul>
+                <form action="" method="POST">
+                    <select name="position">
+                        <option value="top">Top</option>
+                        <option value="bottom">Bottom</option>
+                    </select>
+                    <input type="submit" name="submitPosition" value="update"/>
+                </form>
             </div>
         </div>
     </div>

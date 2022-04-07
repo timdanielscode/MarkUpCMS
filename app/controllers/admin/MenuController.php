@@ -25,7 +25,7 @@ class MenuController extends Controller {
             $menus = DB::try()->all($menu->t)->where($menu->title, 'LIKE', '%'.$search.'%')->or($menu->author, 'LIKE', '%'.$search.'%')->or($menu->date_created_at, 'LIKE', '%'.$search.'%')->or($menu->time_created_at, 'LIKE', '%'.$search.'%')->or($menu->date_updated_at, 'LIKE', '%'.$search.'%')->or($menu->time_updated_at, 'LIKE', '%'.$search.'%')->fetch();
         }
         if(empty($menus) ) {
-            $menus = array(["id" => "?","title" => "not found", "date_created_at" => "-", "time_created_at" => "", "date_updated_at" => "-", "time_updated_at" => ""]);
+            $menus = array(["id" => "?","title" => "not found", "author" => "-", "position" => "-", "date_created_at" => "-", "time_created_at" => "", "date_updated_at" => "-", "time_updated_at" => ""]);
         }
         
         $menus = Pagination::set($menus, 20);
@@ -125,6 +125,21 @@ class MenuController extends Controller {
                 Session::set('csrf', 'Cross site request forgery!');
                 redirect("/admin/menus/$id");
             }
+        }
+
+        if(submitted('submitPosition')) {
+            
+            $menu = new Menu();
+
+            $id = $request['id'];
+            $position = $request["position"];
+            
+            DB::try()->update($menu->t)->set([
+                $menu->position => $position,
+            ])->where($menu->id, '=', $id)->run(); 
+
+            redirect("/admin/menus/$id/edit");
+
         }
     }
 

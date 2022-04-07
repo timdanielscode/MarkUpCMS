@@ -40,6 +40,7 @@
             <thead>
                 <tr>
                     <th>Title</th>
+                    <th>Position</th>
                     <th>Author</th>
                     <th class="width-10">Date</th>
                 </tr>
@@ -58,6 +59,15 @@
                         <?php } else { ?>
                         <td class="width-50">
                             <span class="font-weight-500"><?php echo $menu['title']; ?></span>
+                        </td>
+                        <?php } ?>
+                        <?php if(!empty($menu['position']) ) { ?>
+                        <td class="width-15">
+                            <?php echo $menu['position']; ?>
+                        </td>
+                        <?php } else { ?>
+                        <td class="width-15">
+                            <span>none</span>
                         </td>
                         <?php } ?>
                         <td class="width-15">
