@@ -150,6 +150,17 @@ class Rules {
         return $this;
     }
 
+    public function menu_update() {
+
+        $validation = new Validate();
+        
+        $validation->input('title')->as('Title')->rules(['required' => true, 'min' => 1, 'max' => 50, 'special' => true]);
+        $validation->input('content')->as('Content')->rules(['required' => true, 'min' => 5]);
+        
+        $this->errors = $validation->errors;
+        return $this;
+    }
+
     /**
      * @return bool
     */     

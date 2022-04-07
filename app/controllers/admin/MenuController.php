@@ -90,5 +90,42 @@ class MenuController extends Controller {
         return $this->view('admin/menus/edit', $data);
     }
 
+    public function update($request) {
+
+        if(submitted('submit')) {
+
+            if(CSRF::validate(CSRF::token('get'), post('token'))) {
+                
+                $menu = new Menu();
+                $rules = new Rules();
+                $id = $request['id'];
+                $title = $request["title"];
+                $content = $request["content"];
+
+                if($rules->menu_update()->validated()) {
+
+                    DB::try()->update($menu->t)->set([
+                        $menu->title => $title,
+                        $menu->content => $content,
+                        $menu->date_updated_at => date("d/m/Y"),
+                        $menu->time_updated_at => date("H:i")
+                    ])->where($menu->id, '=', $id)->run();              
+
+                    Session::set('updated', 'User updated successfully!');
+                    redirect("/admin/menus/$id/edit");
+                    
+                } else {
+                    $data['rules'] = $rules->errors;
+                    $data['menu'] = DB::try()->select('*')->from($menu->t)->where($menu->id, '=', $id)->first();
+                    return $this->view("/admin/menus/edit", $data);
+                }
+
+            } else {
+                Session::set('csrf', 'Cross site request forgery!');
+                redirect("/admin/menus/$id");
+            }
+        }
+    }
+
 
 }

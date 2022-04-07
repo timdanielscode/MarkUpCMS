@@ -79,6 +79,7 @@ if(AuthMiddleware::auth('admin') === true) {
     Route::get('/admin/menus/create')->add('admin\MenuController', 'create');
     Route::post('/admin/menus/create')->add('admin\MenuController', 'store');
     Route::get('/admin/menus/[id]/edit')->add('admin\MenuController', 'edit');
+    Route::post('/admin/menus/[id]/edit')->add('admin\MenuController', 'update');
 }
 
 
