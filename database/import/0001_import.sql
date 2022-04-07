@@ -90,3 +90,8 @@ CREATE TABLE menus (
 );
 
 ALTER TABLE menus ADD author varchar(50) AFTER position;
+
+CREATE TABLE menu_page (
+    menu_id INT(11) NOT NULL,
+    page_id INT(11) NOT NULL
+);
