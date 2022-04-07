@@ -8,13 +8,34 @@ use validation\Rules;
 use app\models\Menu;
 use parts\Session;
 use database\DB;
+use parts\Pagination;
 
 
 class MenuController extends Controller {
 
     public function index() {
 
-        return $this->view('admin/menus/index');
+        $menu = new Menu();
+        $menus = DB::try()->all($menu->t)->order('date_created_at')->fetch();
+
+        $count = count($menus);
+        $search = get('search');
+
+        if(!empty($search) ) {
+            $menus = DB::try()->all($menu->t)->where($menu->title, 'LIKE', '%'.$search.'%')->or($menu->author, 'LIKE', '%'.$search.'%')->or($menu->date_created_at, 'LIKE', '%'.$search.'%')->or($menu->time_created_at, 'LIKE', '%'.$search.'%')->or($menu->date_updated_at, 'LIKE', '%'.$search.'%')->or($menu->time_updated_at, 'LIKE', '%'.$search.'%')->fetch();
+        }
+        if(empty($menus) ) {
+            $menus = array(["id" => "?","title" => "not found", "date_created_at" => "-", "time_created_at" => "", "date_updated_at" => "-", "time_updated_at" => ""]);
+        }
+        
+        $menus = Pagination::set($menus, 20);
+        $numberOfPages = Pagination::getPages();
+
+        $data["menus"] = $menus;
+        $data['numberOfPages'] = $numberOfPages;
+        $data['count'] = $count;
+
+        return $this->view('admin/menus/index', $data);
     }
 
     public function create() {
