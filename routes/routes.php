@@ -8,7 +8,7 @@ use database\DB;
 Route::setRouteKeys(['id', 'username']);
 Route::view('/example-route-view', '/route/route-view');
 
-$postPaths = DB::try()->select('slug')->from('posts')->fetch();
+$postPaths = DB::try()->select('slug')->from('pages')->fetch();
 foreach($postPaths as $postPath) {
     Route::get($postPath['slug'])->add('RenderPageController', 'render');
 }
@@ -74,6 +74,10 @@ if(AuthMiddleware::auth('admin') === true) {
     Route::get('/admin/media/[id]/edit')->add('admin\MediaController', 'edit');
     Route::post('/admin/media/[id]/edit')->add('admin\MediaController', 'update');
     Route::get('/admin/media/[id]/delete')->add('admin\MediaController', 'delete');
+
+    Route::get('/admin/menus')->add('admin\MenuController', 'index');
+    Route::get('/admin/menus/create')->add('admin\MenuController', 'create');
+    Route::post('/admin/menus/create')->add('admin\MenuController', 'store');
 }
 
 

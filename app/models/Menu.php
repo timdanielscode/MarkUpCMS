@@ -2,17 +2,14 @@
 
 namespace app\models;
 
-class Post {
+class Menu {
 
-    public $t = "pages",
+    public $t = "menus",
 
         $id = 'id', 
         $title = 'title', 
-        $slug = 'slug',
-        $body = 'body', 
-        $author = 'author', 
-        $metaTitle = 'metaTitle',
-        $metaDescription = 'metaDescription',
+        $content = 'content',
+        $position = 'position', 
         $date_created_at = 'date_created_at', 
         $time_created_at = 'time_created_at', 
         $date_updated_at = 'date_updated_at', 

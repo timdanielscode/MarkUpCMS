@@ -12,10 +12,11 @@
         </a>
     </div>
     <ul class="navbarItems">
-        <li class="navbarItem"><a href="/admin/posts">Posts</a></li>
+        <li class="navbarItem"><a href="/admin/posts">Pages</a></li>
         <li class="navbarItem"><a href="/admin/users">Users</a></li>
         <li class="navbarItem"><a href="/admin/css">Css</a></li>
         <li class="navbarItem"><a href="/admin/js">Js</a></li>
+        <li class="navbarItem"><a href="/admin/menus">Menus</a></li>
         <li class="navbarItem"><a href="/admin/media">Media</a></li>
     </ul>
 

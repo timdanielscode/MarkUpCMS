@@ -76,5 +76,16 @@ CREATE TABLE media (
     time_updated_at VARCHAR(5) NOT NULL
 );
 
+RENAME TABLE posts TO pages;
 
+CREATE TABLE menus (
+    id int(11) AUTO_INCREMENT PRIMARY KEY,
+    title VARCHAR(50) NOT NULL,
+    content MEDIUMTEXT NOT NULL,
+    position VARCHAR(10) NOT NULL,
+    date_created_at VARCHAR(10) NOT NULL,
+    time_created_at VARCHAR(5) NOT NULL,
+    date_updated_at VARCHAR(10) NOT NULL,
+    time_updated_at VARCHAR(5) NOT NULL
+);
 
