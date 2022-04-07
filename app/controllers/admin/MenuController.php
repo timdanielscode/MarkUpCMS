@@ -138,5 +138,12 @@ class MenuController extends Controller {
 
     }
 
+    public function delete($request) {
 
+        $id = $request['id'];
+        $menu = new Menu();
+        $menu = DB::try()->delete($menu->t)->where($menu->id, "=", $id)->run();
+        
+        redirect("/admin/menus");
+    }
 }

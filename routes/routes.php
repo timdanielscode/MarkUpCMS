@@ -81,6 +81,7 @@ if(AuthMiddleware::auth('admin') === true) {
     Route::get('/admin/menus/[id]/edit')->add('admin\MenuController', 'edit');
     Route::post('/admin/menus/[id]/edit')->add('admin\MenuController', 'update');
     Route::get('/admin/menus/[id]/preview')->add('admin\MenuController', 'preview');
+    Route::get('/admin/menus/[id]/delete')->add('admin\MenuController', 'delete');
 }
 
 
