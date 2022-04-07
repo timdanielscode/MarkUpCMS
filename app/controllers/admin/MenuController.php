@@ -80,5 +80,15 @@ class MenuController extends Controller {
         }
     }
 
+    public function edit($request) {
+
+        $menus = new Menu();
+        $menu = DB::try()->select('*')->from($menus->t)->where($menus->id, '=', $request['id'])->first();
+        $data['menu'] = $menu;
+        $data['rules'] = [];
+
+        return $this->view('admin/menus/edit', $data);
+    }
+
 
 }

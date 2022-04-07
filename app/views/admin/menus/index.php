@@ -50,10 +50,10 @@
                     <tr>
                         <?php if($menu["title"] !== "not found") {?>
                         <td class="width-50">
-                            <a href="/admin/posts/<?php echo $menu['id']; ?>/edit" class="font-weight-500"><?php echo $menu['title']; ?></a> |
-                            <a href="/admin/posts/<?php echo $menu['id']; ?>/edit" class="font-weight-300">Edit</a> |
-                            <a href="/admin/posts/<?php echo $menu['id']; ?>/preview" class="font-weight-300">Preview</a> |
-                            <a href="/admin/posts/<?php echo $menu['id']; ?>/delete" class="font-weight-300 color-red">Remove</a>
+                            <a href="/admin/menus/<?php echo $menu['id']; ?>/edit" class="font-weight-500"><?php echo $menu['title']; ?></a> |
+                            <a href="/admin/menus/<?php echo $menu['id']; ?>/edit" class="font-weight-300">Edit</a> |
+                            <a href="/admin/menus/<?php echo $menu['id']; ?>/preview" class="font-weight-300">Preview</a> |
+                            <a href="/admin/menus/<?php echo $menu['id']; ?>/delete" class="font-weight-300 color-red">Remove</a>
                         </td>
                         <?php } else { ?>
                         <td class="width-50">
