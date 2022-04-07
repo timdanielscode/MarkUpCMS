@@ -3,15 +3,7 @@
     $this->include('headerClose');
     $this->include('navbar');
 ?>
-
-
-<?php if(!empty($post404) ) { ?>
-
-<?php } ?>
-
-404 van app
-
-
+This page is not found..
 
 <?php 
     $this->include('footer');

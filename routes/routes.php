@@ -1,14 +1,17 @@
 <?php
 
 use core\Route;
-use core\Request;
 use middleware\LoginMiddleware;
 use middleware\AuthMiddleware;
+use database\DB;
 
-$req = new Request();
- 
 Route::setRouteKeys(['id', 'username']);
 Route::view('/example-route-view', '/route/route-view');
+
+$postPaths = DB::try()->select('slug')->from('posts')->fetch();
+foreach($postPaths as $postPath) {
+    Route::get($postPath['slug'])->add('RenderPageController', 'render');
+}
 
 if(LoginMiddleware::logged_in() === true) {
     Route::get('/profile/[username]')->add('UserController', 'read');
@@ -73,6 +76,7 @@ if(AuthMiddleware::auth('admin') === true) {
     Route::get('/admin/media/[id]/delete')->add('admin\MediaController', 'delete');
 }
 
-Route::get($req->getUri())->add('RenderPageController', 'render');
+
+
 
 
