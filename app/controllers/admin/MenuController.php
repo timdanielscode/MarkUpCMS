@@ -137,9 +137,8 @@ class MenuController extends Controller {
             DB::try()->update($menu->t)->set([
                 $menu->position => $position,
             ])->where($menu->id, '=', $id)->run(); 
-
+            
             redirect("/admin/menus/$id/edit");
-
         }
     }
 

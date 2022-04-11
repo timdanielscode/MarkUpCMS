@@ -69,7 +69,7 @@ if(AuthMiddleware::auth('admin') === true) {
     Route::get('/admin/media/media-modal-fetch')->add('admin\MediaController', 'mediaModalFetch');
     Route::get('/admin/media/media-modal-fetch-preview')->add('admin\MediaController', 'mediaModalFetchPreview');
     Route::post('/admin/media')->add('admin\MediaController', 'updateFilename');
-    Route::get('/admin/media/create')->add('adminr\MediaController', 'create');
+    Route::get('/admin/media/create')->add('admin\MediaController', 'create');
     Route::post('/admin/media/create')->add('admin\MediaController', 'store');
     Route::get('/admin/media/[id]/edit')->add('admin\MediaController', 'edit');
     Route::post('/admin/media/[id]/edit')->add('admin\MediaController', 'update');
