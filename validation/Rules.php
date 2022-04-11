@@ -166,6 +166,7 @@ class Rules {
         $validation = new Validate();
         
         $validation->input('title')->as('Title')->rules(['required' => true, 'min' => 1, 'max' => 50, 'special' => true]);
+        $validation->input('description')->as('Description')->rules(['max' => 100, 'special' => true]);
         
         $this->errors = $validation->errors;
         return $this;

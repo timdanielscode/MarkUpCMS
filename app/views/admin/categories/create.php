@@ -27,9 +27,15 @@
             <div class="col10">
                 <form action="" method="POST" class="form-code">
                     <div class="form-parts">
-                        <input type="text" autofocus name="title" type="title" id="title" placeholder="Title" autofocus>
+                        <input type="text" name="title" id="title" placeholder="Title" autofocus>
                         <div class="error-messages">
                             <?php echo Errors::get($rules, 'title'); ?>
+                        </div>
+                    </div>
+                    <div class="form-parts">
+                        <textarea type="text" name="description" id="description"></textarea>
+                        <div class="error-messages">
+                            <?php echo Errors::get($rules, 'description'); ?>
                         </div>
                     </div>
                     <div class="form-parts">

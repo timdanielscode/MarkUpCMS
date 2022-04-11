@@ -94,6 +94,8 @@ ALTER TABLE menus ADD author varchar(50) AFTER position;
 CREATE TABLE categories (
     id int(11) AUTO_INCREMENT PRIMARY KEY,
     title VARCHAR(50) NOT NULL,
+    slug VARCHAR(50) NOT NULL,
+    category_description VARCHAR(100) NOT NULL,
     date_created_at VARCHAR(10) NOT NULL,
     time_created_at VARCHAR(5) NOT NULL,
     date_updated_at VARCHAR(10) NOT NULL,

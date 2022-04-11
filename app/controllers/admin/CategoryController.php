@@ -15,8 +15,7 @@ class CategoryController extends Controller {
     public function index() {
 
         $category = new Category();
-        $categories = DB::try()->all($category->t)->fetch();
-        //$categories = DB::try()->all($category->t)->order('date_created_at')->fetch();
+        $categories = DB::try()->all($category->t)->order('date_created_at')->fetch();
         if(empty($categories) ) {
             $categories = array(["id" => "?","title" => "no category created", "extension" => "","date_created_at" => "-", "time_created_at" => "", "date_updated_at" => "-", "time_updated_at" => ""]);
         }
@@ -40,6 +39,20 @@ class CategoryController extends Controller {
         return $this->view('admin/categories/index', $data);
     }
 
+    public function fetchTable() {
+
+        $category = new Category();
+        $categories = DB::try()->all($category->t)->order('date_created_at')->fetch();
+
+        if(empty($categories) ) {
+            $categories = array(["id" => "?","title" => "no category created", "extension" => "","date_created_at" => "-", "time_created_at" => "", "date_updated_at" => "-", "time_updated_at" => ""]);
+        }
+
+        $data['categories'] = $categories;
+
+        return $this->view('admin/categories/table', $data);
+    }
+
     public function create() {
 
         $data['rules'] = [];
@@ -56,10 +69,19 @@ class CategoryController extends Controller {
                 $category = new Category();
 
                 if($rules->create_category()->validated()) {
+
+                    $slug = post('title');
+                    $slug = str_replace(" ", "-", $slug);
                          
                     DB::try()->insert($category->t, [
 
-                        $category->title => post('title')
+                        $category->title => post('title'),
+                        $category->slug => $slug,
+                        $category->category_description => post('description'),
+                        $category->date_created_at => date("d/m/Y"),
+                        $category->time_created_at => date("H:i"),
+                        $category->date_updated_at => date("d/m/Y"),
+                        $category->time_updated_at => date("H:i")
                     ]);
 
                     Session::set('create', 'You have successfully created a new post!');            
