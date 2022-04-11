@@ -90,3 +90,8 @@ CREATE TABLE menus (
 );
 
 ALTER TABLE menus ADD author varchar(50) AFTER position;
+
+CREATE TABLE categories (
+    id int(11) AUTO_INCREMENT PRIMARY KEY,
+    title VARCHAR(50) NOT NULL
+);
