@@ -192,7 +192,10 @@ class CategoryController extends Controller {
         $id = $request['id'];
 
         $category = new Category();
+        $categoryPage = new CategoryPage();
+
         $category = DB::try()->delete($category->t)->where($category->id, "=", $id)->run();
+        $categoryPage = DB::try()->delete($categoryPage->t)->where($categoryPage->category_id, '=', $id)->run();
 
         redirect("/admin/categories");
     }
