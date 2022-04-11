@@ -122,4 +122,14 @@ class CategoryController extends Controller {
         //} 
     }
 
+    public function delete($request) {
+
+        $id = $request['id'];
+
+        $category = new Category();
+        $category = DB::try()->delete($category->t)->where($category->id, "=", $id)->run();
+
+        redirect("/admin/categories");
+    }
+
 }

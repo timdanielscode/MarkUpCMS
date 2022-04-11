@@ -88,6 +88,7 @@ if(AuthMiddleware::auth('admin') === true) {
     Route::post('/admin/categories')->add('admin\CategoryController', 'updateSlug');
     Route::get('/admin/categories/create')->add('admin\CategoryController', 'create');
     Route::post('/admin/categories/create')->add('admin\CategoryController', 'store');
+    Route::get('/admin/categories/[id]/delete')->add('admin\CategoryController', 'delete');
     
 }
 
