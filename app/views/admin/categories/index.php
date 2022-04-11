@@ -33,6 +33,8 @@
             </tbody>
         </table>
 
+        <div id="categoriesPreview"></div>
+
         <div id="modal" class="display-none">
         <div class="mediaModalFormContainer">
             <form id="mediaModelForm">

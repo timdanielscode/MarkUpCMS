@@ -108,3 +108,28 @@ $(document).ready(function() {
 
     });
 });
+
+$(document).on('click', '.categoryPreview', function() {
+
+    var modal = $('#modal');
+    modal.addClass('display-block'); 
+
+    var id = $(this).data('id');
+    var filename = $('.categoryEdit').val();
+    var html = $('html');
+
+    $(document).ready(function() {
+
+        $.ajax({
+            type: "GET",
+            url: "categories/categories-modal-fetch-preview?id="+id,
+            dataType: "html",
+            success: function (data) {
+
+                $('#mediaModelForm').html(data);
+                html.addClass('dark-layer');
+                $('#mediaModalTitle').focus();
+            }
+        });
+    });
+});

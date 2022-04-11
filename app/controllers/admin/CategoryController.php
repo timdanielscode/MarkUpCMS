@@ -72,6 +72,21 @@ class CategoryController extends Controller {
         return $this->view('admin/categories/modal', $data);
     }
 
+    public function previewCategoryPages($request) {
+
+        $id = $request['id'];
+
+        $category = new Category();
+        $page = new Post();
+        $categoryPage = new CategoryPage();
+
+        $pages = DB::try()->select($page->t.'.'.$page->title, $page->t.'.'.$page->id)->from($page->t)->join($categoryPage->t)->on($page->t.'.'.$page->id, '=', $categoryPage->t.'.'.$categoryPage->page_id)->where($categoryPage->t.'.'.$categoryPage->category_id, '=', $id)->fetch();
+
+        $data['pages'] = $pages;
+
+        return $this->view('admin/categories/previewPages', $data);
+    }
+
     public function create() {
 
         $page = new Post();
