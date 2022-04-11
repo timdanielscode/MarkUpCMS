@@ -84,6 +84,8 @@ if(AuthMiddleware::auth('admin') === true) {
     Route::get('/admin/menus/[id]/delete')->add('admin\MenuController', 'delete');
 
     Route::get('/admin/categories')->add('admin\CategoryController', 'index');
+    Route::get('/admin/categories/create')->add('admin\CategoryController', 'create');
+    Route::post('/admin/categories/create')->add('admin\CategoryController', 'store');
 }
 
 

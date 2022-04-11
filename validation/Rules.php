@@ -161,6 +161,16 @@ class Rules {
         return $this;
     }
 
+    public function create_category() {
+        
+        $validation = new Validate();
+        
+        $validation->input('title')->as('Title')->rules(['required' => true, 'min' => 1, 'max' => 50, 'special' => true]);
+        
+        $this->errors = $validation->errors;
+        return $this;
+    }
+
     /**
      * @return bool
     */     
