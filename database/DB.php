@@ -327,6 +327,12 @@ class DB {
         return $this;
     }
 
+    public function getLastId() {
+
+        $this->query = "SELECT LAST_INSERT_ID()";
+        return $this;
+    }
+
     /** 
      * @return object DB
      */ 

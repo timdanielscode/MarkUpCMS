@@ -101,3 +101,8 @@ CREATE TABLE categories (
     date_updated_at VARCHAR(10) NOT NULL,
     time_updated_at VARCHAR(5) NOT NULL
 );
+
+CREATE TABLE category_page (
+    category_id int(11) NOT NULL,
+    page_id int(11) NOT NULL
+);

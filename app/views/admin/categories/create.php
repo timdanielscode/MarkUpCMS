@@ -39,6 +39,20 @@
                         </div>
                     </div>
                     <div class="form-parts">
+                        <div class="containerCategoryPagesCheckbox">
+                            <?php foreach($pages as $page) { ?>
+                                <div class="row">
+                                    <div class="col6">
+                                        <label><?php echo $page['title']; ?></label>
+                                    </div>
+                                    <div class="col6">
+                                        <input name="page[]" type="checkbox" value="<?php echo $page['id'] ?>">
+                                    </div>
+                                </div>
+                            <?php } ?>
+                        </div>
+                    </div>
+                    <div class="form-parts">
                         <button name="submit" id="submit" type="submit" class="display-none">Create</button>
                         <input type="hidden" name="token" value="<?php Csrf::token('add');?>" />
                     </div>

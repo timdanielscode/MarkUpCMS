@@ -4,6 +4,8 @@ namespace app\controllers\admin;
 
 use app\controllers\Controller;
 use app\models\Category;
+use app\models\Post;
+use app\models\CategoryPage;
 use database\DB;
 use parts\Session;
 use parts\Pagination;
@@ -55,14 +57,18 @@ class CategoryController extends Controller {
 
     public function create() {
 
+        $page = new Post();
+        $pages = DB::try()->select($page->id, $page->title)->from($page->t)->fetch();
+
         $data['rules'] = [];
+        $data['pages'] = $pages;
         return $this->view('admin/categories/create', $data);
     }
 
     public function store() {
 
         if(submitted('submit')) {
-
+            
             if(Csrf::validate(Csrf::token('get'), post('token') ) === true) {
 
                 $rules = new Rules();
@@ -83,6 +89,19 @@ class CategoryController extends Controller {
                         $category->date_updated_at => date("d/m/Y"),
                         $category->time_updated_at => date("H:i")
                     ]);
+
+                    $categoryId = DB::try()->getLastId()->first();
+
+                    $categoryPage = new CategoryPage();
+
+                    foreach(post('page') as $pageId) {
+                        
+                        DB::try()->insert($categoryPage->t, [
+
+                            $categoryPage->category_id => $categoryId[0],
+                            $categoryPage->page_id => $pageId,
+                        ]);
+                    }
 
                     Session::set('create', 'You have successfully created a new post!');            
                     redirect('/admin/categories');

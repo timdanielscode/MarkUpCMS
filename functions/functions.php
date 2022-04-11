@@ -27,7 +27,8 @@ function submitted($name) {
 function post($name = null) {
 
     if(!empty($name) && isset($_POST[$name])) {
-        $post = htmlspecialchars($_POST[$name]);
+        //$post = htmlspecialchars($_POST[$name]);
+        $post = $_POST[$name];
         return $post;
     } 
 }
