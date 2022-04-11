@@ -66,7 +66,6 @@ if(AuthMiddleware::auth('admin') === true) {
     Route::get('/admin/media')->add('admin\MediaController', 'index');
     Route::get('/admin/media/fetch-data')->add('admin\MediaController', 'fetchData');
     Route::get('/admin/media/media-modal-fetch')->add('admin\MediaController', 'mediaModalFetch');
-    Route::get('/admin/media/media-modal-fetch')->add('admin\MediaController', 'mediaModalFetch');
     Route::get('/admin/media/media-modal-fetch-preview')->add('admin\MediaController', 'mediaModalFetchPreview');
     Route::post('/admin/media')->add('admin\MediaController', 'updateFilename');
     Route::get('/admin/media/create')->add('admin\MediaController', 'create');
@@ -85,6 +84,7 @@ if(AuthMiddleware::auth('admin') === true) {
 
     Route::get('/admin/categories')->add('admin\CategoryController', 'index');
     Route::get('/admin/categories/fetch-table')->add('admin\CategoryController', 'fetchTable');
+    Route::get('/admin/categories/category-modal-fetch')->add('admin\CategoryController', 'categoryModalFetch');
     Route::post('/admin/categories')->add('admin\CategoryController', 'updateSlug');
     Route::get('/admin/categories/create')->add('admin\CategoryController', 'create');
     Route::post('/admin/categories/create')->add('admin\CategoryController', 'store');

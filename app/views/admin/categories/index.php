@@ -32,6 +32,17 @@
                 
             </tbody>
         </table>
+
+        <div id="modal" class="display-none">
+        <div class="mediaModalFormContainer">
+            <form id="mediaModelForm">
+
+            </form>
+        </div>
+            <a href="#" id="updateMediaModal" class="button">Update</a>
+            <a href="#" id="mediaModalClose" class="button">Exit</a>
+        </div>
+
         <?php if(count($numberOfPages) > 1) { ?>
             <nav class="paginationPosts">
                 <ul class="pagination">

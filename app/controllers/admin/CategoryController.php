@@ -55,6 +55,23 @@ class CategoryController extends Controller {
         return $this->view('admin/categories/table', $data);
     }
 
+    public function categoryModalFetch($request) {
+
+        $id = $request['id'];
+
+        $category = new Category();
+        $category = DB::try()->select($category->title, $category->category_description)->from($category->t)->where($category->id, '=', $id)->first();
+
+        $categoryTitle = $category['title'];
+        $categoryDescription = $category['category_description'];
+
+        $data['categoryTitle'] = $categoryTitle;
+        $data['categoryDescription'] = $categoryDescription;
+        $data['id'] = $id;
+
+        return $this->view('admin/categories/modal', $data);
+    }
+
     public function create() {
 
         $page = new Post();
@@ -120,7 +137,7 @@ class CategoryController extends Controller {
 
     public function updateSlug($request) { 
 
-        //if(!empty($request['slug']) && $request['slug'] !== null) {
+        if(!empty($request['slug']) && $request['slug'] !== null) {
 
             $data['id'] = $request['id'];
             $data['slug'] = $request['slug'];
@@ -138,7 +155,21 @@ class CategoryController extends Controller {
                 echo json_encode($data);
             //}
 
-        //} 
+        } else if(!empty($request['title']) && $request['title'] !== null) {
+
+            $data['id'] = $request['id'];
+            $data['title'] = $request['title'];
+            $data['description'] = $request['description'];
+
+            $category = new Category();
+
+            DB::try()->update($category->t)->set([
+                $category->title => $data['title'],
+                $category->category_description => $data['description']
+            ])->where($category->id, '=', $data['id'])->run(); 
+
+            echo json_encode($data);
+        }
     }
 
     public function delete($request) {
