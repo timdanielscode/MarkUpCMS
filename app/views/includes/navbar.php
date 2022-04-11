@@ -18,6 +18,7 @@
         <li class="navbarItem"><a href="/admin/js">Js</a></li>
         <li class="navbarItem"><a href="/admin/menus">Menus</a></li>
         <li class="navbarItem"><a href="/admin/media">Media</a></li>
+        <li class="navbarItem"><a href="/admin/categories">Categories</a></li>
     </ul>
 
 </nav>
