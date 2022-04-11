@@ -6,6 +6,7 @@ use app\controllers\Controller;
 use app\models\Post;
 use app\models\Css;
 use app\models\Js;
+use app\models\Menu;
 use database\DB;
 use core\Request;
 use core\Response;
@@ -24,13 +25,18 @@ class RenderPageController extends Controller {
 
             $css = new Css();
             $js = new Js();
+            $menu = new Menu();
 
             $cssFiles = DB::try()->select('file_name', 'extension')->from($css->t)->fetch();
             $jsFiles = DB::try()->select('file_name', 'extension')->from($js->t)->fetch();
+            $menusTop = DB::try()->all($menu->t)->where($menu->position, '=', 'top')->fetch();
+            $menusBottom = DB::try()->all($menu->t)->where($menu->position, '=', 'bottom')->fetch();
     
             $data['post'] = $post;
             $data['cssFiles'] = $cssFiles;
             $data['jsFiles'] = $jsFiles;
+            $data['menusTop'] = $menusTop;
+            $data['menusBottom'] = $menusBottom;
 
             return $this->view('page', $data);
         }
