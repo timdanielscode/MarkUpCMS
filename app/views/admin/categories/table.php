@@ -15,8 +15,13 @@
                         </td>
                         <?php } ?>
                         <td>
-                            <span class="font-weight-500"><?php echo $category['slug'];?></span>
+                            <form>
+                                <input class="mediaFilename" name="slug" id="slug-<?php echo $category['id']; ?>" type="text" value="<?php echo $category["slug"]; ?>"/>
+                                <a data-role="update" id="update" data-id="<?php echo $category['id']; ?>">update</a>
+                                <div id="message-<?php echo $category['id'] ?>"></div>
+                            </form>
                         </td>
+
                         <td class="width-15">
                             <span class="padding-b-2">Created:</span> <span class="font-weight-300"><?php echo $category["date_created_at"] . " " . $category["time_created_at"]; ?></span><br>
                             <span>Updated:</span> <span class="font-weight-300"><?php echo $category["date_updated_at"] . " " . $category["time_updated_at"]; ?></span>

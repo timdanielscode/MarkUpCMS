@@ -99,4 +99,27 @@ class CategoryController extends Controller {
         }
     }
 
+    public function updateSlug($request) { 
+
+        //if(!empty($request['slug']) && $request['slug'] !== null) {
+
+            $data['id'] = $request['id'];
+            $data['slug'] = $request['slug'];
+    
+            $rules = new Rules();
+    
+            //if($rules->update_media_filename()->validated()) {
+    
+                $category = new Category();
+      
+                DB::try()->update($category->t)->set([
+                    $category->slug => $data['slug']
+                ])->where($category->id, '=', $data['id'])->run(); 
+    
+                echo json_encode($data);
+            //}
+
+        //} 
+    }
+
 }

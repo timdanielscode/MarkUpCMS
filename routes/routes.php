@@ -85,8 +85,10 @@ if(AuthMiddleware::auth('admin') === true) {
 
     Route::get('/admin/categories')->add('admin\CategoryController', 'index');
     Route::get('/admin/categories/fetch-table')->add('admin\CategoryController', 'fetchTable');
+    Route::post('/admin/categories')->add('admin\CategoryController', 'updateSlug');
     Route::get('/admin/categories/create')->add('admin\CategoryController', 'create');
     Route::post('/admin/categories/create')->add('admin\CategoryController', 'store');
+    
 }
 
 
