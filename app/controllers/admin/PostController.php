@@ -6,6 +6,8 @@ use app\controllers\Controller;
 use core\Csrf;
 use validation\Rules;
 use app\models\Post;
+use app\models\CategoryPage;
+use app\models\Category;
 use parts\Session;
 use database\DB;
 use core\Request;
@@ -17,7 +19,10 @@ class PostController extends Controller {
     public function index() {
 
         $post = new Post();
-        $posts = DB::try()->all($post->t)->order('date_created_at')->fetch();
+        $categoryPage = new CategoryPage();
+        $category = new Category();
+
+        $posts = DB::try()->select($post->t.'.*', $category->t.'.'.$category->title)->as('ctitle')->from($post->t)->leftOuterjoin($categoryPage->t)->on($post->t.'.'.$post->id, '=', $categoryPage->page_id)->leftOuterjoin($category->t)->on($categoryPage->t.'.'.$categoryPage->category_id, '=', $category->t.'.'.$category->id)->order('date_created_at')->fetch();
 
         $count = count($posts);
         $search = get('search');
@@ -71,6 +76,16 @@ class PostController extends Controller {
                         $post->date_updated_at => date("d/m/Y"),
                         $post->time_updated_at => date("H:i")
                     ]);
+
+                    /*$pageId = DB::try()->getLastId()->first();
+
+                    $categoryPage = new CategoryPage();
+
+                    DB::try()->insert($categoryPage->t, [
+
+                        $categoryPage->category_id => 0,
+                        $categoryPage->page_id => $pageId[0],
+                    ]);*/
 
                     Session::set('create', 'You have successfully created a new post!');            
                     redirect('/admin/posts');

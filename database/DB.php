@@ -296,6 +296,16 @@ class DB {
     }
 
     /** 
+     * @param string $table
+     * @return object DB
+     */    
+    public function leftOuterJoin($table) {
+
+        $this->query .= " LEFT OUTER JOIN $table";
+        return $this;
+    }
+
+    /** 
      * @param string $col1
      * @param string $operator
      * @param string $col2

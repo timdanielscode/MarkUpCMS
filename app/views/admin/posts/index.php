@@ -40,27 +40,35 @@
             <thead>
                 <tr>
                     <th>Title</th>
+                    <th>Category</th>
                     <th>Author</th>
                     <th>Meta</th>
                     <th class="width-10">Date</th>
                 </tr>
             </thead>
             <tbody>
-                
                 <?php foreach($posts as $post) { ?>
                     <tr>
                         <?php if($post["title"] !== "not found") {?>
-                        <td class="width-50">
+                        <td class="width-40">
                             <a href="/admin/posts/<?php echo $post['id']; ?>/edit" class="font-weight-500"><?php echo $post['title']; ?></a> |
                             <a href="/admin/posts/<?php echo $post['id']; ?>/edit" class="font-weight-300">Edit</a> |
                             <a href="/admin/posts/<?php echo $post['id']; ?>/preview" class="font-weight-300">Preview</a> |
                             <a href="/admin/posts/<?php echo $post['id']; ?>/delete" class="font-weight-300 color-red">Remove</a>
                         </td>
                         <?php } else { ?>
-                        <td class="width-50">
+                        <td class="width-40">
                             <span class="font-weight-500"><?php echo $post['title']; ?></span>
                         </td>
                         <?php } ?>
+                        <td class="">
+                            <?php if($post['ctitle'] !== null) {
+                                echo $post['ctitle']; 
+                            } else {
+                                echo '-';
+                            }
+                                ?>
+                        </td>
                         <td class="width-15">
                             <?php echo $post['author']; ?>
                         </td>
