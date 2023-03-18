@@ -1,9 +1,8 @@
 <?php
 /**
- * Autload classes
+ * autload
  * 
  * @author Tim Daniëls
- * @version 1.0
  */
 
 spl_autoload_register(function($class) {
