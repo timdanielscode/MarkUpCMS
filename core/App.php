@@ -1,45 +1,52 @@
 <?php
 /**
- * Use to run application envoirement
+ * Application
  * 
  * @author Tim Daniëls
- * @version 1.1
  */
 
 namespace core;
 
+use core\http\Request;
+use core\http\Response;
+use core\routing\Route;
+
 class App {
 
-    protected $middleware;
     public $route;
     public $request;
     public $response;
 
-    public function __construct(Middleware $middleware) {
+    /**
+     * Declaring Request, Response and Route
+     * 
+     * @return void
+     */    
+    public function __construct() {
 
-        $this->middleware = $middleware;
         $this->request = new Request();
         $this->response = new Response();
         $this->route = new Route($this->request, $this->response);
     }
 
     /**
-     * @param object $middleware
-     * @return void
+     * Setting/registering middlewares
+     * 
+     * @param array $middlewares alias & filename 
+     * @param array $routeMiddlewares alias & filename
+     * @return object Middleware
      */
-    public function add($middleware) {
+    public function middleware($middlewares, $routeMiddlewares) {
 
-        $this->middleware->add($middleware);
+        new Middleware($middlewares, $routeMiddlewares);
     }
 
     /**
-     * @return void
+     * @return void 
      */    
     public function run() {
 
-        $this->middleware->handle();
         require_once '../routes/routes.php';
         $this->route->uriNotFound(404);
     }
-
 }
