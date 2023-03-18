@@ -1,9 +1,8 @@
 <?php 
 /**
- * Use for initialize application envoirement
+ * Run application
  * 
  * @author Tim Daniëls
- * @version 1.0
  */
 
 require_once '../core/Autoload.php';
@@ -12,8 +11,7 @@ require_once '../config/config.php';
 
 use core\App;
 
-$app = new App(new core\Middleware());
-
+$app = new App();
 $app->run();
 
 
