@@ -1,7 +1,8 @@
 <?php
 /**
+ * Database
+ * 
  * @author Tim Daniëls
- * @version 1.0
  */
 namespace database;
 
@@ -15,10 +16,12 @@ class DB {
     public $data;
 
     /**
-     * @param string $host
-     * @param string $user
-     * @param string $password
-     * @param string $db
+     * Creating connection
+     * 
+     * @param string $host host
+     * @param string $user username
+     * @param string $password password
+     * @param string $db database name
      * @return void
      */
     public function __construct($host, $user, $password, $db) {
@@ -31,10 +34,9 @@ class DB {
     }
 
     /**
+     * Getting values from config.ini file
      * 
-     * Use for creating an instance of DB class
-     * 
-     * @return void
+     * @return object DB
      */    
     public static function try() {
 
@@ -42,53 +44,36 @@ class DB {
         if(file_exists($file)) {
             
             if(!isset(self::$_instance)) {
+
                 $ini = parse_ini_file($file);
                 self::$_instance = new DB($ini['host'], $ini['user'], $ini['password'], $ini['db']);
             }
         } 
-
         return self::$_instance;
     }
 
     /**
+     * Executes sql statement
      * 
-     * @param string $sql expecting a sql query
-     * @param array $data part as placeholders
-     * 
-     * @return object DB
+     * @param string $sql query
+     * @param array $data sql 
      */      
     public function execute_query($sql, $data = null) {
 
         $this->stmt = $this->_pdo->prepare($sql);
-      
         if($data) {
             if(!$this->stmt->execute($data)) {
-                echo $this->error("Could not execute the query!");
                 return $this->error = true;            
             } 
         } else {
-            if(!$this->stmt->execute()) {
-                echo $this->error("Could not execute the query!");
-                return $this->error = true;            
-            }             
-        }        
-        $this->data = null;
+            $this->stmt->execute();
+        }   
+        $this->data = null; 
         return $this;
     }
 
     /**
-     * 
-     * 
-     * 
-     *  QUERY BUILDER UNDERNEATH
-     * 
-     * 
-     * 
-     * 
-     */
-
-    /**
-     * @return object DB
+     * Fetching sql statement in array
      */     
     public function fetch_query() {
 
@@ -96,23 +81,18 @@ class DB {
     }
 
     /**
-     * @return object DB
+     * Fetching sql statement
      */     
     public function fetch_query_first() {
+
         return $this->stmt->fetch();
     }
 
-    /**
-     * @return object DB
-     */     
-    public function error($error) {
-
-        $this->_error = $error;
-        return $this->_error;
-    }
-
-   /** 
-     * @param string $colls
+    /** 
+     * Fetching columns
+     * Adding SELECT columns to query
+     * 
+     * @param string $columns name(s)
      * @return object DB
      */    
     public function select($colls) {
@@ -125,7 +105,10 @@ class DB {
     }
 
     /** 
-     * @param string $table
+     * Fetching all rows from table
+     * Adding SELECT * FROM table to query
+     * 
+     * @param string $table name
      * @return object DB
      */ 
     public function all($table) {
@@ -135,7 +118,10 @@ class DB {
     }
 
     /** 
-     * @param string $table
+     * Fetching/executing rows on table name
+     * Adding FROM table to query
+     * 
+     * @param string $table name
      * @return object DB
      */ 
     public function from($table) {
@@ -145,9 +131,13 @@ class DB {
     }
 
     /** 
-     * @param string $column
-     * @param string $operator
-     * @param string $value
+     * Fetching/executing rows based on condition 
+     * Adding WHERE column operator to query
+     * ? as placeholder
+     * 
+     * @param string $column name
+     * @param string $operator value
+     * @param string $value column
      * @return object DB
      */ 
     public function where($column, $operator, $value) {
@@ -163,9 +153,13 @@ class DB {
     }
 
     /** 
-     * @param string $column
-     * @param string $operator
-     * @param string $value
+     * Fetching/executing rows on double condition
+     * Adding AND column operator to query
+     * ? as placeholder
+     * 
+     * @param string $column name
+     * @param string $operator value
+     * @param string $value column
      * @return object DB
      */     
     public function and($column, $operator, $value) {
@@ -177,9 +171,12 @@ class DB {
     }
 
     /** 
-     * @param string $column
-     * @param string $operator
-     * @param string $value
+     * Fetching/executing rows on optional second condition
+     * Adding OR column operator to query
+     * 
+     * @param string $column name
+     * @param string $operator value
+     * @param string $value column
      * @return object DB
      */     
     public function or($column, $operator, $value) {
@@ -191,7 +188,10 @@ class DB {
     }
 
     /** 
-     * @param string $num
+     * Fetching limited rows based on argument 
+     * Adding LIMIT num operator to query
+     * 
+     * @param mixed int|string $num 
      * @return object DB
      */     
     public function limit($num) {
@@ -201,8 +201,12 @@ class DB {
     }
 
     /** 
-     * @param string $table
-     * @param array $data
+     * Inserting rows 
+     * Adding INSERT INTO table (columns) VALUES (placeholder) to query
+     * where placeholders are ?s
+     * 
+     * @param string $table name
+     * @param array $data column names, column values
      * @return object DB
      */    
     public function insert($table, $data) {
@@ -210,11 +214,13 @@ class DB {
         $this->data = [];
         $columns = [];
         $placeholders = [];
+
         foreach($data as $key => $val) {
             array_push($columns, $key);
             array_push($placeholders, '?');
             array_push($this->data, $val);
         }
+
         $columns = implode(',',$columns);
         $placeholders = implode(',',$placeholders);
         $this->query = "INSERT INTO $table ($columns) VALUES ($placeholders)";
@@ -224,7 +230,10 @@ class DB {
     }
 
     /** 
-     * @param string $table
+     * Setting table name for set method 
+     * Adding UPDATE table to query
+     * 
+     * @param string $table name
      * @return object DB
      */     
     public function update($table) {
@@ -234,7 +243,10 @@ class DB {
     }
 
     /** 
-     * @param string $table
+     * Deleting rows 
+     * Adding DELETE FROM table to query
+     * 
+     * @param string $table name
      * @return object DB
      */     
     public function delete($table) {
@@ -244,7 +256,12 @@ class DB {
     }
 
     /** 
-     * @param array $data
+     * Updating rows
+     * Adding SET sets
+     * where placeholders are ?s
+     * where sets are columns + placeholder
+     * 
+     * @param array $data column names, column values
      * @return object DB
      */     
     public function set($data) {
@@ -266,7 +283,10 @@ class DB {
     }
 
     /** 
-     * @param string $column
+     * Fetching ordered rows
+     * Adding ORDER BY column to query
+     * 
+     * @param string $column name
      * @return object DB
      */     
     public function order($column) {
@@ -276,17 +296,22 @@ class DB {
     }
 
     /** 
-     * @param mixed int|string $num
+     * Fetching rows descending
+     * Adding DESC to query
+     * 
      * @return object DB
      */     
-    public function desc($num) {
+    public function desc() {
 
-        $this->query .= " DESC LIMIT $num";
+        $this->query .= " DESC";
         return $this;
     }
 
     /** 
-     * @param string $table
+     * Setting table to join for on method to fetch
+     * Adding INNER JOIN table to query
+     * 
+     * @param string $table name
      * @return object DB
      */    
     public function join($table) {
@@ -296,19 +321,12 @@ class DB {
     }
 
     /** 
-     * @param string $table
-     * @return object DB
-     */    
-    public function leftOuterJoin($table) {
-
-        $this->query .= " LEFT OUTER JOIN $table";
-        return $this;
-    }
-
-    /** 
-     * @param string $col1
-     * @param string $operator
-     * @param string $col2
+     * Fetching rows from two tables 
+     * Adding ON col1 $operator col2 to query
+     * 
+     * @param string $col1 column name
+     * @param string $operator value
+     * @param string $col2 column name
      * @return object DB
      */    
     public function on($col1, $operator, $col2) {
@@ -318,17 +336,22 @@ class DB {
     }
 
     /** 
-     * @param string $alias
+     * Fetching last id from table 
+     * 
+     * @param string $table name
      * @return object DB
-     */   
-    public function as($alias) {
+     */ 
+    public function getLastId($table) {
 
-        $this->query .= " AS $alias";
+        $this->query = "SELECT id FROM $table ORDER BY id DESC LIMIT 1";
         return $this;
     }
 
     /** 
-     * @param string $sql
+     * Fetching/executing raw sql
+     * Setting query to giving argument
+     * 
+     * @param string $sql query
      * @return object DB
      */     
     public function raw($sql) {
@@ -338,15 +361,8 @@ class DB {
     }
 
     /** 
-     * @return object DB
-     */ 
-    public function getLastId() {
-
-        $this->query = "SELECT LAST_INSERT_ID()";
-        return $this;
-    }
-
-    /** 
+     * Executing query to fetch rows
+     * 
      * @return object DB
      */ 
     public function first() {
@@ -359,7 +375,9 @@ class DB {
     }
 
     /** 
-     * @param string $operand
+     * Executing query to fetch rows in array
+     * 
+     * @param string $operand value
      * @return object DB
      */        
     public function fetch($operand = null) {
@@ -372,6 +390,8 @@ class DB {
     }
 
     /** 
+     * Getting the actual sql code
+     * 
      * @return object DB
      */      
     public function getQuery() {
@@ -380,11 +400,12 @@ class DB {
     }
 
     /** 
+     * Executing query
+     * 
      * @return object DB
      */    
     public function run() {
-
+        
         return $this->execute_query($this->query, $this->data);
     }
-
 }
