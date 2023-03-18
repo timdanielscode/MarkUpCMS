@@ -1,44 +1,77 @@
 <?php
 /**
- * Use to create mid layer rules
+ * Middleware creating the middleware instances  
  * 
  * @author Tim Daniëls
- * @version 1.0
  */
 
 namespace core;
 
 class Middleware {
 
-    protected $start;
+    public static $middleware = [];
+    public static $routeMiddleware = [];
 
-    public function __construct() {
+    /**
+     * Creating instances of middlewares
+     * 
+     * @param array $middleware middlewares
+     * @param array $routeMiddleware route middlewares
+     * @return object middleware
+     */    
+    public function __construct($middleware, $routeMiddleware) {
 
-        $this->start = function() {
-            #application is running after middlewares 
-        };
+        self::$middleware = $middleware;
+        self::$routeMiddleware = $routeMiddleware;
+
+        if(!empty(self::$middleware) && self::$middleware !== null) {
+
+            foreach(self::$middleware as $key => $value) {
+
+                $class = 'middleware\\'.$value;
+                if(class_exists($class)) { 
+                    
+                    new $class();
+                }
+            }
+        }
     }
 
     /**
+     * Creating instances of route middlewares
      * 
-     * @param object $middleware expecting a sql query
-     * 
-     * @return object Middleware
-     */     
-    public function add($middleware) {
+     * @param mixed $middlewares string|array alias | alias & extra middleware value
+     * @param object $func Route Request Response
+     * @return object middleware
+     */
+    public static function run($middleware, $func) {
 
-        $next = $this->start;
-        $this->start = function() use ($middleware, $next){
-            return $middleware($next);
-        };
+        $routeMiddleware = self::$routeMiddleware;
+
+        foreach($routeMiddleware as $key => $value) {
+
+            if($middleware === $key) {
+
+                $class = 'middleware\\'.$value;
+            
+                if(class_exists($class)) { 
+            
+                    return new $class($func);
+                }
+
+            } else if(gettype($middleware) === 'array' && $key === array_keys($middleware)[0]) {       
+
+                foreach($middleware as $key => $value) {
+
+                    $middlewareValue = array_values($middleware);
+                    $class = 'middleware\\'.$routeMiddleware[$key];
+
+                    if(class_exists($class)) { 
+                                    
+                        return new $class($func, $middlewareValue[0]);
+                    }
+                }
+            }
+        } 
     }
-
-    /**
-     * @return void
-     */ 
-    public function handle() {
-        
-        return call_user_func($this->start);
-    }
-
 }
