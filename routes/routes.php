@@ -13,12 +13,20 @@ foreach($postPaths as $postPath) {
     Route::get($postPath['slug'])->add('RenderPageController', 'render');
 }
 
-if(LoginMiddleware::logged_in() === true) {
+/* 
+
+    Alleen voor users die zijn ingelogd..
+
+*/
     Route::get('/profile/[username]')->add('UserController', 'read');
     Route::get('/profile/[username]/edit')->add('UserController', 'edit');
     Route::post('/profile/[username]/edit')->add('UserController', 'update');
     Route::get('/logout')->add('LogoutController', 'logout');
-} else {
+
+/* 
+
+    Alleen voor users die niet zijn ingelogd..
+*/
     
     Route::get('/login')->add('LoginController', 'index');
     Route::post('/login')->add('LoginController', 'auth');
@@ -26,7 +34,6 @@ if(LoginMiddleware::logged_in() === true) {
     Route::post('/login-admin')->add('admin\LoginController', 'auth');
     Route::get('/register')->add('RegisterController', 'create');
     Route::post('/register')->add('RegisterController', 'store');
-}
 
 
 /* 
