@@ -28,9 +28,14 @@ if(LoginMiddleware::logged_in() === true) {
     Route::post('/register')->add('RegisterController', 'store');
 }
 
-if(AuthMiddleware::auth('admin') === true) {
 
-    Route::get('/admin/dashboard')->add('admin\AdminController', 'index');
+/* 
+
+    Alleen voor de admins!
+
+*/
+    
+Route::get('/admin/dashboard')->add('admin\AdminController', 'index');
     Route::get('/admin/users')->add('admin\UserController', 'index');
     Route::get('/admin/users/create')->add('admin\UserController', 'create');
     Route::post('/admin/users/create')->add('admin\UserController', 'store');
@@ -91,7 +96,6 @@ if(AuthMiddleware::auth('admin') === true) {
     Route::post('/admin/categories/create')->add('admin\CategoryController', 'store');
     Route::get('/admin/categories/[id]/delete')->add('admin\CategoryController', 'delete');
     
-}
 
 
 
