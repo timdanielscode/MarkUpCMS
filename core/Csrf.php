@@ -1,26 +1,30 @@
 <?php
 /**
+ * Csrf
  * 
  * @author Tim Daniëls
- * @version 1.0
  */
 namespace core;
 
-use parts\Session;
+use core\Session;
 
 class Csrf {
 
     /**
-     * Generates Csrf token 
+     * Generating csrf token if not exists
+     * can be used to add a token and get the token 
      * 
-     * @return string token
+     * @param string $arg get|add
+     * @return string token csrf
      */
     public static function token($arg) {
 
         if(!Session::exists('Csrf_token')) {
             Session::set('Csrf_token', bin2hex(random_bytes(32)));
         }
+
         $token = hash_hmac('sha256', 'hash me please!', Session::get('Csrf_token'));
+        
         if($arg == 'get') {
             return $token;
         } else if($arg == 'add') {
@@ -29,10 +33,12 @@ class Csrf {
     }
 
     /**
-     * Validates Csrf token 
+     * Validating the token
      * 
+     * @param string $token value
+     * @param string $postToken value
      * @return bool true|false
-     */    
+     */ 
     public static function validate($token, $postToken) {
 
         if(hash_equals($token, $postToken)) {
@@ -40,5 +46,4 @@ class Csrf {
         } 
         return false;
     }
-
 }
