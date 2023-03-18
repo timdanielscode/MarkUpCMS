@@ -3,7 +3,7 @@
 namespace app\controllers;
 
 use app\models\User;
-use core\CSRF;
+use core\Csrf;
 use parts\Session;
 use validation\Rules;
 use parts\Auth;
