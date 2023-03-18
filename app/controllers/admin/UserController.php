@@ -6,12 +6,12 @@ use app\controllers\Controller;
 use app\models\User;
 use app\models\UserRole;
 use app\models\Roles;
-use parts\Session;
+use core\Session;
 use database\DB;
-use core\CSRF;
+use core\Csrf;
 use validation\Rules;
 use core\Response;
-use parts\Pagination;
+use extensions\Pagination;
 
 
 class UserController extends Controller {
@@ -104,7 +104,9 @@ class UserController extends Controller {
         $user = new User();
         $userRole = new UserRole();
 
-        $current = DB::try()->select('u'.'.*', $role->t.'.'.$role->name)->from('users')->as('u')->join($userRole->t)->on('u'.'.id', '=', $userRole->t.'.'.$userRole->user_id)->join($role->t)->on($userRole->t.'.'.$userRole->role_id, '=', $role->t.'.'.$role->id)->where('u.id', '=', $request['id'])->and('u.username', '=', $request["username"])->fetch();
+        //$current = DB::try()->select('u'.'.*', $role->t.'.'.$role->name)->from('users')->as('u')->join($userRole->t)->on('u'.'.id', '=', $userRole->t.'.'.$userRole->user_id)->join($role->t)->on($userRole->t.'.'.$userRole->role_id, '=', $role->t.'.'.$role->id)->where('u.id', '=', $request['id'])->and('u.username', '=', $request["username"])->fetch();
+        $current = DB::try()->select('*')->from($user->t)->where('id', '=', $request['id'])->and('username', '=', $request["username"])->fetch();
+
 
         if(empty($current)) {
             return Response::statusCode(404)->view("/404/404");

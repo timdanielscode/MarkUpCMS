@@ -1,7 +1,6 @@
-<?php use parts\validation\Errors; ?>
+<?php use validation\Errors; ?>
 <?php use core\Csrf; ?>
-<?php use parts\Session; ?>
-<?php use parts\Alert; ?>
+<?php use core\Session; ?>
 
 <?php 
     $this->include('headerOpen');  
@@ -10,10 +9,6 @@
 ?>
 
 <div class="con">
-    
-<?php if(Session::exists("csrf")) { ?>
-        <div class="my-5 w-75 mx-auto"><?php echo Alert::display("warning", "csrf"); ?></div>
-    <?php Session::delete('csrf'); } ?>
 
     <form action="" method="POST" class="">
     <h1 class="text-color-sec mb-5">Register</h1>

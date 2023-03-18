@@ -114,20 +114,26 @@ class PostController extends Controller {
         return $this->view('admin/posts/edit', $data);
     }
 
-    public function update() {
-        echo 'test132';
-        exit();
+    public function update($request) {
 
+        if(submitted('submit')) {
 
-        /*if(submitted('submit')) {
-     
-            //if(CSRF::validate(CSRF::token('get'), post('token'))) {
+            if(CSRF::validate(CSRF::token('get'), post('token'))) {
                 
                 $post = new Post();
                 $rules = new Rules();
                 $id = $request['id'];
                 $title = $request["title"];
-                $slug = $request["slug"];update>set([
+                $slug = $request["slug"];
+                $body = $request["body"];
+
+                if($rules->slug()->validated()) {
+
+                    $slug = str_replace(" ", "-", $slug);
+
+                    if(!empty($slug) ) {
+
+                        DB::try()->update($post->t)->set([
                             $post->title => $title,
                             $post->slug => $slug,
                             $post->body => $body,
@@ -136,20 +142,19 @@ class PostController extends Controller {
                         ])->where($post->id, '=', $id)->run();              
 
                         Session::set('updated', 'User updated successfully!');
-                        //redirect("/admin/posts/$id/edit");
-                 
+                        redirect("/admin/posts/$id/edit");
                     }
                 } else {
                     $data['rules'] = $rules->errors;
                     $data['post'] = DB::try()->select('*')->from($post->t)->where($post->id, '=', $id)->first();
-                    //return $this->view("/admin/posts/edit", $data);
+                    return $this->view("/admin/posts/edit", $data);
                 }
 
-            //} else {
-            //    Session::set('csrf', 'Cross site request forgery!');
-            //    redirect("/admin/posts/$id");
-            //}
-        }*/
+            } else {
+                Session::set('csrf', 'Cross site request forgery!');
+                redirect("/admin/posts/$id");
+            }
+        }
     }
 
     public function metaData($request) {
