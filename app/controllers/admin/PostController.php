@@ -8,10 +8,10 @@ use validation\Rules;
 use app\models\Post;
 use app\models\CategoryPage;
 use app\models\Category;
-use parts\Session;
+use core\Session;
 use database\DB;
 use core\Request;
-use parts\Pagination;
+use extensions\Pagination;
 use core\Response;
 
 class PostController extends Controller {
@@ -22,7 +22,9 @@ class PostController extends Controller {
         $categoryPage = new CategoryPage();
         $category = new Category();
 
-        $posts = DB::try()->select($post->t.'.*', $category->t.'.'.$category->title)->as('ctitle')->from($post->t)->leftOuterjoin($categoryPage->t)->on($post->t.'.'.$post->id, '=', $categoryPage->page_id)->leftOuterjoin($category->t)->on($categoryPage->t.'.'.$categoryPage->category_id, '=', $category->t.'.'.$category->id)->order('date_created_at')->fetch();
+        // nog ff naar kijken..
+        //$posts = DB::try()->select($post->t.'.*', $category->t.'.'.$category->title)->from($post->t)->join($categoryPage->t)->on($post->t.'.'.$post->id, '=', $categoryPage->page_id)->join($category->t)->on($categoryPage->t.'.'.$categoryPage->category_id, '=', $category->t.'.'.$category->id)->order('date_created_at')->fetch();
+        $posts = DB::try()->select("*")->from($post->t)->fetch();
 
         $count = count($posts);
         $search = get('search');
@@ -112,26 +114,20 @@ class PostController extends Controller {
         return $this->view('admin/posts/edit', $data);
     }
 
-    public function update($request) {
+    public function update() {
+        echo 'test132';
+        exit();
 
-        if(submitted('submit')) {
 
-            if(CSRF::validate(CSRF::token('get'), post('token'))) {
+        /*if(submitted('submit')) {
+     
+            //if(CSRF::validate(CSRF::token('get'), post('token'))) {
                 
                 $post = new Post();
                 $rules = new Rules();
                 $id = $request['id'];
                 $title = $request["title"];
-                $slug = $request["slug"];
-                $body = $request["body"];
-
-                if($rules->slug()->validated()) {
-
-                    $slug = str_replace(" ", "-", $slug);
-
-                    if(!empty($slug) ) {
-
-                        DB::try()->update($post->t)->set([
+                $slug = $request["slug"];update>set([
                             $post->title => $title,
                             $post->slug => $slug,
                             $post->body => $body,
@@ -140,19 +136,20 @@ class PostController extends Controller {
                         ])->where($post->id, '=', $id)->run();              
 
                         Session::set('updated', 'User updated successfully!');
-                        redirect("/admin/posts/$id/edit");
+                        //redirect("/admin/posts/$id/edit");
+                 
                     }
                 } else {
                     $data['rules'] = $rules->errors;
                     $data['post'] = DB::try()->select('*')->from($post->t)->where($post->id, '=', $id)->first();
-                    return $this->view("/admin/posts/edit", $data);
+                    //return $this->view("/admin/posts/edit", $data);
                 }
 
-            } else {
-                Session::set('csrf', 'Cross site request forgery!');
-                redirect("/admin/posts/$id");
-            }
-        }
+            //} else {
+            //    Session::set('csrf', 'Cross site request forgery!');
+            //    redirect("/admin/posts/$id");
+            //}
+        }*/
     }
 
     public function metaData($request) {

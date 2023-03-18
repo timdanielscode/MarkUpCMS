@@ -7,8 +7,8 @@ use app\models\Css;
 use database\DB;
 use core\Csrf;
 use validation\Rules;
-use parts\Session;
-use parts\Pagination;
+use core\Session;
+use extensions\Pagination;
 
 class CssController extends Controller {
 

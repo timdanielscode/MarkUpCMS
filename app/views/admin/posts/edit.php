@@ -1,7 +1,6 @@
-<?php use parts\validation\Errors; ?>
+<?php use validation\Errors; ?>
 <?php use core\Csrf; ?>
-<?php use parts\Session; ?>
-<?php use parts\Alert; ?>
+<?php use core\Session; ?>
 
 <?php 
     $this->include('headerOpen');  
@@ -19,11 +18,6 @@
     
 ?>
 
-    
-<?php if(Session::exists("csrf")) { ?>
-        <div class="my-5 w-75 mx-auto"><?php echo Alert::display("warning", "csrf"); ?></div>
-    <?php Session::delete('csrf'); } ?>
-
     <div class="containerPost">
     <div class="row">
         <div class="col10">
@@ -31,15 +25,15 @@
                 <div class="form-parts">
                     <input type="text" autofocus name="title" id="title" value="<?php echo $post['title']; ?>">
                     <div class="error-messages">
-                        <?php echo Errors::get($rules, 'title'); ?>
+                        <?php //echo Errors::get($rules, 'title'); ?>
                     </div>    
                     <input type="text" name="slug" id="slug" type="text" value="<?php echo $post['slug']; ?>">
                     <div class="error-messages">
-                        <?php echo Errors::get($rules, 'slug'); ?>
+                        <?php //echo Errors::get($rules, 'slug'); ?>
                     </div>
                 </div>
                 <textarea name="body" type="body" id="code"><?php echo $post['body']; ?></textarea>
-                <button name="submit" id="submit" type="submit" class="display-none">Create</button>
+                <button name="submit" id="submit" type="submit" class="">Update</button>
                 <input type="hidden" name="token" value="<?php Csrf::token('add');?>" />
             </form>
         </div>
@@ -47,7 +41,9 @@
             <div id="postSidebar">
                 <div class="containerFirstPostButtons">
                     <a href="/admin/posts" class="button">Back</a>
+
                     <label for="submit" class="button">Update</label>
+
                 </div>
                 <ul class="postSidebarButtons">
                     <li>

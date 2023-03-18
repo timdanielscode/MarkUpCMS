@@ -7,8 +7,8 @@ use app\models\Category;
 use app\models\Post;
 use app\models\CategoryPage;
 use database\DB;
-use parts\Session;
-use parts\Pagination;
+use core\Session;
+use extensions\Pagination;
 use core\Csrf;
 use validation\Rules;
 

@@ -10,7 +10,7 @@
 namespace app\controllers\http;
 
 use app\controllers\Controller;
-use parts\Session;
+use core\Session;
 use app\models\Post;
 use app\models\Css;
 use app\models\Js;

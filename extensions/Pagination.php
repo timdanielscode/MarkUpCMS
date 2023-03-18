@@ -1,8 +1,8 @@
 <?php
 
-namespace parts;
+namespace extensions;
 
-use parts\Session;
+use core\Session;
 use core\Request;
 
 class Pagination {
