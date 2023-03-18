@@ -1,9 +1,8 @@
-<?php 
+<?php
 /**
- * Use to handle views
+ * Controller
  * 
  * @author Tim Daniëls
- * @version 1.0
  */
 
 namespace app\controllers;
@@ -11,70 +10,88 @@ namespace app\controllers;
 class Controller {
 
     /**
-     * @param string $path optional
-     * @param array $args arguments which can be passed
-     * @return mixed object|bool 
+     * Require views
+     * 
+     * @param string $path name view
+     * @param array $args optional view variables
+     * @return mixed object Controller
      */
-    public function view($path = null, $args = []) {
-
-        if(!empty($args)) {
-            extract($args);
-        }
+    public function view($path, $args = []) {
+    
         if($path) {
+            if(!empty($args)) {
+                extract($args);
+            }
             require_once "../app/views/" . $path . ".php";
-        } else {
-            return false;
-        }
+        } 
         return $this;
     }
 
     /**
-     * @param string $file to include view parts on a view
+     * Require view from includes folder
+     * 
+     * @param string $file name view
      * @return void
      */
     public function include($file) {
-        return involve("../app/views/includes/" . $file . ".php");
+
+        involve("../app/views/includes/" . $file . ".php");
     }
 
     /**
-     * @param string $title for adding meta title
+     * Adding html title tag in view
+     * 
+     * @param string $title meta
      * @return void
      */
     public function title($title) {
+
         echo "<title>$title</title>";
     }
 
     /**
-     * @param string $title for adding meta description
+     * Adding html meta tag in view
+     * 
+     * @param string $content meta 
      * @return void
      */
     public function description($content) {
+
         echo '<meta name="description" content="'.$content.'">';
     }
 
     /**
-     * @param string $name meta name
-     * @param string $content meta content
+     * Adding html meta tag in view
+     * 
+     * @param string $name meta
+     * @param string $content meta
      * @return void
      */
     public function meta($name, $content) {
+
         echo '<meta name="'.$name.'" content="'.$content.'">';
     } 
 
     /**
-     * @param string $src src of script
-     * @param string $defer defer
+     * Adding html script tag in view
+     * 
+     * @param string $src source
+     * @param string $defer optional
      * @return void
      */
     public function script($src, $defer = false) {
-        echo '<script '.$defer.'src='.'"'.$src.'"'.'></script>';
+
+        echo '<script '.$defer.' src='.'"'.$src.'"'.'></script>';
     }
 
     /**
-     * @param string $href href of stylesheet
+     * Adding html link tag in view
+     * 
+     * @param string $href hypertext reference
      * @return void
      */
     public function stylesheet($href) {
+
         echo '<link rel='.'"'.'stylesheet'.'" '. 'type='.'"'.'text/css'.'" '. 'href='.'"'.$href.'"'.'>';
     }
 }
