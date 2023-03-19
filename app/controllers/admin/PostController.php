@@ -24,7 +24,16 @@ class PostController extends Controller {
 
         // nog ff naar kijken..
         //$posts = DB::try()->select($post->t.'.*', $category->t.'.'.$category->title)->from($post->t)->join($categoryPage->t)->on($post->t.'.'.$post->id, '=', $categoryPage->page_id)->join($category->t)->on($categoryPage->t.'.'.$categoryPage->category_id, '=', $category->t.'.'.$category->id)->order('date_created_at')->fetch();
-        $posts = DB::try()->select($post->title, $post->id)->from($post->t)->fetch();
+        $posts = DB::try()->select("*")->from($post->t)->fetch();
+
+        /*$test = DB::try()->select($post->t.'.'.$post->id, $post->t.'.'.$post->title, $post->t.'.'.$post->author, $post->t.'.'.$post->metaTitle, $post->t.'.'.$post->metaDescription, $post->t.'.'.$post->date_created_at, $post->t.'.'.$post->time_created_at, $post->t.'.'.$post->date_updated_at, $post->t.'.'.$post->time_updated_at, $category->t.'.'.$category->title)->from($post->t)->join($categoryPage->t)->on($post->t.'.'.$post->id, '=', $categoryPage->page_id)->join($category->t)->on($categoryPage->t.'.'.$categoryPage->category_id, '=', $category->t.'.'.$category->id)->order('date_created_at')->fetch();
+
+        foreach($test as $t => $val) {
+
+            echo $val['title'] . '<br>';
+
+        }*/
+
 
         $count = count($posts);
         $search = get('search');
