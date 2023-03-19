@@ -23,7 +23,7 @@ class Model {
 
       $getTable = DB::try()->raw("SELECT 1 FROM $table LIMIT 1")->first();
 
-      if($getTable[1] === 1) {
+      if($getTable[1] === 1 ) {
   
          self::$modelTable = $table; 
       }
@@ -51,7 +51,6 @@ class Model {
       if($id !== null) {
          
          self::createInstance();
-         echo self::$modelTable;
          return DB::try()->select('*')->from(self::$modelTable)->where('id', '=', $id)->first();
       }
    }
