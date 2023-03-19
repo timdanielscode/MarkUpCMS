@@ -64,40 +64,34 @@ class PostController extends Controller {
 
     public function store() {
 
-        if(submitted('submit')) {
+        if(submitted("submit") === true && Csrf::validate(Csrf::token('get'), post('token')) === true ) {
 
-            if(Csrf::validate(Csrf::token('get'), post('token') ) === true) {
-
-                $rules = new Rules();
-                $post = new Post();
-
-                if($rules->create_post()->validated()) {
-                    
-                    $slug = "/".post('title');
-                    $slug = str_replace(" ", "-", $slug);
-
-                    Post::insert([
-
-                        $post->title => post('title'),
-                        $post->slug => $slug,
-                        $post->body => post('body'),
-                        $post->author => Session::get('username'),
-                        $post->date_created_at => date("d/m/Y"),
-                        $post->time_created_at => date("H:i"),
-                        $post->date_updated_at => date("d/m/Y"),
-                        $post->time_updated_at => date("H:i")
-                    ]);
-
-                    Session::set('create', 'You have successfully created a new post!');            
-                    redirect('/admin/posts');
-
-                } else {
-
-                    $data['rules'] = $rules->errors;
-                    return $this->view('admin/users/create', $data);
-                }
+            $rules = new Rules();
+            $post = new Post();
+    
+            if($rules->create_post()->validated()) {
+                        
+                $slug = "/".post('title');
+                $slug = str_replace(" ", "-", $slug);
+    
+                Post::insert([
+    
+                    $post->title => post('title'),
+                    $post->slug => $slug,
+                    $post->body => post('body'),
+                    $post->author => Session::get('username'),
+                    $post->date_created_at => date("d/m/Y"),
+                    $post->time_created_at => date("H:i"),
+                    $post->date_updated_at => date("d/m/Y"),
+                    $post->time_updated_at => date("H:i")
+                ]);
+    
+                Session::set('create', 'You have successfully created a new post!');            
+                redirect('/admin/posts');
+    
             } else {
-                Session::set('csrf', 'Cross site request forgery!');
+    
+                $data['rules'] = $rules->errors;
                 return $this->view('admin/users/create', $data);
             }
         }
