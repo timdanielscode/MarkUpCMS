@@ -2,7 +2,12 @@
 
 namespace app\models;
 
-class Post {
+class Post extends Model {
+
+    public function __construct() {
+
+        self::table("pages");
+    }
 
     public $t = "pages",
 

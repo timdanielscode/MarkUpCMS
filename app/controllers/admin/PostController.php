@@ -45,7 +45,7 @@ class PostController extends Controller {
             }
         }
         
-        $posts = Pagination::set($posts, 20);
+        $posts = Pagination::set($posts, 10);
         $numberOfPages = Pagination::getPages();
 
         $data["posts"] = $posts;
@@ -76,7 +76,7 @@ class PostController extends Controller {
                     $slug = "/".post('title');
                     $slug = str_replace(" ", "-", $slug);
 
-                    DB::try()->insert($post->t, [
+                    Post::insert([
 
                         $post->title => post('title'),
                         $post->slug => $slug,
@@ -87,16 +87,6 @@ class PostController extends Controller {
                         $post->date_updated_at => date("d/m/Y"),
                         $post->time_updated_at => date("H:i")
                     ]);
-
-                    /*$pageId = DB::try()->getLastId()->first();
-
-                    $categoryPage = new CategoryPage();
-
-                    DB::try()->insert($categoryPage->t, [
-
-                        $categoryPage->category_id => 0,
-                        $categoryPage->page_id => $pageId[0],
-                    ]);*/
 
                     Session::set('create', 'You have successfully created a new post!');            
                     redirect('/admin/posts');
@@ -115,8 +105,8 @@ class PostController extends Controller {
 
     public function edit($request) {
 
-        $posts = new Post();
-        $post = DB::try()->select('*')->from($posts->t)->where($posts->id, '=', $request['id'])->first();
+        $post = Post::get($request['id']);
+        
         $data['post'] = $post;
         $data['rules'] = [];
 
@@ -142,13 +132,14 @@ class PostController extends Controller {
 
                     if(!empty($slug) ) {
 
-                        DB::try()->update($post->t)->set([
+                        Post::update([$post->id => $id], [
+
                             $post->title => $title,
                             $post->slug => $slug,
                             $post->body => $body,
                             $post->date_updated_at => date("d/m/Y"),
                             $post->time_updated_at => date("H:i")
-                        ])->where($post->id, '=', $id)->run();              
+                        ]);
 
                         Session::set('updated', 'User updated successfully!');
                         redirect("/admin/posts/$id/edit");
@@ -206,21 +197,15 @@ class PostController extends Controller {
 
     public function read($request) {
 
-        $posts = new Post();
-        $post = DB::try()->select('*')->from($posts->t)->where($posts->id, '=', $request['id'])->first();
+        $post = Post::get($request['id']);
         $data['post'] = $post;
 
         return $this->view('/admin/posts/read', $data);
-
     }
 
     public function delete($request) {
 
-        $id = $request['id'];
-
-        $post = new Post();
-        $post = DB::try()->delete($post->t)->where($post->id, "=", $id)->run();
-
+        Post::delete("id", $request['id']);
         redirect("/admin/posts");
     }
 
