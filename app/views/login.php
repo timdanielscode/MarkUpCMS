@@ -1,6 +1,5 @@
 <?php use validation\Errors; ?>
 <?php use core\Csrf; ?>
-<?php use core\Session; ?>
 
 <?php 
     $this->include('headerOpen');  
@@ -10,23 +9,27 @@
 
 <div class="container my-179">
 
-    <form method="POST" action="" class="d-block w-50 mx-auto">
-    <h1 class="text-color-sec mb-5">Login</h1>
-        <div class="form-group">
-            <label for="username">Username:</label>
-            <input name="username" value="<?php echo post('username') ?>" type="text" id="username" class="form-control <?php //Errors::addValidClass($errors, 'username'); ?>">
-            <div class="invalid-feedback text-color-thr"><?php echo Errors::get($errors, 'username'); ?></div>
-        </div>
-        <div class="form-group">
-            <label for="password">Password:</label>
-            <input name="password" type="password" id="password" class="form-control <?php //Errors::addValidClass($errors, 'password'); ?>">
-            <div class="invalid-feedback text-color-thr"><?php echo Errors::get($errors, 'password'); ?></div>
-        </div>
-        <div class="form-group">
-            <input type="hidden" name="token" value="<?php Csrf::token('add');?>" />
-            <button name="submit" type="submit" class="mt-3 btn bg-color-sec text-white btn-lg">Login</button>
-        </div>
-    </form>
+
+<form action="" method="POST">
+  <div class="form-parts">                
+    <label for="username">Username:</label>                
+    <input type="text" name="username"/>                
+    <div class="form-rules">                
+      <?php echo Errors::get($rules, "username"); ?>                
+    </div>                
+  </div>                
+  <div class="form-parts">                
+    <label for="password">Password:</label>                
+    <input type="password" name="password"/>                
+    <div class="form-rules">                
+      <?php echo Errors::get($rules, "password"); ?>                
+    </div>                
+  </div>                
+  <div class="form-parts">                
+    <button type="submit" name="submit">Login</button>                 
+    <input type="hidden" name="token" value="<?php Csrf::token("add"); ?>"/>
+  </div>                
+</form>    
 </div>
 
 <?php 

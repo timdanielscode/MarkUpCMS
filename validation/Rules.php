@@ -27,29 +27,71 @@ class Rules {
      * return $this
      */
 
-     public function register_rules($username, $email) {
-        
+     public function registerRules() {    
+                
         $validation = new Validate();
-        
-        $validation->input('username')->as('Username')->rules(['required' => true, 'min' => 5, 'max' => 40, 'special' => true, 'unique' => $username]);
-        $validation->input('email')->as('Email')->rules(['required' => true, 'min' => 5, 'max' => 40, 'special' => true, 'unique' => $email]);
-        $validation->input('password')->as('Password')->rules(['required' => true, 'min' => 5, 'max' => 50]);
-        $validation->input('password_confirm')->as('Password')->rules(['required' => true, 'match' => 'password']);
-        
+                  
+        $validation->input("username")->as("Username")->rules([
+                  
+          "required" => true, 
+          "min" => "6", 
+          "max" => "30", 
+          "special" => true
+                  
+        ]);
+                  
+        $validation->input("email")->as("Email")->rules([
+                  
+          "required" => true, 
+          "min" => "6", 
+          "max" => "30", 
+          "special" => true
+                  
+        ]);
+                  
+        $validation->input("password")->as("Password")->rules([
+                  
+          "required" => true, 
+          "min" => "6", 
+          "max" => "60"
+                  
+        ]);
+                   
+        $validation->input("retypePassword")->as("Password")->rules([
+                  
+          "required" => true, 
+          "match" => "password"
+                  
+        ]);
+                   
         $this->errors = $validation->errors;
         return $this;
-    }
+      }
 
-    public function login_rules() {
-        
+      public function loginRules() {    
+                    
         $validation = new Validate();
-
-        $validation->input('username')->as('Username')->rules(['required' => true, 'min' => 5, 'max' => 20, 'special' => true]);
-        $validation->input('password')->as('Password')->rules(['required' => true,'min' => 5, 'max' => 50]);
-
+                  
+        $validation->input("username")->as("Username")->rules([
+                  
+          "required" => true,             
+          "min" => "6",          
+          "max" => "30",          
+          "special" => true            
+  
+        ]);
+                  
+        $validation->input("password")->as("Password")->rules([
+                  
+          "required" => true,              
+          "min" => "6",              
+          "max" => "60"
+                  
+        ]);
+                   
         $this->errors = $validation->errors;
-        return $this->errors;
-    }
+        return $this;
+      }  
 
     public function profile_edit($username, $email) {
 

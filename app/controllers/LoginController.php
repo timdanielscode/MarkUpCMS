@@ -1,51 +1,43 @@
 <?php
 
-namespace app\controllers;
-
-use app\models\User;
-use core\Csrf;
-use parts\Session;
-use validation\Rules;
-use parts\Auth;
-
-class LoginController extends Controller {
-
-    public function index() {
-
-        $data['errors'] = [];
-        return $this->view('login', $data);
+  namespace app\controllers;
+  
+  use core\Csrf;
+  use extensions\Auth;
+  use validation\Rules;
+  use core\Session;
+                
+  class LoginController extends Controller {
+                
+    public function index() {    
+                  
+      $data["rules"] = [];
+      return $this->view("login", $data);     
     }
-
-    public function auth() {
-
-        $user = new User;
-
-        if(submitted("submit")) {
-            
-            if(CSRF::validate(CSRF::token('get'), post('token'))) {
-
-                $rules = new Rules();
-                $rules->login_rules();
-
-                if($rules->validated()) {
-
-                    if(Auth::authenticate(array('role' => 'normal'))) {
-                        
-                        redirect('/profile/'.Session::get("username")); 
-                    } else {
-                        Session::set('auth_failed', 'Username and password does not match.');
-                        redirect('/login');                        
-                    }
-
-                } else {
-                    $data['errors'] = $rules->login_rules();
-                    return $this->view('login', $data);
-                }
+                  
+                
+    public function authenticateUsers() {    
+                  
+        if(submitted("submit") && Csrf::validate(Csrf::token("get"), post("token")) ) {
+                     
+          $rules = new Rules();  
+                  
+          if($rules->loginRules()->validated()) {
+  
+            if(Auth::authenticate() ) {
+                   
+              redirect("/profile/" . Session::get("username") ); 
+                   
             } else {
-                Session::set('csrf', 'Cross Site Request Forgery!');
-                redirect('/login');
+                              
+              redirect("/login");      
             }
-        }
-    }
-
-}
+  
+          } else {
+              
+            $data["rules"] = $rules->errors;
+            return $this->view("login", $data);  
+          }   
+        }     
+      }
+  }  

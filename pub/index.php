@@ -12,6 +12,13 @@ require_once '../config/config.php';
 use core\App;
 
 $app = new App();
+
+//$app->middleware([
+
+//    "login" => "LoginMiddleware"
+ 
+//  ]);
+
 $app->run();
 
 

@@ -1,60 +1,42 @@
-<?php use parts\validation\Errors; ?>
-<?php use core\Csrf; ?>
-<?php use parts\Session; ?>
-<?php use parts\Alert; ?>
+<?php use core\Csrf; ?>             
+<?php use validation\Errors; ?>
+                
+<a href="/">Home</a>
+<a href="/login">Login</a>
 
-<?php 
-    $this->include('headerOpen');  
-    $this->include('headerClose');
-?>
-</head>
-<body>
-<?php $this->include('navbar'); ?>
-<div class="container">
-    
-<?php if(Session::exists("csrf")) { ?>
-        <div class="my-5 w-75 mx-auto"><?php echo Alert::display("warning", "csrf"); ?></div>
-    <?php Session::delete('csrf'); } ?>
+<h1>Register</h1>    
 
-    <form action="" method="POST" class="d-block mx-auto w-50">
-    <h1 class="text-color-sec mb-5">Register</h1>
-    <div class="form-group">
-            <label for="email">Username:</label>
-            <input name="username" type="username" id="username" class="form-control <?php Errors::addValidClass($rules, 'username'); ?>" value="<?php echo post('username'); ?>">
-            <small class="form-text text-muted">Use an unique username.</small>
-            <div class="invalid-feedback text-color-thr">
-                <?php echo Errors::get($rules, 'username'); ?>
-            </div>
-        </div>
-        <div class="form-group">
-            <label for="email">Email:</label>
-            <input name="email" type="email" id="email" class="form-control <?php Errors::addValidClass($rules, 'email'); ?>" value="<?php echo post('email'); ?>">
-            <small class="form-text text-muted">Use an unique email.</small>
-            <div class="invalid-feedback text-color-thr">
-                <?php echo Errors::get($rules, 'email'); ?>
-            </div>
-        </div>
-        <div class="form-group">
-            <label for="password">Password:</label>
-            <input name="password" type="password" id="password" class="form-control <?php Errors::addValidClass($rules, 'password'); ?>" value="<?php echo post('password'); ?>">
-            <div class="invalid-feedback text-color-thr">
-                <?php echo Errors::get($rules, 'password'); ?>
-            </div>
-        </div>
-        <div class="form-group">
-            <label for="password_confirm">Retype password:</label>
-            <input name="password_confirm" type="password" id="password_confirm" class="form-control <?php Errors::addValidClass($rules, 'password_confirm'); ?>" value="<?php echo post('password_confirm'); ?>">
-            <div class="invalid-feedback text-color-thr">
-                <?php echo Errors::get($rules, 'password_confirm'); ?>
-            </div>
-        </div>
-        <div class="form-group">
-            <button name="submit" type="submit" class="mt-3 btn bg-color-sec text-white btn-lg">Register</button>
-            <input type="hidden" name="token" value="<?php Csrf::token('add');?>" />
-        </div>
-    </form>
-</div>
-
-<?php 
-    $this->include('footer');
-?>
+<form action="" method="POST">
+  <div class="form-parts">
+    <label for="username">Username:</label>
+    <input type="text" name="username"/>
+    <div class="form-rules">
+      <?php echo Errors::get($rules, "username"); ?>
+    </div>                
+  </div>                
+  <div class="form-parts">                
+    <label for="email">Email:</label>                
+    <input type="email" name="email"/>                
+    <div class="form-rules">                
+      <?php echo Errors::get($rules, "email"); ?>                
+    </div>                
+  </div>                
+  <div class="form-parts">                
+    <label for="password">Password:</label>                
+    <input type="password" name="password"/>                
+    <div class="form-rules">                
+      <?php echo Errors::get($rules, "password"); ?>                
+    </div>                
+  </div>                
+  <div class="form-parts">                
+    <label for="retypePassword">Retype password:</label>                
+    <input type="password" name="retypePassword"/>                
+    <div class="form-rules">                
+      <?php echo Errors::get($rules, "retypePassword"); ?>                
+    </div>                
+  </div>                
+  <div class="form-parts">                
+    <button type="submit" name="submit">Create account</button>                 
+    <input type="hidden" name="token" value="<?php Csrf::token("add"); ?>"/>
+  </div>                
+</form> 

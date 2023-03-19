@@ -4,7 +4,6 @@ use core\routing\Route;
 use database\DB;
 
 Route::setRouteKeys(['id', 'username']);
-Route::view('/example-route-view', '/route/route-view');
 
 $postPaths = DB::try()->select('slug')->from('pages')->fetch();
 foreach($postPaths as $postPath) {
@@ -16,22 +15,24 @@ foreach($postPaths as $postPath) {
     Alleen voor users die zijn ingelogd..
 
 */
-    Route::get('/profile/[username]')->add('UserController', 'read');
-    Route::get('/profile/[username]/edit')->add('UserController', 'edit');
-    Route::post('/profile/[username]/edit')->add('UserController', 'update');
+
+
+//Route::middleware("LoginMiddleware")->run(function() { 
+
+    Route::get('/profile/[username]')->add('ProfileController', 'index');
     Route::get('/logout')->add('LogoutController', 'logout');
+ // });
+
 
 /* 
 
     Alleen voor users die niet zijn ingelogd..
 */
     
-    Route::get('/login')->add('LoginController', 'index');
-    Route::post('/login')->add('LoginController', 'auth');
-    Route::get('/login-admin')->add('admin\LoginController', 'index');
-    Route::post('/login-admin')->add('admin\LoginController', 'auth');
-    Route::get('/register')->add('RegisterController', 'create');
-    Route::post('/register')->add('RegisterController', 'store');
+Route::get("/register")->add("RegisterController", "create");
+Route::post("/register")->add("RegisterController", "store");
+Route::get("/login")->add("LoginController", "index");
+Route::post("/login")->add("LoginController", "authenticateUsers");
 
 
 /* 

@@ -1,16 +1,21 @@
 <?php
+                
+  /**        
+   * Model: app/models/User.php
+   */ 
 
-namespace app\models;
+  namespace app\models;
+                
+  class User {
+                
+    public $t = "users"; 
 
-class User {
-
-    public $t = "users",
-
-        $id = 'id', 
-        $username = 'username', 
-        $email = 'email', 
-        $password = 'password', 
-        $retype_password = 'retype_password', 
-        $created_at = 'created_at', 
-        $updated_at = 'updated_at';
-}
+    public $id = "id", 
+      
+      $username = "username",          
+      $email = "email", 
+      $password = "password",    
+      $retypePassword  = "retypePassword",   
+      $created_at = "created_at", 
+      $updated_at = "updated_at";     
+  }   
