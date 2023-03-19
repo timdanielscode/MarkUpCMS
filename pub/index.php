@@ -37,7 +37,7 @@ $app->middleware(
     
     [
         "login" => "LoginMiddleware",
-        'test' => 'TestMiddleware'
+        'notLoggedIn' => 'NoLoginMiddleware'
     ]
 );
 

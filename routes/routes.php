@@ -18,12 +18,15 @@ Route::middleware('login')->run(function() {
     Route::get('/logout')->add('LogoutController', 'logout');
 });
 
+Route::middleware('notLoggedIn')->run(function() {
 
+    Route::get("/register")->add("RegisterController", "create");
+    Route::post("/register")->add("RegisterController", "store");
+    Route::get("/login")->add("LoginController", "index");
+    Route::post("/login")->add("LoginController", "authenticateUsers");
+});
     
-Route::get("/register")->add("RegisterController", "create");
-Route::post("/register")->add("RegisterController", "store");
-Route::get("/login")->add("LoginController", "index");
-Route::post("/login")->add("LoginController", "authenticateUsers");
+
 
 
 /* 
