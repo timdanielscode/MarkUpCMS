@@ -8,8 +8,8 @@ use app\models\Css;
 use app\models\Js;
 use app\models\Menu;
 use database\DB;
-use core\Request;
-use core\Response;
+use core\http\Request;
+use core\http\Response;
 use ResponseController;
 
 class RenderPageController extends Controller {

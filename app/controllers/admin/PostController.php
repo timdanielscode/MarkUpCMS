@@ -24,7 +24,7 @@ class PostController extends Controller {
 
         // nog ff naar kijken..
         //$posts = DB::try()->select($post->t.'.*', $category->t.'.'.$category->title)->from($post->t)->join($categoryPage->t)->on($post->t.'.'.$post->id, '=', $categoryPage->page_id)->join($category->t)->on($categoryPage->t.'.'.$categoryPage->category_id, '=', $category->t.'.'.$category->id)->order('date_created_at')->fetch();
-        $posts = DB::try()->select("*")->from($post->t)->fetch();
+        $posts = DB::try()->select($post->title, $post->id)->from($post->t)->fetch();
 
         $count = count($posts);
         $search = get('search');
