@@ -40,7 +40,7 @@ class Auth {
         } else {
 
             $sql = DB::try()->select($user->t.'.'.$user->username, $user->t.'.'.$user->password)->from($user->t)->where($user->username, '=', $username)->first();
-            $sql['name'] = 'test';
+            $sql['name'] = '';
         }
 
         if(!empty($sql) && $sql !== null) {

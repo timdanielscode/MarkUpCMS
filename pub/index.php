@@ -36,8 +36,9 @@ $app = new App();
 $app->middleware(
     
     [
-        "login" => "LoginMiddleware",
-        'notLoggedIn' => 'NoLoginMiddleware'
+        "login"        => "LoginMiddleware",
+        'notLoggedIn'  => 'NoLoginMiddleware',
+        'auth'         => 'AuthMiddleware'
     ]
 );
 

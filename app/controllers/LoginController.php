@@ -24,7 +24,7 @@
                   
           if($rules->loginRules()->validated()) {
   
-            if(Auth::authenticate() ) {
+            if(Auth::authenticate(['role' => 'admin']) ) {
                    
               redirect("/profile/" . Session::get("username") ); 
                    
