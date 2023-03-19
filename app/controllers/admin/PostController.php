@@ -109,44 +109,37 @@ class PostController extends Controller {
 
     public function update($request) {
 
-        if(submitted('submit')) {
-
-            if(CSRF::validate(CSRF::token('get'), post('token'))) {
+        if(submitted("submit") === true && Csrf::validate(Csrf::token('get'), post('token')) === true ) {
                 
-                $post = new Post();
-                $rules = new Rules();
-                $id = $request['id'];
-                $title = $request["title"];
-                $slug = $request["slug"];
-                $body = $request["body"];
+            $post = new Post();
+            $rules = new Rules();
+            $id = $request['id'];
+            $title = $request["title"];
+            $slug = $request["slug"];
+            $body = $request["body"];
 
-                if($rules->slug()->validated()) {
+            if($rules->slug()->validated()) {
 
-                    $slug = str_replace(" ", "-", $slug);
+                $slug = str_replace(" ", "-", $slug);
 
-                    if(!empty($slug) ) {
+                if(!empty($slug) ) {
 
-                        Post::update([$post->id => $id], [
+                    Post::update([$post->id => $id], [
 
-                            $post->title => $title,
-                            $post->slug => $slug,
-                            $post->body => $body,
-                            $post->date_updated_at => date("d/m/Y"),
-                            $post->time_updated_at => date("H:i")
-                        ]);
+                        $post->title => $title,
+                        $post->slug => $slug,
+                        $post->body => $body,
+                        $post->date_updated_at => date("d/m/Y"),
+                        $post->time_updated_at => date("H:i")
+                    ]);
 
-                        Session::set('updated', 'User updated successfully!');
-                        redirect("/admin/posts/$id/edit");
-                    }
-                } else {
-                    $data['rules'] = $rules->errors;
-                    $data['post'] = DB::try()->select('*')->from($post->t)->where($post->id, '=', $id)->first();
-                    return $this->view("/admin/posts/edit", $data);
+                    Session::set('updated', 'User updated successfully!');
+                    redirect("/admin/posts/$id/edit");
                 }
-
             } else {
-                Session::set('csrf', 'Cross site request forgery!');
-                redirect("/admin/posts/$id");
+                $data['rules'] = $rules->errors;
+                $data['post'] = DB::try()->select('*')->from($post->t)->where($post->id, '=', $id)->first();
+                return $this->view("/admin/posts/edit", $data);
             }
         }
     }
