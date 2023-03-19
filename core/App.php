@@ -33,12 +33,11 @@ class App {
      * Setting/registering middlewares
      * 
      * @param array $middlewares alias & filename 
-     * @param array $routeMiddlewares alias & filename
      * @return object Middleware
      */
-    public function middleware($middlewares, $routeMiddlewares) {
+    public function middleware($middlewares = null) {
 
-        new Middleware($middlewares, $routeMiddlewares);
+        new Middleware($middlewares);
     }
 
     /**

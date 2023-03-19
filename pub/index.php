@@ -13,12 +13,32 @@ use core\App;
 
 $app = new App();
 
-//$app->middleware([
-
-//    "login" => "LoginMiddleware"
- 
-//  ]);
+/**
+ * Register Middlewares
+ * 
+ * In routes.php
+ * 
+ * Route::middleware("alias")->run(function() { 
+ * 
+ *    Your restricted route
+ * });
+ * 
+ * (Optional)
+ * 
+ * Insert extra value to middleware 
+ * 
+ * Route::middleware(["alias" => "value"])->run(function() { 
+ * 
+ *    Your restricted route
+ * });
+ * 
+ */  
+$app->middleware(
+    
+    [
+        "login" => "LoginMiddleware",
+        'test' => 'TestMiddleware'
+    ]
+);
 
 $app->run();
-
-

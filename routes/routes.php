@@ -6,28 +6,19 @@ use database\DB;
 Route::setRouteKeys(['id', 'username']);
 
 $postPaths = DB::try()->select('slug')->from('pages')->fetch();
+
 foreach($postPaths as $postPath) {
+
     Route::get($postPath['slug'])->add('RenderPageController', 'render');
 }
 
-/* 
-
-    Alleen voor users die zijn ingelogd..
-
-*/
-
-
-//Route::middleware("LoginMiddleware")->run(function() { 
+Route::middleware('login')->run(function() { 
 
     Route::get('/profile/[username]')->add('ProfileController', 'index');
     Route::get('/logout')->add('LogoutController', 'logout');
- // });
+});
 
 
-/* 
-
-    Alleen voor users die niet zijn ingelogd..
-*/
     
 Route::get("/register")->add("RegisterController", "create");
 Route::post("/register")->add("RegisterController", "store");

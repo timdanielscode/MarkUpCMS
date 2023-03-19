@@ -1,23 +1,15 @@
 <?php
                 
-  /**                
-   * File: /middleware/LoginMiddleware.php
-   *                
-   */  
-
-  namespace middleware;
+namespace middleware;
                 
-  use core\Session; 
+use core\Session; 
 
-  class LoginMiddleware {
+class LoginMiddleware {
                 
-    public function __construct($run) {    
-                 
+  public function __construct($run) {    
+    
       if(Session::exists("logged_in") === true ) {
 
-        /**                
-         * Runs code inside closure function from run method in routes               
-         */ 
          return $run();
       }    
     }          
