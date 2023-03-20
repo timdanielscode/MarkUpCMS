@@ -8,6 +8,10 @@ namespace validation;
 
 use core\validation\Validate;
 
+use app\controllers\Controller;
+use core\http\Request;
+use core\Session;
+
 class Rules {
 
     public $errors;
@@ -17,7 +21,7 @@ class Rules {
      * 
      * https://indy-php.com/docs/validation
      * 
-     * Create instance of Validate 
+     * https://indy-php.com/docs/
      * Chain input method on instance variable and add html input name as argument
      * Chain as method to input and add alias as argument
      * Chain rules method to as method and add array of validation rules as argument
@@ -133,17 +137,19 @@ class Rules {
         
         $validation = new Validate();
         
-        $validation->input('title')->as('Title')->rules(['required' => true, 'min' => 1, 'max' => 50, 'special' => true]);
+        $validation->input('title')->as('Title')->rules(['required' => true, 'min' => 5, 'max' => 50, 'special' => true]);
         $validation->input('body')->as('Body')->rules(['required' => true, 'min' => 5]);
         
         $this->errors = $validation->errors;
         return $this;
     }
 
-    public function slug() {
+    public function update_post() {
         
         $validation = new Validate();
         
+        $validation->input('title')->as('Title')->rules(['required' => true, 'min' => 5, 'max' => 50, 'special' => true]);
+        $validation->input('body')->as('Body')->rules(['required' => true, 'min' => 5]);
         $validation->input('slug')->as('Slug')->rules(['first' => '/']);
         
         $this->errors = $validation->errors;
@@ -226,14 +232,25 @@ class Rules {
     }     
 
     /**
-     * @return bool
-    */     
-    public function validated() {
+     * Validating validation rules
+     * On fail, returning view with extracted validation error rules and if exists request data
+     * 
+     * @return mixed bool | void
+     */
+    public function validated($request = null) {
 
-        if(empty($this->errors) ) {
+      if(empty($this->errors) ) { return true; } else {
 
-            return true;
+        if(!empty($request) && $request !== null) {
+          
+            $data['data'] = $request; 
         }
-    }
+
+        $controller = new Controller();
+        $data['rules'] = $this->errors;
+
+        return $controller->view(Session::get('view'), $data) . exit();
+      }
+  }
 }
 

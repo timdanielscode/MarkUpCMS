@@ -88,12 +88,7 @@ class PostController extends Controller {
     
                 Session::set('create', 'You have successfully created a new post!');            
                 redirect('/admin/posts');
-    
-            } else {
-    
-                $data['rules'] = $rules->errors;
-                return $this->view('admin/users/create', $data);
-            }
+            } 
         }
     }
 
@@ -101,7 +96,7 @@ class PostController extends Controller {
 
         $post = Post::get($request['id']);
         
-        $data['post'] = $post;
+        $data['data'] = $post;
         $data['rules'] = [];
 
         return $this->view('admin/posts/edit', $data);
@@ -113,12 +108,13 @@ class PostController extends Controller {
                 
             $post = new Post();
             $rules = new Rules();
-            $id = $request['id'];
-            $title = $request["title"];
-            $slug = $request["slug"];
-            $body = $request["body"];
 
-            if($rules->slug()->validated()) {
+            if($rules->update_post()->validated($request)) {
+
+                $id = $request['id'];
+                $title = $request["title"];
+                $slug = $request["slug"];
+                $body = $request["body"];
 
                 $slug = str_replace(" ", "-", $slug);
 
@@ -136,11 +132,7 @@ class PostController extends Controller {
                     Session::set('updated', 'User updated successfully!');
                     redirect("/admin/posts/$id/edit");
                 }
-            } else {
-                $data['rules'] = $rules->errors;
-                $data['post'] = DB::try()->select('*')->from($post->t)->where($post->id, '=', $id)->first();
-                return $this->view("/admin/posts/edit", $data);
-            }
+            } 
         }
     }
 

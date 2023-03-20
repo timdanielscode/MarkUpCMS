@@ -23,16 +23,16 @@
         <div class="col10">
             <form action="" method="POST" class="form-code">
                 <div class="form-parts">
-                    <input type="text" autofocus name="title" id="title" value="<?php echo $post['title']; ?>">
+                    <input type="text" autofocus name="title" id="title" value="<?php if(!empty($data['title'] )) { echo $data['title']; } ?>">
                     <div class="error-messages">
-                        <?php //echo Errors::get($rules, 'title'); ?>
+                        <?php echo Errors::get($rules, 'title'); ?>
                     </div>    
-                    <input type="text" name="slug" id="slug" type="text" value="<?php echo $post['slug']; ?>">
+                    <input type="text" name="slug" id="slug" type="text" value="<?php echo $data['slug']; ?>">
                     <div class="error-messages">
-                        <?php //echo Errors::get($rules, 'slug'); ?>
+                        <?php echo Errors::get($rules, 'slug'); ?>
                     </div>
                 </div>
-                <textarea name="body" type="body" id="code"><?php echo $post['body']; ?></textarea>
+                <textarea name="body" type="body" id="code"><?php echo $data['body']; ?></textarea>
                 <button name="submit" id="submit" type="submit" class="">Update</button>
                 <input type="hidden" name="token" value="<?php Csrf::token('add');?>" />
             </form>
