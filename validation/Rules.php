@@ -150,7 +150,7 @@ class Rules {
         
         $validation->input('title')->as('Title')->rules(['required' => true, 'min' => 5, 'max' => 50, 'special' => true]);
         $validation->input('body')->as('Body')->rules(['required' => true, 'min' => 5]);
-        $validation->input('slug')->as('Slug')->rules(['first' => '/']);
+        $validation->input('slug')->as('Slug')->rules(['required' => true, 'first' => '/']);
         
         $this->errors = $validation->errors;
         return $this;

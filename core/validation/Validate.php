@@ -120,7 +120,7 @@ class Validate {
                         }
                     break;
                     case 'first':
-                        if($this->_inputValue[0] !== $value) {
+                        if(!empty($this->_inputValue[0]) && $this->_inputValue[0] !== $value) {
 
                             $this->message($this->_inputName, "$this->_alias does not start with a $value.");
                         }

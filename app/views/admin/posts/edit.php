@@ -27,12 +27,12 @@
                     <div class="error-messages">
                         <?php echo Errors::get($rules, 'title'); ?>
                     </div>    
-                    <input type="text" name="slug" id="slug" type="text" value="<?php echo $data['slug']; ?>">
+                    <input type="text" name="slug" id="slug" type="text" value="<?php if(!empty($data['slug'] )) { echo $data['slug']; } ?>">
                     <div class="error-messages">
                         <?php echo Errors::get($rules, 'slug'); ?>
                     </div>
                 </div>
-                <textarea name="body" type="body" id="code"><?php echo $data['body']; ?></textarea>
+                <textarea name="body" type="body" id="code"><?php if(!empty($data['body'] )) { echo $data['body']; } ?></textarea>
                 <button name="submit" id="submit" type="submit" class="">Update</button>
                 <input type="hidden" name="token" value="<?php Csrf::token('add');?>" />
             </form>
@@ -47,7 +47,7 @@
                 </div>
                 <ul class="postSidebarButtons">
                     <li>
-                        <a href="/admin/posts/<?php echo $post['id']; ?>/preview" class="button">Preview</a>
+                        <a href="/admin/posts/<?php echo $data['id']; ?>/preview" class="button">Preview</a>
                     </li>
                     <li>
                         <a href="#" id="codeEditorFullScreen" class="button">Full screen</a>

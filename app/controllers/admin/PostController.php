@@ -115,8 +115,7 @@ class PostController extends Controller {
                 $title = $request["title"];
                 $slug = $request["slug"];
                 $body = $request["body"];
-
-                $slug = str_replace(" ", "-", $slug);
+                $slug = $request["slug"];
 
                 if(!empty($slug) ) {
 
