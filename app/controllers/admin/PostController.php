@@ -184,6 +184,7 @@ class PostController extends Controller {
     public function delete($request) {
 
         Post::delete("id", $request['id']);
+        Session::set('delete', 'User successfully removed!');
         redirect("/admin/posts");
     }
 

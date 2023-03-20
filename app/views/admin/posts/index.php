@@ -10,6 +10,24 @@
 ?>
 <div class="con">
     
+    <?php
+
+        if(Session::exists('create')) {
+            echo Session::get('create');
+            Session::delete('create');
+        }
+        if(Session::exists('delete')) {
+
+            echo Session::get('delete');
+            Session::delete('delete');
+        }
+
+
+    ?>
+
+
+
+
     </div>
     <div class="row postHeaderContainer">
         <h1>Posts</h1>
