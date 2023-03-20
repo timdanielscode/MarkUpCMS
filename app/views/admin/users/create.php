@@ -10,7 +10,7 @@
 
 <div class="con">
 
-    <form action="" method="POST" class="">
+    <form action="store" method="POST" class="">
     <h1 class="text-color-sec mb-5">Register</h1>
     <div class="form-parts">
             <label for="email">Username:</label>

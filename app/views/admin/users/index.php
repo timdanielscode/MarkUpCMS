@@ -46,13 +46,13 @@
                             <?php echo $user['name']; ?>
                         </td>
                         <td>
-                            <a href="/admin/users/<?php echo $user["id"]; ?>/username/<?php echo $user["username"]; ?>">Read</a>
+                            <a href="/admin/users/<?php echo $user["username"]; ?>/read">Read</a>
                         </td>
                         <td>
-                            <a href="/admin/users/<?php echo $user["id"]; ?>/username/<?php echo $user["username"]; ?>/edit">Edit</a>
+                            <a href="/admin/users/<?php echo $user["username"]; ?>/edit">Edit</a>
                         </td>   
                         <td>
-                            <a href="/admin/users/<?php echo $user["id"]; ?>/username/<?php echo $user["username"]; ?>/delete" onclick="return confirm('Are you sure you want to delete this?');">Delete</a>
+                            <a href="/admin/users/<?php echo $user["username"]; ?>/delete" onclick="return confirm('Are you sure you want to delete this?');">Delete</a>
                         </td>
                     </tr>
                 <?php } ?>

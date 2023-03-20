@@ -10,7 +10,7 @@ use core\Session;
 use database\DB;
 use core\Csrf;
 use validation\Rules;
-use core\Response;
+use core\http\Response;
 use extensions\Pagination;
 
 
@@ -65,7 +65,7 @@ class UserController extends Controller {
                         $user->username => post('username'),
                         $user->email => post('email'),
                         $user->password => password_hash(post('password'), PASSWORD_DEFAULT),
-                        $user->retype_password => password_hash(post('password_confirm '), PASSWORD_DEFAULT),
+                        $user->retypePassword => password_hash(post('password_confirm '), PASSWORD_DEFAULT),
                         $user->created_at => date("Y-m-d H:i:s"),
                         $user->updated_at => date("Y-m-d H:i:s")
                     ]);
@@ -105,7 +105,7 @@ class UserController extends Controller {
         $userRole = new UserRole();
 
         //$current = DB::try()->select('u'.'.*', $role->t.'.'.$role->name)->from('users')->as('u')->join($userRole->t)->on('u'.'.id', '=', $userRole->t.'.'.$userRole->user_id)->join($role->t)->on($userRole->t.'.'.$userRole->role_id, '=', $role->t.'.'.$role->id)->where('u.id', '=', $request['id'])->and('u.username', '=', $request["username"])->fetch();
-        $current = DB::try()->select('*')->from($user->t)->where('id', '=', $request['id'])->and('username', '=', $request["username"])->fetch();
+        $current = DB::try()->select('*')->from($user->t)->where('username', '=', $request["username"])->fetch();
 
 
         if(empty($current)) {
@@ -119,11 +119,14 @@ class UserController extends Controller {
 
     public function edit($request) {
        
+
+        print_r($request);
+
         $user = new User();
         $user_role = new UserRole();
         $role = new Roles();
 
-        $user = DB::try()->select($user->t.'.*', $role->t.'.'.$role->name)->from($user->t)->join($user_role->t)->on($user->t.'.'.$user->id, '=', $user_role->t.'.'.$user_role->user_id)->join($role->t)->on($user_role->t.'.'.$user_role->role_id, '=', $role->t.'.'.$role->id)->where($user->t.'.'.$user->id, '=', $request["id"])->and($user->t.'.'.$user->username, '=', $request["username"])->first();
+        $user = DB::try()->select($user->t.'.*', $role->t.'.'.$role->name)->from($user->t)->join($user_role->t)->on($user->t.'.'.$user->id, '=', $user_role->t.'.'.$user_role->user_id)->join($role->t)->on($user_role->t.'.'.$user_role->role_id, '=', $role->t.'.'.$role->id)->where($user->t.'.'.$user->username, '=', $request["username"])->first();
        
         $data['user'] = $user;
         $data['rules'] = [];
@@ -137,8 +140,6 @@ class UserController extends Controller {
 
     public function update($request) {
 
-        $id = $request["id"];
-        
         if(submitted('submit')) {
 
             if(CSRF::validate(CSRF::token('get'), post('token'))) {
@@ -148,12 +149,14 @@ class UserController extends Controller {
                 $userRole = new UserRole();
                 $role = new Roles();
 
+                $id = $request["id"];
                 $username = $request["username"];
                 $email = $request["email"];
-
+                
                 if($rules->user_edit()->validated()) {
                 
                     DB::try()->update($user->t)->set([
+
                         $user->username => $username,
                         $user->email => $email,
                     ])->where($user->id, '=', $id)->run();              
@@ -183,15 +186,13 @@ class UserController extends Controller {
         return $this->view('admin/users/edit', $data);
     }
 
-    public function delete($id) {
+    public function delete($request) {
         
-        $id = $id['id'];
+        $username = $request['username'];
 
         $user = new User();
-        $user = DB::try()->delete($user->t)->where($user->id, "=", $id)->run();
+        $user = DB::try()->delete($user->t)->where($user->username, "=", $username)->run();
 
         redirect("/admin/users");
     }
-
-
 }

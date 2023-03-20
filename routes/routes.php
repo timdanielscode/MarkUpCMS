@@ -30,29 +30,17 @@ Route::middleware(['auth' => 'admin'])->run(function() {
     
     Route::get('/admin/dashboard')->add('admin\AdminController', 'index');
 
-    Route::get('/admin/users')->add('admin\UserController', 'index');
+    /*Route::get('/admin/users')->add('admin\UserController', 'index');
     Route::get('/admin/users/create')->add('admin\UserController', 'create');
     Route::post('/admin/users/create')->add('admin\UserController', 'store');
     Route::get('/admin/users/[id]/username/[username]')->add('admin\UserController', 'read');
     Route::get('/admin/users/[id]/username/[username]/edit')->add('admin\UserController', 'edit');
     Route::post('/admin/users/[id]/username/[username]/edit')->add('admin\UserController', 'update');
-    Route::get('/admin/users/[id]/username/[username]/delete')->add('admin\UserController', 'delete');
+    Route::get('/admin/users/[id]/username/[username]/delete')->add('admin\UserController', 'delete');*/
 
 
-
-    
+    Route::crud('/admin/users', '[username]')->add('admin\UserController', 'crud');
     Route::crud('/admin/posts', '[id]')->add('admin\PostController', 'crud');
-
-    /*
-    Route::get('/admin/posts')->add('admin\PostController', 'index');
-    Route::get('/admin/posts/create')->add('admin\PostController', 'create');
-    Route::post('/admin/posts/create')->add('admin\PostController', 'store');
-    Route::get('/admin/posts/[id]/edit')->add('admin\PostController', 'edit');
-    Route::post('/admin/posts/[id]/edit')->add('admin\PostController', 'update');
-    Route::get('/admin/posts/[id]/preview')->add('admin\PostController', 'read');
-    Route::get('/admin/posts/[id]/delete')->add('admin\PostController', 'delete');
-    */
-
 
 
 

@@ -1,6 +1,6 @@
-<?php use parts\validation\Errors; ?>
 <?php use core\Csrf; ?>
-<?php use parts\Session; ?>
+<?php use core\Session; ?>
+<?php use validation\Errors; ?>
 
 <?php 
     $this->include('headerOpen');  
@@ -12,7 +12,7 @@
 
 <h1><?php echo $user['username']; ?></h1>
  
-    <form action="" method="POST" class="d-block m-auto">
+    <form action="update" method="POST" class="d-block m-auto">
         <div class="form-parts">
             <label for="username">Username:</label>
             <input name="username" type="text" id="username" value="<?php echo $user["username"]; ?>">
