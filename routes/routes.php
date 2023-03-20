@@ -30,26 +30,11 @@ Route::middleware(['auth' => 'admin'])->run(function() {
     
     Route::get('/admin/dashboard')->add('admin\AdminController', 'index');
 
-    /*Route::get('/admin/users')->add('admin\UserController', 'index');
-    Route::get('/admin/users/create')->add('admin\UserController', 'create');
-    Route::post('/admin/users/create')->add('admin\UserController', 'store');
-    Route::get('/admin/users/[id]/username/[username]')->add('admin\UserController', 'read');
-    Route::get('/admin/users/[id]/username/[username]/edit')->add('admin\UserController', 'edit');
-    Route::post('/admin/users/[id]/username/[username]/edit')->add('admin\UserController', 'update');
-    Route::get('/admin/users/[id]/username/[username]/delete')->add('admin\UserController', 'delete');*/
-
-
     Route::crud('/admin/users', '[username]')->add('admin\UserController', 'crud');
+
     Route::crud('/admin/posts', '[id]')->add('admin\PostController', 'crud');
-
-
-
     Route::get('/admin/posts/[id]/meta/edit')->add('admin\PostController', 'metaData');
     Route::post('/admin/posts/[id]/meta/edit')->add('admin\PostController', 'metaDataUpdate');
-
-
-
-
 
     Route::get('/admin/css')->add('admin\CssController', 'index');
     Route::get('/admin/css/create')->add('admin\CssController', 'create');
