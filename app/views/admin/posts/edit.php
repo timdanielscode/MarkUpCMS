@@ -21,7 +21,7 @@
     <div class="containerPost">
     <div class="row">
         <div class="col10">
-            <form action="" method="POST" class="form-code">
+            <form action="update" method="POST" class="form-code">
                 <div class="form-parts">
                     <input type="text" autofocus name="title" id="title" value="<?php if(!empty($data['title'] )) { echo $data['title']; } ?>">
                     <div class="error-messages">
