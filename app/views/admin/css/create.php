@@ -1,7 +1,6 @@
-<?php use parts\validation\Errors; ?>
+<?php use validation\Errors; ?>
 <?php use core\Csrf; ?>
-<?php use parts\Session; ?>
-<?php use parts\Alert; ?>
+<?php use core\Session; ?>
 
 <?php 
     $this->include('headerOpen');  

@@ -61,7 +61,8 @@ class CssController extends Controller {
 
                     $code = post('code');
             
-                    $file = fopen("website/assets/css/" . $filename . ".css", "w");
+                    $file = fopen("website/assets/css" . $filename . ".css", "w");
+
                     fwrite($file, $code);
                     fclose($file);
                     
