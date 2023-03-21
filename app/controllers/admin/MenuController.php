@@ -6,9 +6,9 @@ use app\controllers\Controller;
 use core\Csrf;
 use validation\Rules;
 use app\models\Menu;
-use parts\Session;
+use core\Session;
 use database\DB;
-use parts\Pagination;
+use extensions\Pagination;
 
 
 class MenuController extends Controller {
@@ -59,6 +59,7 @@ class MenuController extends Controller {
 
                         $menu->title => post('title'),
                         $menu->content => post('content'),
+                        $menu->position => 'unset',
                         $menu->author => Session::get('username'),
                         $menu->date_created_at => date("d/m/Y"),
                         $menu->time_created_at => date("H:i"),
