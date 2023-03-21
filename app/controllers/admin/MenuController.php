@@ -141,6 +141,20 @@ class MenuController extends Controller {
             
             redirect("/admin/menus/$id/edit");
         }
+
+        if(submitted('submitOrdering')) {
+            
+            $menu = new Menu();
+
+            $id = $request['id'];
+            $ordering = $request["ordering"];
+            
+            DB::try()->update($menu->t)->set([
+                $menu->ordering => $ordering,
+            ])->where($menu->id, '=', $id)->run(); 
+            
+            redirect("/admin/menus/$id/edit");
+        }
     }
 
     public function preview($request) {

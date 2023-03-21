@@ -21,6 +21,7 @@
         if(!empty($menusTop ) ) { 
 
             foreach($menusTop as $menuTop) {
+
                 echo html_entity_decode($menuTop['content']); 
             }
 

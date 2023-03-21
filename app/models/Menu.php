@@ -10,6 +10,7 @@ class Menu {
         $title = 'title', 
         $content = 'content',
         $position = 'position', 
+        $ordering = 'ordering', 
         $author = 'author', 
         $date_created_at = 'date_created_at', 
         $time_created_at = 'time_created_at', 

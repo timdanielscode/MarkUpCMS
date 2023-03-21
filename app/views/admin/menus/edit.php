@@ -57,6 +57,10 @@
                     </select>
                     <input type="submit" name="submitPosition" value="update"/>
                 </form>
+                <form action="" method="POST">
+                    <input type="number" name="ordering" min="1" max="10">
+                    <input type="submit" name="submitOrdering" value="update"/>
+                </form>
             </div>
         </div>
     </div>

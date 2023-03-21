@@ -31,6 +31,7 @@
                 <tr>
                     <th>Title</th>
                     <th>Position</th>
+                    <th>Ordering</th>
                     <th>Author</th>
                     <th class="width-10">Date</th>
                 </tr>
@@ -57,7 +58,16 @@
                         </td>
                         <?php } else { ?>
                         <td class="width-15">
-                            <span>none</span>
+                            <span>unset</span>
+                        </td>
+                        <?php } ?>
+                        <?php if(!empty($menu['ordering']) ) { ?>
+                        <td class="width-15">
+                            <?php echo $menu['ordering']; ?>
+                        </td>
+                        <?php } else { ?>
+                        <td class="width-15">
+                            <span>unset</span>
                         </td>
                         <?php } ?>
                         <td class="width-15">

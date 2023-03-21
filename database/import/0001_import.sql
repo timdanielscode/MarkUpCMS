@@ -106,3 +106,5 @@ CREATE TABLE category_page (
     category_id int(11) NOT NULL,
     page_id int(11) NOT NULL
 );
+
+ALTER TABLE menus ADD ordering int(11) AFTER position;

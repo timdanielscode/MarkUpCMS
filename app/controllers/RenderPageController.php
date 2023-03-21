@@ -29,8 +29,8 @@ class RenderPageController extends Controller {
 
             $cssFiles = DB::try()->select('file_name', 'extension')->from($css->t)->fetch();
             $jsFiles = DB::try()->select('file_name', 'extension')->from($js->t)->fetch();
-            $menusTop = DB::try()->all($menu->t)->where($menu->position, '=', 'top')->fetch();
-            $menusBottom = DB::try()->all($menu->t)->where($menu->position, '=', 'bottom')->fetch();
+            $menusTop = DB::try()->all($menu->t)->where($menu->position, '=', 'top')->order('ordering')->fetch();
+            $menusBottom = DB::try()->all($menu->t)->where($menu->position, '=', 'bottom')->order('ordering')->fetch();
     
             $data['post'] = $post;
             $data['cssFiles'] = $cssFiles;
