@@ -25,7 +25,7 @@ class DB {
      * @return void
      */
     public function __construct($host, $user, $password, $db) {
-        
+
         try {
             $this->_pdo = new \PDO("mysql:host=$host;dbname=$db", $user, $password);
         } catch(PDOException $e) {

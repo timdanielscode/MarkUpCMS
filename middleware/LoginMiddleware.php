@@ -6,8 +6,8 @@ use core\Session;
 
 class LoginMiddleware {
                 
-  public function __construct($run) {    
-    
+  public function __construct($run) {   
+
       if(Session::exists("logged_in") === true ) {
 
          return $run();

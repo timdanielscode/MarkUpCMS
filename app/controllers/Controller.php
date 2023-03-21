@@ -19,7 +19,7 @@ class Controller {
      * @return mixed object Controller
      */
     public function view($path, $args = []) {
-    
+
         if($path) {
 
             if(!empty($args)) {
