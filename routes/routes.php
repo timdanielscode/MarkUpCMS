@@ -15,8 +15,11 @@ if(!empty($postPath) && $postPaht !== null) {
     }
 } else {
     
-    Route::get('/')->add('InstallationController', 'create');
-    Route::post('/')->add('InstallationController', 'store');
+    Route::middleware('user')->run(function() { 
+
+        Route::get('/')->add('InstallationController', 'create');
+        Route::post('/')->add('InstallationController', 'store');
+    });
 }
 
 

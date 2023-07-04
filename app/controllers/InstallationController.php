@@ -26,33 +26,28 @@ class InstallationController extends Controller {
                      
                 $users = User::all();
 
-                if(empty($users) ) {
+                $user = new User(); 
+                $userRole = new UserRole();  
 
-                    $user = new User(); 
-                    $userRole = new UserRole();  
-
-                    User::insert([
+                User::insert([
                     
-                        $user->username => $request["username"], 
-                        $user->email => $request["email"], 
-                        $user->password => password_hash($request["password"], PASSWORD_DEFAULT),
-                        $user->retypePassword => password_hash($request["retypePassword"], PASSWORD_DEFAULT),
-                        $user->created_at => date("Y-m-d H:i:s"), 
-                        $user->updated_at => date("Y-m-d H:i:s")
+                    $user->username => $request["username"], 
+                    $user->email => $request["email"], 
+                    $user->password => password_hash($request["password"], PASSWORD_DEFAULT),
+                    $user->retypePassword => password_hash($request["retypePassword"], PASSWORD_DEFAULT),
+                    $user->created_at => date("Y-m-d H:i:s"), 
+                    $user->updated_at => date("Y-m-d H:i:s")
                                  
-                    ]); 
+                ]); 
 
-                    UserRole::insert([
+                UserRole::insert([
     
-                        $userRole->user_id => 1,
-                        $userRole->role_id => 2
-                    ]);
+                    $userRole->user_id => 1,
+                    $userRole->role_id => 2
+                ]);
 
-                    redirect('/admin/dashboard');
-                } 
+                redirect('/login');
 
-
-    
             } else {
                          
                 $data["rules"] = $rules->errors;
