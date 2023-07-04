@@ -7,7 +7,7 @@ Route::setRouteKeys(['id', 'username']);
 
 $postPaths = DB::try()->select('slug')->from('pages')->fetch();
 
-if(!empty($postPath) && $postPaht !== null) {
+if(!empty($postPaths) && $postPaths !== null) {
 
     foreach($postPaths as $postPath) {
 
