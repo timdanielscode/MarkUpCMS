@@ -31,6 +31,47 @@ class Rules {
      * return $this
      */
 
+     public function installationRules() {    
+                
+      $validation = new Validate();
+                
+      $validation->input("username")->as("Username")->rules([
+                
+        "required" => true, 
+        "min" => "6", 
+        "max" => "30", 
+        "special" => true
+                
+      ]);
+                
+      $validation->input("email")->as("Email")->rules([
+                
+        "required" => true, 
+        "min" => "6", 
+        "max" => "30", 
+        "special" => true
+                
+      ]);
+                
+      $validation->input("password")->as("Password")->rules([
+                
+        "required" => true, 
+        "min" => "6", 
+        "max" => "60"
+                
+      ]);
+                 
+      $validation->input("retypePassword")->as("Password")->rules([
+                
+        "required" => true, 
+        "match" => "password"
+                
+      ]);
+                 
+      $this->errors = $validation->errors;
+      return $this;
+    }
+
      public function registerRules() {    
                 
         $validation = new Validate();

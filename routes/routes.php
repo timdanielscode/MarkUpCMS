@@ -7,10 +7,18 @@ Route::setRouteKeys(['id', 'username']);
 
 $postPaths = DB::try()->select('slug')->from('pages')->fetch();
 
-foreach($postPaths as $postPath) {
+if(!empty($postPath) && $postPaht !== null) {
 
-    Route::get($postPath['slug'])->add('RenderPageController', 'render');
+    foreach($postPaths as $postPath) {
+
+        Route::get($postPath['slug'])->add('RenderPageController', 'render');
+    }
+} else {
+    
+    Route::get('/')->add('InstallationController', 'create');
+    Route::post('/')->add('InstallationController', 'store');
 }
+
 
 Route::middleware('login')->run(function() { 
 

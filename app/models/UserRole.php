@@ -2,7 +2,12 @@
 
 namespace app\models;
 
-class UserRole {
+class UserRole extends Model {
+
+    public function __construct() {
+
+        self::table("user_role");
+    }
 
     public $t = 'user_role',
 

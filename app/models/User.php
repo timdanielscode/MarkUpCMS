@@ -6,7 +6,12 @@
 
   namespace app\models;
                 
-  class User {
+  class User extends Model {
+
+    public function __construct() {
+
+        self::table("users");
+    }
                 
     public $t = "users"; 
 
