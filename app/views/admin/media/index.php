@@ -1,8 +1,7 @@
-<?php use parts\validation\Errors; ?>
+<?php use validation\Errors; ?>
 <?php use core\Csrf; ?>
-<?php use parts\Session; ?>
-<?php use parts\Alert; ?>
-<?php use parts\Pagination; ?>
+<?php use core\Session; ?>
+<?php use extensions\Pagination; ?>
 
 <?php 
     $this->include('headerOpen');  
@@ -12,15 +11,6 @@
     $this->include('navbar');
 ?>
 <div class="con">
-
-    <?php if(parts\Session::exists("updated")) { ?>
-        <div class="margin-t-50"><?php echo parts\Alert::display("success", "updated"); ?></div>
-    <?php parts\Session::delete('updated');  } ?>
-
-    <?php if(Session::exists("registered")) { ?>
-        <div class="margin-t-50"><?php echo Alert::display("warning", "registered"); ?></div>
-    <?php Session::delete('registered'); } ?>
-
     </div>
     <div class="row postHeaderContainer">
         <h1>Media</h1>

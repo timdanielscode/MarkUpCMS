@@ -5,9 +5,9 @@ namespace app\controllers\admin;
 use app\controllers\Controller;
 use database\DB;
 use app\models\Media;
-use parts\Session;
+use core\Session;
 use core\Csrf;
-use parts\Pagination;
+use extensions\Pagination;
 use validation\Rules;
 
 class MediaController extends Controller {
