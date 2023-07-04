@@ -24,8 +24,8 @@ class UserController extends Controller {
 
         $allUsers = DB::try()->select($user->t.'.*', $role->t.'.'.$role->name)->from($user->t)->join($userRole->t)->on($user->t.'.'.$user->id, '=', $userRole->t.'.'.$userRole->user_id)->join($role->t)->on($userRole->t.'.'.$userRole->role_id, '=', $role->t.'.'.$role->id)->order($user->t.'.'.$user->id)->fetch();
         
-        $allUsers = Pagination::set($allUsers, 5);
-        $numberOfPages = Pagination::getPages();
+        $allUsers = Pagination::get($allUsers, 5);
+        $numberOfPages = Pagination::getPageNumbers();
         
         if(submitted('search')) {
 
@@ -47,65 +47,54 @@ class UserController extends Controller {
 
     public function store() {
 
-        if(submitted('submit')) {
+        if(submitted("submit") === true && Csrf::validate(Csrf::token('get'), post('token')) === true ) {
 
-            if(Csrf::validate(Csrf::token('get'), post('token') ) === true) {
-
-                $rules = new Rules();
-                $user = new User();
-                $userRole = new UserRole();
+            $rules = new Rules();
+            $user = new User();
+            $userRole = new UserRole();
                 
-                $uniqueUsername = DB::try()->select($user->username)->from($user->t)->where($user->username, '=', post('username'))->first();
-                $uniqueEmail = DB::try()->select($user->email)->from($user->t)->where($user->email, '=', post('email'))->fetch();
+            $uniqueUsername = DB::try()->select($user->username)->from($user->t)->where($user->username, '=', post('username'))->first();
+            $uniqueEmail = DB::try()->select($user->email)->from($user->t)->where($user->email, '=', post('email'))->fetch();
 
-                if($rules->register_rules_admin($uniqueUsername, $uniqueEmail)->validated()) {
+            if($rules->register_rules_admin($uniqueUsername, $uniqueEmail)->validated()) {
                     
-                    DB::try()->insert($user->t, [
+                User::insert([
 
-                        $user->username => post('username'),
-                        $user->email => post('email'),
-                        $user->password => password_hash(post('password'), PASSWORD_DEFAULT),
-                        $user->retypePassword => password_hash(post('password_confirm '), PASSWORD_DEFAULT),
-                        $user->created_at => date("Y-m-d H:i:s"),
-                        $user->updated_at => date("Y-m-d H:i:s")
-                    ]);
+                    $user->username => post('username'),
+                    $user->email => post('email'),
+                    $user->password => password_hash(post('password'), PASSWORD_DEFAULT),
+                    $user->retypePassword => password_hash(post('password_confirm '), PASSWORD_DEFAULT),
+                    $user->created_at => date("Y-m-d H:i:s"),
+                    $user->updated_at => date("Y-m-d H:i:s")
+                ]);
 
-                    $lastRegisteredUser = DB::try()->select($user->id)->from($user->t)->order($user->id)->desc(1)->first();              
+                $lastRegisteredUser = DB::try()->select($user->id)->from($user->t)->order($user->id)->desc(1)->first();              
 
-                    if(post('role') == 'Normal') {
-                        $roleId = 1;
-                    } else {
-                        $roleId = 2;
-                    }
-
-                    DB::try()->insert($userRole->t, [
-                        $userRole->user_id => $lastRegisteredUser['id'],
-                        $userRole->role_id => $roleId 
-                    ]); 
-
-                    Session::set('registered', 'You have been successfully registered!');            
-                    redirect('/admin/users');
-
+                if($request('role') == 'Normal') {
+                    $roleId = 1;
                 } else {
-
-                    $data['rules'] = $rules->errors;
-                    return $this->view('admin/users/create', $data);
+                    $roleId = 2;
                 }
+
+                DB::try()->insert($userRole->t, [
+                    $userRole->user_id => $lastRegisteredUser['id'],
+                    $userRole->role_id => $roleId 
+                ]); 
+
+                Session::set('registered', 'You have been successfully registered!');            
+                redirect('/admin/users');
+
             } else {
-                Session::set('csrf', 'Cross site request forgery!');
-                redirect('/admin/users/create');
+
+                $data['rules'] = $rules->errors;
+                return $this->view('admin/users/create', $data);
             }
         }
     }
 
     public function read($request) {
 
-        $role = new Roles();
-        $user = new User();
-        $userRole = new UserRole();
-
-        //$current = DB::try()->select('u'.'.*', $role->t.'.'.$role->name)->from('users')->as('u')->join($userRole->t)->on('u'.'.id', '=', $userRole->t.'.'.$userRole->user_id)->join($role->t)->on($userRole->t.'.'.$userRole->role_id, '=', $role->t.'.'.$role->id)->where('u.id', '=', $request['id'])->and('u.username', '=', $request["username"])->fetch();
-        $current = DB::try()->select('*')->from($user->t)->where('username', '=', $request["username"])->fetch();
+        $current = DB::try()->select('users.*', 'roles.name')->from('users')->join('user_role')->on('user_id', '=', 'users.id')->join('roles')->on('role_id', '=', 'roles.id')->where('users.username', '=', $request['username'])->fetch();
 
 
         if(empty($current)) {
@@ -119,9 +108,6 @@ class UserController extends Controller {
 
     public function edit($request) {
        
-
-        print_r($request);
-
         $user = new User();
         $user_role = new UserRole();
         $role = new Roles();

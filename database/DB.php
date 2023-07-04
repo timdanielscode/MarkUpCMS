@@ -130,6 +130,8 @@ class DB {
         return $this;
     }
 
+
+
     /** 
      * Fetching/executing rows based on condition 
      * Adding WHERE column operator to query
@@ -148,6 +150,42 @@ class DB {
             $this->data = array($value);
         }
         $this->query .= " WHERE $column $operator ?";
+
+        return $this;
+    }
+
+    /** 
+     * Fetching/executing rows based on condition where condition is false
+     * Adding WHERE column operator to query
+     * ? as placeholder
+     * 
+     * @param string $column name
+     * @param string $operator value
+     * @param string $value column
+     * @return object DB
+     */ 
+    public function whereNot($column, $operator, $value) {
+
+        if($this->data !== null) {
+            array_push($this->data, $value);
+        } else {
+            $this->data = array($value);
+        }
+        $this->query .= " WHERE NOT $column $operator ?";
+
+        return $this;
+    }    
+
+    /** 
+     * Fetching/executing rows based where column is null
+     * Can be used in left joins where certain column value does not exist in joined table
+     * 
+     * @param string $column name
+     * @return object DB
+     */ 
+    public function whereIsNull($column) {
+
+        $this->query .= " WHERE $column IS NULL";
 
         return $this;
     }
@@ -321,6 +359,19 @@ class DB {
     }
 
     /** 
+     * Setting table to join left for on method to fetch
+     * Adding LEFT JOIN table to query
+     * 
+     * @param string $table name
+     * @return object DB
+     */    
+    public function joinLeft($table) {
+
+        $this->query .= " LEFT JOIN $table";
+        return $this;
+    }
+
+    /** 
      * Fetching rows from two tables 
      * Adding ON col1 $operator col2 to query
      * 
@@ -334,6 +385,16 @@ class DB {
         $this->query .= " ON $col1 $operator $col2";
         return $this;
     }
+
+
+    public function as($alias) {
+
+        $this->query .= " AS $alias";
+        return $this;
+    }
+
+
+
 
     /** 
      * Fetching last id from table 
