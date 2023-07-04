@@ -1,7 +1,6 @@
-<?php use parts\validation\Errors; ?>
+<?php use validation\Errors; ?>
 <?php use core\Csrf; ?>
-<?php use parts\Session; ?>
-<?php use parts\Alert; ?>
+<?php use core\Session; ?>
 
 <?php 
     $this->include('headerOpen');  
@@ -14,11 +13,6 @@
     $this->include("headerClose");
     $this->include('navbar');
 ?>
-
-    
-<?php if(Session::exists("csrf")) { ?>
-        <div class="my-5 w-75 mx-auto"><?php echo Alert::display("warning", "csrf"); ?></div>
-    <?php Session::delete('csrf'); } ?>
 
     <div class="containerJs">
         <div class="row">
