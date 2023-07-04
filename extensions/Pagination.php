@@ -3,93 +3,78 @@
 namespace extensions;
 
 use core\Session;
-use core\Request;
 
 class Pagination {
 
-    private static $_page, $_countPages, $_collPages;
+    private static $_pagenationAllArrayItems, $_maxNumberOfArrayItems, $_paginatedArrayItems, $_countPages, $_collectionNumberOfPages;
 
     /** 
-     * @param array $arr
-     * @param array $max number of pages to paginate
+     * Determine number of array items per pagenated page
+     * 
+     * @param array $paginationArray array to pagainate 
+     * @param array $maxNumberArrayItems number of pages to paginate
      * @return array $_page paginated data
      */ 
-    public static function set($arr, $max) {
+    public static function get($paginationArray, $maxNumberArrayItems) {
 
-        $allNum = count($arr);
-        self::$_countPages = ceil($allNum/$max);
+        self::$_pagenationAllArrayItems = $paginationArray;
+        self::$_maxNumberOfArrayItems = $maxNumberArrayItems;
 
-        if($max < $allNum) {
-            for($i = 1; $i <= $max; $i++) {
-                self::$_page[] = $arr[$i];
-            }
-        } else {
-            return $arr;
-        }
+        $numberPaginationArrayItems = count(self::$_pagenationAllArrayItems);
+        self::$_countPages = ceil($numberPaginationArrayItems/self::$_maxNumberOfArrayItems);
 
-        
-        if(submitted('page')) {
-            for($i = 1; $i <= self::$_countPages; $i++) {
-                if(get('page') == $i) {
-                    Session::set('page', $i);
+        for($i = 1; $i <= self::$_maxNumberOfArrayItems; $i++) {
 
-                    $from = $i * $max - $max;
-                    $to = $from + $max;
-                    
-                    self::$_page = array_slice($arr, $from, $to - $from);
+            if(array_key_exists($i, self::$_pagenationAllArrayItems) ) {
                 
-                    if($from > $allNum) {
-                        $number = $i * $max - $allNum;
-                    }
-                } 
-            }
-        }
- 
-        if(get('back')) {
-
-           if(Session::exists('page')) {
-
-                $req = new Request();
-                $uri = strtok($req->getUri(), '?');
-                $oneBack = Session::get('page') - 1;
-                $back = $uri . "?page=". $oneBack;
-                $first = $uri . "?page=1";
-                
-                if(Session::get('page') !== 1) {
-                    redirect("$back");
-                } else {
-                    redirect("$first");
-                }
-            }
-        } else if(get('next')) {
-            
-            if(Session::exists('page')) {
-               
-                $req = new Request();
-                $uri = strtok($req->getUri(), '?');
-                $oneForward = Session::get('page') + 1;
-                $next = $uri . "?page=". $oneForward;
-                $last = $uri . "?page=" . self::$_countPages;
-                
-                if(Session::get('page') == self::$_countPages) {
-                    redirect("$last");
-                } else {
-                    redirect("$next");
-                }
+                self::$_paginatedArrayItems[] = self::$_pagenationAllArrayItems[$i];
             }
         }
 
-        return self::$_page;
+        self::getNumberedArrayItems();
+        return self::$_paginatedArrayItems;
     }
 
     /** 
-     * @return array $paginated paginated numbers
+     * Determine array items based on request uri get method value of page
+     * 
+     * @return void
+     */ 
+    public static function getNumberedArrayItems() {
+
+        if(get('page') !== null) {
+
+            $pageValue = get('page');
+            Session::set('page', $pageValue);
+        } else {
+            $pageValue = 1;
+        }
+
+        $maxValue = $pageValue * self::$_maxNumberOfArrayItems;
+        $minValue = $maxValue - self::$_maxNumberOfArrayItems;
+        
+        $paginatedArrayItems = [];
+                
+        for($i = $minValue; $i < $maxValue;  $i++) {
+                    
+            if(array_key_exists($i, self::$_pagenationAllArrayItems) ) {
+
+                array_push($paginatedArrayItems, self::$_pagenationAllArrayItems[$i]);
+            }
+        }
+        self::$_paginatedArrayItems = $paginatedArrayItems;
+    }
+
+    /** 
+     * @return array $paginated number of paginated numbers
      */     
-    public static function getPages() {
+    public static function getPageNumbers() {
 
         for($i = 1; $i <= self::$_countPages; $i++) {
-            self::$_collPages[] = $i;
+            
+            self::$_collectionNumberOfPages[] = $i;
         }
-        return self::$_collPages;
+
+        return self::$_collectionNumberOfPages;
     }
 }
