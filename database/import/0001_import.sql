@@ -108,3 +108,5 @@ CREATE TABLE category_page (
 );
 
 ALTER TABLE menus ADD ordering int(11) AFTER position;
+
+ALTER TABLE users RENAME COLUMN retype_password TO retypePassword;
