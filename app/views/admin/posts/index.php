@@ -97,20 +97,21 @@
                 <?php } ?>
             </tbody>
         </table>
-        <?php if(count($numberOfPages) > 1) { ?>
-            <nav class="paginationPosts">
-                <ul class="pagination">
-                    <li class="page-item previous"><a href="/admin/posts?back=1">Previous</a></li>
-                    <?php 
-                        foreach($numberOfPages as $page) {
-                            echo '<li class="page-item"><a href="/admin/posts?page='.$page.'">'.$page.'</a></li>';
-                        }  
-                    ?>
-                    <li class="page-item next"><a href="/admin/posts?next=1">Next</a></li>
-                </ul>
-            </nav>
+        <?php if($numberOfPages !== null) { ?>
+            <?php if(count($numberOfPages) > 1) { ?>
+                <nav class="paginationPosts">
+                    <ul class="pagination">
+                        <li class="page-item previous"><a href="/admin/posts?back=1">Previous</a></li>
+                        <?php 
+                            foreach($numberOfPages as $page) {
+                                echo '<li class="page-item"><a href="/admin/posts?page='.$page.'">'.$page.'</a></li>';
+                            }  
+                        ?>
+                        <li class="page-item next"><a href="/admin/posts?next=1">Next</a></li>
+                    </ul>
+                </nav>
+            <?php } ?>
         <?php } ?>
-
 <?php 
     $this->include('footer');
 ?>

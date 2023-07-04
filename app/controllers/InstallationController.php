@@ -6,6 +6,8 @@ use core\Csrf;
 use validation\Rules;
 use app\models\User;
 use app\models\UserRole;
+use app\models\Post;
+
 
 class InstallationController extends Controller {
 
@@ -28,6 +30,7 @@ class InstallationController extends Controller {
 
                 $user = new User(); 
                 $userRole = new UserRole();  
+                $post = new Post();
 
                 User::insert([
                     
@@ -55,11 +58,4 @@ class InstallationController extends Controller {
             }
         }
     }
-
-
-
-
-
-
-
 }
