@@ -14,9 +14,9 @@
     <h1 class="text-color-sec mb-5">Register</h1>
     <div class="form-parts">
             <label for="email">Username:</label>
-            <input name="username" type="username" id="username" value="<?php echo post('username'); ?>">
+            <input name="f_username" type="username" id="username" value="<?php echo post('f_username'); ?>">
             <div class="error-messages">
-                <?php echo Errors::get($rules, 'username'); ?>
+                <?php echo Errors::get($rules, 'f_username'); ?>
             </div>
         </div>
         <div class="form-parts">

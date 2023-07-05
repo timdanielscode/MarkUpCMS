@@ -149,12 +149,12 @@ class Rules {
         return $this;
     }
 
-    public function user_edit() {
+    public function user_edit($username, $email) {
 
         $validation = new Validate();
 
-        $validation->input('username')->as('Username')->rules(['required' => true, 'min' => 5, 'max' => 50]);
-        $validation->input('email')->as('Email')->rules(['required' => true, 'min' => 5, 'max' => 50]);
+        $validation->input('username')->as('Username')->rules(['required' => true, 'min' => 5, 'max' => 50, 'unique' => $username]);
+        $validation->input('email')->as('Email')->rules(['required' => true, 'min' => 5, 'max' => 50, 'unique', $email]);
 
         $this->errors = $validation->errors;
         return $this;
@@ -164,7 +164,7 @@ class Rules {
         
         $validation = new Validate();
         
-        $validation->input('username')->as('Username')->rules(['required' => true, 'min' => 5, 'max' => 40, 'special' => true, 'unique' => $username]);
+        $validation->input('f_username')->as('Username')->rules(['required' => true, 'min' => 5, 'max' => 40, 'special' => true, 'unique' => $username]);
         $validation->input('email')->as('Email')->rules(['required' => true, 'min' => 5, 'max' => 40, 'special' => true, 'unique' => $email]);
         $validation->input('password')->as('Password')->rules(['required' => true, 'min' => 5, 'max' => 50]);
         $validation->input('password_confirm')->as('Password')->rules(['required' => true, 'match' => 'password']);
@@ -280,17 +280,9 @@ class Rules {
      */
     public function validated($request = null) {
 
-      if(empty($this->errors) ) { return true; } else {
+      if(empty($this->errors) ) {
 
-        if(!empty($request) && $request !== null) {
-          
-            $data['data'] = $request; 
-        }
-
-        $controller = new Controller();
-        $data['rules'] = $this->errors;
-
-        return $controller->view(Session::get('view'), $data) . exit();
+          return true;
       }
   }
 }
