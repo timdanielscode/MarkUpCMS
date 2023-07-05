@@ -6,15 +6,14 @@
  */
 namespace extensions;
 
-use app\models\User;
-use app\models\UserRole;
-use app\models\Roles;
 use core\http\Request;
 use database\DB;
 use core\Session;
 
 class Auth {
-    
+
+    private static $_userCredentialInputName, $_userCredentialInputValue, $_password;
+
     /**
      * Authenticate & authorize users
      * 
@@ -24,39 +23,114 @@ class Auth {
      */
     public static function authenticate($userRole = null) {
 
-        $user = new User();
-
         $request = new Request();
-        $username = $request->get()['username'];
-        $password = $request->get()['password'];
+
+        self::setUserCredentials($request);
 
         if($userRole !== null) {
 
-            $user_role = new UserRole();
-            $role = new Roles();
-
-            $userRole = $userRole['role'];
-            $sql = DB::try()->select($user->t.'.'.$user->id, $user->t.'.'.$user->username, $user->t.'.'.$user->password, $role->t.'.'.$role->name)->from($user->t)->join($user_role->t)->on($user->t.'.'.$user->id, '=', $user_role->t.'.'.$user_role->user_id)->join($role->t)->on($user_role->t.'.'.$user_role->role_id, '=', $role->t.'.'.$role->id)->where($user->username, '=', $username)->and($role->name, '=', $userRole)->first();
+            $userRoleType = $userRole['role'];
+            $sql = DB::try()->select('users.id', 'users.username', 'users.password','roles.name')->from('users')->join('user_role')->on('users.id', '=','user_role.user_id')->join('roles')->on('user_role.role_id', '=', 'roles.id')->where('users'.'.'.self::$_userCredentialInputName, '=', self::$_userCredentialInputValue)->and('roles.name', '=', $userRoleType)->first();
         } else {
 
-            $sql = DB::try()->select($user->t.'.'.$user->username, $user->t.'.'.$user->password)->from($user->t)->where($user->username, '=', $username)->first();
-            $sql['name'] = '';
+            $sql = DB::try()->select(self::$_userCredentialInputName, 'username', 'password')->from('users')->where(self::$_userCredentialInputName, '=', self::$_userCredentialInputValue)->first();
         }
+
+        return self::verifyPassword($sql);
+    }
+
+    /**
+     * Setting user credentials
+     * 
+     * @param object $request 
+     * @return bool
+     */
+    public static function setUserCredentials($request) {
+
+        self::$_password = $request->get()['password'];
+
+        if(!empty($request->get()['email']) && $request->get()['email'] !== null) {
+
+            self::$_userCredentialInputName = 'email';
+            self::$_userCredentialInputValue = $request->get()['email'];
+        } else if(!empty($request->get()['username']) && $request->get()['username'] !== null) {
+
+            self::$_userCredentialInputName = 'username';
+            self::$_userCredentialInputValue = $request->get()['username'];
+        }
+    }
+
+    /**
+     * Verify user password
+     * 
+     * @param array $sql user database record
+     * @param string $password html input password value
+     * @return bool
+     */
+    public static function verifyPassword($sql) {
+
+        self::loginAttempt($sql);
 
         if(!empty($sql) && $sql !== null) {
 
             $fetched_password = $sql['password'];
             
-            if(!password_verify($password, $fetched_password)) {
-
-                return false;
-            } else {
+            if(password_verify(self::$_password, $fetched_password) && Session::exists('failed_login_attempts_timestamp') === false) {
 
                 Session::set('logged_in', true);
                 Session::set('user_role', $sql['name']);
                 Session::set('username', $sql['username']);
+                Session::set('failed_login_attempt', 0);
+
                 return true;
+            } 
+        } 
+    }
+
+    /**
+     * Counting failded login attempts
+     * 
+     * @return string failed_login_attempt session value | failed_login_attempts_timestamp session value
+     */
+    public static function loginAttempt($sql) {
+
+        self::checkTooManyLoginAttempts();
+
+        if(empty($sql) || $sql === null || Session::exists('logged_in') === false) {
+
+            if(Session::exists('failed_login_attempt') === true) {
+
+                $attempt = Session::get('failed_login_attempt');
+                $attempt++;
+
+                if(Session::get('failed_login_attempt') > 2) {
+                    
+                    return Session::set('failed_login_attempts_timestamp', time());
+                }
+
+                return Session::set('failed_login_attempt', $attempt);
             }
+
+            Session::set('failed_login_attempt', 1);
+        }
+    }
+
+    /**
+     * Setting timeout based on failed login attempts
+     */
+    public static function checkTooManyLoginAttempts() {
+
+        if(Session::exists('failed_login_attempts_timestamp') === true) {
+
+            $timeoutInSeconds = 300;
+            $currentTime = time();
+            $timestampFailedLoginAttempts = Session::get('failed_login_attempts_timestamp');
+        
+            if($currentTime - $timestampFailedLoginAttempts > $timeoutInSeconds) {
+    
+                Session::delete('failed_login_attempts_timestamp');
+                Session::set('failed_login_attempt', 0);
+            } 
         }
     }
 }
