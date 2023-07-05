@@ -9,7 +9,6 @@
 ?>
 <div class="con">
 
-
 <h1><?php echo $user['username']; ?><span class="pl-3"><?php echo $user['name']; ?></span></h1>
  
     <form action="update" method="POST" class="d-block m-auto">

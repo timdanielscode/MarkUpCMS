@@ -130,4 +130,27 @@ class Model {
          return new $model;
       }
    }
+
+   public function ifDataExists($data) {
+
+      if(!empty($data) && $data !== null) {
+
+          return $data;
+      } 
+      return $this->dataError("Data not found from " . self::$table . " table.");
+  }
+
+  public function dataError($message) {
+
+      if(!empty($message) && $message !== null) {
+
+          return $this->errorMessage($message);
+      }
+  }
+
+  public function errorMessage($message) {
+
+      echo "<span class='dataNotFound'>" . $message . "</span>";
+      return [];
+  }
 }
