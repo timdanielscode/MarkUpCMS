@@ -22,7 +22,7 @@
     <div class="containerCss">
         <div class="row">
             <div class="col10">
-                <form action="" method="POST" class="form-code">
+                <form action="store" method="POST" class="form-code">
                     <div class="form-parts">
                         <input name="filename" type="text" id="filename" placeholder="Filename" autofocus>
                         <div class="error-messages">

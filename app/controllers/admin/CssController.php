@@ -12,18 +12,25 @@ use extensions\Pagination;
 
 class CssController extends Controller {
 
+    private $_fileExtension = ".css";
+    private $_folderLocation = "website/assets/css/";
+
     public function index() {
 
         $css = new Css();
-        $cssFiles = DB::try()->all($css->t)->order('date_created_at')->fetch();
+        $cssFiles = $css->allCssButOrderedOnDate();
+
         if(empty($cssFiles) ) {
+
             $cssFiles = array(["id" => "?","file_name" => "no css file created yet", "extension" => "","date_created_at" => "-", "time_created_at" => "", "date_updated_at" => "-", "time_updated_at" => ""]);
         }
         $count = count($cssFiles);
         $search = get('search');
 
         if(!empty($search) ) {
-            $cssFiles = DB::try()->all($css->t)->where($css->file_name, 'LIKE', '%'.$search.'%')->or($css->date_created_at, 'LIKE', '%'.$search.'%')->or($css->time_created_at, 'LIKE', '%'.$search.'%')->or($css->date_updated_at, 'LIKE', '%'.$search.'%')->or($css->time_updated_at, 'LIKE', '%'.$search.'%')->fetch();
+
+            $cssFiles = $css->cssFilesOnSearch($search);
+
             if(empty($cssFiles) ) {
                 $cssFiles = array(["id" => "?","file_name" => "not found", "date_created_at" => "-", "time_created_at" => "", "date_updated_at" => "-", "time_updated_at" => ""]);
             }
@@ -45,35 +52,34 @@ class CssController extends Controller {
         return $this->view('admin/css/create', $data);
     }
 
-    public function store() {
+    public function store($request) {
 
         if(submitted('submit')) {
 
             if(Csrf::validate(Csrf::token('get'), post('token') ) === true) {
 
                 $rules = new Rules();
-                $css = new Css();
 
                 if($rules->css()->validated()) {
                     
-                    $filename = "/".post('filename');
+                    $filename = "/".$request['filename'];
                     $filename = str_replace(" ", "-", $filename);
 
-                    $code = post('code');
-            
+                    $code = $request['code'];
+
                     $file = fopen("website/assets/css" . $filename . ".css", "w");
 
                     fwrite($file, $code);
                     fclose($file);
                     
-                    DB::try()->insert($css->t, [
+                    Css::insert([
 
-                        $css->file_name => post('filename'),
-                        $css->extension => '.css',
-                        $css->date_created_at => date("d/m/Y"),
-                        $css->time_created_at => date("H:i"),
-                        $css->date_updated_at => date("d/m/Y"),
-                        $css->time_updated_at => date("H:i")
+                        'file_name' => $request['filename'],
+                        'extension' => '.css',
+                        'date_created_at'   => date('d/m/Y'),
+                        'time_created_at'   => date('H:i'),
+                        'date_updated_at'   => date('d/m/Y'),
+                        'time_updated_at'   => date('H:i')
                     ]);
 
                     Session::set('create', 'You have successfully created a new post!');            
@@ -84,36 +90,43 @@ class CssController extends Controller {
                     $data['rules'] = $rules->errors;
                     return $this->view('admin/css/create', $data);
                 }
-            } else {
-                Session::set('csrf', 'Cross site request forgery!');
-                redirect('/admin/users/create');
-            }
+            } 
+        }
+    }
+
+    private function getFileContent($filename) {
+
+        if(!empty($filename) && $filename !== null) {
+
+            $filePath = $this->_folderLocation . $filename . $this->_fileExtension;
+
+            if(file_exists($filePath) ) {
+    
+                $content = file_get_contents($filePath);
+                return $content;
+            } 
         }
     }
 
     public function read($request) {
 
         $file = Css::get($request['id']);
+        $code = $this->getFileContent($file['file_name']);
 
         $data['file'] = $file;
+        $data['code'] = $code;
+
         return $this->view('admin/css/read', $data);
     }
 
     public function edit($request) {
 
-        $css = new Css();
-        $cssFile = DB::try()->select('*')->from($css->t)->where($css->id, '=', $request['id'])->first();
-        
-        $filePath = "website/assets/css/" . $cssFile["file_name"] . $cssFile["extension"]; 		
-        
-        if(file_exists($filePath) ) {
-            $code = file_get_contents($filePath);
-        } else {
-            $code = "";
-        }
+        $cssFile = Css::where('id', '=', $request['id']);
+        $code = $this->getFileContent($cssFile['file_name']);
 
         $data['cssFile'] = $cssFile;
         $data['code'] = $code;
+        
         $data['rules'] = [];
 
         return $this->view('admin/css/edit', $data);
@@ -121,67 +134,53 @@ class CssController extends Controller {
 
     public function update($request) {
 
-        if(submitted('submit')) {
-
-            if(Csrf::validate(Csrf::token('get'), post('token'))) {
+        if(submitted('submit') && Csrf::validate(Csrf::token('get'), post('token'))) {
                 
-                $css = new Css();
-                $rules = new Rules();
+            $id = $request['id'];
+            $filename = str_replace(" ", "-", $request["filename"]);
+            $currentCssFileName = Css::where('id', '=', $id)['file_name'];
 
-                $id = $request['id'];
-                $filename = $request["filename"];
-                $code = $request["code"];
+            $rules = new Rules();
 
-                $currenCssFileName = DB::try()->select('file_name')->from($css->t)->where($css->id, '=', $request['id'])->first();
+            if($rules->css()->validated()) {
 
-                if($rules->css()->validated()) {
+                rename($this->_folderLocation . $currentCssFileName . $this->_fileExtension, $this->_folderLocation . $filename . $this->_fileExtension);
 
-                    $filename = str_replace(" ", "-", $filename);
+                Css::update(['id' => $id], [
 
-                    rename("website/assets/css/" . $currenCssFileName[0] . ".css", "website/assets/css/" . $filename . ".css");
+                    'file_name'     => $filename,
+                    'date_updated_at'   => date("d/m/Y"),
+                    'time_updated_at'   => date("H:i")
+                ]);
+	
+                $file = fopen("website/assets/css/" . $filename . $this->_fileExtension, "w");
+                fwrite($file, $request["code"]);
+                fclose($file);
 
-                    DB::try()->update($css->t)->set([
-                        $css->file_name => $filename,
-                        $css->date_updated_at => date("d/m/Y"),
-                        $css->time_updated_at => date("H:i")
-                    ])->where($css->id, '=', $id)->run();    
-                    		
-                    $file = fopen("website/assets/css/" . $filename . ".css", "w");
-                    fwrite($file, $code);
-                    fclose($file);
-
-                    Session::set('updated', 'User updated successfully!');
-                    redirect("/admin/css/$id/edit");
+                Session::set('updated', 'User updated successfully!');
+                redirect("/admin/css/$id/edit");
                     
-                } else {
-                    $data['rules'] = $rules->errors;
-
-                    $filePath = "website/assets/css/" . $currenCssFileName[0] . ".css"; 
-                    $code = file_get_contents($filePath);
-
-                    $data['code'] = $code;
-                    $data['cssFile'] = DB::try()->select('*')->from($css->t)->where($css->id, '=', $id)->first();
-                    return $this->view("/admin/css/edit", $data);
-                }
-
             } else {
-                Session::set('csrf', 'Cross site request forgery!');
-                redirect("/admin/posts/$id");
+                
+                $filePath = $this->_folderLocation . $currentCssFileName . $this->_fileExtension; 
+                $code = file_get_contents($filePath);
+
+                $data['code'] = $code;
+                $data['rules'] = $rules->errors;
+                $data['cssFile'] = Css::where('id', '=', $id);
+                
+                return $this->view("/admin/css/edit", $data);
             }
         }
     }
 
     public function delete($request) {
 
-        $id = $request['id'];
-
-        $css = new Css();
-    
-        $filename = DB::try()->select('file_name')->from($css->t)->where($css->id, '=', $request['id'])->first();
-        $path = "website/assets/css/" . $filename[0] . ".css";
+        $filename = Css::where('id', '=', $request['id'])['file_name'];
+        $path = "website/assets/css/" . $filename . ".css";
         unlink($path);
 
-        $css = DB::try()->delete($css->t)->where($css->id, "=", $id)->run();
+        Css::delete('id', $request['id']);
 
         redirect("/admin/css");
     }
