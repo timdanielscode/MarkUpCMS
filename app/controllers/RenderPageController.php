@@ -16,10 +16,9 @@ class RenderPageController extends Controller {
 
     public function render() {
 
-        $posts = new Post();
         $req = new Request();
 
-        $post = DB::try()->select('*')->from($posts->t)->where($posts->slug, '=', $req->getUri())->first();
+        $post = Post::where('slug', '=', $req->getUri());
 
         if(!empty($post) ) {
 
