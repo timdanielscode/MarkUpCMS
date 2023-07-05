@@ -17,7 +17,7 @@
     <div class="containerJs">
         <div class="row">
             <div class="col10">
-                <form action="" method="POST" class="form-code">
+                <form action="update" method="POST" class="form-code">
                     <div class="form-parts">
                         <input name="filename" type="text" id="filename" placeholder="Filename" value="<?php echo $jsFile['file_name']; ?>">
                         <div class="error-messages">

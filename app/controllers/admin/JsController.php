@@ -12,25 +12,33 @@ use extensions\Pagination;
 
 class JsController extends Controller {
 
+    private $_fileExtension = ".js";
+    private $_folderLocation = "website/assets/js/";
+
     public function index() {
 
         $js = new Js();
-        $jsFiles = DB::try()->all($js->t)->order('date_created_at')->fetch();
+        $jsFiles = $js->allJsButOrderedOnDate();
+
         if(empty($jsFiles) ) {
             $jsFiles = array(["id" => "?","file_name" => "no js file created yet", "extension" => "","date_created_at" => "-", "time_created_at" => "", "date_updated_at" => "-", "time_updated_at" => ""]);
         }
+
         $count = count($jsFiles);
         $search = get('search');
 
         if(!empty($search) ) {
-            $jsFiles = DB::try()->all($js->t)->where($js->file_name, 'LIKE', '%'.$search.'%')->or($js->date_created_at, 'LIKE', '%'.$search.'%')->or($js->time_created_at, 'LIKE', '%'.$search.'%')->or($js->date_updated_at, 'LIKE', '%'.$search.'%')->or($js->time_updated_at, 'LIKE', '%'.$search.'%')->fetch();
+
+            $js->cssFilesOnSearch($search);
+            
             if(empty($jsFiles) ) {
+
                 $jsFiles = array(["id" => "?","file_name" => "not found", "date_created_at" => "-", "time_created_at" => "", "date_updated_at" => "-", "time_updated_at" => ""]);
             }
         }
 
-        $jsFiles = Pagination::set($jsFiles, 20);
-        $numberOfPages = Pagination::getPages();
+        $jsFiles = Pagination::get($jsFiles, 20);
+        $numberOfPages = Pagination::getPageNumbers();
 
         $data['jsFiles'] = $jsFiles;
         $data['numberOfPages'] = $numberOfPages;
@@ -45,65 +53,75 @@ class JsController extends Controller {
         return $this->view('admin/js/create', $data);
     }
 
-    public function store() {
+    public function read($request) {
 
-        if(submitted('submit')) {
+        $file = Js::get($request['id']);
+        $code = $this->getFileContent($file['file_name']);
 
-            if(Csrf::validate(Csrf::token('get'), post('token') ) === true) {
+        $data['jsFile'] = $file;
+        $data['code'] = $code;
 
-                $rules = new Rules();
-                $js = new Js();
+        return $this->view('admin/js/read', $data);
+    }
 
-                if($rules->js()->validated()) {
+    public function store($request) {
+
+        if(submitted('submit') && Csrf::validate(Csrf::token('get'), post('token') ) === true) {
+
+            $rules = new Rules();
+
+            if($rules->js()->validated()) {
                     
-                    $filename = "/".post('filename');
-                    $filename = str_replace(" ", "-", $filename);
+                $filename = "/".post('filename');
+                $filename = str_replace(" ", "-", $filename);
 
-                    $code = post('code');
+                $code = post('code');
             
-                    $file = fopen("website/assets/js/" . $filename . ".js", "w");
-                    fwrite($file, $code);
-                    fclose($file);
-                    
-                    DB::try()->insert($js->t, [
+                $file = fopen("website/assets/js/" . $filename . ".js", "w");
+                fwrite($file, $code);
+                fclose($file);
+                
+                Js::insert([
 
-                        $js->file_name => post('filename'),
-                        $js->extension => '.js',
-                        $js->date_created_at => date("d/m/Y"),
-                        $js->time_created_at => date("H:i"),
-                        $js->date_updated_at => date("d/m/Y"),
-                        $js->time_updated_at => date("H:i")
-                    ]);
+                    'file_name' => $request['filename'],
+                    'extension' => '.js',
+                    'date_created_at'   => date('d/m/Y'),
+                    'time_created_at'   => date('H:i'),
+                    'date_updated_at'   => date('d/m/Y'),
+                    'time_updated_at'   => date('H:i')
+                ]);
 
-                    Session::set('create', 'You have successfully created a new post!');            
-                    redirect('/admin/js');
+                Session::set('create', 'You have successfully created a new post!');            
+                redirect('/admin/js');
 
-                } else {
-
-                    $data['rules'] = $rules->errors;
-                    return $this->view('admin/js/create', $data);
-                }
             } else {
-                Session::set('csrf', 'Cross site request forgery!');
-                redirect('/admin/users/create');
+
+                $data['rules'] = $rules->errors;
+                return $this->view('admin/js/create', $data);
             }
+        }
+    }
+
+    private function getFileContent($filename) {
+
+        if(!empty($filename) && $filename !== null) {
+
+            $filePath = $this->_folderLocation . $filename . $this->_fileExtension;
+
+            if(file_exists($filePath) ) {
+    
+                $content = file_get_contents($filePath);
+                return $content;
+            } 
         }
     }
 
     public function edit($request) {
 
-        $js = new Js();
-        $jsFile = DB::try()->select('*')->from($js->t)->where($js->id, '=', $request['id'])->first();
-        
-        $filePath = "website/assets/js/" . $jsFile["file_name"] . $jsFile["extension"]; 		
-        
-        if(file_exists($filePath) ) {
-            $code = file_get_contents($filePath);
-        } else {
-            $code = "";
-        }
+        $file = Js::where('id', '=', $request['id']);
+        $code = $this->getFileContent($file['file_name']);
 
-        $data['jsFile'] = $jsFile;
+        $data['jsFile'] = $file;
         $data['code'] = $code;
         $data['rules'] = [];
 
@@ -112,67 +130,53 @@ class JsController extends Controller {
 
     public function update($request) {
 
-        if(submitted('submit')) {
-
-            if(CSRF::validate(CSRF::token('get'), post('token'))) {
+        if(submitted('submit') && Csrf::validate(Csrf::token('get'), post('token'))) {
                 
-                $js = new Js();
-                $rules = new Rules();
+            $id = $request['id'];
+            $filename = str_replace(" ", "-", $request["filename"]);
+            $currentJsFileName = Js::where('id', '=', $id)['file_name'];
 
-                $id = $request['id'];
-                $filename = $request["filename"];
-                $code = $request["code"];
+            $rules = new Rules();
 
-                $currenJsFileName = DB::try()->select('file_name')->from($js->t)->where($js->id, '=', $request['id'])->first();
+            if($rules->Js()->validated()) {
 
-                if($rules->js()->validated()) {
+                rename($this->_folderLocation . $currentJsFileName . $this->_fileExtension, $this->_folderLocation . $filename . $this->_fileExtension);
 
-                    $filename = str_replace(" ", "-", $filename);
+                Js::update(['id' => $id], [
 
-                    rename("website/assets/js/" . $currenJsFileName[0] . ".js", "website/assets/js/" . $filename . ".js");
+                    'file_name'     => $filename,
+                    'date_updated_at'   => date("d/m/Y"),
+                    'time_updated_at'   => date("H:i")
+                ]);
+	
+                $file = fopen("website/assets/js/" . $filename . $this->_fileExtension, "w");
+                fwrite($file, $request["code"]);
+                fclose($file);
 
-                    DB::try()->update($js->t)->set([
-                        $js->file_name => $filename,
-                        $js->date_updated_at => date("d/m/Y"),
-                        $js->time_updated_at => date("H:i")
-                    ])->where($js->id, '=', $id)->run();    
-                    		
-                    $file = fopen("website/assets/js/" . $filename . ".js", "w");
-                    fwrite($file, $code);
-                    fclose($file);
-
-                    Session::set('updated', 'User updated successfully!');
-                    redirect("/admin/js/$id/edit");
+                Session::set('updated', 'User updated successfully!');
+                redirect("/admin/js/$id/edit");
                     
-                } else {
-                    $data['rules'] = $rules->errors;
-
-                    $filePath = "website/assets/js/" . $currenJsFileName[0] . ".js"; 
-                    $code = file_get_contents($filePath);
-
-                    $data['code'] = $code;
-                    $data['jsFile'] = DB::try()->select('*')->from($js->t)->where($js->id, '=', $id)->first();
-                    return $this->view("/admin/js/edit", $data);
-                }
-
             } else {
-                Session::set('csrf', 'Cross site request forgery!');
-                redirect("/admin/posts/$id");
+                
+                $filePath = $this->_folderLocation . $currentJsFileName . $this->_fileExtension; 
+                $code = file_get_contents($filePath);
+
+                $data['code'] = $code;
+                $data['rules'] = $rules->errors;
+                $data['cssFile'] = Js::where('id', '=', $id);
+                
+                return $this->view("/admin/css/edit", $data);
             }
         }
     }
 
     public function delete($request) {
 
-        $id = $request['id'];
-
-        $js = new Js();
-    
-        $filename = DB::try()->select('file_name')->from($js->t)->where($js->id, '=', $request['id'])->first();
-        $path = "website/assets/js/" . $filename[0] . ".js";
+        $filename = Js::where('id', '=', $request['id'])['file_name'];
+        $path = "website/assets/js/" . $filename . ".js";
         unlink($path);
 
-        $js = DB::try()->delete($js->t)->where($js->id, "=", $id)->run();
+        Js::delete('id', $request['id']);
 
         redirect("/admin/js");
     }

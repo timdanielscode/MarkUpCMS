@@ -2,15 +2,29 @@
 
 namespace app\models;
 
-class Js {
+use database\DB;
 
-    public $t = "js",
+class Js extends Model {
 
-        $id = 'id', 
-        $file_name = 'file_name', 
-        $extension = 'extension', 
-        $date_created_at = 'date_created_at', 
-        $time_created_at = 'time_created_at', 
-        $date_updated_at = 'date_updated_at', 
-        $time_updated_at = 'time_updated_at';
+    public function __construct() {
+
+        self::table('js');
+    }
+
+    public function allJsButOrderedOnDate() {
+
+        $allJs = DB::try()->all('js')->order('date_created_at')->fetch();
+        return $this->ifDataExists($allJs);
+    }
+
+    public function cssFilesOnSearch($searchValue) {
+
+        if(!empty($searchValue) && $searchValue !== null) {
+
+            $jsFiles = DB::try()->all('js')->where('file_name', 'LIKE', '%'.$searchValue.'%')->or('date_created_at', 'LIKE', '%'.$searchValue.'%')->or('time_created_at', 'LIKE', '%'.$searchValue.'%')->or('date_updated_at', 'LIKE', '%'.$searchValue.'%')->or('time_updated_at', 'LIKE', '%'.$searchValue.'%')->fetch();
+            return $this->ifDataExists($jsFiles);
+        }
+    }
+
+
 }

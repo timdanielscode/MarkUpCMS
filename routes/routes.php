@@ -49,12 +49,14 @@ Route::middleware(['auth' => 'admin'])->run(function() {
     
     Route::crud('/admin/css', '[id]')->add('admin\CssController', 'crud');
 
-    Route::get('/admin/js')->add('admin\JsController', 'index');
+    Route::crud('/admin/js', '[id]')->add('admin\JsController', 'crud');
+
+    /*Route::get('/admin/js')->add('admin\JsController', 'index');
     Route::get('/admin/js/create')->add('admin\JsController', 'create');
     Route::post('/admin/js/create')->add('admin\JsController', 'store');
     Route::get('/admin/js/[id]/edit')->add('admin\JsController', 'edit');
     Route::post('/admin/js/[id]/edit')->add('admin\JsController', 'update');
-    Route::get('/admin/js/[id]/delete')->add('admin\JsController', 'delete');
+    Route::get('/admin/js/[id]/delete')->add('admin\JsController', 'delete');*/
 
     Route::get('/admin/media')->add('admin\MediaController', 'index');
     Route::get('/admin/media/fetch-data')->add('admin\MediaController', 'fetchData');
