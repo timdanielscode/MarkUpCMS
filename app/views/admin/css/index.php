@@ -33,7 +33,7 @@
                         <td class="width-50">
                             <a href="/admin/css/<?php echo $cssFile['id']; ?>/edit" class="font-weight-500"><?php echo $cssFile['file_name'] . $cssFile['extension']; ?></a> |
                             <a href="/admin/css/<?php echo $cssFile['id']; ?>/edit" class="font-weight-300">Edit</a> |
-                            <a href="/admin/css/<?php echo $cssFile['id']; ?>/preview" class="font-weight-300">Preview</a> |
+                            <a href="/admin/css/<?php echo $cssFile['id']; ?>/read" class="font-weight-300">Read</a> |
                             <a href="/admin/css/<?php echo $cssFile['id']; ?>/delete" class="font-weight-300 color-red">Remove</a>
                         </td>
                         <?php } else { ?>

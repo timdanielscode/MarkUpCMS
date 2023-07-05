@@ -2,7 +2,13 @@
 
 namespace app\models;
 
-class Css {
+class Css extends Model {
+
+    public function __construct() {
+
+        self::table('css');
+    }
+
 
     public $t = "css",
 

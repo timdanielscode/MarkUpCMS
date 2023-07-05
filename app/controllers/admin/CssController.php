@@ -29,8 +29,8 @@ class CssController extends Controller {
             }
         }
 
-        $cssFiles = Pagination::set($cssFiles, 20);
-        $numberOfPages = Pagination::getPages();
+        $cssFiles = Pagination::get($cssFiles, 20);
+        $numberOfPages = Pagination::getPageNumbers();
 
         $data['cssFiles'] = $cssFiles;
         $data['numberOfPages'] = $numberOfPages;
@@ -91,6 +91,14 @@ class CssController extends Controller {
         }
     }
 
+    public function read($request) {
+
+        $file = Css::get($request['id']);
+
+        $data['file'] = $file;
+        return $this->view('admin/css/read', $data);
+    }
+
     public function edit($request) {
 
         $css = new Css();
@@ -115,7 +123,7 @@ class CssController extends Controller {
 
         if(submitted('submit')) {
 
-            if(CSRF::validate(CSRF::token('get'), post('token'))) {
+            if(Csrf::validate(Csrf::token('get'), post('token'))) {
                 
                 $css = new Css();
                 $rules = new Rules();

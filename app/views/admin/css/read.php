@@ -19,10 +19,7 @@
             <div class="col10">
                 <form action="update" method="POST" class="form-code">
                     <div class="form-parts">
-                        <input name="filename" type="text" id="filename" placeholder="Filename" value="<?php echo $cssFile['file_name']; ?>">
-                        <div class="error-messages">
-                            <?php echo Errors::get($rules, 'filename'); ?>
-                        </div>
+                        <input name="filename" type="text" id="filename" placeholder="Filename" value="<?php echo $file['file_name']; ?>">
                         <textarea name="code" id="code"><?php echo $code; ?></textarea>
                     </div>
                     <div class="form-parts">
