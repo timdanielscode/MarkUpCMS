@@ -15,18 +15,16 @@
     <form action="update" method="POST" class="d-block m-auto">
         <div class="form-parts">
             <label for="username">Username:</label>
-            <input name="f_username" type="text" id="username" value="<?php echo $user["username"]; ?>">
+            <input name="f_username" type="text" id="username" value="<?php echo $user['username']; ?>">
             <div class="error-messages">
-                <?php echo Errors::get($rules, 'username'); ?>
+                <?php echo Errors::get($rules, 'f_username'); ?>
             </div>
         </div>
         <div class="form-parts">
-            <input type="hidden" name="id" value="<?php echo $user["id"]; ?>"> 
             <button name="submit" type="submit" class="button">Update</button>
-            <input type="hidden" name="token" value="<?php echo CSRF::token('add');?>" />
+            <input type="hidden" name="token" value="<?php echo Csrf::token('add');?>" />
         </div>
     </form>
-
 
 
 
@@ -39,17 +37,17 @@
             </div>
         </div>
         <div class="form-parts">
-            <input type="hidden" name="id" value="<?php echo $user["id"]; ?>"> 
             <button name="submit" type="submit" class="button">Update</button>
-            <input type="hidden" name="token" value="<?php echo CSRF::token('add');?>" />
+            <input type="hidden" name="token" value="<?php echo Csrf::token('add');?>" />
         </div>
     </form>
+
     <form action="update" method="POST" class="">
         <div class="form-parts">
             <label for="role">User Role:</label>
             <select name="role" id="role">
-            <option>Normal</option>
-            <option>Admin</option>
+            <option value="1">Normal</option>
+            <option value="2">Admin</option>
             </select>
             <div class="error-messages">
                 <?php echo Errors::get($rules, 'role'); ?>
@@ -57,7 +55,7 @@
             <div class="form-parts">
             <input type="hidden" name="id" value="<?php echo $user["id"]; ?>"> 
             <button name="submit" type="submit" class="button">Update</button>
-            <input type="hidden" name="token" value="<?php echo CSRF::token('add');?>" />
+            <input type="hidden" name="token" value="<?php echo Csrf::token('add');?>" />
         </div>
         </div>
     </form>

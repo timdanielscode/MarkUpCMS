@@ -38,7 +38,7 @@ Route::middleware('notLoggedIn')->run(function() {
 });
     
 Route::middleware(['auth' => 'admin'])->run(function() { 
-    
+
     Route::get('/admin/dashboard')->add('admin\AdminController', 'index');
 
     Route::crud('/admin/users', '[username]')->add('admin\UserController', 'crud');

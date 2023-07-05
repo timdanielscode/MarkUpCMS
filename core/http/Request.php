@@ -57,6 +57,6 @@ class Request {
         }
 
         $this->_data = array_merge($this->_postData, $this->_getData);
-        return array_filter($this->_data);
+        return $this->_data;
     }
 }
