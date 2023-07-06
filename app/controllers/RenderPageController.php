@@ -22,14 +22,10 @@ class RenderPageController extends Controller {
 
         if(!empty($post) ) {
 
-            $css = new Css();
-            $js = new Js();
-            $menu = new Menu();
-
-            $cssFiles = DB::try()->select('file_name', 'extension')->from($css->t)->fetch();
-            $jsFiles = DB::try()->select('file_name', 'extension')->from($js->t)->fetch();
-            $menusTop = DB::try()->all($menu->t)->where($menu->position, '=', 'top')->order('ordering')->fetch();
-            $menusBottom = DB::try()->all($menu->t)->where($menu->position, '=', 'bottom')->order('ordering')->fetch();
+            $cssFiles = DB::try()->select('file_name', 'extension')->from('css')->fetch();
+            $jsFiles = DB::try()->select('file_name', 'extension')->from('js')->fetch();
+            $menusTop = DB::try()->all('menus')->where('position', '=', 'top')->order('ordering')->fetch();
+            $menusBottom = DB::try()->all('menus')->where('position', '=', 'bottom')->order('ordering')->fetch();
     
             $data['post'] = $post;
             $data['cssFiles'] = $cssFiles;
