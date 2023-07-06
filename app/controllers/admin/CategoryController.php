@@ -117,10 +117,17 @@ class CategoryController extends Controller {
 
                 foreach($request['page'] as $pageId) {
 
+                    $page = Post::get($pageId)['slug'];
+
                     CategoryPage::insert([
 
                         'category_id'   => $categoryId,
                         'page_id'   => $pageId
+                    ]);
+
+                    Post::update(['id' => $pageId],[
+
+                        'slug'  =>  '/' . $slug . $page
                     ]);
                 }
 
