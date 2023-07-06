@@ -2,18 +2,26 @@
 
 namespace app\models;
 
-class Media {
+use database\DB;
 
-    public $t = "media",
+class Media extends Model {
 
-        $id = 'id', 
-        $media_title = 'media_title', 
-        $media_description = 'media_description',
-        $media_filename = 'media_filename', 
-        $media_filetype = 'media_filetype', 
-        $media_filesize = 'media_filesize',
-        $date_created_at = 'date_created_at', 
-        $time_created_at = 'time_created_at', 
-        $date_updated_at = 'date_updated_at', 
-        $time_updated_at = 'time_updated_at';
+    public function __construct() {
+
+        self::table('media');
+    }
+
+    public function allMediaButOrdered() {
+
+        $media = DB::try()->all('media')->order('date_created_at')->fetch();
+        return $this->ifDataExists($media);
+    }
+    
+    public function mediaFilesOnSearch($searchValue) {
+
+        $media = DB::try()->all('media')->where('media_title', 'LIKE', '%'.$searchValue.'%')->or('media_description', 'LIKE', '%'.$searchValue.'%')->or('date_created_at', 'LIKE', '%'.$searchValue.'%')->or('time_created_at', 'LIKE', '%'.$searchValue.'%')->or('date_updated_at', 'LIKE', '%'.$searchValue.'%')->or('time_updated_at', 'LIKE', '%'.$searchValue.'%')->fetch();
+        return $this->ifDataExists($media);
+    }
+
+
 }

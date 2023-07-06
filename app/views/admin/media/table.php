@@ -6,7 +6,7 @@
             <td class="width-30">
                 <a href="#<?php echo $media['media_filename']; ?>" data-role="edit" data-id="<?php echo $media['id']; ?>" id="mediaTitle-<?php echo $media['id']; ?>" class="mediaEdit font-weight-500"><?php echo $media["media_title"]; ?></a> |
                 <a href="#<?php echo $media['media_filename']; ?>" data-role="edit" data-id="<?php echo $media['id']; ?>" class="mediaEdit font-weight-300">Edit</a> |
-                <a href="#<?php echo $media['media_filename']; ?>" class="mediaPreview font-weight-300" data-id="<?php echo $media['id']; ?>">Preview</a> |
+                <a href="#<?php echo $media['media_filename']; ?>" class="mediaPreview font-weight-300" data-id="<?php echo $media['id']; ?>">Read</a> |
                 <a href="/admin/media/<?php echo $media["id"]; ?>/delete" class="font-weight-300 color-red">Remove</a>
             </td>
         <?php } else { ?>

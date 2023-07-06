@@ -15,35 +15,37 @@ class MediaController extends Controller {
     public function index() {
         
         $media = new Media();
-        $allMedia = DB::try()->all($media->t)->order('date_created_at')->fetch();
+        $allMedia = $media->allMediaButOrdered();
 
         $count = count($allMedia);
         $search = get('search');
 
         if(!empty($search) ) {
-            $allMedia = DB::try()->all($media->t)->where($media->media_title, 'LIKE', '%'.$search.'%')->or($media->media_description, 'LIKE', '%'.$search.'%')->or($media->date_created_at, 'LIKE', '%'.$search.'%')->or($media->time_created_at, 'LIKE', '%'.$search.'%')->or($media->date_updated_at, 'LIKE', '%'.$search.'%')->or($media->time_updated_at, 'LIKE', '%'.$search.'%')->fetch();
+
+            $allMedia = $media->mediaFilesOnSearch($search);
         }
         if(empty($allMedia) ) {
+
             $allMedia = array(["id" => "?","title" => "not found", "author" => "not found", "date_created_at" => "-", "time_created_at" => "", "date_updated_at" => "-", "time_updated_at" => ""]);
         }
         
-        $allMedia = Pagination::set($allMedia, 20);
-        $numberOfPages = Pagination::getPages();
+        $allMedia = Pagination::get($allMedia, 20);
+        $numberOfPages = Pagination::getPageNumbers();
 
         $data["allMedia"] = $allMedia;
         $data['numberOfPages'] = $numberOfPages;
         $data['count'] = $count;
 
         return $this->view('admin/media/index', $data);
-
     }
 
     public function fetchData() {
 
         $media = new Media();
-        $allMedia = DB::try()->all($media->t)->order('date_created_at')->fetch();
+        $allMedia = $media->allMediaButOrdered();
 
         if(empty($allMedia) ) {
+
             $allMedia = array(["id" => "?","media_title" => "not found", "media_filetype" => "-" , "media_filename" => "-", "media_filesize" => 0, "author" => "not found", "date_created_at" => "-", "time_created_at" => "", "date_updated_at" => "-", "time_updated_at" => ""]);
         }
 
@@ -54,41 +56,46 @@ class MediaController extends Controller {
 
     public function mediaModalFetch($request) {
 
-        $id = $request['id'];
-
-        $media = new Media();
-        $media = DB::try()->select($media->media_title, $media->media_description)->from($media->t)->where($media->id, '=', $id)->first();
+        $media = Media::where('id', '=', $request['id']);
 
         $mediaTitle = $media['media_title'];
         $mediaDescription = $media['media_description'];
 
         $data['mediaTitle'] = $mediaTitle;
         $data['mediaDescription'] = $mediaDescription;
-        $data['id'] = $id;
+        $data['id'] = $request['id'];
 
         return $this->view('admin/media/modal', $data);
     }
 
-    public function mediaModalFetchPreview($request) {
+    public function mediaModalFetchRead($request) {
 
-        $id = $request['id'];
-
-        $media = new Media();
-
-        $media = DB::try()->all($media->t)->where($media->id, '=', $id)->first();
+        $media = Media::where('id', '=', $request['id']);
         
-        $filename = $media['media_filename'];
-        $type = $media['media_filetype'];
+        switch ($media['media_filetype']) {
 
-        if($type == 'image/png' || $type  == 'image/webp' || $type  == 'image/gif' || $type  == 'image/jpeg' || $type  == 'image/svg+xml') {
-            $file = '<img id="mediaPreviewFile" class="display-none" src="/website/assets/img/' . $filename . '">';
-        } else if($type == 'video/mp4' || $type == 'video/quicktime') {
-            $file = '<video id="mediaPreviewFile" class="display-none" src="/website/assets/video/' . $filename . '"></video>';
-        } else if($type == 'application/pdf') {
-            $fileDestination = "website/assets/application/".$filename;
-            $file = '<iframe id="mediaPreviewFile" class="display-none" src="/website/assets/application/' . $filename . '"></iframe>';
-        } else {
-            $fileDestination = '';
+            case 'image/png':
+            case 'image/webp':
+            case 'image/gif':
+            case 'image/jpeg':
+            case 'image/svg+xml':
+
+                $file = '<img id="mediaPreviewFile" class="display-none" src="/website/assets/img/' . $media['media_filename'] . '">';
+            break;
+            case 'video/mp4':
+            case 'video/quicktime':
+
+                $file = '<video id="mediaPreviewFile" class="display-none" src="/website/assets/video/' . $media['media_filename'] . '"></video>';
+            break;  
+            case 'application/pdf':
+
+                $fileDestination = "website/assets/application/".$media['media_filename'];
+                $file = '<iframe id="mediaPreviewFile" class="display-none" src="/website/assets/application/' . $media['media_filename'] . '"></iframe>';
+            break;
+            default:
+
+                $fileDestination = '';
+            break;
         }
 
         echo '<a href="#" id="mediaPreviewClose">Close</a>';
@@ -102,73 +109,81 @@ class MediaController extends Controller {
         return $this->view('admin/media/create', $data);
     }
 
-    public function store() {
+    public function store($request) {
 
-        if(submitted('submit')) {
+        if(submitted('submit') && Csrf::validate(Csrf::token('get'), post('token') ) === true) {
 
-            if(Csrf::validate(Csrf::token('get'), post('token') ) === true) {
+            $filename = $_FILES['file']['name'];
+            $tmp = $_FILES['file']['tmp_name'];
+            $size = $_FILES['file']['size'];
+            $type = $_FILES['file']['type'];
 
-                $rules = new Rules();
-                $media = new Media();
-                
-                $filename = $_FILES['file']['name'];
-                $tmp = $_FILES['file']['tmp_name'];
-                $size = $_FILES['file']['size'];
-                $type = $_FILES['file']['type'];
+            $rules = new Rules();
 
-                if($rules->media()->validated()) {
+            if($rules->media()->validated()) {
                     
-                    if($type == 'image/png' || $type  == 'image/webp' || $type  == 'image/gif' || $type  == 'image/jpeg' || $type  == 'image/svg+xml') {
+                switch ($type) {
+
+                    case 'image/png':
+                    case 'image/webp':
+                    case 'image/gif':
+                    case 'image/jpeg':
+                    case 'image/svg+xml':
+
                         $fileDestination = "website/assets/img/".$filename;
-                    } else if($type == 'video/mp4' || $type == 'video/quicktime') {
+                    break;
+                    case 'video/mp4':
+                    case 'video/quicktime':
+
                         $fileDestination = "website/assets/video/".$filename;
-                    } else if($type == 'application/pdf') {
+                    break;  
+                    case 'application/pdf':
+
                         $fileDestination = "website/assets/application/".$filename;
-                    } else {
+                    break;
+                    default:
+
                         $fileDestination = '';
-                    }
-                    
-                    move_uploaded_file($tmp, $fileDestination);
-
-                    DB::try()->insert($media->t, [
-
-                        $media->media_title => post('media_title'),
-                        $media->media_description => post('media_description'),
-                        $media->media_filename => $filename,
-                        $media->media_filetype => $type,
-                        $media->media_filesize => $size,
-                        $media->date_created_at => date("d/m/Y"),
-                        $media->time_created_at => date("H:i"),
-                        $media->date_updated_at => date("d/m/Y"),
-                        $media->time_updated_at => date("H:i")
-                    ]);
-
-                    Session::set('create', 'You have successfully created a new post!');            
-                    redirect('/admin/media');
-
-                } else {
-                    $data['rules'] = $rules->errors;
-                    return $this->view('admin/media/create', $data);
+                    break;
                 }
+                    
+                move_uploaded_file($tmp, $fileDestination);
+
+                Media::insert([
+
+                    'media_title'   => $request['media_title'],
+                    'media_description' => $request['media_description'],
+                    'media_filename'    => $filename,
+                    'media_filetype'    => $type,
+                    'media_filesize'    => $size,
+                    'date_created_at'   => date("d/m/Y"),
+                    'time_created_at'   => date("H:i"),
+                    'date_updated_at'   => date("d/m/Y"),
+                    'time_updated_at'   => date("H:i")
+                ]);
+
+                Session::set('create', 'You have successfully created a new post!');            
+                redirect('/admin/media');
+
             } else {
-                Session::set('csrf', 'Cross site request forgery!');
-                redirect('/admin/media/create');
+
+                $data['rules'] = $rules->errors;
+                return $this->view('admin/media/create', $data);
             }
         }
     }
 
-
     public function edit($request) {
         
-        $media = new Media();
-        $media = DB::try()->all($media->t)->where($media->id, '=', $request['id'])->first();
+        Media::where('id', '=', $request['id']);
 
         $data['media'] = $media;
         $data['rules'] = [];
+
         return $this->view('/admin/media/edit', $data);
     }
 
-    public function updateFilename($request) { 
+    public function update($request) { 
 
         if(!empty($request['filename']) && $request['filename'] !== null) {
 
@@ -178,29 +193,9 @@ class MediaController extends Controller {
             $rules = new Rules();
     
             if($rules->update_media_filename()->validated()) {
-    
-                $media = new Media();
-        
-                $currentFile = DB::try()->select($media->media_filename, $media->media_filetype)->from($media->t)->where($media->id, '=', $data['id'])->first();
-                $currentFileName = $currentFile[0];
-                $type = $currentFile[1];
-             
-                if($type == 'image/png' || $type  == 'image/webp' || $type  == 'image/gif' || $type  == 'image/jpeg' || $type  == 'image/svg+xml') {
-                    $fileDestination = "website/assets/img/";
-                } else if($type == 'video/mp4' || $type == 'video/quicktime') {
-                    $fileDestination = "website/assets/video/";
-                } else if($type == 'application/pdf') {
-                    $fileDestination = "website/assets/application/";
-                } else {
-                    $fileDestination = '';
-                }
-        
-                rename($fileDestination.$currentFileName, $fileDestination.$data['filename']);
-        
-                DB::try()->update($media->t)->set([
-                    $media->media_filename => $data['filename']
-                ])->where($media->id, '=', $data['id'])->run(); 
-    
+
+                $this->updateFilename($request);
+
                 echo json_encode($data);
             }
 
@@ -210,25 +205,65 @@ class MediaController extends Controller {
             $data['title'] = $request['title'];
             $data['description'] = $request['description'];
 
-            $media = new Media();
-
-            DB::try()->update($media->t)->set([
-                $media->media_title => $data['title'],
-                $media->media_description => $data['description'],
-            ])->where($media->id, '=', $data['id'])->run(); 
+            $this->updateTitleAndDescription($request);
 
             echo json_encode($data);
         }
     }
 
+    private function updateFilename($request) {
+
+        $currentFile = Media::where('id', '=', $request['id']);
+        $currentFileName = $currentFile['media_filename'];
+
+        $type = $currentFile['media_filetype'];
+         
+        switch ($type) {
+
+            case 'image/png':
+            case 'image/webp':
+            case 'image/gif':
+            case 'image/jpeg':
+            case 'image/svg+xml':
+
+                $fileDestination = "website/assets/img/";
+            break;
+            case 'video/mp4':
+            case 'video/quicktime':
+
+                $fileDestination = "website/assets/video/";
+            break;  
+            case 'application/pdf':
+
+                $fileDestination = "website/assets/application/";
+            break;
+            default:
+
+                $fileDestination = '';
+            break;
+        }
+
+        rename($fileDestination.$currentFileName, $fileDestination.$request['filename']);
+
+        Media::update(['id' => $request['id']], [
+                
+            'media_filename'    => $request['filename']
+        ]);
+    }
+
+    private function updateTitleAndDescription($request) {
+
+        Media::update(['id' => $request['id']], [
+
+            'media_title'   => $request['title'],
+            'media_description' => $request['description']
+
+        ]);
+    }
+
     public function delete($request) {
 
-        $id = $request['id'];
-
-        $media = new Media();
-        $media = DB::try()->delete($media->t)->where($media->id, "=", $id)->run();
-
+        Media::delete('id', $request['id']);
         redirect("/admin/media");
     }
-    
 }

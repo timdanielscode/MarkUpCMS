@@ -52,16 +52,14 @@ Route::middleware(['auth' => 'admin'])->run(function() {
     Route::crud('/admin/menus', '[id]')->add('admin\MenuController', 'crud');
 
     Route::get('/admin/media')->add('admin\MediaController', 'index');
-    Route::get('/admin/media/fetch-data')->add('admin\MediaController', 'fetchData');
-    Route::get('/admin/media/media-modal-fetch')->add('admin\MediaController', 'mediaModalFetch');
-    Route::get('/admin/media/media-modal-fetch-preview')->add('admin\MediaController', 'mediaModalFetchPreview');
-    Route::post('/admin/media')->add('admin\MediaController', 'updateFilename');
     Route::get('/admin/media/create')->add('admin\MediaController', 'create');
     Route::post('/admin/media/create')->add('admin\MediaController', 'store');
-    Route::get('/admin/media/[id]/edit')->add('admin\MediaController', 'edit');
-    Route::post('/admin/media/[id]/edit')->add('admin\MediaController', 'update');
+    Route::get('/admin/media/fetch-data')->add('admin\MediaController', 'fetchData');
+    Route::get('/admin/media/media-modal-fetch')->add('admin\MediaController', 'mediaModalFetch');
+    Route::get('/admin/media/media-modal-fetch-preview')->add('admin\MediaController', 'mediaModalFetchRead');
+    Route::post('/admin/media')->add('admin\MediaController', 'update');
     Route::get('/admin/media/[id]/delete')->add('admin\MediaController', 'delete');
-
+    
     Route::get('/admin/categories')->add('admin\CategoryController', 'index');
     Route::get('/admin/categories/fetch-table')->add('admin\CategoryController', 'fetchTable');
     Route::get('/admin/categories/category-modal-fetch')->add('admin\CategoryController', 'categoryModalFetch');
