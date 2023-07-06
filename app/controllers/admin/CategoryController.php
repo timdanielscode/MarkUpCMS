@@ -17,7 +17,9 @@ class CategoryController extends Controller {
     public function index() {
 
         $category = new Category();
-        $categories = DB::try()->all($category->t)->order('date_created_at')->fetch();
+
+        $categories = $category->allCategoriesButOrdered();
+
         if(empty($categories) ) {
             $categories = array(["id" => "?","title" => "no category created", "extension" => "","date_created_at" => "-", "time_created_at" => "", "date_updated_at" => "-", "time_updated_at" => ""]);
         }
@@ -25,14 +27,16 @@ class CategoryController extends Controller {
         $search = get('search');
 
         if(!empty($search) ) {
-            $categories = DB::try()->all($category->t)->where($category->file_name, 'LIKE', '%'.$search.'%')->or($category->date_created_at, 'LIKE', '%'.$search.'%')->or($category->time_created_at, 'LIKE', '%'.$search.'%')->or($category->date_updated_at, 'LIKE', '%'.$search.'%')->or($category->time_updated_at, 'LIKE', '%'.$search.'%')->fetch();
+
+            $categories = $category->categoriesFilesOnSearch($search);
+
             if(empty($categories) ) {
                 $categories = array(["id" => "?","file_name" => "not found", "date_created_at" => "-", "time_created_at" => "", "date_updated_at" => "-", "time_updated_at" => ""]);
             }
         }
 
-        $categories = Pagination::set($categories, 20);
-        $numberOfPages = Pagination::getPages();
+        $categories = Pagination::get($categories, 20);
+        $numberOfPages = Pagination::getPageNumbers();
 
         $data['categories'] = $categories;
         $data['numberOfPages'] = $numberOfPages;
@@ -44,7 +48,7 @@ class CategoryController extends Controller {
     public function fetchTable() {
 
         $category = new Category();
-        $categories = DB::try()->all($category->t)->order('date_created_at')->fetch();
+        $categories = $category->allCategoriesButOrdered();
 
         if(empty($categories) ) {
             $categories = array(["id" => "?","title" => "no category created", "extension" => "","date_created_at" => "-", "time_created_at" => "", "date_updated_at" => "-", "time_updated_at" => ""]);
@@ -57,30 +61,19 @@ class CategoryController extends Controller {
 
     public function categoryModalFetch($request) {
 
-        $id = $request['id'];
+        $category = Category::where('id', '=', $request['id']);
 
-        $category = new Category();
-        $category = DB::try()->select($category->title, $category->category_description)->from($category->t)->where($category->id, '=', $id)->first();
-
-        $categoryTitle = $category['title'];
-        $categoryDescription = $category['category_description'];
-
-        $data['categoryTitle'] = $categoryTitle;
-        $data['categoryDescription'] = $categoryDescription;
-        $data['id'] = $id;
+        $data['categoryTitle'] = $category['title'];
+        $data['categoryDescription'] = $category['category_description'];
+        $data['id'] = $request['id'];
 
         return $this->view('admin/categories/modal', $data);
     }
 
     public function previewCategoryPages($request) {
 
-        $id = $request['id'];
-
         $category = new Category();
-        $page = new Post();
-        $categoryPage = new CategoryPage();
-
-        $pages = DB::try()->select($page->t.'.'.$page->title, $page->t.'.'.$page->id)->from($page->t)->join($categoryPage->t)->on($page->t.'.'.$page->id, '=', $categoryPage->t.'.'.$categoryPage->page_id)->where($categoryPage->t.'.'.$categoryPage->category_id, '=', $id)->fetch();
+        $pages = $category->allCategoriesWithPosts($request['id']);
 
         $data['pages'] = $pages;
 
@@ -89,65 +82,57 @@ class CategoryController extends Controller {
 
     public function create() {
 
-        $page = new Post();
-        $pages = DB::try()->select($page->id, $page->title)->from($page->t)->fetch();
+        $pages = Post::all();
 
         $data['rules'] = [];
         $data['pages'] = $pages;
+
         return $this->view('admin/categories/create', $data);
     }
 
-    public function store() {
-
-        if(submitted('submit')) {
+    public function store($request) {
             
-            if(Csrf::validate(Csrf::token('get'), post('token') ) === true) {
+        if(submitted('submit') && Csrf::validate(Csrf::token('get'), post('token') ) === true) {
 
-                $rules = new Rules();
-                $category = new Category();
+            $rules = new Rules();
+           
+            if($rules->create_category()->validated()) {
 
-                if($rules->create_category()->validated()) {
-
-                    $slug = post('title');
-                    $slug = str_replace(" ", "-", $slug);
+                $slug = post('title');
+                $slug = str_replace(" ", "-", $slug);
                          
-                    DB::try()->insert($category->t, [
+                Category::insert([
 
-                        $category->title => post('title'),
-                        $category->slug => $slug,
-                        $category->category_description => post('description'),
-                        $category->date_created_at => date("d/m/Y"),
-                        $category->time_created_at => date("H:i"),
-                        $category->date_updated_at => date("d/m/Y"),
-                        $category->time_updated_at => date("H:i")
+                    'title' => $request['title'],
+                    'slug'  => $slug,
+                    'category_description'  => $request['description'],
+                    'date_created_at'   => date("d/m/Y"),
+                    'time_created_at'   => date("H:i"),
+                    'date_updated_at'   => date("d/m/Y"),
+                    'time_updated_at'   => date("H:i")
+                ]);
+
+                $category = new Category();
+                $categoryId = $category->getLastRegisteredCategoryId()[0];
+
+                foreach($request['page'] as $pageId) {
+
+                    CategoryPage::insert([
+
+                        'category_id'   => $categoryId,
+                        'page_id'   => $pageId
                     ]);
-
-                    $categoryId = DB::try()->getLastId()->first();
-
-                    $categoryPage = new CategoryPage();
-
-                    foreach(post('page') as $pageId) {
-                        
-                        DB::try()->insert($categoryPage->t, [
-
-                            $categoryPage->category_id => $categoryId[0],
-                            $categoryPage->page_id => $pageId,
-                        ]);
-                    }
-
-                    Session::set('create', 'You have successfully created a new post!');            
-                    redirect('/admin/categories');
-
-                } else {
-
-                    $data['rules'] = $rules->errors;
-                    return $this->view('admin/categories/create', $data);
                 }
+
+                Session::set('create', 'You have successfully created a new post!');            
+                redirect('/admin/categories');
+
             } else {
-                Session::set('csrf', 'Cross site request forgery!');
-                redirect('/admin/categories/create');
+
+                $data['rules'] = $rules->errors;
+                return $this->view('admin/categories/create', $data);
             }
-        }
+        } 
     }
 
     public function updateSlug($request) { 
@@ -189,13 +174,8 @@ class CategoryController extends Controller {
 
     public function delete($request) {
 
-        $id = $request['id'];
-
-        $category = new Category();
-        $categoryPage = new CategoryPage();
-
-        $category = DB::try()->delete($category->t)->where($category->id, "=", $id)->run();
-        $categoryPage = DB::try()->delete($categoryPage->t)->where($categoryPage->category_id, '=', $id)->run();
+        Category::delete('id', $request['id']);
+        CategoryPage::delete('category_id', $request['id']);
 
         redirect("/admin/categories");
     }

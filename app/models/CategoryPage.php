@@ -2,10 +2,11 @@
 
 namespace app\models;
 
-class CategoryPage {
+class CategoryPage extends Model {
 
-    public $t = "category_page",
+    public function __construct() {
 
-        $category_id = 'category_id', 
-        $page_id = 'page_id';
+        self::table('category_page');
+    }
+
 }
