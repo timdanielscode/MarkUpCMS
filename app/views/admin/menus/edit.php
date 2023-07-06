@@ -21,7 +21,7 @@
     <div class="containerPost">
     <div class="row">
         <div class="col10">
-            <form action="" method="POST" class="form-code">
+            <form action="update" method="POST" class="form-code">
                 <div class="form-parts">
                     <input type="text" autofocus name="title" id="title" value="<?php echo $menu['title']; ?>">
                     <div class="error-messages">
@@ -44,20 +44,20 @@
 
                 <ul class="postSidebarButtons">
                     <li>
-                        <a href="/admin/menus/<?php echo $post['id']; ?>/preview" class="button">Preview</a>
+                        <a href="/admin/menus/<?php echo $post['id']; ?>/read" class="button">Preview</a>
                     </li>
                     <li>
                         <a href="#" id="codeEditorFullScreen" class="button">Full screen</a>
                     </li>
                 </ul>
-                <form action="" method="POST">
+                <form action="update" method="POST">
                     <select name="position">
                         <option value="top">Top</option>
                         <option value="bottom">Bottom</option>
                     </select>
                     <input type="submit" name="submitPosition" value="update"/>
                 </form>
-                <form action="" method="POST">
+                <form action="update" method="POST">
                     <input type="number" name="ordering" min="1" max="10">
                     <input type="submit" name="submitOrdering" value="update"/>
                 </form>

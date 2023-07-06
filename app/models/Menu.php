@@ -2,18 +2,28 @@
 
 namespace app\models;
 
-class Menu {
+use database\DB;
 
-    public $t = "menus",
+class Menu extends Model {
 
-        $id = 'id', 
-        $title = 'title', 
-        $content = 'content',
-        $position = 'position', 
-        $ordering = 'ordering', 
-        $author = 'author', 
-        $date_created_at = 'date_created_at', 
-        $time_created_at = 'time_created_at', 
-        $date_updated_at = 'date_updated_at', 
-        $time_updated_at = 'time_updated_at';
+    public function __construct() {
+
+        self::table('menus');
+    }
+
+    public function allMenusButOrderedOnDate() {
+
+        $menus = DB::try()->all('menus')->order('date_created_at')->fetch();
+        return $this->ifDataExists($menus);
+    }
+
+    public function menusOnSearch($searchValue) {
+
+        if(!empty($searchValue) && $searchValue !== null) {
+
+            $menus = DB::try()->all('menus')->where('title', 'LIKE', '%'.$searchValue.'%')->or('author', 'LIKE', '%'.$searchValue.'%')->or('date_created_at', 'LIKE', '%'.$searchValue.'%')->or('time_created_at', 'LIKE', '%'.$searchValue.'%')->or('date_updated_at', 'LIKE', '%'.$searchValue.'%')->or('time_updated_at', 'LIKE', '%'.$searchValue.'%')->fetch();
+            return $this->ifDataExists($menus);
+        }
+    }
+
 }

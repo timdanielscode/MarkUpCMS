@@ -10,26 +10,27 @@ use core\Session;
 use database\DB;
 use extensions\Pagination;
 
-
 class MenuController extends Controller {
 
     public function index() {
 
         $menu = new Menu();
-        $menus = DB::try()->all($menu->t)->order('date_created_at')->fetch();
+        $menus = $menu->allMenusButOrderedOnDate();
 
         $count = count($menus);
         $search = get('search');
 
         if(!empty($search) ) {
-            $menus = DB::try()->all($menu->t)->where($menu->title, 'LIKE', '%'.$search.'%')->or($menu->author, 'LIKE', '%'.$search.'%')->or($menu->date_created_at, 'LIKE', '%'.$search.'%')->or($menu->time_created_at, 'LIKE', '%'.$search.'%')->or($menu->date_updated_at, 'LIKE', '%'.$search.'%')->or($menu->time_updated_at, 'LIKE', '%'.$search.'%')->fetch();
+
+            $menus = $menu->menusOnSearch($search);
         }
         if(empty($menus) ) {
+
             $menus = array(["id" => "?","title" => "not found", "author" => "-", "position" => "-", "date_created_at" => "-", "time_created_at" => "", "date_updated_at" => "-", "time_updated_at" => ""]);
         }
         
-        $menus = Pagination::set($menus, 20);
-        $numberOfPages = Pagination::getPages();
+        $menus = Pagination::get($menus, 20);
+        $numberOfPages = Pagination::getPageNumbers();
 
         $data["menus"] = $menus;
         $data['numberOfPages'] = $numberOfPages;
@@ -44,49 +45,50 @@ class MenuController extends Controller {
         return $this->view('admin/menus/create', $data);
     }
 
-    public function store() {
+    public function store($request) {
 
-        if(submitted('submit')) {
+        if(submitted('submit') && Csrf::validate(Csrf::token('get'), post('token') ) === true) {
 
-            if(Csrf::validate(Csrf::token('get'), post('token') ) === true) {
+            $rules = new Rules();
 
-                $rules = new Rules();
-                $menu = new Menu();
-
-                if($rules->create_menu()->validated()) {
+            if($rules->create_menu()->validated()) {
                     
-                    DB::try()->insert($menu->t, [
+                Menu::insert([
 
-                        $menu->title => post('title'),
-                        $menu->content => post('content'),
-                        $menu->position => 'unset',
-                        $menu->author => Session::get('username'),
-                        $menu->date_created_at => date("d/m/Y"),
-                        $menu->time_created_at => date("H:i"),
-                        $menu->date_updated_at => date("d/m/Y"),
-                        $menu->time_updated_at => date("H:i")
-                    ]);
+                    'title' => $request['title'],
+                    'content'   => $request['content'],
+                    'position'  => 'unset',
+                    'author'    =>  Session::get('username'),
+                    'date_created_at'   =>     date("d/m/Y"),
+                    'time_created_at'   =>     date("H:i"),
+                    'date_updated_at'   =>     date("d/m/Y"),
+                    'time_updated_at'   =>     date("H:i")   
+                ]);
 
-                    Session::set('create', 'You have successfully created a new menu!');            
-                    redirect('/admin/menus');
+                Session::set('create', 'You have successfully created a new menu!');            
+                redirect('/admin/menus');
 
-                } else {
-
-                    $data['rules'] = $rules->errors;
-                    return $this->view('admin/menus/create', $data);
-                }
             } else {
-                Session::set('csrf', 'Cross site request forgery!');
+
+                $data['rules'] = $rules->errors;
                 return $this->view('admin/menus/create', $data);
-            }
+            } 
         }
+    }
+
+    public function read($request) {
+
+        $menu = Menu::where('id', '=', $request['id']);
+        $data['menu'] = $menu;
+
+        return $this->view('/admin/menus/preview', $data);
     }
 
     public function edit($request) {
 
-        $menus = new Menu();
-        $menu = DB::try()->select('*')->from($menus->t)->where($menus->id, '=', $request['id'])->first();
+        $menu = Menu::where('id', '=', $request['id']);
         $data['menu'] = $menu;
+        
         $data['rules'] = [];
 
         return $this->view('admin/menus/edit', $data);
@@ -94,85 +96,73 @@ class MenuController extends Controller {
 
     public function update($request) {
 
-        if(submitted('submit')) {
+        //if(Csrf::validate(Csrf::token('get'), post('token'))) {
+        
+            $id = $request['id'];
 
-            if(CSRF::validate(CSRF::token('get'), post('token'))) {
-                
-                $menu = new Menu();
-                $rules = new Rules();
-                $id = $request['id'];
-                $title = $request["title"];
-                $content = $request["content"];
+            if(submitted('submit') ) {
 
-                if($rules->menu_update()->validated()) {
+                $this->updateTitleAndContent($id, $request);
 
-                    DB::try()->update($menu->t)->set([
-                        $menu->title => $title,
-                        $menu->content => $content,
-                        $menu->date_updated_at => date("d/m/Y"),
-                        $menu->time_updated_at => date("H:i")
-                    ])->where($menu->id, '=', $id)->run();              
+            } else if (submitted('submitPosition') ) {
 
-                    Session::set('updated', 'User updated successfully!');
-                    redirect("/admin/menus/$id/edit");
-                    
-                } else {
-                    $data['rules'] = $rules->errors;
-                    $data['menu'] = DB::try()->select('*')->from($menu->t)->where($menu->id, '=', $id)->first();
-                    return $this->view("/admin/menus/edit", $data);
-                }
+                $this->updatePosition($id, $request);
 
-            } else {
-                Session::set('csrf', 'Cross site request forgery!');
-                redirect("/admin/menus/$id");
+            } else if (submitted('submitOrdering')) {
+
+                $this->updateOrdering($id, $request);
             }
-        }
+        //}
+    }
 
-        if(submitted('submitPosition')) {
-            
-            $menu = new Menu();
+    private function updateTitleAndContent($id, $request) {
 
-            $id = $request['id'];
-            $position = $request["position"];
-            
-            DB::try()->update($menu->t)->set([
-                $menu->position => $position,
-            ])->where($menu->id, '=', $id)->run(); 
-            
+        $rules = new Rules();
+
+        if($rules->menu_update()->validated()) {
+                
+            Menu::update(['id' => $id], [
+
+                'title'     => $request['title'],
+                'content'   => $request['content'],
+                'date_updated_at'   => date("d/m/Y"),
+                'time_updated_at'   => date("H:i")
+            ]);
+
+            Session::set('updated', 'User updated successfully!');
             redirect("/admin/menus/$id/edit");
-        }
+                
+        } else {
 
-        if(submitted('submitOrdering')) {
-            
-            $menu = new Menu();
-
-            $id = $request['id'];
-            $ordering = $request["ordering"];
-            
-            DB::try()->update($menu->t)->set([
-                $menu->ordering => $ordering,
-            ])->where($menu->id, '=', $id)->run(); 
-            
-            redirect("/admin/menus/$id/edit");
+            $data['rules'] = $rules->errors;
+            $data['menu'] = Menu::where('id', '=', $id);
+            return $this->view("/admin/menus/edit", $data);
         }
     }
 
-    public function preview($request) {
+    private function updatePosition($id, $request) {
 
-        $menu = new Menu();
-        $menu = DB::try()->select('*')->from($menu->t)->where($menu->id, '=', $request['id'])->first();
-        $data['menu'] = $menu;
+        $id = $request['id'];
+        Menu::update(['id' => $id], [
+            'position' => $request['position']
+        ]); 
 
-        return $this->view('/admin/menus/preview', $data);
+        redirect("/admin/menus/$id/edit");
+    }
 
+    private function updateOrdering($id, $request) {
+
+        $id = $request['id'];
+        Menu::update(['id' => $id], [
+            'ordering'  => $request['ordering']
+        ]);
+        
+        redirect("/admin/menus/$id/edit");
     }
 
     public function delete($request) {
 
-        $id = $request['id'];
-        $menu = new Menu();
-        $menu = DB::try()->delete($menu->t)->where($menu->id, "=", $id)->run();
-        
+        Menu::delete('id', $request['id']);
         redirect("/admin/menus");
     }
 }

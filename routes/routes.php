@@ -22,7 +22,6 @@ if(!empty($postPaths) && $postPaths !== null) {
     });
 }
 
-
 Route::middleware('login')->run(function() { 
 
     Route::get('/profile/[username]')->add('ProfileController', 'index');
@@ -48,15 +47,9 @@ Route::middleware(['auth' => 'admin'])->run(function() {
     Route::crud('/admin/users', '[username]')->add('admin\UserController', 'crud');
     
     Route::crud('/admin/css', '[id]')->add('admin\CssController', 'crud');
-
     Route::crud('/admin/js', '[id]')->add('admin\JsController', 'crud');
 
-    /*Route::get('/admin/js')->add('admin\JsController', 'index');
-    Route::get('/admin/js/create')->add('admin\JsController', 'create');
-    Route::post('/admin/js/create')->add('admin\JsController', 'store');
-    Route::get('/admin/js/[id]/edit')->add('admin\JsController', 'edit');
-    Route::post('/admin/js/[id]/edit')->add('admin\JsController', 'update');
-    Route::get('/admin/js/[id]/delete')->add('admin\JsController', 'delete');*/
+    Route::crud('/admin/menus', '[id]')->add('admin\MenuController', 'crud');
 
     Route::get('/admin/media')->add('admin\MediaController', 'index');
     Route::get('/admin/media/fetch-data')->add('admin\MediaController', 'fetchData');
@@ -68,14 +61,6 @@ Route::middleware(['auth' => 'admin'])->run(function() {
     Route::get('/admin/media/[id]/edit')->add('admin\MediaController', 'edit');
     Route::post('/admin/media/[id]/edit')->add('admin\MediaController', 'update');
     Route::get('/admin/media/[id]/delete')->add('admin\MediaController', 'delete');
-
-    Route::get('/admin/menus')->add('admin\MenuController', 'index');
-    Route::get('/admin/menus/create')->add('admin\MenuController', 'create');
-    Route::post('/admin/menus/create')->add('admin\MenuController', 'store');
-    Route::get('/admin/menus/[id]/edit')->add('admin\MenuController', 'edit');
-    Route::post('/admin/menus/[id]/edit')->add('admin\MenuController', 'update');
-    Route::get('/admin/menus/[id]/preview')->add('admin\MenuController', 'preview');
-    Route::get('/admin/menus/[id]/delete')->add('admin\MenuController', 'delete');
 
     Route::get('/admin/categories')->add('admin\CategoryController', 'index');
     Route::get('/admin/categories/fetch-table')->add('admin\CategoryController', 'fetchTable');
