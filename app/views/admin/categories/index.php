@@ -1,12 +1,12 @@
 <?php 
     $this->include('headerOpen');  
-    $this->script('/assets/js/ajax.js');
-    $this->script('/assets/js/categories/table.js');
-    $this->script('/assets/js/categories/modal.js');
-    $this->script('/assets/js/categories/edit.js');
-    $this->script('/assets/js/categories/read.js');
-    $this->script('/assets/js/categories/add.js');
-    $this->script('/assets/js/categories/slug.js');
+    $this->script('/assets/js/ajax.js', true);
+    $this->script('/assets/js/categories/table.js', true);
+    $this->script('/assets/js/categories/modal.js', true);
+    $this->script('/assets/js/categories/edit.js', true);
+    $this->script('/assets/js/categories/read.js', true);
+    $this->script('/assets/js/categories/add.js', true);
+    $this->script('/assets/js/categories/slug.js', true);
     $this->include('headerClose');
     $this->include('navbar');
 ?>
@@ -41,13 +41,13 @@
         <div id="categoriesPreview"></div>
 
         <div id="modal" class="display-none">
-        <div class="mediaModalFormContainer">
-            <form id="mediaModelForm">
+            <div class="container">
+                <form id="modalForm">
 
-            </form>
-        </div>
-            <a href="#" id="updateMediaModal" class="button">Update</a>
-            <a href="#" id="mediaModalClose" class="button">Exit</a>
+                </form>
+            </div>
+            <a id="UPDATE" class="button">Update</a>
+            <a id="EXIT" class="button">Exit</a>
         </div>
 
         <?php if(count($numberOfPages) > 1) { ?>

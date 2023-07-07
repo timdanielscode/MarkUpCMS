@@ -60,10 +60,28 @@ Route::middleware(['auth' => 'admin'])->run(function() {
     Route::post('/admin/media')->add('admin\MediaController', 'update');
     Route::get('/admin/media/[id]/delete')->add('admin\MediaController', 'delete');
     
+
+
+
+
+
+
+
+
+
+
+
     Route::get('/admin/categories')->add('admin\CategoryController', 'index');
 
     Route::get('/admin/categories/table')->add('admin\CategoryController', 'table');
     Route::get('/admin/categories/edit')->add('admin\CategoryController', 'edit');
+
+    
+    
+    Route::post('/admin/categories')->add('admin\CategoryController', 'UPDATEDATA');
+    
+    
+    
     Route::get('/admin/categories/read')->add('admin\CategoryController', 'read');
     Route::get('/admin/categories/add')->add('admin\CategoryController', 'add');
     Route::post('/admin/categories/slug')->add('admin\CategoryController', 'slug');

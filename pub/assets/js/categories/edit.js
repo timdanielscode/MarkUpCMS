@@ -1,10 +1,9 @@
 $(document).on('click', '.edit', function() {
 
     var modal = $('#modal');
-    modal.addClass('display-block'); 
+    modal.addClass('display-block');
 
     var id = $(this).data('id');
-    var filename = $('.edit').val();
     var html = $('html');
 
     $(document).ready(function() {
@@ -15,20 +14,19 @@ $(document).on('click', '.edit', function() {
             dataType: "html",
             success: function (data) {
 
-                $('#mediaModelForm').html(data);
+                $('#modalForm').html(data);
                 html.addClass('dark-layer');
-                $('#mediaModalTitle').focus();
             }
         });
     });
 });
 
 $(document).ready(function() {
-    $(document).on('click', '#updateMediaModal', function() {
-       
-        var id = $('#categoryModalId').val();
-        var categoryModalTitle = $('#categoryModalTitle').val();
-        var categoryModalDescription = $('#categoryModalDescription').val();
+    $(document).on('click', '#UPDATE', function() {
+
+        var id = $('#ID').val();
+        var title = $('#TITLE').val();
+        var description = $('#DESCRIPTION').val();
 
         $.ajax({
                 type: "POST",
@@ -36,15 +34,15 @@ $(document).ready(function() {
                 dataType: "json",
                 data: {
                     id: id,
-                    title: categoryModalTitle,
-                    description: categoryModalDescription
+                    title: title,
+                    description: description
             },
                 success: function(data) {
-                    $('#categoryTitle-'+id).text(data.title);
-                    $('.modalUpdateMessage').html('Updated successfully!').fadeIn(10).fadeOut(1000);
+                    $('#TABLE-TITLE-'+id).text(data.title);
+                    $('.MESSAGE').html('Updated successfully!').fadeIn(10).fadeOut(1000);
             },
                 error: function(xhr, status, error) {
-                    $('.modalUpdateMessage').html('Oops, something went wrong!').fadeIn(10).fadeOut(1000);
+                    $('.MESSAGE').html('Oops, something went wrong!').fadeIn(10).fadeOut(1000);
             }
         });
 

@@ -88,9 +88,17 @@ class Controller {
      * @param string $defer optional
      * @return void
      */
-    public function script($src, $defer = false) {
+    public function script($src, $defer = null) {
 
-        echo '<script '.$defer.' src='.'"'.$src.'"'.'></script>';
+        if($defer === true) {
+
+            echo '<script src='.'"'.$src.'"'.'defer></script>';
+        } else {
+
+            echo '<script src='.'"'.$src.'"'.'></script>';
+        }
+
+       
     }
 
     /**

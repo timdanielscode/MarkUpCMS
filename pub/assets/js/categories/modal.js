@@ -1,4 +1,4 @@
-$(document).on('click', '#mediaModalClose', function() {
+$(document).on('click', '#EXIT', function() {
     
     var modal = $('#modal');
     modal.removeClass('display-block'); 

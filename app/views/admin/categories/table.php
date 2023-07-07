@@ -4,9 +4,9 @@
     <tr>
         <?php if($category["title"] !== "not found" && $category["title"] !== "no category created") {?>
             <td class="width-50">
-                <a href="#<?php echo $category['title']; ?>" data-role="edit" data-id="<?php echo $category['id']; ?>" id="categoryTitle-<?php echo $category['id']; ?>" class="mediaEdit font-weight-500"><?php echo $category["title"]; ?></a> |
-                <a href="#" data-role="edit" data-id="<?php echo $category['id']; ?>" class="edit font-weight-300">Edit</a> |
-                <a href="#" data-role="add" data-id="<?php echo $category['id']; ?>" class="add font-weight-300">Add</a> |
+                <a href="<?php echo $category['title']; ?>" data-role="edit" data-id="<?php echo $category['id']; ?>" id="TABLE-TITLE-<?php echo $category['id']; ?>" class="mediaEdit font-weight-500"><?php echo $category["title"]; ?></a> |
+                <a data-id="<?php echo $category['id']; ?>" class="edit font-weight-300" class="edit">Edit</a> |
+                <a data-role="add" data-id="<?php echo $category['id']; ?>" class="add font-weight-300">Add</a> |
                 <a href="#<?php echo $category['title']; ?>" class="read font-weight-300" data-id="<?php echo $category['id']; ?>">Read</a> |
                 <a href="/admin/categories/<?php echo $category['id']; ?>/delete" class="font-weight-300 color-red">Remove</a>
             </td>

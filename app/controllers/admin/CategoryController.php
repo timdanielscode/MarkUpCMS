@@ -69,14 +69,38 @@ class CategoryController extends Controller {
 
     public function edit($request) {
 
-        $category = Category::where('id', '=', $request['id']);
+        $category = Category::where('id', '=', $request['id'])[0];
 
-        $data['categoryTitle'] = $category['title'];
-        $data['categoryDescription'] = $category['category_description'];
         $data['id'] = $request['id'];
-
+        $data['title'] = $category['title'];
+        $data['description'] = $category['category_description'];
+        
         return $this->view('admin/categories/edit', $data);
     }
+
+
+    public function UPDATEDATA($request) {
+
+        Category::update(['id' => $request['id']], [
+
+            'title'   => $request['title'],
+            'category_description' => $request['description']
+
+        ]);
+  
+        $DATA['id'] = $request['id'];
+        $DATA['title'] = $request['title'];
+        $DATA['description'] = $request['description'];
+
+        echo json_encode($DATA);
+    }
+
+
+
+
+
+
+
 
     public function add($request) {
 
@@ -175,7 +199,7 @@ class CategoryController extends Controller {
         } 
     }
 
-    public function slug($request) { 
+    /*public function slug($request) { 
 
         if(!empty($request['slug']) && $request['slug'] !== null) {
 
@@ -210,7 +234,7 @@ class CategoryController extends Controller {
 
             echo json_encode($data);
         }
-    }
+    }*/
 
     public function delete($request) {
 

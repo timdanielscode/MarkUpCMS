@@ -56,7 +56,7 @@ class MediaController extends Controller {
 
     public function mediaModalFetch($request) {
 
-        $media = Media::where('id', '=', $request['id']);
+        $media = Media::where('id', '=', $request['id'])[0];
 
         $mediaTitle = $media['media_title'];
         $mediaDescription = $media['media_description'];
@@ -175,7 +175,7 @@ class MediaController extends Controller {
 
     public function edit($request) {
         
-        Media::where('id', '=', $request['id']);
+        Media::where('id', '=', $request['id'])[0];
 
         $data['media'] = $media;
         $data['rules'] = [];

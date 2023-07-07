@@ -21,7 +21,7 @@
 
                 <?php foreach($notAssingedPages as $notAssignedPage) { ?>
 
-                    <option value="<?php echo $notAssingedPage['id']; ?>"><?php  echo $notAssignedPage['title']; ?></option>
+                    <option value="<?php echo $notAssignedPage['id']; ?>"><?php  echo $notAssignedPage['title']; ?></option>
 
                 <?php } ?>
 
