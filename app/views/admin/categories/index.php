@@ -1,7 +1,12 @@
 <?php 
     $this->include('headerOpen');  
     $this->script('/assets/js/ajax.js');
-    $this->script('/assets/js/category.js');
+    $this->script('/assets/js/categories/table.js');
+    $this->script('/assets/js/categories/modal.js');
+    $this->script('/assets/js/categories/edit.js');
+    $this->script('/assets/js/categories/read.js');
+    $this->script('/assets/js/categories/add.js');
+    $this->script('/assets/js/categories/slug.js');
     $this->include('headerClose');
     $this->include('navbar');
 ?>

@@ -16,7 +16,7 @@ class CategoryController extends Controller {
 
     public function index() {
 
-        $category = new Category();
+        /*$category = new Category();
 
         $categories = $category->allCategoriesButOrdered();
 
@@ -35,17 +35,26 @@ class CategoryController extends Controller {
             }
         }
 
-        $categories = Pagination::get($categories, 20);
+        $categories = Pagination::get($categories, 7);
         $numberOfPages = Pagination::getPageNumbers();
 
         $data['categories'] = $categories;
         $data['numberOfPages'] = $numberOfPages;
+        $data['count'] = $count;*/
+
+
+        $category = new Category();
+
+        $categories = $category->allCategoriesButOrdered();
+
+        $count = count($categories);
         $data['count'] = $count;
+
 
         return $this->view('admin/categories/index', $data);
     }
 
-    public function fetchTable() {
+    public function table() {
 
         $category = new Category();
         $categories = $category->allCategoriesButOrdered();
@@ -55,11 +64,10 @@ class CategoryController extends Controller {
         }
 
         $data['categories'] = $categories;
-
         return $this->view('admin/categories/table', $data);
     }
 
-    public function categoryModalFetch($request) {
+    public function edit($request) {
 
         $category = Category::where('id', '=', $request['id']);
 
@@ -67,17 +75,42 @@ class CategoryController extends Controller {
         $data['categoryDescription'] = $category['category_description'];
         $data['id'] = $request['id'];
 
-        return $this->view('admin/categories/modal', $data);
+        return $this->view('admin/categories/edit', $data);
     }
 
-    public function previewCategoryPages($request) {
+    public function add($request) {
+
+        $assignedPages = DB::try()->select('id, title')->from('pages')->join('category_page')->on('pages.id', '=', 'category_page.page_id')->where('category_id', '=', $request['id'])->fetch();
+        $assignedPageIds = DB::try()->select('id')->from('pages')->join('category_page')->on('pages.id', '=', 'category_page.page_id')->where('category_id', '=', $request['id'])->fetch();
+
+        $pageIds = DB::try()->select('id')->from('pages')->fetch();
+
+        $listAssingedPageIds = [];
+
+        foreach($assignedPageIds as $assignedPageId) {
+
+            array_push($listAssingedPageIds, $assignedPageId['id']);
+        }
+
+        $listAssingedPageIds = implode(',', $listAssingedPageIds);
+
+        $notAssignedPages = DB::try()->select('id, title')->from('pages')->whereNotIn('id', $listAssingedPageIds)->fetch();
+
+
+        $data['notAssingedPages'] = $notAssignedPages;
+        $data['assignedPages'] = $assignedPages;
+
+        return $this->view('admin/categories/add', $data);
+    }
+
+    public function read($request) {
 
         $category = new Category();
         $pages = $category->allCategoriesWithPosts($request['id']);
 
         $data['pages'] = $pages;
 
-        return $this->view('admin/categories/previewPages', $data);
+        return $this->view('admin/categories/read', $data);
     }
 
     public function create() {
@@ -142,7 +175,7 @@ class CategoryController extends Controller {
         } 
     }
 
-    public function updateSlug($request) { 
+    public function slug($request) { 
 
         if(!empty($request['slug']) && $request['slug'] !== null) {
 

@@ -61,10 +61,13 @@ Route::middleware(['auth' => 'admin'])->run(function() {
     Route::get('/admin/media/[id]/delete')->add('admin\MediaController', 'delete');
     
     Route::get('/admin/categories')->add('admin\CategoryController', 'index');
-    Route::get('/admin/categories/fetch-table')->add('admin\CategoryController', 'fetchTable');
-    Route::get('/admin/categories/category-modal-fetch')->add('admin\CategoryController', 'categoryModalFetch');
-    Route::get('/admin/categories/categories-modal-fetch-preview')->add('admin\CategoryController', 'previewCategoryPages');
-    Route::post('/admin/categories')->add('admin\CategoryController', 'updateSlug');
+
+    Route::get('/admin/categories/table')->add('admin\CategoryController', 'table');
+    Route::get('/admin/categories/edit')->add('admin\CategoryController', 'edit');
+    Route::get('/admin/categories/read')->add('admin\CategoryController', 'read');
+    Route::get('/admin/categories/add')->add('admin\CategoryController', 'add');
+    Route::post('/admin/categories/slug')->add('admin\CategoryController', 'slug');
+
     Route::get('/admin/categories/create')->add('admin\CategoryController', 'create');
     Route::post('/admin/categories/create')->add('admin\CategoryController', 'store');
     Route::get('/admin/categories/[id]/delete')->add('admin\CategoryController', 'delete');

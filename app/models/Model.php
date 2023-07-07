@@ -63,7 +63,7 @@ class Model {
       if($column !== null && $value !== null) {
          
          self::createInstance();
-         return DB::try()->select('*')->from(self::$table)->where($column, $operator, $value)->first();
+         return DB::try()->select('*')->from(self::$table)->where($column, $operator, $value)->fetch();
       }
    }
 

@@ -190,6 +190,34 @@ class DB {
         return $this;
     }
 
+
+
+
+
+
+
+
+
+
+    public function whereNotIn($column, $values) {
+
+        $this->query .= " WHERE $column NOT IN ($values)";
+
+        return $this;
+    }
+
+
+
+
+
+
+
+
+
+
+
+
+
     /** 
      * Fetching/executing rows on double condition
      * Adding AND column operator to query
