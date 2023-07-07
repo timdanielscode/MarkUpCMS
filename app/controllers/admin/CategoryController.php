@@ -54,7 +54,7 @@ class CategoryController extends Controller {
         return $this->view('admin/categories/index', $data);
     }
 
-    public function table() {
+    public function TABLE() {
 
         $category = new Category();
         $categories = $category->allCategoriesButOrdered();
@@ -67,7 +67,7 @@ class CategoryController extends Controller {
         return $this->view('admin/categories/table', $data);
     }
 
-    public function edit($request) {
+    public function EDIT($request) {
 
         $category = Category::where('id', '=', $request['id'])[0];
 
@@ -79,7 +79,7 @@ class CategoryController extends Controller {
     }
 
 
-    public function UPDATEDATA($request) {
+    public function UPDATE($request) {
 
         Category::update(['id' => $request['id']], [
 
@@ -95,14 +95,7 @@ class CategoryController extends Controller {
         echo json_encode($DATA);
     }
 
-
-
-
-
-
-
-
-    public function add($request) {
+    public function SHOWADDABLE($request) {
 
         $assignedPages = DB::try()->select('id, title')->from('pages')->join('category_page')->on('pages.id', '=', 'category_page.page_id')->where('category_id', '=', $request['id'])->fetch();
         $assignedPageIds = DB::try()->select('id')->from('pages')->join('category_page')->on('pages.id', '=', 'category_page.page_id')->where('category_id', '=', $request['id'])->fetch();
@@ -121,13 +114,31 @@ class CategoryController extends Controller {
         $notAssignedPages = DB::try()->select('id, title')->from('pages')->whereNotIn('id', $listAssingedPageIds)->fetch();
 
 
+        $data['id'] = $request['id'];
         $data['notAssingedPages'] = $notAssignedPages;
         $data['assignedPages'] = $assignedPages;
 
         return $this->view('admin/categories/add', $data);
     }
 
-    public function read($request) {
+    public function ADD($request) {
+
+        foreach($request['pageid'] as $pageId) {
+
+            CategoryPage::insert([
+
+                'page_id'   => $pageId,
+                'category_id'   => $request['id']
+            ]);
+        }
+
+        $DATA['categoryid'] = $request['id'];
+        $DATA['pageid'] = $request['pageid'];
+
+        echo json_encode($DATA);
+    }
+
+    public function READ($request) {
 
         $category = new Category();
         $pages = $category->allCategoriesWithPosts($request['id']);

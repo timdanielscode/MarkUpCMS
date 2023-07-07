@@ -2,6 +2,7 @@ $(document).on('click', '.read', function() {
 
     var modal = $('#modal');
     modal.addClass('display-block'); 
+    
     var id = $(this).data('id');
     var html = $('html');
 
@@ -13,9 +14,8 @@ $(document).on('click', '.read', function() {
             dataType: "html",
             success: function (data) {
 
-                $('#mediaModelForm').html(data);
+                $('#modalForm').html(data);
                 html.addClass('dark-layer');
-                $('#mediaModalTitle').focus();
             }
         });
     });

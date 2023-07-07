@@ -73,18 +73,13 @@ Route::middleware(['auth' => 'admin'])->run(function() {
 
     Route::get('/admin/categories')->add('admin\CategoryController', 'index');
 
-    Route::get('/admin/categories/table')->add('admin\CategoryController', 'table');
-    Route::get('/admin/categories/edit')->add('admin\CategoryController', 'edit');
-
-    
-    
-    Route::post('/admin/categories')->add('admin\CategoryController', 'UPDATEDATA');
-    
-    
-    
-    Route::get('/admin/categories/read')->add('admin\CategoryController', 'read');
-    Route::get('/admin/categories/add')->add('admin\CategoryController', 'add');
-    Route::post('/admin/categories/slug')->add('admin\CategoryController', 'slug');
+    Route::get('/admin/categories/table')->add('admin\CategoryController', 'TABLE');
+    Route::get('/admin/categories/read')->add('admin\CategoryController', 'READ');
+    Route::get('/admin/categories/edit')->add('admin\CategoryController', 'EDIT');
+    Route::post('/admin/categories/update')->add('admin\CategoryController', 'UPDATE');
+    Route::get('/admin/categories/showaddable')->add('admin\CategoryController', 'SHOWADDABLE');
+    Route::post('/admin/categories/add')->add('admin\CategoryController', 'ADD');
+    Route::post('/admin/categories/slug')->add('admin\CategoryController', 'SLUG');
 
     Route::get('/admin/categories/create')->add('admin\CategoryController', 'create');
     Route::post('/admin/categories/create')->add('admin\CategoryController', 'store');

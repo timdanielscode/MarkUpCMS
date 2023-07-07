@@ -30,7 +30,7 @@ $(document).ready(function() {
 
         $.ajax({
                 type: "POST",
-                url: "categories",
+                url: "categories/update",
                 dataType: "json",
                 data: {
                     id: id,

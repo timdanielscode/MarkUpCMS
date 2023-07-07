@@ -1,4 +1,4 @@
-$(document).on('click', '#EXIT', function() {
+$(document).on('click', '#BACK', function() {
     
     var modal = $('#modal');
     modal.removeClass('display-block'); 

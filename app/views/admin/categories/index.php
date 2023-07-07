@@ -47,7 +47,7 @@
                 </form>
             </div>
             <a id="UPDATE" class="button">Update</a>
-            <a id="EXIT" class="button">Exit</a>
+            <a id="BACK" class="button">Back</a>
         </div>
 
         <?php if(count($numberOfPages) > 1) { ?>
