@@ -113,3 +113,8 @@ ALTER TABLE users RENAME COLUMN retype_password TO retypePassword;
 
 ALTER TABLE pages DROP COLUMN created_at;
 ALTER TABLE pages DROP COLUMN updated_at;
+
+CREATE TABLE category_sub (
+    category_id int(11) NOT NULl,
+    sub_id int(11) NOT NULL
+);

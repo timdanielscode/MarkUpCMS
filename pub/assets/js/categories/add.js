@@ -6,6 +6,9 @@ $(document).on('click', '.add', function() {
     var id = $(this).data('id');
     var html = $('html');
 
+    var assingedCategory = $('#ASSIGNEDCATEGORY');
+    console.log(assingedCategory)
+
     $(document).ready(function() {
 
         $.ajax({
@@ -36,7 +39,44 @@ $(document).ready(function() {
 });
 
 $(document).ready(function() {
-    $(document).on('click', '#UPDATE', function() {
+    $(document).on('click', '#ASSIGNCATEGORY', function() {
+
+
+        var id = $('#CATEGORYID').val();
+        var categoryId = $('#CATEGORIES').val()[0];
+
+
+        console.log(id)
+        console.log(categoryId)
+
+
+        $.ajax({
+            type: "POST",
+            url: "categories/assigncategory",
+            dataType: "json",
+            data: {
+                id: id,
+                categoryId: categoryId
+        },
+            success: function(data) {
+    
+                console.log('success')
+                //$('.MESSAGE').html('Updated successfully!').fadeIn(10).fadeOut(1000);
+        },
+            error: function(xhr, status, error) {
+
+                console.log('failed')
+
+                //$('.MESSAGE').html('Oops, something went wrong!').fadeIn(10).fadeOut(1000);
+        }
+    });
+
+
+    });
+});
+
+$(document).ready(function() {
+    $(document).on('click', '#ASSIGNPAGES', function() {
 
         var categoryid = $('#CATEGORYID').val();
         var pageid = [];
@@ -90,7 +130,7 @@ $(document).ready(function() {
             },
                 error: function(xhr, status, error) {
 
-                    console.log('failed')
+                    console.log('failed123')
 
                     //$('.MESSAGE').html('Oops, something went wrong!').fadeIn(10).fadeOut(1000);
             }

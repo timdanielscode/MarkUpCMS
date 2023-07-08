@@ -6,6 +6,7 @@ use app\controllers\Controller;
 use app\models\Category;
 use app\models\Post;
 use app\models\CategoryPage;
+use app\models\CategorySub;
 use database\DB;
 use core\Session;
 use extensions\Pagination;
@@ -103,6 +104,28 @@ class CategoryController extends Controller {
 
         $pageIds = DB::try()->select('id')->from('pages')->fetch();
 
+        $categories = DB::try()->select('id, title')->from('categories')->whereNot('id', '=', $request['id'])->fetch();
+
+
+        $assingedSubCategory = DB::try()->select('title, category_id')->from('categories')->join('category_sub')->on('category_id', '=', $request['id'])->first();
+
+
+
+
+
+        if(!empty($assingedSubCategory) && $assingedSubCategory !== null) {
+
+
+
+            $assingedSubCategoryTitle = $assingedSubCategory['title'];
+
+
+            $data['assingedSubCategoryTitle'] = $assingedSubCategoryTitle;
+
+
+        }
+
+      
         $listAssingedPageIds = [];
 
         foreach($assignedPageIds as $assignedPageId) {
@@ -123,6 +146,8 @@ class CategoryController extends Controller {
         $data['id'] = $request['id'];
         $data['notAssingedPages'] = $notAssignedPages;
         $data['assignedPages'] = $assignedPages;
+        $data['categories'] = $categories;
+        
 
         return $this->view('admin/categories/add', $data);
     }
@@ -154,6 +179,23 @@ class CategoryController extends Controller {
 
         echo json_encode($DATA);
     }
+
+    public function ASSIGNCATEGORY($request) {
+
+        $DATA['id'] = $request['id'];
+        $DATA['categoryId'] = $request['categoryId'];
+
+        CategorySub::insert([
+
+            'category_id'   => $request['id'],
+            'sub_id'    => $request['categoryId']
+        ]);
+
+        echo json_encode($DATA);
+    }
+
+
+
 
     public function READ($request) {
 

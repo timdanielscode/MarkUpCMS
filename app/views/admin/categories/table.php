@@ -3,6 +3,11 @@
 <?php foreach($categories as $category) { ?>
     <tr>
         <?php if($category["title"] !== "not found" && $category["title"] !== "no category created") {?>
+
+            <td>
+                <?php echo $category['id']; ?>
+            </td>
+
             <td class="width-50">
                 <a data-id="<?php echo $category['id']; ?>" data-id="<?php echo $category['id']; ?>" class="edit font-weight-300" id="TABLE-TITLE-<?php echo $category['id']; ?>"><?php echo $category["title"]; ?></a> |
                 <a data-id="<?php echo $category['id']; ?>" class="edit font-weight-300" class="edit">Edit</a> |

@@ -28,6 +28,7 @@
         
             <thead>
                 <tr>
+                    <th>#</th>
                     <th>Title</th>
                     <th>Slug</th>
                     <th class="width-10">Date</th>
@@ -42,11 +43,12 @@
 
         <div id="modal" class="display-none">
             <div class="container">
-                <form id="modalForm">
+                <div id="modalForm">
 
-                </form>
+                </div>
             </div>
-            <a id="UPDATE" class="button">Update</a>
+            <a id="ASSIGNCATEGORY" class="button">Assign category</a>
+            <a id="ASSIGNPAGES" class="button">Assign pages</a>
             <a id="BACK" class="button">Back</a>
         </div>
 

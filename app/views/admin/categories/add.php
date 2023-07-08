@@ -1,5 +1,11 @@
 <div class="container">
 
+    <?php if(!empty($assingedSubCategoryTitle) && $assingedSubCategoryTitle !== null) { ?>
+        <div class="assingedSubCategory">
+            <?php echo $assingedSubCategoryTitle; ?>
+        </div>
+    <?php } ?>
+
     <form action="" method="POST">
 
         <div class="modalFormContainer">
@@ -40,5 +46,26 @@
 
         <input type="hidden" id="CATEGORYID" value="<?php echo $id; ?>"/>
     </form>
+
+    <form action="" method="POST">
+
+        <select id="CATEGORIES" name="title" multiple>
+
+        <?php foreach($categories as $category) { ?>
+
+            <option class="category" value="<?php echo $category['id']; ?>"><?php  echo $category['title']; ?></option>
+
+        <?php } ?>
+
+</select>                
+
+
+
+    </form>
+
+
+    
+
+
 
 </div>
