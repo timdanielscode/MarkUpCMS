@@ -98,6 +98,7 @@ class CategoryController extends Controller {
     public function SHOWADDABLE($request) {
 
         $assignedPages = DB::try()->select('id, title')->from('pages')->join('category_page')->on('pages.id', '=', 'category_page.page_id')->where('category_id', '=', $request['id'])->fetch();
+        
         $assignedPageIds = DB::try()->select('id')->from('pages')->join('category_page')->on('pages.id', '=', 'category_page.page_id')->where('category_id', '=', $request['id'])->fetch();
 
         $pageIds = DB::try()->select('id')->from('pages')->fetch();
@@ -111,8 +112,13 @@ class CategoryController extends Controller {
 
         $listAssingedPageIds = implode(',', $listAssingedPageIds);
 
-        $notAssignedPages = DB::try()->select('id, title')->from('pages')->whereNotIn('id', $listAssingedPageIds)->fetch();
+        if(!empty($listAssingedPageIds) && $listAssingedPageIds !== null) {
 
+            $notAssignedPages = DB::try()->select('id, title')->from('pages')->whereNotIn('id', $listAssingedPageIds)->fetch();
+        } else {
+
+            $notAssignedPages = DB::try()->select('id, title')->from('pages')->fetch();
+        }
 
         $data['id'] = $request['id'];
         $data['notAssingedPages'] = $notAssignedPages;
@@ -123,17 +129,28 @@ class CategoryController extends Controller {
 
     public function ADD($request) {
 
-        foreach($request['pageid'] as $pageId) {
+        if(!empty($request['pageid']) && $request['pageid'] !== null) {
 
-            CategoryPage::insert([
+            foreach($request['pageid'] as $pageId) {
 
-                'page_id'   => $pageId,
-                'category_id'   => $request['id']
-            ]);
+                $ifAlreadyExists = CategoryPage::where('page_id', '=', $pageId);
+
+                if(!empty($ifAlreadyExists) && $ifAlreadyExists !== null ) {
+
+                    CategoryPage::delete('page_id', $pageId);
+                } else {
+
+                    CategoryPage::insert([
+    
+                        'page_id'   => $pageId,
+                        'category_id'   => $request['id']
+                    ]);
+                }
+            }
         }
 
-        $DATA['categoryid'] = $request['id'];
         $DATA['pageid'] = $request['pageid'];
+        $DATA['categoryid'] = $request['id'];
 
         echo json_encode($DATA);
     }

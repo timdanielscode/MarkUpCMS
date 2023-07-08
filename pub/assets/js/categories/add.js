@@ -21,14 +21,71 @@ $(document).on('click', '.add', function() {
     });
 });
 
+
+
+$(document).ready(function() {
+    $(document).on('click', '.notAssingedPage', function() {
+
+        if(this.classList.add('notAssingedPageSelected') ) {
+
+            this.classList.add('notAssingedPageSelected');
+        } else {
+            this.classList.add('notAssingedPageSelected');
+        }
+    });
+});
+
+$(document).ready(function() {
+    $(document).on('click', '.assingedPage', function() {
+
+        if(this.classList.add('assingedPageSelected') ) {
+
+            this.classList.add('assingedPageSelected');
+        } else {
+            this.classList.add('assingedPageSelected');
+        }
+    });
+});
+
+
 $(document).ready(function() {
     $(document).on('click', '#UPDATE', function() {
 
         var categoryid = $('#CATEGORYID').val();
-        var notassignedpageid = $('#NOTASSIGNEDPAGEID').val();
-        
-        
-        console.log(typeof notassignedpageid)
+
+        var pageid = [];
+
+        var notAssingedPageSelected = $(".notAssingedPageSelected");
+        var assingedPageSelected = $(".assingedPageSelected");
+
+        var type = "";
+
+
+        if(notAssingedPageSelected.length !== 0) {
+
+            $(notAssingedPageSelected).each(function() {
+
+            
+                type = "NOTASSIGNED";
+                pageid.push(this.value)
+    
+            });
+        }
+
+        if(assingedPageSelected.length !== 0) {
+
+            $(assingedPageSelected).each(function() {
+
+            
+                type = "ASSIGNED";
+                pageid.push(this.value)
+    
+            });
+        }
+
+        var assingedPageSelectElement = $('#ASSIGNEDPAGEID');
+        var notAssingedPageSelectElement = $('#NOTASSIGNEDPAGEID');
+
 
 
         $.ajax({
@@ -37,16 +94,52 @@ $(document).ready(function() {
                 dataType: "json",
                 data: {
                     id: categoryid,
-                    pageid: notassignedpageid
+                    pageid: pageid
             },
                 success: function(data) {
-                    console.log('success')
-                    //$('#TABLE-TITLE-'+id).text(data.title);
+        
+
+                    if(type === "NOTASSIGNED") {
+
+
+
+                        console.log('notAssinged')
+
+                        $(notAssingedPageSelected).each(function() {
+
+
+
+                            assingedPageSelectElement.append(this);
+
+                            this.classList.add('assingedPage');
+                            this.classList.remove('notAssingedPage');
+                            this.classList.remove('notAssingedPageSelected');
+                        });
+
+                        
+                    } else {
+
+                        console.log('assinged')
+
+                        $(assingedPageSelected).each(function() {
+
+
+
+                            notAssingedPageSelectElement.append(this);
+
+                            this.classList.remove('assingedPageSelected');
+                            this.classList.remove('assingedPage');
+                            this.classList.add('notAssingedPage');
+                        });
+
+                    }
+
                     //$('.MESSAGE').html('Updated successfully!').fadeIn(10).fadeOut(1000);
             },
                 error: function(xhr, status, error) {
 
-                    console.log('error')
+                    console.log('failed')
+
                     //$('.MESSAGE').html('Oops, something went wrong!').fadeIn(10).fadeOut(1000);
             }
         });
