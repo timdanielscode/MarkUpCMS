@@ -21,72 +21,37 @@ $(document).on('click', '.add', function() {
     });
 });
 
-
-
 $(document).ready(function() {
     $(document).on('click', '.notAssingedPage', function() {
 
-        if(this.classList.add('notAssingedPageSelected') ) {
-
-            this.classList.add('notAssingedPageSelected');
-        } else {
-            this.classList.add('notAssingedPageSelected');
-        }
+        this.classList.toggle('selected')
     });
 });
 
 $(document).ready(function() {
     $(document).on('click', '.assingedPage', function() {
 
-        if(this.classList.add('assingedPageSelected') ) {
-
-            this.classList.add('assingedPageSelected');
-        } else {
-            this.classList.add('assingedPageSelected');
-        }
+        this.classList.toggle('selected')
     });
 });
-
 
 $(document).ready(function() {
     $(document).on('click', '#UPDATE', function() {
 
         var categoryid = $('#CATEGORYID').val();
-
         var pageid = [];
 
-        var notAssingedPageSelected = $(".notAssingedPageSelected");
-        var assingedPageSelected = $(".assingedPageSelected");
-
-        var type = "";
-
-
-        if(notAssingedPageSelected.length !== 0) {
-
-            $(notAssingedPageSelected).each(function() {
-
-            
-                type = "NOTASSIGNED";
-                pageid.push(this.value)
-    
-            });
-        }
-
-        if(assingedPageSelected.length !== 0) {
-
-            $(assingedPageSelected).each(function() {
-
-            
-                type = "ASSIGNED";
-                pageid.push(this.value)
-    
-            });
-        }
-
+        var selectedOptionElements = $(".selected");
         var assingedPageSelectElement = $('#ASSIGNEDPAGEID');
         var notAssingedPageSelectElement = $('#NOTASSIGNEDPAGEID');
+        
+        if(selectedOptionElements.length !== 0) {
+            
+            $(selectedOptionElements).each(function() {
 
-
+                pageid.push(this.value)
+            });
+        }
 
         $.ajax({
                 type: "POST",
@@ -98,40 +63,27 @@ $(document).ready(function() {
             },
                 success: function(data) {
         
+                    if(selectedOptionElements.length !== 0) {
+            
+                        $(selectedOptionElements).each(function() {
+            
+                            this.classList.remove('selected');
 
-                    if(type === "NOTASSIGNED") {
+                            if(this.parentNode.id === 'NOTASSIGNEDPAGEID') {
+            
+                                this.classList.remove('notAssingedPage');
+                                this.classList.add('assingedPage');
 
+                                assingedPageSelectElement.append(this);
 
+                            } else if (this.parentNode.id === 'ASSIGNEDPAGEID') {
 
-                        console.log('notAssinged')
+                                this.classList.remove('assingedPage');
+                                this.classList.add('notAssingedPage');
 
-                        $(notAssingedPageSelected).each(function() {
-
-
-
-                            assingedPageSelectElement.append(this);
-
-                            this.classList.add('assingedPage');
-                            this.classList.remove('notAssingedPage');
-                            this.classList.remove('notAssingedPageSelected');
+                                notAssingedPageSelectElement.append(this);
+                            }
                         });
-
-                        
-                    } else {
-
-                        console.log('assinged')
-
-                        $(assingedPageSelected).each(function() {
-
-
-
-                            notAssingedPageSelectElement.append(this);
-
-                            this.classList.remove('assingedPageSelected');
-                            this.classList.remove('assingedPage');
-                            this.classList.add('notAssingedPage');
-                        });
-
                     }
 
                     //$('.MESSAGE').html('Updated successfully!').fadeIn(10).fadeOut(1000);
