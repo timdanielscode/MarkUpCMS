@@ -156,6 +156,8 @@ class CategoryController extends Controller {
 
         if(!empty($request['pageid']) && $request['pageid'] !== null) {
 
+            CategorySub::delete('category_id', $request['id']);
+
             foreach($request['pageid'] as $pageId) {
 
                 $ifAlreadyExists = CategoryPage::where('page_id', '=', $pageId);
@@ -185,6 +187,8 @@ class CategoryController extends Controller {
         $DATA['id'] = $request['id'];
         $DATA['categoryId'] = $request['categoryId'];
 
+        CategoryPage::delete('category_id', $request['id']);
+
         CategorySub::insert([
 
             'category_id'   => $request['id'],
@@ -193,9 +197,6 @@ class CategoryController extends Controller {
 
         echo json_encode($DATA);
     }
-
-
-
 
     public function READ($request) {
 

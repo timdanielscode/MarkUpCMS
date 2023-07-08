@@ -47,9 +47,7 @@
 
                 </div>
             </div>
-            <a id="ASSIGNCATEGORY" class="button">Assign category</a>
-            <a id="ASSIGNPAGES" class="button">Assign pages</a>
-            <a id="BACK" class="button">Back</a>
+
         </div>
 
         <?php if(count($numberOfPages) > 1) { ?>

@@ -1,12 +1,19 @@
 <div class="container">
 
     <?php if(!empty($assingedSubCategoryTitle) && $assingedSubCategoryTitle !== null) { ?>
-        <div class="assingedSubCategory">
-            <?php echo $assingedSubCategoryTitle; ?>
+        <div class="assingedSubCategory color-white">
+
+            <p>Category is assinged!</p>
+
+
+            <p class="categoryTitle">Title: <span class="title"><?php echo $assingedSubCategoryTitle; ?><span></p>
         </div>
     <?php } ?>
 
-    <form action="" method="POST">
+
+   
+    
+        <form action="" method="POST">
 
         <div class="modalFormContainer">
 
@@ -47,6 +54,13 @@
         <input type="hidden" id="CATEGORYID" value="<?php echo $id; ?>"/>
     </form>
 
+
+
+    <a id="ASSIGNPAGES" class="button">Assign pages</a>
+    
+
+
+
     <form action="" method="POST">
 
         <select id="CATEGORIES" name="title" multiple>
@@ -64,8 +78,7 @@
     </form>
 
 
-    
-
-
-
+    <a id="ASSIGNCATEGORY" class="button">Assign category</a>
+            
+            <a id="BACK" class="button">Back</a>
 </div>
