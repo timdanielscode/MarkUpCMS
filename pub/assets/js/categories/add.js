@@ -44,15 +44,17 @@ $(document).ready(function() {
 
         var id = $('#CATEGORYID').val();
         var categoryId = $('#CATEGORIES').val()[0];
+        var subcategoryId = $('#SUBCATEGORY').val();
 
 
-        console.log(id)
-        console.log(categoryId)
+        console.log(subcategoryId)
+
+
 
 
         $.ajax({
             type: "POST",
-            url: "categories/assigncategory",
+            url: "categories/addcategory",
             dataType: "json",
             data: {
                 id: id,
@@ -95,7 +97,7 @@ $(document).ready(function() {
 
         $.ajax({
                 type: "POST",
-                url: "categories/add",
+                url: "categories/addpage",
                 dataType: "json",
                 data: {
                     id: categoryid,

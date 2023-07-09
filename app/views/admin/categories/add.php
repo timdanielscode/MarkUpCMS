@@ -1,14 +1,6 @@
 <div class="container">
 
-    <?php if(!empty($assingedSubCategoryTitle) && $assingedSubCategoryTitle !== null) { ?>
-        <div class="assingedSubCategory color-white">
 
-            <p>Category is assinged!</p>
-
-
-            <p class="categoryTitle">Title: <span class="title"><?php echo $assingedSubCategoryTitle; ?><span></p>
-        </div>
-    <?php } ?>
 
 
    
@@ -59,15 +51,36 @@
     <a id="ASSIGNPAGES" class="button">Assign pages</a>
     
 
-
-
     <form action="" method="POST">
+
+            <div class="assingedSubCategory color-white">
+
+                <p>Category is assinged!</p>
+
+                    <select id="SUBCATEGORY" name="title" multiple>
+
+                        <?php foreach($assingedSubCategories as $assingedSubCategory) { ?>
+                            
+                            <option class="subcategory" value="<?php echo $assingedSubCategory['id']; ?>">
+                                
+                                <?php echo $assingedSubCategory['title']; ?>
+
+                            </option>
+
+                        <?php } ?>
+                    </select>
+            </div>
+  
 
         <select id="CATEGORIES" name="title" multiple>
 
-        <?php foreach($categories as $category) { ?>
+        <?php foreach($notAssingedSubs as $notAssingedSub) { ?>
 
-            <option class="category" value="<?php echo $category['id']; ?>"><?php  echo $category['title']; ?></option>
+            <option class="category" value="<?php echo $notAssingedSub['id']; ?>">
+
+                <?php  echo $notAssingedSub['title']; ?>
+                
+            </option>
 
         <?php } ?>
 

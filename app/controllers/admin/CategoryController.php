@@ -104,28 +104,34 @@ class CategoryController extends Controller {
 
         $pageIds = DB::try()->select('id')->from('pages')->fetch();
 
-        $categories = DB::try()->select('id, title')->from('categories')->whereNot('id', '=', $request['id'])->fetch();
+        $assingedSubCategories = DB::try()->select('categories.id, categories.title')->from('categories')->join('category_sub')->on('category_sub.sub_id', '=', 'categories.id')->where('category_id', '=', $request['id'])->fetch();
+
+        if(!empty($assingedSubCategories) && $assingedSubCategories !== null) {
+
+            $listAssingedSubIds = [$request['id']];
+
+            foreach($assingedSubCategories as $assingedSubCategory) {
+
+                array_push($listAssingedSubIds, $assingedSubCategory['id']);
+            }
+   
+            $listAssingedSubIds = implode(',', $listAssingedSubIds);
+
+            if(!empty($listAssingedSubIds) && $listAssingedSubIds !== null) {
+
+                $notAssingedSubs = DB::try()->select('id, title')->from('categories')->whereNotIn('id', $listAssingedSubIds)->fetch();
+            } 
+
+            $data['notAssingedSubs'] = $notAssingedSubs;
 
 
-        $assingedSubCategory = DB::try()->select('title, category_id')->from('categories')->join('category_sub')->on('category_id', '=', $request['id'])->first();
+            $data['assingedSubCategories'] = $assingedSubCategories;
+        } else {
 
-
-
-
-
-        if(!empty($assingedSubCategory) && $assingedSubCategory !== null) {
-
-
-
-            $assingedSubCategoryTitle = $assingedSubCategory['title'];
-
-
-            $data['assingedSubCategoryTitle'] = $assingedSubCategoryTitle;
-
-
+            $notAssingedSubs = DB::try()->select('id, title')->from('categories')->whereNot('id', '=', $request['id'])->fetch();
         }
 
-      
+    
         $listAssingedPageIds = [];
 
         foreach($assignedPageIds as $assignedPageId) {
@@ -146,13 +152,12 @@ class CategoryController extends Controller {
         $data['id'] = $request['id'];
         $data['notAssingedPages'] = $notAssignedPages;
         $data['assignedPages'] = $assignedPages;
-        $data['categories'] = $categories;
-        
+        $data['notAssingedSubs'] = $notAssingedSubs;
 
         return $this->view('admin/categories/add', $data);
     }
 
-    public function ADD($request) {
+    public function ADDPAGE($request) {
 
         if(!empty($request['pageid']) && $request['pageid'] !== null) {
 
@@ -182,7 +187,7 @@ class CategoryController extends Controller {
         echo json_encode($DATA);
     }
 
-    public function ASSIGNCATEGORY($request) {
+    public function ADDCATEGORY($request) {
 
         $DATA['id'] = $request['id'];
         $DATA['categoryId'] = $request['categoryId'];
