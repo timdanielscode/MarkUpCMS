@@ -83,8 +83,12 @@ class PostController extends Controller {
     public function edit($request) {
 
         $post = Post::get($request['id']);
-        
+
+        $postSlug = explode('/', $post['slug']);
+        $postSlug = $postSlug[array_key_last($postSlug)];
+
         $data['data'] = $post;
+        $data['data']['slug'] = $postSlug;
         $data['rules'] = [];
 
         return $this->view('admin/posts/edit', $data);

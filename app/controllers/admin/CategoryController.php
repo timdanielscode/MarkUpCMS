@@ -161,8 +161,6 @@ class CategoryController extends Controller {
 
         if(!empty($request['pageid']) && $request['pageid'] !== null) {
 
-            ///CategorySub::delete('category_id', $request['id']);
-
             foreach($request['pageid'] as $pageId) {
 
                 $ifAlreadyExists = CategoryPage::where('page_id', '=', $pageId);
@@ -176,6 +174,13 @@ class CategoryController extends Controller {
     
                         'page_id'   => $pageId,
                         'category_id'   => $request['id']
+                    ]);
+
+                    $categoryTitleAndSlug = DB::try()->select('categories.title, pages.slug')->from('categories')->join('category_page')->on('category_page.category_id', '=', 'categories.id')->join('pages')->on('pages.id', '=', 'category_page.page_id')->where('category_page.page_id','=', $pageId)->first();
+
+                    Post::update(['id' => $pageId], [
+
+                        'slug'  => "/" . $categoryTitleAndSlug['title'] . $categoryTitleAndSlug['slug']
                     ]);
                 }
             }
