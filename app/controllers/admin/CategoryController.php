@@ -167,7 +167,21 @@ class CategoryController extends Controller {
 
                 if(!empty($ifAlreadyExists) && $ifAlreadyExists !== null ) {
 
+                    $categoryTitle = DB::try()->select('categories.title')->from('categories')->join('category_page')->on('categories.id', '=', 'category_page.category_id')->join('pages')->on('pages.id', '=', 'category_page.page_id')->where('pages.id', '=', $pageId)->first();
+
+                    $postSlug = DB::try()->select('slug')->from('pages')->where('id', '=', $pageId)->first();
+                    $slugParts = explode('/', $postSlug['slug']);
+                    $categoryTitleKey = array_search($categoryTitle['title'], $slugParts);
+                    unset($slugParts[$categoryTitleKey]);
+                    $slugMinusCategoryTitle = implode('/', $slugParts);
+
+                    Post::update(['id' => $pageId], [
+
+                        'slug'  => $slugMinusCategoryTitle
+                    ]);
+
                     CategoryPage::delete('page_id', $pageId);
+
                 } else {
 
                     CategoryPage::insert([
