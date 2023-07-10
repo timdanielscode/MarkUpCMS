@@ -27,8 +27,9 @@
                     <div class="error-messages">
                         <?php echo Errors::get($rules, 'title'); ?>
                     </div>    
-                    <input type="text" name="slug" id="slug" type="text" value="<?php if(!empty($data['slug'] )) { echo $data['slug']; } ?>">
-                    <span class="categorySlug"><?php if(!empty($categorySlug) && $categorySlug !== null) { echo $categorySlug; } ?></span>
+                    <input type="text" name="postSlug" id="slug" value="<?php if(!empty($postSlug )) { echo $postSlug; } ?>">
+                    <span><?php if(!empty($data['slug']) && $data['slug'] !== null) { echo $data['slug']; } ?></span>
+                    <input type="hidden" name="slug" value="<?php if(!empty($data['slug']) && $data['slug'] !== null) { echo $data['slug']; } ?>">
                     <div class="error-messages">
                         <?php echo Errors::get($rules, 'slug'); ?>
                     </div>

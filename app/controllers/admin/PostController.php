@@ -85,10 +85,10 @@ class PostController extends Controller {
         $post = Post::get($request['id']);
 
         $postSlug = explode('/', $post['slug']);
-        $postSlug = $postSlug[array_key_last($postSlug)];
+        $postSlug = "/" . $postSlug[array_key_last($postSlug)];
 
         $data['data'] = $post;
-        $data['data']['slug'] = $postSlug;
+        $data['postSlug'] = $postSlug;
         $data['rules'] = [];
 
         return $this->view('admin/posts/edit', $data);
@@ -105,12 +105,16 @@ class PostController extends Controller {
 
                 $id = $request['id'];
 
+                $slug = explode('/', $request['slug']);
+                $slug[array_key_last($slug)] = $request['postSlug'];
+                $slug = implode('', $slug);
+
                 if(!empty($request['slug']) ) {
 
                     Post::update(['id' => $id], [
 
                         'title' => $request["title"],
-                        'slug' => $request["slug"],
+                        'slug' => "/" . $slug,
                         'body' => $request["body"],
                         'date_updated_at' => date("d/m/Y"),
                         'time_updated_at' => date("H:i")
