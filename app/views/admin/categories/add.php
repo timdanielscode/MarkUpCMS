@@ -1,10 +1,5 @@
 <div class="container">
 
-
-
-
-   
-    
         <form action="" method="POST">
 
         <div class="modalFormContainer">
@@ -53,30 +48,24 @@
 
     <form action="" method="POST">
 
-            <div class="assingedSubCategory color-white">
+        <select id="ASSINGEDSUBCATEGORYID" name="subcategoryid" multiple>
 
-                <p>Category is assinged!</p>
-
-                    <select id="SUBCATEGORY" name="title" multiple>
-
-                        <?php foreach($assingedSubCategories as $assingedSubCategory) { ?>
+            <?php foreach($assingedSubCategories as $assingedSubCategory) { ?>
                             
-                            <option class="subcategory" value="<?php echo $assingedSubCategory['id']; ?>">
+                <option class="assingedSubCategory" value="<?php echo $assingedSubCategory['id']; ?>">
                                 
-                                <?php echo $assingedSubCategory['title']; ?>
+                    <?php echo $assingedSubCategory['title']; ?>
 
-                            </option>
+                </option>
 
-                        <?php } ?>
-                    </select>
-            </div>
-  
-
-        <select id="CATEGORIES" name="title" multiple>
+            <?php } ?>
+        </select>
+    
+        <select id="NOTASSINGEDSUBCATEGORYID" name="subcategoryid" multiple>
 
         <?php foreach($notAssingedSubs as $notAssingedSub) { ?>
 
-            <option class="category" value="<?php echo $notAssingedSub['id']; ?>">
+            <option class="notAssingedSubCategory" value="<?php echo $notAssingedSub['id']; ?>">
 
                 <?php  echo $notAssingedSub['title']; ?>
                 

@@ -161,7 +161,7 @@ class CategoryController extends Controller {
 
         if(!empty($request['pageid']) && $request['pageid'] !== null) {
 
-            CategorySub::delete('category_id', $request['id']);
+            ///CategorySub::delete('category_id', $request['id']);
 
             foreach($request['pageid'] as $pageId) {
 
@@ -189,16 +189,28 @@ class CategoryController extends Controller {
 
     public function ADDCATEGORY($request) {
 
-        $DATA['id'] = $request['id'];
-        $DATA['categoryId'] = $request['categoryId'];
+        if(!empty($request['subcategoryid']) && $request['subcategoryid'] !== null) {
 
-        CategoryPage::delete('category_id', $request['id']);
+            foreach($request['subcategoryid'] as $subCategoryId) {
 
-        CategorySub::insert([
+                $ifAlreadyExists = CategorySub::where('sub_id', '=', $subCategoryId);
 
-            'category_id'   => $request['id'],
-            'sub_id'    => $request['categoryId']
-        ]);
+                if(!empty($ifAlreadyExists) && $ifAlreadyExists !== null ) {
+
+                    CategorySub::delete('sub_id', $subCategoryId);
+                } else {
+
+                    CategorySub::insert([
+    
+                        'sub_id'   => $subCategoryId,
+                        'category_id'   => $request['id']
+                    ]);
+                }
+            }
+        }
+
+        $DATA['subcategoryid'] = $request['subcategoryid'];
+        $DATA['categoryid'] = $request['id'];
 
         echo json_encode($DATA);
     }

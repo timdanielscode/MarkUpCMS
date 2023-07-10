@@ -27,41 +27,87 @@ $(document).on('click', '.add', function() {
 $(document).ready(function() {
     $(document).on('click', '.notAssingedPage', function() {
 
-        this.classList.toggle('selected')
+        this.classList.toggle('selectedPage')
     });
 });
 
 $(document).ready(function() {
     $(document).on('click', '.assingedPage', function() {
 
-        this.classList.toggle('selected')
+        this.classList.toggle('selectedPage')
+    });
+});
+
+$(document).ready(function() {
+    $(document).on('click', '.notAssingedSubCategory', function() {
+
+        this.classList.toggle('selectedCategory')
+    });
+});
+
+$(document).ready(function() {
+    $(document).on('click', '.assingedSubCategory', function() {
+
+        this.classList.toggle('selectedCategory')
     });
 });
 
 $(document).ready(function() {
     $(document).on('click', '#ASSIGNCATEGORY', function() {
 
+        var categoryid = $('#CATEGORYID').val();
+  
+        var subcategoryid = [];
 
-        var id = $('#CATEGORYID').val();
-        var categoryId = $('#CATEGORIES').val()[0];
-        var subcategoryId = $('#SUBCATEGORY').val();
+        var selectedOptionElements = $(".selectedCategory");
 
+        var assingedCategorySubSelectElement = $('#ASSINGEDSUBCATEGORYID');
+        var notAssingedCategorySubSelectElement = $('#NOTASSINGEDSUBCATEGORYID');
 
-        console.log(subcategoryId)
+        if(selectedOptionElements.length !== 0) {
+            
+            $(selectedOptionElements).each(function() {
 
-
-
+                subcategoryid.push(this.value)
+            });
+        }
 
         $.ajax({
             type: "POST",
             url: "categories/addcategory",
             dataType: "json",
             data: {
-                id: id,
-                categoryId: categoryId
+                id: categoryid,
+                subcategoryid: subcategoryid
         },
             success: function(data) {
     
+                if(selectedOptionElements.length !== 0) {
+            
+                    $(selectedOptionElements).each(function() {
+        
+                        this.classList.remove('selectedCategory');
+
+                        if(this.parentNode.id === 'NOTASSINGEDSUBCATEGORYID') {
+        
+                            this.classList.remove('notAssingedSubCategory');
+                            this.classList.add('assingedSubCategory');
+
+                            assingedCategorySubSelectElement.append(this);
+
+                        } else if (this.parentNode.id === 'ASSINGEDSUBCATEGORYID') {
+
+
+                            console.log(subcategoryid)
+
+                            this.classList.remove('assingedSubCategory');
+                            this.classList.add('notAssingedSubCategory');
+
+                            notAssingedCategorySubSelectElement.append(this);
+                        }
+                    });
+                }
+
                 console.log('success')
                 //$('.MESSAGE').html('Updated successfully!').fadeIn(10).fadeOut(1000);
         },
@@ -77,13 +123,19 @@ $(document).ready(function() {
     });
 });
 
+
+
+
+
+
+
 $(document).ready(function() {
     $(document).on('click', '#ASSIGNPAGES', function() {
 
         var categoryid = $('#CATEGORYID').val();
         var pageid = [];
 
-        var selectedOptionElements = $(".selected");
+        var selectedOptionElements = $(".selectedPage");
         var assingedPageSelectElement = $('#ASSIGNEDPAGEID');
         var notAssingedPageSelectElement = $('#NOTASSIGNEDPAGEID');
         
@@ -109,7 +161,7 @@ $(document).ready(function() {
             
                         $(selectedOptionElements).each(function() {
             
-                            this.classList.remove('selected');
+                            this.classList.remove('selectedPage');
 
                             if(this.parentNode.id === 'NOTASSIGNEDPAGEID') {
             
