@@ -304,42 +304,21 @@ class CategoryController extends Controller {
         } 
     }
 
-    /*public function slug($request) { 
+    public function SLUG($request) { 
 
         if(!empty($request['slug']) && $request['slug'] !== null) {
+    
+            Category::update(['id' => $request['id']], [
+
+                'slug'  => $request['slug']
+            ]);
 
             $data['id'] = $request['id'];
             $data['slug'] = $request['slug'];
     
-            $rules = new Rules();
-    
-            //if($rules->update_media_filename()->validated()) {
-    
-                $category = new Category();
-      
-                DB::try()->update($category->t)->set([
-                    $category->slug => $data['slug']
-                ])->where($category->id, '=', $data['id'])->run(); 
-    
-                echo json_encode($data);
-            //}
-
-        } else if(!empty($request['title']) && $request['title'] !== null) {
-
-            $data['id'] = $request['id'];
-            $data['title'] = $request['title'];
-            $data['description'] = $request['description'];
-
-            $category = new Category();
-
-            DB::try()->update($category->t)->set([
-                $category->title => $data['title'],
-                $category->category_description => $data['description']
-            ])->where($category->id, '=', $data['id'])->run(); 
-
             echo json_encode($data);
-        }
-    }*/
+        } 
+    }
 
     public function delete($request) {
 

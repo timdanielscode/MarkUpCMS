@@ -7,7 +7,7 @@ $(document).ready(function() {
 
             $.ajax({
                 type: "POST",
-                url: "categories",
+                url: "categories/slug",
                 dataType: "json",
                 data: {
                     id: id,
@@ -24,14 +24,6 @@ $(document).ready(function() {
                 message.addClass('message'); 
             }
         });
-
-    });
-});
-
-$(document).ready(function() {
-    $(document).on('click', 'a[data-role=update]', function() {
-
-        alert('hoi');
 
     });
 });
