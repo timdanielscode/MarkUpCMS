@@ -123,15 +123,13 @@ class CategoryController extends Controller {
             } 
 
             $data['notAssingedSubs'] = $notAssingedSubs;
-
-
             $data['assingedSubCategories'] = $assingedSubCategories;
+
         } else {
 
             $notAssingedSubs = DB::try()->select('id, title')->from('categories')->whereNot('id', '=', $request['id'])->fetch();
         }
 
-    
         $listAssingedPageIds = [];
 
         foreach($assignedPageIds as $assignedPageId) {
@@ -145,7 +143,6 @@ class CategoryController extends Controller {
 
             $notAssignedPages = DB::try()->select('id, title')->from('pages')->whereNotIn('id', $listAssingedPageIds)->fetch();
         } else {
-
             $notAssignedPages = DB::try()->select('id, title')->from('pages')->fetch();
         }
 
@@ -163,24 +160,24 @@ class CategoryController extends Controller {
 
             foreach($request['pageid'] as $pageId) {
 
-                $ifAlreadyExists = CategoryPage::where('page_id', '=', $pageId);
+                $ifAlreadyExists = DB::try()->select('*')->from('category_page')->where('category_id', '=', $request['id'])->and('page_id', '=', $pageId)->first();
 
-                if(!empty($ifAlreadyExists) && $ifAlreadyExists !== null ) {
+                if(!empty($ifAlreadyExists) ) {
 
-                    $categoryTitle = DB::try()->select('categories.title')->from('categories')->join('category_page')->on('categories.id', '=', 'category_page.category_id')->join('pages')->on('pages.id', '=', 'category_page.page_id')->where('pages.id', '=', $pageId)->first();
+                    $categoryTitle = DB::try()->select('categories.title')->from('categories')->join('category_page')->on('categories.id', '=', 'category_page.category_id')->join('pages')->on('pages.id', '=', 'category_page.page_id')->where('pages.id', '=', $pageId)->and('categories.id', '=', $request['id'])->first();
 
                     $postSlug = DB::try()->select('slug')->from('pages')->where('id', '=', $pageId)->first();
                     $slugParts = explode('/', $postSlug['slug']);
                     $categoryTitleKey = array_search($categoryTitle['title'], $slugParts);
                     unset($slugParts[$categoryTitleKey]);
                     $slugMinusCategoryTitle = implode('/', $slugParts);
-
+                    
                     Post::update(['id' => $pageId], [
 
                         'slug'  => $slugMinusCategoryTitle
                     ]);
 
-                    CategoryPage::delete('page_id', $pageId);
+                    DB::try()->delete('category_page')->where('page_id', '=', $pageId)->and('category_id', '=', $request['id'])->run();
 
                 } else {
 
@@ -190,11 +187,12 @@ class CategoryController extends Controller {
                         'category_id'   => $request['id']
                     ]);
 
-                    $categoryTitleAndSlug = DB::try()->select('categories.title, pages.slug')->from('categories')->join('category_page')->on('category_page.category_id', '=', 'categories.id')->join('pages')->on('pages.id', '=', 'category_page.page_id')->where('category_page.page_id','=', $pageId)->first();
+                    $currentCategoryTitle = DB::try()->select('title')->from('categories')->join('category_page')->on('category_page.category_id', '=', 'categories.id')->where('categories.id', '=', $request['id'])->first();
+                    $currentSlug = DB::try()->select('slug')->from('pages')->where('id', '=', $pageId)->first();
 
                     Post::update(['id' => $pageId], [
 
-                        'slug'  => "/" . $categoryTitleAndSlug['title'] . $categoryTitleAndSlug['slug']
+                        'slug'  => "/" . $currentCategoryTitle['title'] . $currentSlug['slug']
                     ]);
                 }
             }

@@ -50,13 +50,21 @@
 
         <select id="ASSINGEDSUBCATEGORYID" name="subcategoryid" multiple>
 
-            <?php foreach($assingedSubCategories as $assingedSubCategory) { ?>
-                            
-                <option class="assingedSubCategory" value="<?php echo $assingedSubCategory['id']; ?>">
-                                
-                    <?php echo $assingedSubCategory['title']; ?>
+            <?php if(!empty($assingedSubCategories) && $assingedSubCategories !== null) { ?>
 
-                </option>
+                <?php foreach($assingedSubCategories as $assingedSubCategory) { ?>
+                                
+                    <option class="assingedSubCategory" value="<?php echo $assingedSubCategory['id']; ?>">
+                                    
+                        <?php echo $assingedSubCategory['title']; ?>
+
+                    </option>
+
+                <?php } ?>
+
+            <?php } else { ?>
+
+                <p>No category assinged yet</p>
 
             <?php } ?>
         </select>
@@ -71,9 +79,9 @@
                 
             </option>
 
-        <?php } ?>
+            <?php } ?>
+        </select>  
 
-</select>                
 
 
 
