@@ -98,39 +98,6 @@ class CategoryController extends Controller {
 
     public function SHOWADDABLE($request) {
 
-        //$currentSlug = Category::where('id', '=', 173);
-        //$postsWithSlug = DB::try()->select('pages.id, pages.slug')->from('pages')->join('category_page')->on('pages.id', '=', 'category_page.page_id')->where('category_page.category_id', '=', $currentSlug[0]['id'])->fetch();
-
-
-        //print_r($postsWithSlug);
-
-        //exit();
-
-
-        /*if(!empty($postsWithSlug) && $postsWithSlug !== null) {
-
-            foreach($postsWithSlug as $postWithSlug) {
-
-                $slugParts = explode('/', $postWithSlug['slug']);
-
-
-                $categorySlugKey = array_search($currentSlug[0]['slug'], $slugParts);
-                
-
-                $slugParts[$categorySlugKey] = $request['slug'];
-                
-                $slug = implode('/', $slugParts);
-
-                Post::update(['id' => $postWithSlug['id']], [
-
-                    'slug'  => 'henk'
-                ]);
-            } 
-        }*/
-
-
-
-
         $assignedPages = DB::try()->select('id, title')->from('pages')->join('category_page')->on('pages.id', '=', 'category_page.page_id')->where('category_id', '=', $request['id'])->fetch();
         
         $assignedPageIds = DB::try()->select('id')->from('pages')->join('category_page')->on('pages.id', '=', 'category_page.page_id')->where('category_id', '=', $request['id'])->fetch();
@@ -255,6 +222,19 @@ class CategoryController extends Controller {
                         'sub_id'   => $subCategoryId,
                         'category_id'   => $request['id']
                     ]);
+
+                    $categorySubSlug = DB::try()->select('categories.slug')->from('categories')->join('category_sub')->on('categories.id', '=', 'category_sub.sub_id')->where('category_sub.sub_id', '=', $subCategoryId)->first();   
+                    
+                    $categorySlug = DB::try()->select('categories.slug')->from('categories')->where('categories.id', '=', $request['id'])->first();
+
+
+                    Category::update(['id' => $request['id']], [
+
+                        'slug' => $categorySubSlug['slug'] . "/" . $categorySlug['slug']
+                    ]);
+
+                
+                
                 }
             }
         }
