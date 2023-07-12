@@ -2,6 +2,8 @@
 
     <div id="SUBCATEGORYSLUGCONTAINER"><div id="CATEGORYSLUG" class="listedItem"><?php echo $slug; ?></div><?php if(!empty($assingedSubCategories) && $assingedSubCategories !== null) { ?><?php foreach($assingedSubCategories as $assingedSubCategory) { ?><div id="LISTEDCATEGORY-<?php echo $assingedSubCategory['id']; ?>" class="listedItem"><?php echo "/" . $assingedSubCategory['slug']; ?></div><?php } ?><?php } ?></div>
 
+        <div id="PAGEMESSAGE"></div>
+
         <form action="" method="POST">
 
         <div class="modalFormContainer">

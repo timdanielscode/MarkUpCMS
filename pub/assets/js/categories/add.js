@@ -133,6 +133,7 @@ $(document).ready(function() {
         var categoryid = $('#CATEGORYID').val();
         var pageid = [];
         var selectedOptionElements = $(".selectedPage");
+        var message = $("#PAGEMESSAGE");
 
         if(selectedOptionElements.length !== 0) {
             
@@ -159,6 +160,10 @@ $(document).ready(function() {
                             updatePages(this);
                         });
                     }
+                },error: function(xhr, status, error) {
+
+                    message.html("Page is already assinged!").fadeIn(10).fadeOut(1000);
+                    message.addClass('message');
                 }
             });
     });

@@ -234,15 +234,16 @@ class CategoryController extends Controller {
 
             foreach($request['pageid'] as $pageId) {
 
-                $ifAlreadyExists = DB::try()->select('*')->from('category_page')->where('category_id', '=', $request['id'])->and('page_id', '=', $pageId)->first();
+                $ifAssingedOnCategory = DB::try()->select('*')->from('category_page')->where('category_id', '=', $request['id'])->and('page_id', '=', $pageId)->first();
+                $ifAlreadyAssinged = DB::try()->select('*')->from('category_page')->where('page_id', '=', $pageId)->first();
 
-                if(!empty($ifAlreadyExists) ) {
+                if(!empty($ifAssingedOnCategory) ) {
 
                     $this->updatePageSlugOnCategoryDetach($pageId, $request['id']);
 
                     DB::try()->delete('category_page')->where('page_id', '=', $pageId)->and('category_id', '=', $request['id'])->run();
 
-                } else {
+                } else if(empty($ifAssingedOnCategory) && empty($ifAlreadyAssinged)) {
 
                     CategoryPage::insert([
     
@@ -251,6 +252,9 @@ class CategoryController extends Controller {
                     ]);
 
                     $this->updatePageSlugOnCategoryAssign($pageId, $request['id']);
+                } else if(!empty($ifAlreadyAssinged) ) {
+                    
+                    return;
                 }
             }
         }
