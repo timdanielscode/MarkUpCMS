@@ -3,20 +3,8 @@ $(document).on('click', '.add', function() {
     var modal = $('#modal');
     modal.addClass('display-block'); 
 
-    var subCategorySlug = $('#SUBCATEGORYSLUG').val();
-
-    if(typeof subCategorySlug !== 'undefined') {
-
-        console.log(subCategorySlug)
-        console.log('hoi')
-    }
-
-
     var id = $(this).data('id');
     var html = $('html');
-
-    var assingedCategory = $('#ASSIGNEDCATEGORY');
-    console.log(assingedCategory)
 
     $(document).ready(function() {
 
@@ -65,32 +53,14 @@ $(document).ready(function() {
     $(document).on('click', '#ASSIGNCATEGORY', function() {
 
         var categoryid = $('#CATEGORYID').val();
-  
         var subcategoryid = [];
-
         var selectedOptionElements = $(".selectedCategory");
-
-        var assingedCategorySubSelectElement = $('#ASSINGEDSUBCATEGORYID');
-        var notAssingedCategorySubSelectElement = $('#NOTASSINGEDSUBCATEGORYID');
 
         if(selectedOptionElements.length !== 0) {
             
             $(selectedOptionElements).each(function() {
 
-                var listedCategoryContainer = $('#SUBCATEGORYSLUGCONTAINER');
-                var listedCategory = $('#LISTEDCATEGORY-'+this.value);
-
-                if(this.parentNode.id === 'NOTASSINGEDSUBCATEGORYID') {
-
-                    var div = $('<div></div>').attr("id", "LISTEDCATEGORY-"+this.value).addClass('listedItem').text("/" + this.innerText);
-                    listedCategoryContainer.append(div);
-
-                } else if(this.parentNode.id === 'ASSINGEDSUBCATEGORYID') {
-
-                    console.log(listedCategory)
-                    listedCategory.remove();
-                }
-
+                updateListedCategorySlug(this, this.value)
                 subcategoryid.push(this.value)
             });
         }
@@ -109,56 +79,61 @@ $(document).ready(function() {
             
                     $(selectedOptionElements).each(function() {
         
-                        this.classList.remove('selectedCategory');
-
-                        if(this.parentNode.id === 'NOTASSINGEDSUBCATEGORYID') {
-        
-                            this.classList.remove('notAssingedSubCategory');
-                            this.classList.add('assingedSubCategory');
-
-                            assingedCategorySubSelectElement.append(this);
-
-                        } else if (this.parentNode.id === 'ASSINGEDSUBCATEGORYID') {
-
-                            this.classList.remove('assingedSubCategory');
-                            this.classList.add('notAssingedSubCategory');
-
-                            notAssingedCategorySubSelectElement.append(this);
-                        }
+                        updateSubCategories(this);
                     });
                 }
-
-                console.log('success')
-                //$('.MESSAGE').html('Updated successfully!').fadeIn(10).fadeOut(1000);
-        },
-            error: function(xhr, status, error) {
-
-                console.log('failed')
-
-                //$('.MESSAGE').html('Oops, something went wrong!').fadeIn(10).fadeOut(1000);
-        }
-    });
-
-
+            }
+        });
     });
 });
 
 
+function updateListedCategorySlug(element, id) {
 
+    var listedCategoryContainer = $('#SUBCATEGORYSLUGCONTAINER');
+    var listedCategory = $('#LISTEDCATEGORY-'+id);
 
+    if(element.parentNode.id === 'NOTASSINGEDSUBCATEGORYID') {
 
+        var div = $('<div></div>').attr("id", "LISTEDCATEGORY-"+id).addClass('listedItem').text("/" + element.innerText);
+        listedCategoryContainer.append(div);
 
+    } else if(element.parentNode.id === 'ASSINGEDSUBCATEGORYID') {
+
+        listedCategory.remove();
+    }
+}
+
+function updateSubCategories(element) {
+
+    var assingedCategorySubSelectElement = $('#ASSINGEDSUBCATEGORYID');
+    var notAssingedCategorySubSelectElement = $('#NOTASSINGEDSUBCATEGORYID');
+
+    element.classList.remove('selectedCategory');
+
+    if(element.parentNode.id === 'NOTASSINGEDSUBCATEGORYID') {
+
+        element.classList.remove('notAssingedSubCategory');
+        element.classList.add('assingedSubCategory');
+
+        assingedCategorySubSelectElement.append(element);
+
+    } else if (element.parentNode.id === 'ASSINGEDSUBCATEGORYID') {
+
+        element.classList.remove('assingedSubCategory');
+        element.classList.add('notAssingedSubCategory');
+
+        notAssingedCategorySubSelectElement.append(element);
+    }
+}
 
 $(document).ready(function() {
     $(document).on('click', '#ASSIGNPAGES', function() {
 
         var categoryid = $('#CATEGORYID').val();
         var pageid = [];
-
         var selectedOptionElements = $(".selectedPage");
-        var assingedPageSelectElement = $('#ASSIGNEDPAGEID');
-        var notAssingedPageSelectElement = $('#NOTASSIGNEDPAGEID');
-        
+
         if(selectedOptionElements.length !== 0) {
             
             $(selectedOptionElements).each(function() {
@@ -181,33 +156,33 @@ $(document).ready(function() {
             
                         $(selectedOptionElements).each(function() {
             
-                            this.classList.remove('selectedPage');
-
-                            if(this.parentNode.id === 'NOTASSIGNEDPAGEID') {
-            
-                                this.classList.remove('notAssingedPage');
-                                this.classList.add('assingedPage');
-
-                                assingedPageSelectElement.append(this);
-
-                            } else if (this.parentNode.id === 'ASSIGNEDPAGEID') {
-
-                                this.classList.remove('assingedPage');
-                                this.classList.add('notAssingedPage');
-
-                                notAssingedPageSelectElement.append(this);
-                            }
+                            updatePages(this);
                         });
                     }
-
-                    //$('.MESSAGE').html('Updated successfully!').fadeIn(10).fadeOut(1000);
-            },
-                error: function(xhr, status, error) {
-
-                    console.log('failed123')
-
-                    //$('.MESSAGE').html('Oops, something went wrong!').fadeIn(10).fadeOut(1000);
-            }
-        });
+                }
+            });
     });
 });
+
+function updatePages(element) {
+
+    var assingedPageSelectElement = $('#ASSIGNEDPAGEID');
+    var notAssingedPageSelectElement = $('#NOTASSIGNEDPAGEID');
+
+    element.classList.remove('selectedPage');
+
+    if(element.parentNode.id === 'NOTASSIGNEDPAGEID') {
+
+        element.classList.remove('notAssingedPage');
+        element.classList.add('assingedPage');
+
+        assingedPageSelectElement.append(element);
+
+    } else if (element.parentNode.id === 'ASSIGNEDPAGEID') {
+
+        element.classList.remove('assingedPage');
+        element.classList.add('notAssingedPage');
+
+        notAssingedPageSelectElement.append(element);
+    }
+}
