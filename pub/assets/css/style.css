@@ -997,3 +997,16 @@ margin-top: 50px;
 .color-white {
     color: #fff;
 }
+
+
+.categoryAddContainer {
+    position: relative;
+    width: 800px;
+    min-height: 800px;
+    background: #fff;
+}
+
+.categoryAddContainer .listedItem {
+
+    display: inline-block;
+}

@@ -3,6 +3,15 @@ $(document).on('click', '.add', function() {
     var modal = $('#modal');
     modal.addClass('display-block'); 
 
+    var subCategorySlug = $('#SUBCATEGORYSLUG').val();
+
+    if(typeof subCategorySlug !== 'undefined') {
+
+        console.log(subCategorySlug)
+        console.log('hoi')
+    }
+
+
     var id = $(this).data('id');
     var html = $('html');
 
@@ -68,6 +77,20 @@ $(document).ready(function() {
             
             $(selectedOptionElements).each(function() {
 
+                var listedCategoryContainer = $('#SUBCATEGORYSLUGCONTAINER');
+                var listedCategory = $('#LISTEDCATEGORY-'+this.value);
+
+                if(this.parentNode.id === 'NOTASSINGEDSUBCATEGORYID') {
+
+                    var div = $('<div></div>').attr("id", "LISTEDCATEGORY-"+this.value).addClass('listedItem').text("/" + this.innerText);
+                    listedCategoryContainer.append(div);
+
+                } else if(this.parentNode.id === 'ASSINGEDSUBCATEGORYID') {
+
+                    console.log(listedCategory)
+                    listedCategory.remove();
+                }
+
                 subcategoryid.push(this.value)
             });
         }
@@ -96,9 +119,6 @@ $(document).ready(function() {
                             assingedCategorySubSelectElement.append(this);
 
                         } else if (this.parentNode.id === 'ASSINGEDSUBCATEGORYID') {
-
-
-                            console.log(subcategoryid)
 
                             this.classList.remove('assingedSubCategory');
                             this.classList.add('notAssingedSubCategory');

@@ -1,4 +1,6 @@
-<div class="container">
+<div class="categoryAddContainer">
+
+    <div id="SUBCATEGORYSLUGCONTAINER"><div id="CATEGORYSLUG" class="listedItem"><?php echo $slug; ?></div><?php if(!empty($assingedSubCategories) && $assingedSubCategories !== null) { ?><?php foreach($assingedSubCategories as $assingedSubCategory) { ?><div id="LISTEDCATEGORY-<?php echo $assingedSubCategory['id']; ?>" class="listedItem"><?php echo "/" . $assingedSubCategory['slug']; ?></div><?php } ?><?php } ?></div>
 
         <form action="" method="POST">
 
@@ -42,10 +44,10 @@
     </form>
 
 
-
+    <!-- dit moet via de add.js met ajax-->
     <a id="ASSIGNPAGES" class="button">Assign pages</a>
     
-
+    
     <form action="" method="POST">
 
         <select id="ASSINGEDSUBCATEGORYID" name="subcategoryid" multiple>

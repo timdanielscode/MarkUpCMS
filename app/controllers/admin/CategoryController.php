@@ -65,6 +65,7 @@ class CategoryController extends Controller {
         }
 
         $data['categories'] = $categories;
+
         return $this->view('admin/categories/table', $data);
     }
 
@@ -104,7 +105,9 @@ class CategoryController extends Controller {
 
         $pageIds = DB::try()->select('id')->from('pages')->fetch();
 
-        $assingedSubCategories = DB::try()->select('categories.id, categories.title')->from('categories')->join('category_sub')->on('category_sub.sub_id', '=', 'categories.id')->where('category_id', '=', $request['id'])->fetch();
+        $assingedSubCategories = DB::try()->select('categories.id, categories.title, categories.slug')->from('categories')->join('category_sub')->on('category_sub.sub_id', '=', 'categories.id')->where('category_id', '=', $request['id'])->fetch();
+
+        $slug = DB::try()->select('slug')->from('categories')->where('id', '=', $request['id'])->first();
 
         if(!empty($assingedSubCategories) && $assingedSubCategories !== null) {
 
@@ -147,6 +150,7 @@ class CategoryController extends Controller {
         }
 
         $data['id'] = $request['id'];
+        $data['slug'] = $slug['slug'];
         $data['notAssingedPages'] = $notAssignedPages;
         $data['assignedPages'] = $assignedPages;
         $data['notAssingedSubs'] = $notAssingedSubs;
@@ -223,7 +227,7 @@ class CategoryController extends Controller {
                         'category_id'   => $request['id']
                     ]);
 
-                    $categorySubSlug = DB::try()->select('categories.slug')->from('categories')->join('category_sub')->on('categories.id', '=', 'category_sub.sub_id')->where('category_sub.sub_id', '=', $subCategoryId)->first();   
+                    /*$categorySubSlug = DB::try()->select('categories.slug')->from('categories')->join('category_sub')->on('categories.id', '=', 'category_sub.sub_id')->where('category_sub.sub_id', '=', $subCategoryId)->first();   
                     
                     $categorySlug = DB::try()->select('categories.slug')->from('categories')->where('categories.id', '=', $request['id'])->first();
 
@@ -231,7 +235,7 @@ class CategoryController extends Controller {
                     Category::update(['id' => $request['id']], [
 
                         'slug' => $categorySubSlug['slug'] . "/" . $categorySlug['slug']
-                    ]);
+                    ]);*/
 
                 
                 
