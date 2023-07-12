@@ -79,7 +79,7 @@ class CategoryController extends Controller {
                 Category::insert([
 
                     'title' => $request['title'],
-                    'slug'  => $slug,
+                    'slug'  => "/" . $slug,
                     'category_description'  => $request['description'],
                     'date_created_at'   => date("d/m/Y"),
                     'time_created_at'   => date("H:i"),
@@ -288,7 +288,7 @@ class CategoryController extends Controller {
 
         Post::update(['id' => $pageId], [
 
-            'slug'  => "/" . $currentCategorySlug['slug'] . $currentSlug['slug']
+            'slug'  => $currentCategorySlug['slug'] . $currentSlug['slug']
         ]);
     }
 
@@ -310,6 +310,25 @@ class CategoryController extends Controller {
                         'sub_id'   => $subCategoryId,
                         'category_id'   => $request['id']
                     ]);
+
+                    $postSlug = DB::try()->select('pages.id, pages.slug')->from('pages')->join('category_page')->on('pages.id', '=', 'category_page.page_id')->where('category_page.category_id', '=', $request['id'])->first();
+
+                    if(!empty($postSlug) ) {
+
+
+                        $assingedSubCategorySlugs = DB::try()->select('categories.slug')->from('categories')->join('category_sub')->on('categories.id', '=', 'category_sub.sub_id')->where('category_sub.category_id', '=', $request['id'])->fetch();
+
+
+                        foreach($assingedSubCategorySlugs as $assingedSubCategorySlug) {
+    
+    
+                            Post::update(['id' => $postSlug['id']], [
+    
+                                'slug'  => $assingedSubCategorySlug['slug'] . $postSlug['slug']
+                            ]);
+    
+                        }
+                    }
                 }
             }
         }
