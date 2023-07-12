@@ -55,6 +55,68 @@ class CategoryController extends Controller {
         return $this->view('admin/categories/index', $data);
     }
 
+    public function create() {
+
+        $pages = Post::all();
+
+        $data['rules'] = [];
+        $data['pages'] = $pages;
+
+        return $this->view('admin/categories/create', $data);
+    }
+
+    public function store($request) {
+            
+        if(submitted('submit') && Csrf::validate(Csrf::token('get'), post('token') ) === true) {
+
+            $rules = new Rules();
+           
+            if($rules->create_category()->validated()) {
+
+                $slug = post('title');
+                $slug = str_replace(" ", "-", $slug);
+                         
+                Category::insert([
+
+                    'title' => $request['title'],
+                    'slug'  => $slug,
+                    'category_description'  => $request['description'],
+                    'date_created_at'   => date("d/m/Y"),
+                    'time_created_at'   => date("H:i"),
+                    'date_updated_at'   => date("d/m/Y"),
+                    'time_updated_at'   => date("H:i")
+                ]);
+
+                $category = new Category();
+                $categoryId = $category->getLastRegisteredCategoryId()[0];
+
+                foreach($request['page'] as $pageId) {
+
+                    $page = Post::get($pageId)['slug'];
+
+                    CategoryPage::insert([
+
+                        'category_id'   => $categoryId,
+                        'page_id'   => $pageId
+                    ]);
+
+                    Post::update(['id' => $pageId],[
+
+                        'slug'  =>  '/' . $slug . $page
+                    ]);
+                }
+
+                Session::set('create', 'You have successfully created a new post!');            
+                redirect('/admin/categories');
+
+            } else {
+
+                $data['rules'] = $rules->errors;
+                return $this->view('admin/categories/create', $data);
+            }
+        } 
+    }
+
     public function TABLE() {
 
         $category = new Category();
@@ -99,21 +161,57 @@ class CategoryController extends Controller {
 
     public function SHOWADDABLE($request) {
 
-        $assignedPages = DB::try()->select('id, title')->from('pages')->join('category_page')->on('pages.id', '=', 'category_page.page_id')->where('category_id', '=', $request['id'])->fetch();
-        
-        $assignedPageIds = DB::try()->select('id')->from('pages')->join('category_page')->on('pages.id', '=', 'category_page.page_id')->where('category_id', '=', $request['id'])->fetch();
-
-        $pageIds = DB::try()->select('id')->from('pages')->fetch();
-
-        $assingedSubCategories = DB::try()->select('categories.id, categories.title, categories.slug')->from('categories')->join('category_sub')->on('category_sub.sub_id', '=', 'categories.id')->where('category_id', '=', $request['id'])->fetch();
-
         $slug = DB::try()->select('slug')->from('categories')->where('id', '=', $request['id'])->first();
 
-        if(!empty($assingedSubCategories) && $assingedSubCategories !== null) {
+        $assignedPages = DB::try()->select('id, title')->from('pages')->join('category_page')->on('pages.id', '=', 'category_page.page_id')->where('category_id', '=', $request['id'])->fetch();
+        $assingedSubCategories = DB::try()->select('categories.id, categories.title, categories.slug')->from('categories')->join('category_sub')->on('category_sub.sub_id', '=', 'categories.id')->where('category_id', '=', $request['id'])->fetch();
 
-            $listAssingedSubIds = [$request['id']];
+        $notAssignedPages = $this->getNotAssingedPages($assignedPages);
+        $notAssingedSubs = $this->getNotAssingedSubCategories($assingedSubCategories, $request['id']);
 
-            foreach($assingedSubCategories as $assingedSubCategory) {
+        $data['id'] = $request['id'];
+        $data['slug'] = $slug['slug'];
+
+        $data['assignedPages'] = $assignedPages;
+        $data['notAssingedPages'] = $notAssignedPages;
+        
+        $data['assingedSubCategories'] = $assingedSubCategories;
+        $data['notAssingedSubs'] = $notAssingedSubs;
+
+        return $this->view('admin/categories/add', $data);
+    }
+
+    public function getNotAssingedPages($assingedPages) {
+
+        if(!empty($assingedPages) && $assingedPages !== null) {
+
+            $listAssingedPageIds = [];
+
+            foreach($assingedPages as $assignedPage) {
+    
+                array_push($listAssingedPageIds, $assignedPage['id']);
+            }
+    
+            $listAssingedPageIds = implode(',', $listAssingedPageIds);
+    
+            if(!empty($listAssingedPageIds) && $listAssingedPageIds !== null) {
+    
+                $notAssignedPages = DB::try()->select('id, title')->from('pages')->whereNotIn('id', $listAssingedPageIds)->fetch();
+            } else {
+                $notAssignedPages = DB::try()->select('id, title')->from('pages')->fetch();
+            }
+
+            return $notAssignedPages;
+        }
+    }
+
+    public function getNotAssingedSubCategories($assingedCategories, $id) {
+
+        if(!empty($assingedCategories) && $assingedCategories !== null) {
+
+            $listAssingedSubIds = [$id];
+
+            foreach($assingedCategories as $assingedSubCategory) {
 
                 array_push($listAssingedSubIds, $assingedSubCategory['id']);
             }
@@ -125,37 +223,12 @@ class CategoryController extends Controller {
                 $notAssingedSubs = DB::try()->select('id, title')->from('categories')->whereNotIn('id', $listAssingedSubIds)->fetch();
             } 
 
-            $data['notAssingedSubs'] = $notAssingedSubs;
-            $data['assingedSubCategories'] = $assingedSubCategories;
-
         } else {
 
-            $notAssingedSubs = DB::try()->select('id, title')->from('categories')->whereNot('id', '=', $request['id'])->fetch();
+            $notAssingedSubs = DB::try()->select('id, title')->from('categories')->whereNot('id', '=', $id)->fetch();
         }
 
-        $listAssingedPageIds = [];
-
-        foreach($assignedPageIds as $assignedPageId) {
-
-            array_push($listAssingedPageIds, $assignedPageId['id']);
-        }
-
-        $listAssingedPageIds = implode(',', $listAssingedPageIds);
-
-        if(!empty($listAssingedPageIds) && $listAssingedPageIds !== null) {
-
-            $notAssignedPages = DB::try()->select('id, title')->from('pages')->whereNotIn('id', $listAssingedPageIds)->fetch();
-        } else {
-            $notAssignedPages = DB::try()->select('id, title')->from('pages')->fetch();
-        }
-
-        $data['id'] = $request['id'];
-        $data['slug'] = $slug['slug'];
-        $data['notAssingedPages'] = $notAssignedPages;
-        $data['assignedPages'] = $assignedPages;
-        $data['notAssingedSubs'] = $notAssingedSubs;
-
-        return $this->view('admin/categories/add', $data);
+        return $notAssingedSubs;
     }
 
     public function ADDPAGE($request) {
@@ -257,68 +330,6 @@ class CategoryController extends Controller {
         $data['pages'] = $pages;
 
         return $this->view('admin/categories/read', $data);
-    }
-
-    public function create() {
-
-        $pages = Post::all();
-
-        $data['rules'] = [];
-        $data['pages'] = $pages;
-
-        return $this->view('admin/categories/create', $data);
-    }
-
-    public function store($request) {
-            
-        if(submitted('submit') && Csrf::validate(Csrf::token('get'), post('token') ) === true) {
-
-            $rules = new Rules();
-           
-            if($rules->create_category()->validated()) {
-
-                $slug = post('title');
-                $slug = str_replace(" ", "-", $slug);
-                         
-                Category::insert([
-
-                    'title' => $request['title'],
-                    'slug'  => $slug,
-                    'category_description'  => $request['description'],
-                    'date_created_at'   => date("d/m/Y"),
-                    'time_created_at'   => date("H:i"),
-                    'date_updated_at'   => date("d/m/Y"),
-                    'time_updated_at'   => date("H:i")
-                ]);
-
-                $category = new Category();
-                $categoryId = $category->getLastRegisteredCategoryId()[0];
-
-                foreach($request['page'] as $pageId) {
-
-                    $page = Post::get($pageId)['slug'];
-
-                    CategoryPage::insert([
-
-                        'category_id'   => $categoryId,
-                        'page_id'   => $pageId
-                    ]);
-
-                    Post::update(['id' => $pageId],[
-
-                        'slug'  =>  '/' . $slug . $page
-                    ]);
-                }
-
-                Session::set('create', 'You have successfully created a new post!');            
-                redirect('/admin/categories');
-
-            } else {
-
-                $data['rules'] = $rules->errors;
-                return $this->view('admin/categories/create', $data);
-            }
-        } 
     }
 
     public function SLUG($request) { 
