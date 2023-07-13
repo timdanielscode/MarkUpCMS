@@ -279,15 +279,36 @@ class CategoryController extends Controller {
         ]);
     }
 
-    public function updatePageSlugOnCategoryAssign($pageId, $catgoryId) {
+    public function updatePageSlugOnCategoryAssign($pageId, $categoryId) {
 
-        $currentCategorySlug = DB::try()->select('categories.slug')->from('categories')->join('category_page')->on('category_page.category_id', '=', 'categories.id')->where('categories.id', '=', $catgoryId)->first();
+        $currentCategorySlug = DB::try()->select('categories.slug')->from('categories')->join('category_page')->on('category_page.category_id', '=', 'categories.id')->where('categories.id', '=', $categoryId)->first();
         $currentSlug = DB::try()->select('slug')->from('pages')->where('id', '=', $pageId)->first();
 
-        Post::update(['id' => $pageId], [
+        $subCategories = DB::try()->select('categories.slug')->from('categories')->join('category_sub')->on('categories.id', '=', 'category_sub.sub_id')->where('category_sub.category_id', '=', $categoryId)->fetch();
 
-            'slug'  => $currentCategorySlug['slug'] . $currentSlug['slug']
-        ]);
+        if(!empty($subCategories) ) {
+
+            $subCategoriesArray = [];
+
+            foreach($subCategories as $subCategory) {
+
+                array_push($subCategoriesArray, $subCategory['slug']);
+            }
+
+            $subCategoriesSlug = implode('', $subCategoriesArray);
+
+            Post::update(['id' => $pageId], [
+
+                'slug'  => $subCategoriesSlug . $currentCategorySlug['slug'] . $currentSlug['slug']
+            ]);
+
+        } else {
+
+            Post::update(['id' => $pageId], [
+
+                'slug'  => $currentCategorySlug['slug'] . $currentSlug['slug']
+            ]);
+        }
     }
 
     public function ADDCATEGORY($request) {
