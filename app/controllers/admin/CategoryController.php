@@ -400,11 +400,12 @@ class CategoryController extends Controller {
     
             $currentSlug = Category::where('id', '=', $request['id'])[0];
 
-            $pages = DB::try()->select('id, slug')->from('pages')->fetch();
+            $assingedSubCategorySlugsPages = DB::try()->select('id, slug')->from('pages')->join('category_page')->on("category_page.page_id",'=','pages.id')->join('category_sub')->on('category_sub.category_id', '=', 'category_page.category_id')->where('category_sub.sub_id', '=', $request['id'])->fetch();
+            $assingedCategorySlugsPages = DB::try()->select('id, slug')->from('pages')->join('category_page')->on("category_page.page_id", '=', 'pages.id')->where('category_page.category_id', '=', $request['id'])->fetch();
 
-            if(!empty($pages) && $pages !== null) {
+            if(!empty($assingedCategorySlugsPages) && $assingedCategorySlugsPages !== null) {
         
-                foreach($pages as $page) {
+                foreach($assingedCategorySlugsPages as $page) {
         
                     $slugParts = explode('/', $page['slug']);
                     $categorySlugKey = array_search(substr($currentSlug['slug'], 1), $slugParts);
@@ -421,7 +422,27 @@ class CategoryController extends Controller {
                     }
                 } 
             }
-       
+
+            if(!empty($assingedSubCategorySlugsPages) && $assingedSubCategorySlugsPages !== null) {
+        
+                foreach($assingedSubCategorySlugsPages as $page) {
+        
+                    $slugParts = explode('/', $page['slug']);
+                    $categorySlugKey = array_search(substr($currentSlug['slug'], 1), $slugParts);
+                    
+                    if(!empty($categorySlugKey) && $categorySlugKey !== null) {
+
+                        $slugParts[$categorySlugKey] = substr($request['slug'], 1);
+                        $slug = implode('/', $slugParts);
+                
+                        Post::update(['id' => $page['id']], [
+                
+                            'slug'  => $slug
+                        ]);
+                    }
+                } 
+            }
+
             Category::update(['id' => $request['id']], [
 
                 'slug'  => $request['slug']
