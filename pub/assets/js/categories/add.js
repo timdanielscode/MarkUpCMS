@@ -55,12 +55,12 @@ $(document).ready(function() {
         var categoryid = $('#CATEGORYID').val();
         var subcategoryid = [];
         var selectedOptionElements = $(".selectedCategory");
+        var message = $("#PAGEMESSAGE");
 
         if(selectedOptionElements.length !== 0) {
             
             $(selectedOptionElements).each(function() {
 
-                updateListedCategorySlug(this, this.value)
                 subcategoryid.push(this.value)
             });
         }
@@ -78,10 +78,15 @@ $(document).ready(function() {
                 if(selectedOptionElements.length !== 0) {
             
                     $(selectedOptionElements).each(function() {
-        
+
+                        updateListedCategorySlug(this, this.value)
                         updateSubCategories(this);
                     });
                 }
+            },error: function(xhr, status, error) {
+
+                message.html("Pages are already assinged!").fadeIn(10).fadeOut(1000);
+                message.addClass('message');
             }
         });
     });

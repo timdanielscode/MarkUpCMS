@@ -321,8 +321,9 @@ class CategoryController extends Controller {
             foreach($request['subcategoryid'] as $subCategoryId) {
 
                 $ifAlreadyAssinged = DB::try()->select('*')->from('category_sub')->where('sub_id', '=', $subCategoryId)->fetch();
+                $ifPageAlreadyAssinged = DB::try()->select('*')->from('category_page')->where('category_page.category_id', '=', $request['id'])->fetch();
 
-                if(!empty($ifAlreadyAssinged) && $ifAlreadyAssinged !== null ) {
+                if(!empty($ifAlreadyAssinged) && empty($ifPageAlreadyAssinged)) {
 
                     $subCategorySlugs = DB::try()->select('slug')->from('categories')->join('category_sub')->on('categories.id', '=', 'category_sub.sub_id')->where('category_sub.sub_id', '=', $subCategoryId)->fetch();
                     $postSlugs = DB::try()->select('pages.id, pages.slug')->from('pages')->join('category_page')->on('pages.id', '=', 'category_page.page_id')->where('category_page.category_id', '=', $request['id'])->fetch();
@@ -345,7 +346,7 @@ class CategoryController extends Controller {
 
                     CategorySub::delete('sub_id', $subCategoryId);
 
-                } else {
+                } else if(empty($ifAlreadyAssinged) && empty($ifPageAlreadyAssinged) ) {
 
                     CategorySub::insert([
     
@@ -370,6 +371,9 @@ class CategoryController extends Controller {
                             }
                         }
                     }
+                } else {
+
+                    return;
                 }
             }
         }
