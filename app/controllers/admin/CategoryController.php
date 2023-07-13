@@ -282,32 +282,35 @@ class CategoryController extends Controller {
     public function updatePageSlugOnCategoryAssign($pageId, $categoryId) {
 
         $currentCategorySlug = DB::try()->select('categories.slug')->from('categories')->join('category_page')->on('category_page.category_id', '=', 'categories.id')->where('categories.id', '=', $categoryId)->first();
-        $currentSlug = DB::try()->select('slug')->from('pages')->where('id', '=', $pageId)->first();
+        $currentSlugs = DB::try()->select('slug')->from('pages')->where('id', '=', $pageId)->fetch();
 
-        $subCategories = DB::try()->select('categories.slug')->from('categories')->join('category_sub')->on('categories.id', '=', 'category_sub.sub_id')->where('category_sub.category_id', '=', $categoryId)->fetch();
+        foreach($currentSlugs as $currentSlug) {
 
-        if(!empty($subCategories) ) {
+            $subCategories = DB::try()->select('categories.slug')->from('categories')->join('category_sub')->on('categories.id', '=', 'category_sub.sub_id')->where('category_sub.category_id', '=', $categoryId)->fetch();
 
-            $subCategoriesArray = [];
-
-            foreach($subCategories as $subCategory) {
-
-                array_push($subCategoriesArray, $subCategory['slug']);
+            if(!empty($subCategories) ) {
+    
+                $subCategoriesArray = [];
+    
+                foreach($subCategories as $subCategory) {
+    
+                    array_push($subCategoriesArray, $subCategory['slug']);
+                }
+    
+                $subCategoriesSlug = implode('', $subCategoriesArray);
+    
+                Post::update(['id' => $pageId], [
+    
+                    'slug'  => $currentCategorySlug['slug'] . $subCategoriesSlug . $currentSlug['slug']
+                ]);
+    
+            } else {
+    
+                Post::update(['id' => $pageId], [
+    
+                    'slug'  => $currentCategorySlug['slug'] . $currentSlug['slug']
+                ]);
             }
-
-            $subCategoriesSlug = implode('', $subCategoriesArray);
-
-            Post::update(['id' => $pageId], [
-
-                'slug'  => $subCategoriesSlug . $currentCategorySlug['slug'] . $currentSlug['slug']
-            ]);
-
-        } else {
-
-            Post::update(['id' => $pageId], [
-
-                'slug'  => $currentCategorySlug['slug'] . $currentSlug['slug']
-            ]);
         }
     }
 
@@ -322,19 +325,22 @@ class CategoryController extends Controller {
                 if(!empty($ifAlreadyAssinged) && $ifAlreadyAssinged !== null ) {
 
                     $subCategorySlugs = DB::try()->select('slug')->from('categories')->join('category_sub')->on('categories.id', '=', 'category_sub.sub_id')->where('category_sub.sub_id', '=', $subCategoryId)->fetch();
-                    $postSlug = DB::try()->select('pages.id, pages.slug')->from('pages')->join('category_page')->on('pages.id', '=', 'category_page.page_id')->where('category_page.category_id', '=', $request['id'])->first();
+                    $postSlugs = DB::try()->select('pages.id, pages.slug')->from('pages')->join('category_page')->on('pages.id', '=', 'category_page.page_id')->where('category_page.category_id', '=', $request['id'])->fetch();
 
-                    foreach($subCategorySlugs as $subCategorySlug) {
+                    foreach($postSlugs as $postSlug) {
 
-                        $slugParts = explode('/', $postSlug['slug']);
-                        $subCategorySlugKey = array_search(substr($subCategorySlug['slug'], 1), $slugParts);
-                        unset($slugParts[$subCategorySlugKey]);
-                        $slugMinusSubCategorySlug = implode('/', $slugParts);
-                
-                        Post::update(['id' => $postSlug['id']], [
-                
-                            'slug'  => $slugMinusSubCategorySlug
-                        ]);
+                        foreach($subCategorySlugs as $subCategorySlug) {
+
+                            $slugParts = explode('/', $postSlug['slug']);
+                            $subCategorySlugKey = array_search(substr($subCategorySlug['slug'], 1), $slugParts);
+                            unset($slugParts[$subCategorySlugKey]);
+                            $slugMinusSubCategorySlug = implode('/', $slugParts);
+                    
+                            Post::update(['id' => $postSlug['id']], [
+                    
+                                'slug'  => $slugMinusSubCategorySlug
+                            ]);
+                        }
                     }
 
                     CategorySub::delete('sub_id', $subCategoryId);
@@ -347,19 +353,21 @@ class CategoryController extends Controller {
                         'category_id'   => $request['id']
                     ]);
 
-                    $postSlug = DB::try()->select('pages.id, pages.slug')->from('pages')->join('category_page')->on('pages.id', '=', 'category_page.page_id')->where('category_page.category_id', '=', $request['id'])->first();
+                    $postSlugs = DB::try()->select('pages.id, pages.slug')->from('pages')->join('category_page')->on('pages.id', '=', 'category_page.page_id')->where('category_page.category_id', '=', $request['id'])->fetch();
 
-                    if(!empty($postSlug) ) {
+                    if(!empty($postSlugs) ) {
 
-                        $assingedSubCategorySlugs = DB::try()->select('categories.slug')->from('categories')->join('category_sub')->on('categories.id', '=', 'category_sub.sub_id')->where('category_sub.category_id', '=', $request['id'])->fetch();
+                        foreach($postSlugs as $postSlug) {
 
-                        foreach($assingedSubCategorySlugs as $assingedSubCategorySlug) {
-    
-                            Post::update(['id' => $postSlug['id']], [
-    
-                                'slug'  => $assingedSubCategorySlug['slug'] . $postSlug['slug']
-                            ]);
-    
+                            $assingedSubCategorySlugs = DB::try()->select('categories.slug')->from('categories')->join('category_sub')->on('categories.id', '=', 'category_sub.sub_id')->where('category_sub.category_id', '=', $request['id'])->fetch();
+
+                            foreach($assingedSubCategorySlugs as $assingedSubCategorySlug) {
+        
+                                Post::update(['id' => $postSlug['id']], [
+        
+                                    'slug'  => $assingedSubCategorySlug['slug'] . $postSlug['slug']
+                                ]);
+                            }
                         }
                     }
                 }
