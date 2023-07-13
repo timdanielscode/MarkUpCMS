@@ -267,17 +267,15 @@ class CategoryController extends Controller {
 
     public function updatePageSlugOnCategoryDetach($pageId, $categoryId) {
 
-        $categorySlug = DB::try()->select('categories.slug')->from('categories')->join('category_page')->on('categories.id', '=', 'category_page.category_id')->join('pages')->on('pages.id', '=', 'category_page.page_id')->where('pages.id', '=', $pageId)->and('categories.id', '=', $categoryId)->first();
-
         $postSlug = DB::try()->select('slug')->from('pages')->where('id', '=', $pageId)->first();
+        
         $slugParts = explode('/', $postSlug['slug']);
-        $categoryTitleKey = array_search(substr($categorySlug['slug'], 1), $slugParts);
-        unset($slugParts[$categoryTitleKey]);
-        $slugMinusCategoryTitle = implode('/', $slugParts);
+        $lastPageSlugKey = array_key_last($slugParts);
+        $lastPageSlugValue = "/" . $slugParts[$lastPageSlugKey];
 
         Post::update(['id' => $pageId], [
 
-            'slug'  => $slugMinusCategoryTitle
+            'slug'  => $lastPageSlugValue
         ]);
     }
 
