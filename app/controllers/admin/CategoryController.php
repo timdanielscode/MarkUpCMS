@@ -161,25 +161,6 @@ class CategoryController extends Controller {
 
     public function SHOWADDABLE($request) {
 
-        /*$subCategorySlugs = DB::try()->select('slug')->from('categories')->join('category_sub')->on('categories.id', '=', 'category_sub.sub_id')->where('category_sub.sub_id', '=', 311)->fetch();
-        $postSlug = DB::try()->select('pages.id, pages.slug')->from('pages')->join('category_page')->on('pages.id', '=', 'category_page.page_id')->where('category_page.category_id', '=', 310)->first();
-
-
-        foreach($subCategorySlugs as $subCategorySlug) {
-
-            $slugParts = explode('/', $postSlug['slug']);
-            $subCategorySlugKey = array_search(substr($subCategorySlug['slug'], 1), $slugParts);
-            unset($slugParts[$subCategorySlugKey]);
-            $slugMinusSubCategorySlug = implode('/', $slugParts);
-    
-            Post::update(['id' => $postSlug['id']], [
-    
-                'slug'  => $slugMinusSubCategorySlug
-            ]);
-        }*/
-
-
-
         $slug = DB::try()->select('slug')->from('categories')->where('id', '=', $request['id'])->first();
 
         $assignedPages = DB::try()->select('id, title')->from('pages')->join('category_page')->on('pages.id', '=', 'category_page.page_id')->where('category_id', '=', $request['id'])->fetch();
@@ -290,7 +271,7 @@ class CategoryController extends Controller {
 
         $postSlug = DB::try()->select('slug')->from('pages')->where('id', '=', $pageId)->first();
         $slugParts = explode('/', $postSlug['slug']);
-        $categoryTitleKey = array_search($categorySlug['slug'], $slugParts);
+        $categoryTitleKey = array_search(substr($categorySlug['slug'], 1), $slugParts);
         unset($slugParts[$categoryTitleKey]);
         $slugMinusCategoryTitle = implode('/', $slugParts);
 
