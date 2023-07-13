@@ -398,25 +398,30 @@ class CategoryController extends Controller {
 
         if(!empty($request['slug']) && $request['slug'] !== null) {
     
-            $currentSlug = Category::where('id', '=', $request['id']);
-            $postsWithSlug = DB::try()->select('pages.id, pages.slug')->from('pages')->join('category_page')->on('pages.id', '=', 'category_page.page_id')->where('category_page.category_id', '=', $currentSlug[0]['id'])->fetch();
-    
-            if(!empty($postsWithSlug) && $postsWithSlug !== null) {
-    
-                foreach($postsWithSlug as $postWithSlug) {
-    
-                    $slugParts = explode('/', $postWithSlug['slug']);
-                    $categorySlugKey = array_search($currentSlug[0]['slug'], $slugParts);
-                    $slugParts[$categorySlugKey] = $request['slug'];
-                    $slug = implode('/', $slugParts);
-    
-                    Post::update(['id' => $postWithSlug['id']], [
-    
-                        'slug'  => $slug
-                    ]);
+            $currentSlug = Category::where('id', '=', $request['id'])[0];
+
+            $pages = DB::try()->select('id, slug')->from('pages')->fetch();
+
+            if(!empty($pages) && $pages !== null) {
+        
+                foreach($pages as $page) {
+        
+                    $slugParts = explode('/', $page['slug']);
+                    $categorySlugKey = array_search(substr($currentSlug['slug'], 1), $slugParts);
+                    
+                    if(!empty($categorySlugKey) && $categorySlugKey !== null) {
+
+                        $slugParts[$categorySlugKey] = substr($request['slug'], 1);
+                        $slug = implode('/', $slugParts);
+                
+                        Post::update(['id' => $page['id']], [
+                
+                            'slug'  => $slug
+                        ]);
+                    }
                 } 
             }
-
+       
             Category::update(['id' => $request['id']], [
 
                 'slug'  => $request['slug']
