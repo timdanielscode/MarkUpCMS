@@ -320,7 +320,7 @@ class CategoryController extends Controller {
 
             foreach($request['subcategoryid'] as $subCategoryId) {
 
-                $ifAlreadyAssinged = DB::try()->select('*')->from('category_sub')->where('sub_id', '=', $subCategoryId)->fetch();
+                $ifAlreadyAssinged = DB::try()->select('*')->from('category_sub')->where('sub_id', '=', $subCategoryId)->and('category_id', '=', $request['id'])->fetch();
                 $ifPageAlreadyAssinged = DB::try()->select('*')->from('category_page')->where('category_page.category_id', '=', $request['id'])->fetch();
 
                 if(!empty($ifAlreadyAssinged) && empty($ifPageAlreadyAssinged)) {
