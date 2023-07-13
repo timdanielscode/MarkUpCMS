@@ -161,48 +161,14 @@ class CategoryController extends Controller {
 
     public function SHOWADDABLE($request) {
 
-
-        
-       /* $assingedCategorySlugsPages = DB::try()->select('id, slug')->from('pages')->join('category_page')->on("category_page.page_id", '=', 'pages.id')->where('category_page.category_id', '=', 376)->fetch();
-
-
-
-
-        if(!empty($assingedCategorySlugsPages) && $assingedCategorySlugsPages !== null) {
-    
-
-     
-
-            foreach($assingedCategorySlugsPages as $page) {
-    
-                $slugParts = explode('/', $page['slug']);
-                $categorySlugKey = array_search(substr($currentSlug['slug'], 1), $slugParts);
-                unset($slugParts[$categorySlugKey]);
-                $slugMinusCategorySlug = implode('/', $slugParts);
-
-                echo $slugMinusCategorySlug;
-
-                
-                Post::update(['id' => $page['id']], [
-            
-                    'slug'  => $slugMinusCategorySlug
-                ]);
-            } 
-            
-        }
-
-        exit();*/
-
-
-
-
-
         $slug = DB::try()->select('slug')->from('categories')->where('id', '=', $request['id'])->first();
 
         $assignedPages = DB::try()->select('id, title')->from('pages')->join('category_page')->on('pages.id', '=', 'category_page.page_id')->where('category_id', '=', $request['id'])->fetch();
         $assingedSubCategories = DB::try()->select('categories.id, categories.title, categories.slug')->from('categories')->join('category_sub')->on('category_sub.sub_id', '=', 'categories.id')->where('category_id', '=', $request['id'])->fetch();
+        
+        $allAssingedPages = DB::try()->select('pages.id')->from('pages')->join('category_page')->on('category_page.page_id', '=', 'pages.id')->fetch();
 
-        $notAssignedPages = $this->getNotAssingedPages($assignedPages);
+        $notAssignedPages = $this->getNotAssingedPages($allAssingedPages);
         $notAssingedSubs = $this->getNotAssingedSubCategories($assingedSubCategories, $request['id']);
 
         $data['id'] = $request['id'];
