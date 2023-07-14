@@ -26,43 +26,43 @@
     </div>
     <table class="tablePosts margin-y-20">
         
-            <thead>
-                <tr>
-                    <th>#</th>
-                    <th>Title</th>
-                    <th>Slug</th>
-                    <th class="width-10">Date</th>
-                </tr>
-            </thead>
-            <tbody id="categoryTableBody">
+        <thead>
+            <tr>
+                <th>#</th>
+                <th>Title</th>
+                <th>Slug</th>
+                <th class="width-10">Date</th>
+            </tr>
+        </thead>
+        <tbody id="categoryTableBody">
                 
-            </tbody>
-        </table>
+        </tbody>
+    </table>
 
-        <div id="categoriesPreview"></div>
+    <?php if(count($numberOfPages) > 1) { ?>
+        <nav id="pagination" class="paginationPosts">
+            <ul class="pagination">
+                <li class="page-item previous"><a href="/admin/categories?back=1">Previous</a></li>
+                <?php 
+                    foreach($numberOfPages as $page) {
 
-        <div id="modal" class="display-none">
-            <div class="container">
-                <div id="modalForm">
+                        echo '<li class="page-item"><a class="PAGE" id="'. $page. '">'.$page.'</a></li>';
+                    }  
+                ?>
+                <li class="page-item next"><a href="/admin/categories?next=1">Next</a></li>
+            </ul>
+        </nav>
+    <?php } ?>
 
-                </div>
+    <div id="categoriesPreview"></div>
+
+    <div id="modal" class="display-none">
+        <div class="container">
+            <div id="modalForm">
+
             </div>
-
         </div>
-
-        <?php if(count($numberOfPages) > 1) { ?>
-            <nav class="paginationPosts">
-                <ul class="pagination">
-                    <li class="page-item previous"><a href="/admin/categories?back=1">Previous</a></li>
-                    <?php 
-                        foreach($numberOfPages as $page) {
-                            echo '<li class="page-item"><a href="/admin/categories?page='.$page.'">'.$page.'</a></li>';
-                        }  
-                    ?>
-                    <li class="page-item next"><a href="/admin/categories?next=1">Next</a></li>
-                </ul>
-            </nav>
-        <?php } ?>
+    </div>
 <?php 
     $this->include('footer');
 ?>

@@ -70,10 +70,11 @@ Route::middleware(['auth' => 'admin'])->run(function() {
 
 
 
-
+    
     Route::get('/admin/categories')->add('admin\CategoryController', 'index');
-
-    Route::get('/admin/categories/table')->add('admin\CategoryController', 'TABLE');
+    //Route::get('/admin/categories/pagination')->add('admin\CategoryController', 'PAGINATION');
+    Route::get('/admin/categories/')->add('admin\CategoryController', 'TABLE');
+    
     Route::get('/admin/categories/read')->add('admin\CategoryController', 'READ');
     Route::get('/admin/categories/edit')->add('admin\CategoryController', 'EDIT');
     Route::post('/admin/categories/update')->add('admin\CategoryController', 'UPDATE');

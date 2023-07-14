@@ -43,14 +43,16 @@ class CategoryController extends Controller {
         $data['numberOfPages'] = $numberOfPages;
         $data['count'] = $count;*/
 
-
         $category = new Category();
-
         $categories = $category->allCategoriesButOrdered();
 
         $count = count($categories);
-        $data['count'] = $count;
 
+        $categories = Pagination::get($categories, 1);
+        $numberOfPages = Pagination::getPageNumbers();
+
+        $data['count'] = $count;
+        $data['numberOfPages'] = $numberOfPages;
 
         return $this->view('admin/categories/index', $data);
     }
@@ -122,11 +124,15 @@ class CategoryController extends Controller {
         $category = new Category();
         $categories = $category->allCategoriesButOrdered();
 
+        $categories = Pagination::get($categories, 1);
+        $numberOfPages = Pagination::getPageNumbers();
+
         if(empty($categories) ) {
             $categories = array(["id" => "?","title" => "no category created", "extension" => "","date_created_at" => "-", "time_created_at" => "", "date_updated_at" => "-", "time_updated_at" => ""]);
         }
 
         $data['categories'] = $categories;
+        $data['numberOfPages'] = $numberOfPages;
 
         return $this->view('admin/categories/table', $data);
     }
