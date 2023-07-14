@@ -48,7 +48,7 @@ class CategoryController extends Controller {
 
         $count = count($categories);
 
-        $categories = Pagination::get($categories, 10);
+        $categories = Pagination::get($categories, 2);
         $numberOfPages = Pagination::getPageNumbers();
 
         $data['count'] = $count;
@@ -124,7 +124,7 @@ class CategoryController extends Controller {
         $category = new Category();
         $categories = $category->allCategoriesButOrdered();
 
-        $categories = Pagination::get($categories, 10);
+        $categories = Pagination::get($categories, 2);
         $numberOfPages = Pagination::getPageNumbers();
 
         if(empty($categories) ) {

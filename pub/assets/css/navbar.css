@@ -1,6 +1,7 @@
 #mainNav {
     position: relative;
     box-shadow: 0 2px 2px -2px rgba(0,0,0,.2);
+
     height: 50px;
     background: #0c203d;
     width: 100%;
@@ -71,9 +72,6 @@
     border-bottom: 1px solid #2573e0;
     text-decoration: none;
     color: #99c3ff;
-}
-.search {
-    width: 440px;
 }
 #navbarText {
     color: #fff;

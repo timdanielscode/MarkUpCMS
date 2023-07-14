@@ -5,20 +5,30 @@
 
 <?php 
     $this->include('headerOpen');  
+
+    $this->stylesheet("/assets/css/navbar.css");
+    $this->stylesheet("/assets/css/index.css");
+    $this->stylesheet("/assets/css/pagination.css");
+
     $this->include('headerClose');
     $this->include('navbar');
 ?>
-<div class="con">
+<div class="index-container">
 
-    <a class="button margin-t-50" href="/admin/users/create">Add user</a>
+    <div class="headerAndButtonContainer">
+        <h1>Users</h1>
+        <a class="button " href="/admin/users/create">Add new</a>
+    </div>
 
-    <form action="" method="GET" class="margin-t-50">
-        <div class="form-parts">
-            <input type="text" name="search" class="search" placeholder="Search">
-        </div>
+    <div class="countContainer">
+        <span>All</span>
+        <span>(<?php echo $count; ?>)</span>
+    </div>
+    <form action="" method="GET">
+        <input type="text" name="search" placeholder="Search" id="search">
+        <input type="hidden" name="submit" value="search">
     </form>
     <table>
-        
             <thead>
                 <tr>
                     <th>#</th>
@@ -58,17 +68,17 @@
                 <?php } ?>
             </tbody>
         </table>
-        <nav aria-label="Page navigation example">
-            <ul class="pagination">
-                <li class="page-item"><a class="page-link" href="/admin/users?back=1">Previous</a></li>
+        <?php if($numberOfPages !== null && count($numberOfPages) > 1) { ?>
+        <nav class="pagination">
+            <ul>
                 <?php 
                     foreach($numberOfPages as $page) {
-                        echo '<li class="page-item"><a class="page-link" href="/admin/users?page='.$page.'">'.$page.'</a></li>';
+                        echo '<li class="page-item"><a href="/admin/users?page='.$page.'">'.$page.'</a></li>';
                     }  
                 ?>
-                <li class="page-item"><a class="page-link" href="/admin/users?next=1">Next</a></li>
             </ul>
         </nav>
+        <?php } ?>
 </div>
 
 <?php 

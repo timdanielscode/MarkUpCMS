@@ -18,7 +18,10 @@ class UserController extends Controller {
 
         $user = new User();
         
-        $allUsers = Pagination::get($user->allUsersWithRoles(), 5);
+        $allUsers = Pagination::get($user->allUsersWithRoles(), 11);
+
+        $count = count($allUsers);
+
         $numberOfPages = Pagination::getPageNumbers();
         
         if(submitted('search')) {
@@ -28,6 +31,7 @@ class UserController extends Controller {
         }
 
         $data['allUsers'] = $allUsers;
+        $data['count'] = $count;
         $data['numberOfPages'] = $numberOfPages;
 
         return $this->view('admin/users/index', $data);

@@ -1,8 +1,17 @@
 .pagination {
     padding: 0;
-    margin-bottom: 30px;
+    margin-left: -38px;
 }
-.page-item a {
+.pagination ul {
+    list-style-type: none;
+}
+.pagination li {
+    display: inline-block;
+}
+.pagination .page-item {
+    margin-right: 5px;
+}
+.pagination .page-item a {
     color: #fff;
     background: #0c203d;
     padding: 8px;
@@ -10,21 +19,10 @@
     text-decoration: none;
     font-weight: 300;
 }
-
-.previous a {
+/*.previous a {
     border-radius: 3px;
 }
 .next a {
     border-radius: 3px;
-}
-.paginationPosts {
-    margin-left: 5%;
-}
+}*/
 
-.paginationPosts ul {
-    list-style-type: none;
-}
-
-.paginationPosts li {
-    display: inline-block;
-}

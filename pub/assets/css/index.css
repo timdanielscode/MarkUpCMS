@@ -1,75 +1,28 @@
 /*
     Index pages
 */
-table {
-    border-collapse: collapse;
-    width: 100%;
-    border: 1px solid #ddd;
-    font-size: 13px;
-  }
-
-  table td a {
-      text-decoration: none;
-      color: #0c203d;
-  }
-  
-  table td, table th {
-    padding-left: 20px;
-    padding-top: 8px;
-    padding-bottom: 10px;
-  }
-  
-  table tr:nth-child(even){
-      background-color: #f2f2f2;
-      border: 1px solid #ddd;
-}
-  
-  table tr:hover {
-      background-color: #ddd;
-    }
-  
-  table th {
-    padding-top: 12px;
-    padding-bottom: 12px;
-    text-align: left;
-    background-color: #ffffff;
-    color: rgb(0, 0, 0);
-    font-weight: 300;
-  }
-  table thead {
-    border: 1px solid #ddd;
-    
-  }
-  .tablePosts {
-    width: 95%;
-    float: right;
-}
-
-.postsButton {
+.index-container {
     margin-left: 5%;
 }
-.postHeaderContainer {
-    margin-left: 5%;
+.headerAndButtonContainer {
+    margin: 20px 0 0px 0px;
 }
-.postHeaderContainer h1 {
+.headerAndButtonContainer h1 {
+    display: inline-block;
     font-size: 23px;
-    margin-top: 25px;
-    margin-top: 70px;
     color: #0c203d;
+    text-decoration: underline;
+    margin-right: 20px;
 }
-.postHeaderContainer a {
-    margin-left: 70px;
-    position: absolute;
-    margin-top: 70px;
+.headerAndButtonContainer a {
+    display: inline-block;
 }
-.postContainterCount {
-    margin-left: 5%;
+.countContainer {
     font-size: 13px;
     font-weight: 500;
 }
-
 #search {
-    width: 15%;
+    width: 500px;
     padding: 5px 5px;
     box-sizing: border-box;
     font-size: 13px;
@@ -78,4 +31,45 @@ table {
 }
 #search:focus {
     outline: none;
+}
+
+/*
+    Table
+*/
+table {
+    border-collapse: collapse;
+    width: 100%;
+    border: 1px solid #ddd;
+    font-size: 13px;
+    width: 100%;
+    float: right;
+    margin: 20px 0;
+}
+table td a {
+    text-decoration: none;
+    color: #0c203d;
+}
+table td, table th {
+    padding-left: 20px;
+    padding-top: 8px;
+    padding-bottom: 10px;
+}
+  
+table tr:nth-child(even){
+    background-color: #f2f2f2;
+    border: 1px solid #ddd;
+}
+table tr:hover {
+    background-color: #ddd;
+}
+table th {
+    padding-top: 12px;
+    padding-bottom: 12px;
+    text-align: left;
+    background-color: #ffffff;
+    color: rgb(0, 0, 0);
+    font-weight: 300;
+}
+table thead {
+    border: 1px solid #ddd; 
 }

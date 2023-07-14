@@ -1,5 +1,10 @@
 <?php 
     $this->include('headerOpen');  
+
+    $this->stylesheet("/assets/css/navbar.css");
+    $this->stylesheet("/assets/css/index.css");
+    $this->stylesheet("/assets/css/pagination.css");
+
     $this->script('/assets/js/ajax.js', true);
     $this->script('/assets/js/categories/table.js', true);
     $this->script('/assets/js/categories/modal.js', true);
@@ -10,21 +15,20 @@
     $this->include('headerClose');
     $this->include('navbar');
 ?>
-<div class="row postHeaderContainer">
+<div class="index-container">
+    <div class="headerAndButtonContainer">
         <h1>Category</h1>
-        <a class="button postsButton margin-t-20" href="/admin/categories/create">Add new</a>
+        <a class="button" href="/admin/categories/create">Add new</a>
     </div>
-    <div class="postContainterCount">
+    <div class="countContainer">
         <span>All</span>
         <span>(<?php echo $count; ?>)</span>
-        <div id="navbarSearch">
-            <form action="" method="GET">
-                <input type="text" name="search" placeholder="Search" id="search">
-                <input type="hidden" name="submit" value="search">
-            </form>
-        </div>
     </div>
-    <table class="tablePosts margin-y-20">
+    <form action="" method="GET">
+        <input type="text" name="search" placeholder="Search" id="search">
+        <input type="hidden" name="submit" value="search">
+    </form>
+    <table>
         
         <thead>
             <tr>
@@ -40,16 +44,14 @@
     </table>
 
     <?php if(count($numberOfPages) > 1) { ?>
-        <nav id="pagination" class="paginationPosts">
-            <ul class="pagination">
-                <li class="page-item previous"><a href="/admin/categories?back=1">Previous</a></li>
+        <nav id="pagination" class="pagination">
+            <ul>
                 <?php 
                     foreach($numberOfPages as $page) {
 
                         echo '<li class="page-item"><a class="PAGE" id="'. $page. '">'.$page.'</a></li>';
                     }  
                 ?>
-                <li class="page-item next"><a href="/admin/categories?next=1">Next</a></li>
             </ul>
         </nav>
     <?php } ?>
@@ -63,6 +65,7 @@
             </div>
         </div>
     </div>
+</div>
 <?php 
     $this->include('footer');
 ?>

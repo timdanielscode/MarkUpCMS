@@ -5,27 +5,28 @@
 
 <?php 
     $this->include('headerOpen');  
+
+    $this->stylesheet("/assets/css/navbar.css");
+    $this->stylesheet("/assets/css/index.css");
+    $this->stylesheet("/assets/css/pagination.css");
+
     $this->include('headerClose');
     $this->include('navbar');
 ?>
-<div class="con">
-
-    </div>
-    <div class="row postHeaderContainer">
+<div class="index-container">
+    <div class="headerAndButtonContainer">
         <h1>Menus</h1>
-        <a class="button postsButton margin-t-20" href="/admin/menus/create">Add new</a>
+        <a class="button" href="/admin/menus/create">Add new</a>
     </div>
-    <div class="postContainterCount">
+    <div class="countContainer">
         <span>All</span>
         <span>(<?php echo $count; ?>)</span>
-        <div id="navbarSearch">
-            <form action="" method="GET">
-                <input type="text" name="search" placeholder="Search" id="search">
-                <input type="hidden" name="submit" value="search">
-            </form>
-        </div>
     </div>
-    <table class="tablePosts margin-y-20">
+    <form action="" method="GET">
+        <input type="text" name="search" placeholder="Search" id="search">
+        <input type="hidden" name="submit" value="search">
+    </form>
+    <table>
         
             <thead>
                 <tr>
@@ -94,6 +95,7 @@
                 </ul>
             </nav>
         <?php } ?>
+</div>
 
 <?php 
     $this->include('footer');
