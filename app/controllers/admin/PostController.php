@@ -101,20 +101,20 @@ class PostController extends Controller {
             $post = new Post();
             $rules = new Rules();
 
-            if($rules->update_post()->validated($request)) {
-
+            //if($rules->update_post()->validated($request)) {
+                
                 $id = $request['id'];
 
                 $slug = explode('/', $request['slug']);
-                $slug[array_key_last($slug)] = $request['postSlug'];
-                $slug = implode('', $slug);
+                $slug[array_key_last($slug)] = substr($request['postSlug'], 1);
+                $slug = implode('/', array_filter($slug));
 
                 if(!empty($request['slug']) ) {
 
                     Post::update(['id' => $id], [
 
                         'title' => $request["title"],
-                        'slug' => "/" . $slug,
+                        'slug' => $slug,
                         'body' => $request["body"],
                         'date_updated_at' => date("d/m/Y"),
                         'time_updated_at' => date("H:i")
@@ -123,7 +123,7 @@ class PostController extends Controller {
                     Session::set('updated', 'User updated successfully!');
                     redirect("/admin/posts/$id/edit");
                 }
-            } 
+            //} 
         }
     }
 
