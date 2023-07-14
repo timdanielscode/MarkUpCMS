@@ -4,6 +4,11 @@
 
 <?php 
     $this->include('headerOpen');  
+
+    $this->stylesheet("/assets/css/navbar.css");
+    $this->stylesheet("/assets/css/menu.css");
+    $this->stylesheet("/assets/css/sidebar.css");
+
     $this->stylesheet("/assets/css/codemirror/codemirror.css");
     $this->script("/assets/js/codemirror/codemirror.js");
     $this->script("/assets/js/codemirror/closetag.js");
@@ -18,7 +23,7 @@
     
 ?>
 
-    <div class="containerPost">
+    <div class="edit-container">
     <div class="row">
         <div class="col10">
             <form action="update" method="POST" class="form-code">
@@ -73,7 +78,7 @@
             autoCloseTags: true,
             tabSize: 2
         });
-        editor.setSize('95%', "75vh");
+        editor.setSize('95%', "80vh");
     
     </script>
 <?php 

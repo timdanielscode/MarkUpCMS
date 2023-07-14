@@ -1,15 +1,28 @@
-.containerPost {
-    margin-top: 50px;
+.edit-container {
+    margin-top: 20px;
+    margin-left: 5%;
 }
-
+.hiddenButton {
+    display: none !important;
+}
+#title {
+    outline: none;
+    border: none;
+    background: none;
+    font-size: 22px;
+    margin-bottom: 20px;
+}
 #slug {
     border: none;
     width: 95%;
     font-size: 13px;
     padding: 0;
     margin-top: 0;
-    background: none;
 }
+
+/*
+    Metadata
+*/
 .metaDataForm {
     margin-top: 65px;
     margin-left: 70px;
@@ -36,17 +49,4 @@
 }
 .metaDataForm button {
     margin-top: 20px;
-}
-
-/*
-    Editor
-*/
-.tox-tinymce {
-    width: 90%;
-    margin-left: 50px;
-    height: 75vh !important;
-    margin-top: 10px;
-}
-.form-code {
-    margin-left: 5%;
 }

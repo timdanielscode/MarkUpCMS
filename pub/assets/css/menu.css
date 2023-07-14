@@ -1,3 +1,15 @@
+.edit-container {
+    margin-top: 20px;
+    margin-left: 5%;
+}
+#title {
+    outline: none;
+    border: none;
+    background: none;
+    font-size: 22px;
+    margin-bottom: 20px;
+}
+
 #menuPosition {
     color: #fff;
     margin-top: 50px;

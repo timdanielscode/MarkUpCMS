@@ -121,7 +121,7 @@ class CssController extends Controller {
 
     public function edit($request) {
 
-        $cssFile = Css::where('id', '=', $request['id']);
+        $cssFile = Css::where('id', '=', $request['id'])[0];
         $code = $this->getFileContent($cssFile['file_name']);
 
         $data['cssFile'] = $cssFile;

@@ -118,7 +118,7 @@ class JsController extends Controller {
 
     public function edit($request) {
 
-        $file = Js::where('id', '=', $request['id']);
+        $file = Js::where('id', '=', $request['id'])[0];
         $code = $this->getFileContent($file['file_name']);
 
         $data['jsFile'] = $file;

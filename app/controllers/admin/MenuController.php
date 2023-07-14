@@ -86,7 +86,7 @@ class MenuController extends Controller {
 
     public function edit($request) {
 
-        $menu = Menu::where('id', '=', $request['id']);
+        $menu = Menu::where('id', '=', $request['id'])[0];
         $data['menu'] = $menu;
         
         $data['rules'] = [];

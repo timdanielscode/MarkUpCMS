@@ -23,24 +23,18 @@
     
 ?>
 
-    <div class="containerPost">
+<div class="edit-container">
     <div class="row">
         <div class="col10">
-            <form action="update" method="POST" class="form-code">
+            <form action="update" method="POST">
                 <div class="form-parts">
                     <input type="text" autofocus name="title" id="title" value="<?php if(!empty($data['title'] )) { echo $data['title']; } ?>">
                     <div class="error-messages">
                         <?php echo Errors::get($rules, 'title'); ?>
                     </div>    
-                    <input type="text" name="postSlug" id="slug" value="<?php if(!empty($postSlug )) { echo $postSlug; } ?>">
-                    <span><?php if(!empty($data['slug']) && $data['slug'] !== null) { echo $data['slug']; } ?></span>
-                    <input type="hidden" name="slug" value="<?php if(!empty($data['slug']) && $data['slug'] !== null) { echo $data['slug']; } ?>">
-                    <div class="error-messages">
-                        <?php echo Errors::get($rules, 'slug'); ?>
-                    </div>
                 </div>
                 <textarea name="body" type="body" id="code"><?php if(!empty($data['body'] )) { echo $data['body']; } ?></textarea>
-                <button name="submit" id="submit" type="submit" class="">Update</button>
+                <button name="submit" id="submit" type="submit" class="hiddenButton">Update</button>
                 <input type="hidden" name="token" value="<?php Csrf::token('add');?>" />
             </form>
         </div>
@@ -59,6 +53,20 @@
                     <li>
                         <a href="#" id="codeEditorFullScreen" class="button">Full screen</a>
                     </li>
+                    <span class="color-white"><?php if(!empty($data['slug']) && $data['slug'] !== null) { echo $data['slug']; } ?></span>
+                    <form action="update" method="POST">
+                        <div class="form-parts">
+                            <input type="text" name="postSlug" id="slug" value="<?php if(!empty($postSlug )) { echo $postSlug; } ?>">
+                        </div>
+                        <input type="hidden" name="slug" value="<?php if(!empty($data['slug']) && $data['slug'] !== null) { echo $data['slug']; } ?>">
+                        <div class="error-messages">
+                            <?php echo Errors::get($rules, 'slug'); ?>
+                        </div>
+                    </form>
+
+
+
+
                     <?php if(!empty($categories) && $categories !== null) { ?>
                         <form action="update" method="POST">
                             <select name="categories" multiple>
@@ -88,16 +96,15 @@
     </div>
 </div>
 <script>
-        var editor = CodeMirror.fromTextArea(document.getElementById("code"), {
-            theme: "monokai",
-            lineNumbers: true,
-            mode: 'text/html',
-            autoCloseTags: true,
-            tabSize: 2
-        });
-        editor.setSize('95%', "75vh");
-    
-    </script>
+    var editor = CodeMirror.fromTextArea(document.getElementById("code"), {
+        theme: "monokai",
+        lineNumbers: true,
+        mode: 'text/html',
+        autoCloseTags: true,
+        tabSize: 2
+    });
+    editor.setSize('95%', "80vh");
+</script>
 <?php 
     $this->include('footer');
 ?>
