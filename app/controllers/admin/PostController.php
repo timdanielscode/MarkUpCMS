@@ -87,14 +87,23 @@ class PostController extends Controller {
         $postSlug = explode('/', $post['slug']);
         $postSlug = "/" . $postSlug[array_key_last($postSlug)];
 
+        $categories = DB::try()->select('id, title')->from("categories")->fetch();
+
         $data['data'] = $post;
         $data['postSlug'] = $postSlug;
+        $data['categories'] = $categories;
         $data['rules'] = [];
 
         return $this->view('admin/posts/edit', $data);
     }
 
     public function update($request) {
+
+        if(!empty($request['submitCategory']) && $request['submitCategory'] !== null) {
+
+            $this->updateCategory($request);
+            exit();
+        }
 
         if(submitted("submit") === true && Csrf::validate(Csrf::token('get'), post('token')) === true ) {
                 
@@ -125,6 +134,25 @@ class PostController extends Controller {
                 }
             //} 
         }
+    }
+
+    public function updateCategory($request) {
+
+        $ifAlreadyExits = DB::try()->select('page_id')->from('category_page')->where('page_id', '=', $request['id'])->fetch();
+
+        if(empty($ifAlreadyExits) ) {
+
+            CategoryPage::insert([
+
+                'category_id' => $request['categories'],
+                'page_id'    => $request['id']
+            ]);
+        } else {
+
+            echo 'page is already assinged!';
+        }
+
+        redirect('/admin/posts/'. $request['id'] . '/edit');
     }
 
     /*public function metaData($request) {
