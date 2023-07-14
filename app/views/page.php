@@ -9,11 +9,12 @@
 
     }
 
-    echo html_entity_decode($post["body"]); 
+    echo html_entity_decode($post[0]["body"]); 
      
     if(!empty($menusBottom ) ) { 
 
         foreach($menusBottom as $menuBottom) {
+
             echo html_entity_decode($menuBottom['content']); 
         }
 
