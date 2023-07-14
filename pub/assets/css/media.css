@@ -1,0 +1,108 @@
+#media_description {
+    margin-left: 50px;
+    width: 90%;
+}
+#media_description:focus {
+    outline: none;
+}
+#imageSmall, #pdfSmall {
+    width: 80px;
+}
+#title, #media_title {
+    border: 0;
+    font-size: 30px;
+    padding: 0;
+    margin-top: 10px;
+    background: none;
+    width: 95%;
+}
+#filename {
+    border: 0;
+    font-size: 30px;
+    padding: 0;
+    margin-top: 10px;
+}
+#filename:focus {
+    outline: none;
+}
+.mediaFilename {
+    border: none;
+    background: none;
+    font-size: 13px;
+    margin: 0;
+    padding: 8px 0px;
+    font-weight: bold;
+    font-style: italic;
+}
+.mediaFilename:focus {
+    outline: none;
+}
+#mediaModalClose, #updateMediaModal {
+    bottom: 50px;
+    position: absolute;
+    left: 50px;
+    color: red;
+}
+
+#updateMediaModal {
+    left: 100px;
+}
+
+.mediaModalFormContainer {
+    position: absolute;
+    left: 50px;
+    color: #fff;
+    top: 50px;
+    right: 50px;
+}
+
+.mediaModalFormContainer input {
+    width: 100%;
+    border: none;
+    background: none;
+    box-sizing: border-box;
+    color: #fff;
+    margin-bottom: 20px;
+    padding: 0;
+}
+
+.mediaModalFormContainer textarea {
+    width: 100%;
+    box-sizing: border-box;
+    height: 100px;
+    border: none;
+    background: none;
+    color: #fff;
+}
+
+.mediaModalFormContainer textarea, .mediaModalFormContainer input:focus {
+    outline: none;
+}
+
+#modal a {
+    color: #000;
+}
+
+#mediaPreviewFile {
+    position: fixed;
+    left: 0;
+    right: 0;
+    top: 0;
+    bottom: 0;
+    margin: auto;
+    max-width: 60%;
+    max-height: 60%;
+    z-index: 999;
+}
+
+#mediaPreview iframe {
+    width: 60%;
+    height: 60%;
+}
+
+#mediaPreviewClose {
+    position: fixed;
+    top: 100px;
+    right: 100px;
+    z-index: 999999;
+}

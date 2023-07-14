@@ -1,0 +1,52 @@
+.containerPost {
+    margin-top: 50px;
+}
+
+#slug {
+    border: none;
+    width: 95%;
+    font-size: 13px;
+    padding: 0;
+    margin-top: 0;
+    background: none;
+}
+.metaDataForm {
+    margin-top: 65px;
+    margin-left: 70px;
+}
+.metaDataForm input {
+    border: none;
+    padding: 0;
+    font-size: 13px;
+}
+.metaDataForm label {
+    color: #0c203d;
+}
+.metaDataForm input:focus {
+    outline: none;
+}
+.metaDataForm textarea:focus {
+    outline: none;
+}
+.metaDataForm textarea {
+    width: 95%;
+    height: 100px;
+    font-size: 13px;
+    margin-top: 10px;
+}
+.metaDataForm button {
+    margin-top: 20px;
+}
+
+/*
+    Editor
+*/
+.tox-tinymce {
+    width: 90%;
+    margin-left: 50px;
+    height: 75vh !important;
+    margin-top: 10px;
+}
+.form-code {
+    margin-left: 5%;
+}

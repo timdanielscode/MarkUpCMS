@@ -1,0 +1,30 @@
+.pagination {
+    padding: 0;
+    margin-bottom: 30px;
+}
+.page-item a {
+    color: #fff;
+    background: #0c203d;
+    padding: 8px;
+    margin: 0;
+    text-decoration: none;
+    font-weight: 300;
+}
+
+.previous a {
+    border-radius: 3px;
+}
+.next a {
+    border-radius: 3px;
+}
+.paginationPosts {
+    margin-left: 5%;
+}
+
+.paginationPosts ul {
+    list-style-type: none;
+}
+
+.paginationPosts li {
+    display: inline-block;
+}

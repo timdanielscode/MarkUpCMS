@@ -4,6 +4,11 @@
 
 <?php 
     $this->include('headerOpen');  
+
+    $this->stylesheet("/assets/css/navbar.css");
+    $this->stylesheet("/assets/css/page.css");
+    $this->stylesheet("/assets/css/sidebar.css");
+
     $this->stylesheet("/assets/css/codemirror/codemirror.css");
     $this->script("/assets/js/codemirror/codemirror.js");
     $this->script("/assets/js/codemirror/closetag.js");

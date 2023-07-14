@@ -1,0 +1,27 @@
+.containerCategoryPagesCheckbox {
+    width: 44%;
+height: 200px;
+position: relative;
+overflow-x: auto;
+overflow-y: none;
+margin-top: 50px;
+}
+.containerCategoryPagesCheckbox label {
+    padding: 0;
+    margin: 0;
+}
+.containerCategoryPagesCheckbox input:after {
+
+    display: none;
+}
+.categoryAddContainer {
+    position: relative;
+    width: 800px;
+    min-height: 800px;
+    background: #fff;
+}
+
+.categoryAddContainer .listedItem {
+
+    display: inline-block;
+}
