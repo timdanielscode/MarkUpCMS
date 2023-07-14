@@ -151,21 +151,48 @@ class PostController extends Controller {
 
     public function updateCategory($request) {
 
-        $ifAlreadyExits = DB::try()->select('page_id')->from('category_page')->where('page_id', '=', $request['id'])->fetch();
+        $categoryId = $request['categories'];
+        $pageId = $request['id'];
 
-        if(empty($ifAlreadyExits) ) {
+        $currentCategorySlug = DB::try()->select('categories.slug')->from('categories')->join('category_page')->on('category_page.category_id', '=', 'categories.id')->where('categories.id', '=', $categoryId)->first();
+        $currentSlugs = DB::try()->select('slug')->from('pages')->where('id', '=', $pageId)->fetch();
 
-            CategoryPage::insert([
+        foreach($currentSlugs as $currentSlug) {
 
-                'category_id' => $request['categories'],
-                'page_id'    => $request['id']
-            ]);
-        } else {
+            $subCategories = DB::try()->select('categories.slug')->from('categories')->join('category_sub')->on('categories.id', '=', 'category_sub.sub_id')->where('category_sub.category_id', '=', $categoryId)->fetch();
 
-            echo 'page is already assinged!';
+            if(!empty($subCategories) ) {
+    
+                $subCategoriesArray = [];
+    
+                foreach($subCategories as $subCategory) {
+    
+                    array_push($subCategoriesArray, $subCategory['slug']);
+                }
+    
+                $subCategoriesSlug = implode('', $subCategoriesArray);
+    
+                Post::update(['id' => $pageId], [
+    
+                    'slug'  => $currentCategorySlug['slug'] . $subCategoriesSlug . $currentSlug['slug']
+                ]);
+    
+            } else {
+    
+                Post::update(['id' => $pageId], [
+    
+                    'slug'  => $currentCategorySlug['slug'] . $currentSlug['slug']
+                ]);
+            }
         }
 
-        redirect('/admin/posts/'. $request['id'] . '/edit');
+        CategoryPage::insert([
+
+            'category_id' => $categoryId,
+            'page_id'    => $pageId
+        ]);
+ 
+        redirect('/admin/posts/'. $pageId . '/edit');
     }
 
     public function removeCategory($request) {
