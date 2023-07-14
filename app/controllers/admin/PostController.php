@@ -154,6 +154,12 @@ class PostController extends Controller {
         $categoryId = $request['categories'];
         $pageId = $request['id'];
 
+        CategoryPage::insert([
+
+            'category_id' => $categoryId,
+            'page_id'    => $pageId
+        ]);
+
         $currentCategorySlug = DB::try()->select('categories.slug')->from('categories')->join('category_page')->on('category_page.category_id', '=', 'categories.id')->where('categories.id', '=', $categoryId)->first();
         $currentSlugs = DB::try()->select('slug')->from('pages')->where('id', '=', $pageId)->fetch();
 
@@ -186,12 +192,6 @@ class PostController extends Controller {
             }
         }
 
-        CategoryPage::insert([
-
-            'category_id' => $categoryId,
-            'page_id'    => $pageId
-        ]);
- 
         redirect('/admin/posts/'. $pageId . '/edit');
     }
 
