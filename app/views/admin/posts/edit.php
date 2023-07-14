@@ -54,16 +54,29 @@
                     <li>
                         <a href="#" id="codeEditorFullScreen" class="button">Full screen</a>
                     </li>
-                    <form action="update" method="POST">
-                        <select name="categories" multiple>
-                            <?php foreach($categories as $category) { ?>
-                                <option value="<?php echo $category['id']; ?>">    
-                                    <?php echo $category['title']; ?>
-                                </option>
-                            <?php } ?>
-                        </select>
-                        <input type="submit" name="submitCategory" value="Assign"/>
-                    </form>
+                    <?php if(!empty($categories) && $categories !== null) { ?>
+                        <form action="update" method="POST">
+                            <select name="categories" multiple>
+                                <?php foreach($categories as $category) { ?>
+                                    <option value="<?php echo $category['id']; ?>">    
+                                        <?php echo $category['title']; ?>
+                                    </option>
+                                <?php } ?>
+                            </select>
+                            <input type="submit" name="submitCategory" value="Assign"/>
+                        </form>
+                    <?php } else { ?>
+
+                        <h3>Category:</h3>
+
+                        <?php echo $category['title']; ?>
+
+                        <form action="update" method="POST">
+
+                            <input type="submit" name="removeCategory" value="Detach"/>
+                        </form>
+
+                    <?php } ?>
                 </ul>
             </div>
         </div>

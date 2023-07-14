@@ -87,11 +87,20 @@ class PostController extends Controller {
         $postSlug = explode('/', $post['slug']);
         $postSlug = "/" . $postSlug[array_key_last($postSlug)];
 
-        $categories = DB::try()->select('id, title')->from("categories")->fetch();
+        $ifAlreadyAssingedToCategory = DB::try()->select('page_id')->from('category_page')->where('page_id', '=', $request['id'])->fetch();
+
+        if(empty($ifAlreadyAssingedToCategory)) {
+
+            $categories = DB::try()->select('id, title')->from("categories")->fetch();
+            $data['categories'] = $categories;
+        } else {
+
+            $category = DB::try()->select('categories.title, categories.slug')->from('categories')->join('category_page')->on('category_page.category_id', '=', 'categories.id')->where('category_page.page_id', '=', $request['id'])->first();
+            $data['category'] = $category;
+        }
 
         $data['data'] = $post;
         $data['postSlug'] = $postSlug;
-        $data['categories'] = $categories;
         $data['rules'] = [];
 
         return $this->view('admin/posts/edit', $data);
@@ -102,6 +111,10 @@ class PostController extends Controller {
         if(!empty($request['submitCategory']) && $request['submitCategory'] !== null) {
 
             $this->updateCategory($request);
+            exit();
+        } else if (!empty($request['removeCategory']) && $request['removeCategory'] !== null) {
+
+            $this->removeCategory($request);
             exit();
         }
 
@@ -151,6 +164,26 @@ class PostController extends Controller {
 
             echo 'page is already assinged!';
         }
+
+        redirect('/admin/posts/'. $request['id'] . '/edit');
+    }
+
+    public function removeCategory($request) {
+
+        $pageId = $request['id'];
+
+        $postSlug = DB::try()->select('slug')->from('pages')->where('id', '=', $pageId)->first();
+        
+        $slugParts = explode('/', $postSlug['slug']);
+        $lastPageSlugKey = array_key_last($slugParts);
+        $lastPageSlugValue = "/" . $slugParts[$lastPageSlugKey];
+
+        Post::update(['id' => $pageId], [
+
+            'slug'  => $lastPageSlugValue
+        ]);
+
+        CategoryPage::delete('page_id', $pageId);
 
         redirect('/admin/posts/'. $request['id'] . '/edit');
     }
