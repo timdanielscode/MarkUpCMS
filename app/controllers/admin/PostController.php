@@ -114,7 +114,7 @@ class PostController extends Controller {
                     Post::update(['id' => $id], [
 
                         'title' => $request["title"],
-                        'slug' => $slug,
+                        'slug' => "/" . $slug,
                         'body' => $request["body"],
                         'date_updated_at' => date("d/m/Y"),
                         'time_updated_at' => date("H:i")
