@@ -48,7 +48,7 @@ class CategoryController extends Controller {
 
         $count = count($categories);
 
-        $categories = Pagination::get($categories, 1);
+        $categories = Pagination::get($categories, 10);
         $numberOfPages = Pagination::getPageNumbers();
 
         $data['count'] = $count;
@@ -124,7 +124,7 @@ class CategoryController extends Controller {
         $category = new Category();
         $categories = $category->allCategoriesButOrdered();
 
-        $categories = Pagination::get($categories, 1);
+        $categories = Pagination::get($categories, 10);
         $numberOfPages = Pagination::getPageNumbers();
 
         if(empty($categories) ) {
@@ -134,7 +134,22 @@ class CategoryController extends Controller {
         $data['categories'] = $categories;
         $data['numberOfPages'] = $numberOfPages;
 
+        echo json_encode($data);
+
         return $this->view('admin/categories/table', $data);
+    }
+
+    public function READ($request) {
+
+        $category = new Category();
+        $pages = $category->allCategoriesWithPosts($request['id']);
+
+        $subCategories = DB::try()->select('categories.title, categories.slug')->from('categories')->join("category_sub")->on("categories.id", '=', 'category_sub.sub_id')->where('category_sub.category_id', '=', $request['id'])->fetch();
+
+        $data['pages'] = $pages;
+        $data['categories'] = $subCategories;
+
+        return $this->view('admin/categories/read', $data);
     }
 
     public function EDIT($request) {
@@ -390,16 +405,6 @@ class CategoryController extends Controller {
         $DATA['categoryid'] = $request['id'];
 
         echo json_encode($DATA);
-    }
-
-    public function READ($request) {
-
-        $category = new Category();
-        $pages = $category->allCategoriesWithPosts($request['id']);
-
-        $data['pages'] = $pages;
-
-        return $this->view('admin/categories/read', $data);
     }
 
     public function SLUG($request) { 
