@@ -43,10 +43,12 @@
                     </div>
                 </form>
             </div>
-            <div class="col2 col3-L">
-                <div id="sidebar" class="width-25-L">
-                    <a href="/admin/posts" class="button back">Back</a>
-                    <label for="submit" class="button create">Upload</label>
+            <div id="sidebar" class="width-25-L">
+                <div class="sidebarContainer">
+                    <div class="mainButtonContainer">
+                        <label for="submit" class="button">Create</label>
+                        <a href="/admin/categories" class="button">Back</a>
+                    </div>
                 </div>
             </div>
         </div>

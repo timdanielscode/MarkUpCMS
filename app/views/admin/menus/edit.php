@@ -40,32 +40,33 @@
         </div>
         <div class="col2 col3-L">
             <div id="sidebar" class="width-25-L">
-                <div class="containerFirstPostButtons">
-                    <a href="/admin/menus" class="button">Back</a>
-                    <label for="submit" class="button">Update</label>
-                </div>
-                
-                <span id="menuPosition">Position: <?php echo $menu['position']; ?></span>
+                <div class="sidebarContainer">
+                    <div class="mainButtonContainer">
+                        <label for="submit" class="button">Update</label>
+                        <a href="/admin/menus" class="button">Back</a>
+                    </div>
+                    <span id="menuPosition">Position: <?php echo $menu['position']; ?></span>
 
-                <ul class="postSidebarButtons">
-                    <li>
-                        <a href="/admin/menus/<?php echo $post['id']; ?>/read" class="button">Preview</a>
-                    </li>
-                    <li>
-                        <a href="#" id="codeEditorFullScreen" class="button">Full screen</a>
-                    </li>
-                </ul>
-                <form action="update" method="POST">
-                    <select name="position">
-                        <option value="top">Top</option>
-                        <option value="bottom">Bottom</option>
-                    </select>
-                    <input type="submit" name="submitPosition" value="update"/>
-                </form>
-                <form action="update" method="POST">
-                    <input type="number" name="ordering" min="1" max="10">
-                    <input type="submit" name="submitOrdering" value="update"/>
-                </form>
+                    <ul class="postSidebarButtons">
+                        <li>
+                            <a href="/admin/menus/<?php echo $post['id']; ?>/read" class="button">Preview</a>
+                        </li>
+                        <li>
+                            <a href="#" id="codeEditorFullScreen" class="button">Full screen</a>
+                        </li>
+                    </ul>
+                    <form action="update" method="POST">
+                        <select name="position">
+                            <option value="top">Top</option>
+                            <option value="bottom">Bottom</option>
+                        </select>
+                        <input type="submit" name="submitPosition" value="update"/>
+                    </form>
+                    <form action="update" method="POST">
+                        <input type="number" name="ordering" min="1" max="10">
+                        <input type="submit" name="submitOrdering" value="update"/>
+                    </form>
+                </div>
             </div>
         </div>
     </div>

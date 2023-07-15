@@ -111,3 +111,47 @@
     right: 100px;
     z-index: 999999;
 }
+
+/*
+    Sidebar
+*/
+.mainButtonContainer {
+    width: 100%;
+    display: flex;
+    flex-wrap: wrap;
+    margin-top: 63px;
+    margin-bottom: 50px;
+}
+.mainButtonContainer a, .mainButtonContainer label {
+    width: auto;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 36px;
+    border-radius: 4px;
+    padding: 0 20px;
+    transition: 0.3s;
+    font-size: 16px;
+}
+.mainButtonContainer label {
+    margin-right: 20px;
+    color: #fff;
+    background: #42971c;
+    border: 1px solid #42971c;
+}
+.mainButtonContainer label:hover {
+    background: #6ba152;
+    border: 1px solid #6ba152;
+}
+.mainButtonContainer a {
+    border: 1px solid #fff;
+    background: rgba(0,0,0,0.1);
+    color: #fff;
+}
+.mainButtonContainer a:hover {
+    background: #fff;
+    color: #000;
+}
+.mainButtonContainer label:hover {
+    cursor: pointer;
+}

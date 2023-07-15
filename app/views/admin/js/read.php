@@ -35,7 +35,11 @@
             </div>
             <div class="col2 col3-L">
                 <div id="sidebar" class="width-25-L">
-                    <a href="/admin/css" class="button back">Back</a>
+                <div class="sidebarContainer">
+                    <div class="mainButtonContainer">
+                    <a href="/admin/css" class="button">Back</a>
+</div>
+</div>
                 </div>
             </div>
         </div>

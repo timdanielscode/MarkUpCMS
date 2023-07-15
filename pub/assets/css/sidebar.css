@@ -7,4 +7,10 @@
     width: 15%;
     z-index: 9999;
 }
-
+.sidebarContainer {
+    height: 100%;
+    width: 100%;
+    position: relative;
+    margin-left: 20px;
+    overflow: hidden;
+}

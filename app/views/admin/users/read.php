@@ -62,9 +62,11 @@
         </div>
         <div class="col2 col3-L">
             <div id="sidebar" class="width-25-L">
-
-                <a class="button margin-t-50" href="/admin/users">Back</a>
-
+            <div class="sidebarContainer">
+                    <div class="mainButtonContainer">
+                <a class="button" href="/admin/users">Back</a>
+</div>
+</div>
             </div>
 
         </div>
