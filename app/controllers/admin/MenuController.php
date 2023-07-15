@@ -78,10 +78,10 @@ class MenuController extends Controller {
 
     public function read($request) {
 
-        $menu = Menu::where('id', '=', $request['id']);
+        $menu = Menu::where('id', '=', $request['id'])[0];
         $data['menu'] = $menu;
 
-        return $this->view('/admin/menus/preview', $data);
+        return $this->view('/admin/menus/read', $data);
     }
 
     public function edit($request) {
