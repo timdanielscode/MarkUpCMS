@@ -1,67 +1,10 @@
 #sidebar {
     position: absolute;
     top: 0;
-    width: 100%;
+    bottom: 0;
+    right: 0;
     background: #0b192d;
-    height: 100%;
+    width: 15%;
     z-index: 9999;
-}
-#sidebar a {
-    border: none;
-}
-#sidebar .back {
-    position: absolute;
-    top: 60px;
-    left: 10px;
-}
-#sidebar .create {
-    position: absolute;
-    top: 60px;
-    left: 70px;
-}
-#sidebar .preview {
-    position: absolute;
-    top: 97px;
-    left: 85px;
-}
-#sidebar .update {
-    position: absolute;
-    top: 97px;
-    left: 10px;
-    border: none;
-    border-radius: 2px;
-}
-#sidebar .update:hover {
-    cursor: pointer;
-}
-#sidebar .create:hover {
-    cursor: pointer;
-}
-.containerFirstPostButtons {
-    margin-top: 75px;
-    margin-left: 20px;
-}
-
-.containerFirstPostButtons a {
-    display: inline;
-    margin-right: 10px;
-}
-
-.containerFirstPostButtons a:hover {
-    background: #fff;
-    color: #80aaea;
-}
-
-.containerFirstPostButtons label {
-    display: inline;
-}
-
-.containerFirstPostButtons label:hover {
-    cursor: pointer;
-    background: #fff;
-    color: #80aaea;
-}
-.postSidebarButtons {
-    margin-top: 100px;
 }
 

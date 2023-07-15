@@ -44,7 +44,7 @@
                 </form>
             </div>
             <div class="col2 col3-L">
-                <div id="sidebar">
+                <div id="sidebar" class="width-25-L">
                     <a href="/admin/posts" class="button back">Back</a>
                     <label for="submit" class="button create">Upload</label>
                 </div>

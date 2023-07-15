@@ -61,7 +61,7 @@
             </table>
         </div>
         <div class="col2 col3-L">
-            <div id="sidebar">
+            <div id="sidebar" class="width-25-L">
 
                 <a class="button margin-t-50" href="/admin/users">Back</a>
 

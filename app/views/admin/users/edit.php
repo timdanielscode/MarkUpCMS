@@ -67,7 +67,7 @@
                 </form>
 </div>
         <div class="col2 col3-L">
-            <div id="sidebar">
+            <div id="sidebar" class="width-25-L">
                 <a href="/admin/css" class="button back">Back</a>
                 <label for="submit" class="button update">Update</label>
             </div>
