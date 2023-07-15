@@ -1,5 +1,8 @@
 <?php 
     $this->include('headerOpen');  
+
+    $this->stylesheet("/assets/css/navbar.css");
+
     $this->include('headerClose');
     $this->include('navbar');
 ?>
