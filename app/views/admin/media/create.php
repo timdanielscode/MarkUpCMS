@@ -4,16 +4,20 @@
 
 <?php 
     $this->include('headerOpen');  
+
+    $this->stylesheet("/assets/css/navbar.css");
+    $this->stylesheet("/assets/css/media.css");
+    $this->stylesheet("/assets/css/sidebar.css");
+
     $this->title("IndependentCMS");
     $this->include("headerClose");
     $this->include('navbar');
-    
 ?>
 
 
-    <div class="containerPost">
+    <div class="create-container">
         <div class="row">
-            <div class="col10">
+            <div class="col10 col9-L">
                 <form action="" method="POST" class="" enctype="multipart/form-data">
                     <div class="form-parts">
                         <input name="media_title" type="text" id="media_title" placeholder="Title" autofocus>
@@ -39,18 +43,14 @@
                     </div>
                 </form>
             </div>
-            <div class="col2">
-                <div id="postSidebar">
+            <div class="col2 col3-L">
+                <div id="sidebar">
                     <a href="/admin/posts" class="button back">Back</a>
                     <label for="submit" class="button create">Upload</label>
                 </div>
             </div>
         </div>
     </div>
-
-
-    
-
 <?php 
     $this->include('footer');
 ?>

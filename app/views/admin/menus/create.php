@@ -4,6 +4,11 @@
 
 <?php 
     $this->include('headerOpen');  
+
+    $this->stylesheet("/assets/css/navbar.css");
+    $this->stylesheet("/assets/css/menu.css");
+    $this->stylesheet("/assets/css/sidebar.css");
+
     $this->stylesheet("/assets/css/codemirror/codemirror.css");
     $this->script("/assets/js/codemirror/codemirror.js");
     $this->script("/assets/js/codemirror/closetag.js");
@@ -18,9 +23,9 @@
 ?>
 
 
-    <div class="containerPost">
+    <div class="create-container">
         <div class="row">
-            <div class="col10">
+            <div class="col10 col9-L">
                 <form action="store" method="POST" class="form-code">
                     <div class="form-parts">
                         <input type="text" autofocus name="title" type="title" id="title" placeholder="Title" autofocus>
@@ -40,8 +45,8 @@
                     </div>
                 </form>
             </div>
-            <div class="col2">
-                <div id="postSidebar">
+            <div class="col2 col3-L">
+                <div id="sidebar">
                     <div class="containerFirstPostButtons">
                         <a href="/admin/menus" class="button">Back</a>
                         <label for="submit" class="button">Create</label>
@@ -63,7 +68,7 @@
             autoCloseTags: true,
             tabSize: 2
         });
-        editor.setSize('95%', "75vh");
+        editor.setSize('95%', "80vh");
     
     </script>
     
