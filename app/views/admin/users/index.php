@@ -35,35 +35,28 @@
                     <th>Username</th>
                     <th>Email</th>
                     <th>Role</th>
-                    <th>Show</th>
-                    <th>Edit</th>
-                    <th>Delete</th>
                 </tr>
             </thead>
             <tbody>
                 <?php foreach($allUsers as $user) { ?>
                     <tr>
-                        <td>
+                    <td>
                             <?php echo $user['id']; ?>
                         </td>
-                        <td>
-                            <?php echo $user['username']; ?>
-                        </td>
+                    <td class="width-40">
+                        <a href="/admin/users/<?php echo $user['username']; ?>/edit" class="font-weight-500"><?php echo $user['username']; ?></a> |
+                        <a href="/admin/users/<?php echo $user['username']; ?>/edit" class="font-weight-300">Edit</a> |
+                        <a href="/admin/users/<?php echo $user['username']; ?>/read" class="font-weight-300">Read</a> |
+                        <a href="/admin/users/<?php echo $user['username']; ?>/delete" class="font-weight-300 color-red">Remove</a>
+                    </td>
+
                         <td>
                             <?php echo $user['email']; ?>
                         </td>
                         <td>
                             <?php echo $user['name']; ?>
                         </td>
-                        <td>
-                            <a href="/admin/users/<?php echo $user["username"]; ?>/read">Read</a>
-                        </td>
-                        <td>
-                            <a href="/admin/users/<?php echo $user["username"]; ?>/edit">Edit</a>
-                        </td>   
-                        <td>
-                            <a href="/admin/users/<?php echo $user["username"]; ?>/delete" onclick="return confirm('Are you sure you want to delete this?');">Delete</a>
-                        </td>
+
                     </tr>
                 <?php } ?>
             </tbody>
