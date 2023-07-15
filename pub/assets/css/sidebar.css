@@ -1,4 +1,4 @@
-#postSidebar {
+#sidebar {
     position: absolute;
     top: 0;
     width: 100%;
@@ -6,35 +6,35 @@
     height: 100%;
     z-index: 9999;
 }
-#postSidebar a {
+#sidebar a {
     border: none;
 }
-#postSidebar .back {
+#sidebar .back {
     position: absolute;
     top: 60px;
     left: 10px;
 }
-#postSidebar .create {
+#sidebar .create {
     position: absolute;
     top: 60px;
     left: 70px;
 }
-#postSidebar .preview {
+#sidebar .preview {
     position: absolute;
     top: 97px;
     left: 85px;
 }
-#postSidebar .update {
+#sidebar .update {
     position: absolute;
     top: 97px;
     left: 10px;
     border: none;
     border-radius: 2px;
 }
-#postSidebar .update:hover {
+#sidebar .update:hover {
     cursor: pointer;
 }
-#postSidebar .create:hover {
+#sidebar .create:hover {
     cursor: pointer;
 }
 .containerFirstPostButtons {
@@ -64,3 +64,4 @@
 .postSidebarButtons {
     margin-top: 100px;
 }
+

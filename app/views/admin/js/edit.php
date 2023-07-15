@@ -21,7 +21,7 @@
 
     <div class="edit-container">
         <div class="row">
-            <div class="col10">
+            <div class="col10 col9-L">
                 <form action="update" method="POST" class="form-code">
                     <div class="form-parts">
                         <input name="filename" type="text" id="filename" placeholder="Filename" value="<?php echo $jsFile['file_name']; ?>">
@@ -36,8 +36,8 @@
                     </div>
                 </form>
             </div>
-            <div class="col2">
-                <div id="postSidebar">
+            <div class="col2 col3-L">
+                <div id="sidebar">
                     <a href="/admin/css" class="button back">Back</a>
                     <label for="submit" class="button update">Update</label>
                 </div>

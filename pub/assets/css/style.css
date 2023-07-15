@@ -114,32 +114,32 @@ h3 {
     Columns
 */
 .row {
-    width: 100%;
+    flex-wrap: wrap;
     display: flex;
 }
-
-.col6 {
-    width: 50%;
-}
-
-.col10 {
-    width: 85%;
-}
-
 .col12 {
-    width: 100%;
+    flex: 100%;
 }
-
-.col2 {
-    width: 15%;
-}
-
 .col11 {
-    width: 95%;
+    flex: 95%;
 }
-
+.col10 {
+    flex: 85%;
+}
+.col9 {
+    flex: 75%;
+}
+.col6 {
+    flex: 50%;
+}
+.col3 {
+    flex: 25%;
+}
+.col2 {
+    flex: 15%;
+}
 .col1 {
-    width: 5%;
+    flex: 5%;
 }
 
 /*
@@ -245,42 +245,41 @@ h3 {
 /* main color #0c172b ? */
 
 
-/* 
-    TABLET 
-*/
-@media only screen and (max-width: 1100px) {
 
-    .con-page {
-        width: 90% !important;
-        margin-top: 0;
-    }
-    .con {
-        width: 90%;
-    }
-    .con-page-home {
-        width: 90%;
-    }
+ /* Extra small devices (phones, 600px and down) */
+ @media only screen and (max-width: 600px) {
 
-    p {
-        font-size: 20px !important;
+
+
+ }
+
+ /* Small devices (portrait tablets and large phones, 600px and up) */
+ @media only screen and (max-width: 600px) {
+    
+
+ }
+ 
+ /* Medium devices (landscape tablets, 768px and up) */
+ @media only screen and (max-width: 768px) {
+
+
+ }
+ 
+ /* Large devices (laptops/desktops, 992px and up) */
+ @media only screen and (max-width: 992px) {
+
+
+
+ }
+ 
+ /* Extra large devices (large laptops and desktops, 1200px and up) */
+ @media only screen and (max-width: 1200px) {
+
+    .col9-L {
+
+        flex: 75%;
     }
-    .con-page h1 {
-        display: block;
-    } 
-    .con-page-home h1 {
-        display: block;
+    .col3-L {
+        flex: 25%;
     }
-    h1 {
-        padding-top: 30px;
-        font-size: 25px;
-    }
-    h2 {
-        font-size: 23px;
-    }
-    h3 {
-        font-size: 20px;
-    }
-    .small {
-        display: block;
-    }
-}
+ } 

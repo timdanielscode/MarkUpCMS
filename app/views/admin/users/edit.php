@@ -14,7 +14,7 @@
 ?>
 <div class="edit-container">
     <div class="row">
-        <div class="col10">
+        <div class="col10 col9-L">
 
             <h1><?php echo $user['username']; ?><span class="pl-3"><?php echo $user['name']; ?></span></h1>
             
@@ -66,8 +66,8 @@
                     </div>
                 </form>
 </div>
-        <div class="col2">
-            <div id="postSidebar">
+        <div class="col2 col3-L">
+            <div id="sidebar">
                 <a href="/admin/css" class="button back">Back</a>
                 <label for="submit" class="button update">Update</label>
             </div>

@@ -25,7 +25,7 @@
 
     <div class="edit-container">
     <div class="row">
-        <div class="col10">
+        <div class="col10 col9-L">
             <form action="update" method="POST" class="form-code">
                 <div class="form-parts">
                     <input type="text" autofocus name="title" id="title" value="<?php echo $menu['title']; ?>">
@@ -38,8 +38,8 @@
                 <input type="hidden" name="token" value="<?php Csrf::token('add');?>" />
             </form>
         </div>
-        <div class="col2">
-            <div id="postSidebar">
+        <div class="col2 col3-L">
+            <div id="sidebar">
                 <div class="containerFirstPostButtons">
                     <a href="/admin/menus" class="button">Back</a>
                     <label for="submit" class="button">Update</label>
