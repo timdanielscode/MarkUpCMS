@@ -38,13 +38,36 @@
             </div>
             <div class="col2 col3-L">
                 <div id="sidebar" class="width-25-L">
-                <div class="sidebarContainer">
-                    <div class="mainButtonContainer">
-                    <label for="submit" class="button">Update</label>
-                    <a href="/admin/css" class="button">Back</a>
-                    
-</div>
-</div>
+                    <div class="sidebarContainer">
+                        <div class="mainButtonContainer">
+                            <label for="submit" class="button">Update</label>
+                            <a href="/admin/css" class="button">Back</a>
+                        </div>
+                        <div class="mainButtonContainer">
+                            <form action="update" method="POST">
+                                <input type="submit" name="includeAll" value="Include all"/>
+                            </form>
+                            <form action="update" method="POST">
+                                <input type="submit" name="removeAll" value="Remove all"/>
+                            </form>
+                        </div>
+                        <form action="update" method="POST">
+                            <select name="pages[]" multiple>
+                                <?php foreach($assingedPages as $page) { ?>
+                                    <option value="<?php echo $page['id']; ?>"><?php echo $page['title']; ?></option>
+                                <?php } ?> 
+                            </select>
+                            <input type="submit" name="removePage" value="Remove"/>
+                        </form>   
+                        <form action="update" method="POST">
+                            <select name="pages[]" multiple>
+                                <?php foreach($pages as $page) { ?>
+                                    <option value="<?php echo $page['id']; ?>"><?php echo $page['title']; ?></option>
+                                <?php } ?> 
+                            </select>
+                            <input type="submit" name="updatePage" value="Include"/>
+                        </form>   
+                    </div>
                 </div>
             </div>
         </div>

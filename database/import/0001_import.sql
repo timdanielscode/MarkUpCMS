@@ -125,3 +125,8 @@ CREATE TABLE css_page (
     page_id int(11) NOT NULl,
     css_id int(11) NOT NULL
 );
+
+CREATE TABLE js_page (
+    page_id int(11) NOT NULl,
+    js_id int(11) NOT NULL
+);

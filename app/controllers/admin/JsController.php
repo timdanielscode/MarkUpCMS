@@ -4,6 +4,7 @@ namespace app\controllers\admin;
 
 use app\controllers\Controller;
 use app\models\Js;
+use app\models\JsPage;
 use database\DB;
 use core\Csrf;
 use validation\Rules;
@@ -121,7 +122,28 @@ class JsController extends Controller {
         $file = Js::where('id', '=', $request['id'])[0];
         $code = $this->getFileContent($file['file_name']);
 
+        $assingedPages = DB::try()->select('id, title')->from('pages')->join('js_page')->on('pages.id', '=', 'js_page.page_id')->where('js_page.js_id', '=', $request['id'])->fetch();
+
+        $listAssingedPageIds = [];
+
+        if(!empty($assingedPages) && $assingedPages !== null) {
+
+            foreach($assingedPages as $assingedPage) {
+
+                array_push($listAssingedPageIds, $assingedPage['id']);
+            }
+
+            $listAssingedPageIdString = implode(',', $listAssingedPageIds);
+
+            $pages = DB::try()->select('id, title')->from('pages')->whereNotIn('id', $listAssingedPageIdString)->fetch();
+        } else {
+            $pages = DB::try()->select('id, title')->from('pages')->fetch();
+        }
+
+
         $data['jsFile'] = $file;
+        $data['pages'] = $pages;
+        $data['assingedPages'] = $assingedPages;
         $data['code'] = $code;
         $data['rules'] = [];
 
@@ -129,6 +151,27 @@ class JsController extends Controller {
     }
 
     public function update($request) {
+
+        if(!empty($request['updatePage']) && $request['updatePage'] !== null) {
+
+            $this->updatePage($request);
+            exit();
+        }
+        if(!empty($request['removePage']) && $request['removePage'] !== null) {
+
+            $this->removePage($request);
+            exit();
+        }
+        if(!empty($request['includeAll']) && $request['includeAll'] !== null) {
+
+            $this->includeAll($request);
+            exit();
+        }
+        if(!empty($request['removeAll']) && $request['removeAll'] !== null) {
+
+            $this->removeAll($request);
+            exit();
+        }
 
         if(submitted('submit') && Csrf::validate(Csrf::token('get'), post('token'))) {
                 
@@ -168,6 +211,72 @@ class JsController extends Controller {
                 return $this->view("/admin/css/edit", $data);
             }
         }
+    }
+
+    public function updatePage($request) {
+
+        $id = $request['id'];
+        $pageIds = $request['pages'];
+        
+        if(!empty($pageIds) && $pageIds !== null) {
+
+            foreach($pageIds as $pageId) {
+
+                JsPage::insert([
+
+                    'page_id' => $pageId,
+                    'js_id' => $id
+                ]);
+            }
+        }
+
+        redirect("/admin/js/$id/edit");
+    }
+
+    public function removePage($request) {
+
+        $id = $request['id'];
+        $pageIds = $request['pages'];
+
+        if(!empty($pageIds) && $pageIds !== null) {
+
+            foreach($pageIds as $pageId) {
+
+                JsPage::delete('page_id', $pageId);
+            }
+        }
+
+        redirect("/admin/js/$id/edit");
+    }
+
+    public function includeAll($request) {
+
+        $id = $request['id'];
+        $pageIds = DB::try()->select('id')->from('pages')->fetch();
+
+        JsPage::delete('js_id', $id);
+
+        if(!empty($pageIds) && $pageIds !== null) {
+
+            foreach($pageIds as $pageId) {
+
+                JsPage::insert([
+
+                    'page_id' => $pageId['id'],
+                    'js_id' => $id
+                ]);
+            }
+        }
+
+        redirect("/admin/js/$id/edit");
+    }
+
+    public function removeAll($request) {
+
+        $id = $request['id'];
+
+        JsPage::delete('js_id', $id);
+        redirect("/admin/js/$id/edit");
     }
 
     public function delete($request) {
