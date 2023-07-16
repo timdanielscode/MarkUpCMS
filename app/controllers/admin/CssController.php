@@ -4,6 +4,8 @@ namespace app\controllers\admin;
 
 use app\controllers\Controller;
 use app\models\Css;
+use app\models\CssPage;
+use app\models\Post;
 use database\DB;
 use core\Csrf;
 use validation\Rules;
@@ -124,8 +126,11 @@ class CssController extends Controller {
         $cssFile = Css::where('id', '=', $request['id'])[0];
         $code = $this->getFileContent($cssFile['file_name']);
 
+        $pages = DB::try()->select('id, title')->from('pages')->fetch();
+
         $data['cssFile'] = $cssFile;
         $data['code'] = $code;
+        $data['pages'] = $pages;
         
         $data['rules'] = [];
 
@@ -133,6 +138,12 @@ class CssController extends Controller {
     }
 
     public function update($request) {
+
+        if(!empty($request['updatePage']) && $request['updatePage'] !== null) {
+
+            $this->updatePage($request);
+            exit();
+        }
 
         if(submitted('submit') && Csrf::validate(Csrf::token('get'), post('token'))) {
                 
@@ -172,6 +183,26 @@ class CssController extends Controller {
                 return $this->view("/admin/css/edit", $data);
             }
         }
+    }
+
+    public function updatePage($request) {
+
+        $id = $request['id'];
+        $pageIds = $request['pages'];
+        
+        if(!empty($pageIds) && $pageIds !== null) {
+
+            foreach($pageIds as $pageId) {
+
+                CssPage::insert([
+
+                    'page_id' => $pageId,
+                    'css_id' => $id
+                ]);
+            }
+        }
+
+        redirect("/admin/css/$id/edit");
     }
 
     public function delete($request) {

@@ -38,12 +38,21 @@
             </div>
             <div class="col2 col3-L">
                 <div id="sidebar" class="width-25-L">
-                <div class="sidebarContainer">
-                    <div class="mainButtonContainer">
-                    <label for="submit" class="button update">Update</label>
-                    <a href="/admin/css" class="button back">Back</a>
-                    
-                    </div>
+                    <div class="sidebarContainer">
+                        <div class="mainButtonContainer">
+                            <label for="submit" class="button update">Update</label>
+                            <a href="/admin/css" class="button back">Back</a>
+                        </div>
+                        <?php if(!empty($pages) && $pages !== null) { ?>
+                            <form action="update" method="POST">
+                                <select name="pages[]" multiple>
+                                    <?php foreach($pages as $page) { ?>
+                                        <option value="<?php echo $page['id']; ?>"><?php echo $page['title']; ?></option>
+                                    <?php } ?>
+                                </select>
+                                <input type="submit" name="updatePage" value="Assign"/>
+                            </form>
+                        <?php } ?>
                     </div>
                 </div>
             </div>
