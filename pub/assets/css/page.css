@@ -16,18 +16,18 @@
     Sidebar
 */
 .mainButtonContainer {
-    margin-top: 63px;
+    margin-top: 20px;
 }
-.mainButtonContainer, .readAndFullScreenContainer, .AssingCategoryContainer {
+.mainButtonContainer, .readAndFullScreenContainer {
     width: 100%;
     display: flex;
     flex-wrap: wrap;
     margin-bottom: 20px;
 }
 .readAndFullScreenContainer {
-    margin-bottom: 50px
+    margin-bottom: 20px
 }
-.mainButtonContainer a, .mainButtonContainer label, .readAndFullScreenContainer a, .assignCategoryButton, .detachCategoryButton, .updateSlugButton {
+.mainButtonContainer a, .mainButtonContainer label, .readAndFullScreenContainer a, .assignCategoryButton, .detachCategoryButton, .updateSlugButton, .updateMetaDataForm .form-parts + input[type='submit'] {
     width: auto;
     display: flex;
     justify-content: center;
@@ -51,7 +51,7 @@
     background: #6ba152;
     border: 1px solid #6ba152;
 }
-.mainButtonContainer a, .readAndFullScreenContainer a, .AssingCategoryContainer input, .detachCategoryButton, .updateSlugButton {
+.mainButtonContainer a, .readAndFullScreenContainer a, .AssingCategoryContainer input, .detachCategoryButton, .updateSlugButton, .updateMetaDataForm .form-parts + input[type='submit'] {
     border: 1px solid #fff;
     background: rgba(0,0,0,0.1);
     color: #fff;
@@ -59,7 +59,7 @@
 .readAndFullScreenContainer a:nth-child(1) {
     margin-right: 20px;
 }
-.mainButtonContainer a:hover, .readAndFullScreenContainer a:hover, .AssingCategoryContainer input:hover, .detachCategoryButton:hover, .updateSlugButton:hover {
+.mainButtonContainer a:hover, .readAndFullScreenContainer a:hover, .AssingCategoryContainer input:hover, .detachCategoryButton:hover, .updateSlugButton:hover, .updateMetaDataForm .form-parts + input[type='submit']:hover {
     background: #fff;
     color: #000;
     cursor: pointer;
@@ -72,7 +72,7 @@
     font-size: 18px;
 }
 .updateSlugButton {
-    margin-bottom: 50px;
+    margin-bottom: 20px;
 }
 .fullSlug, .categoryTitle {
     background: #fff;
@@ -93,17 +93,25 @@
     width: 100%;
     border-radius: 3px;
     border: none;
-    height: 180px;
+    height: 150px;
     margin-top: 20px;
 }
 .AddCategory select option {
     padding: 5px 0 5px 10px;
 }   
-.updateSlugForm, .updateSlugForm .form-parts {
+.updateSlugForm, .updateSlugForm .form-parts, .updateMetaDataForm {
     width: 100%;
     overflow: hidden;
 }
-.updateSlugForm .form-parts input {
+.updateMetaDataForm {
+    margin-top: 20px;
+}
+.updateMetaDataForm label {
+    margin-bottom: 20px;
+    color: #fff;
+    font-size: 18px;
+}
+.updateSlugForm .form-parts input, .updateMetaDataForm .form-parts input {
     padding: 10px;
     margin-top: 20px;
     border-radius: 3px;
@@ -112,7 +120,16 @@
     width: 87%;
     margin-bottom: 20px;
 }
-.updateSlugForm .form-parts input:focus {
+.updateMetaDataForm .form-parts textarea {
+    width: 90%;
+    padding-top: 10px;
+    padding-left: 10px;
+    border-radius: 3px;
+    height: 50px;
+    border: none;
+    margin: 20px 0;
+}
+.updateSlugForm .form-parts input:focus, .updateMetaDataForm .form-parts input:focus, .updateMetaDataForm .form-parts textarea:focus {
     border:none;
     outline: none;
 }

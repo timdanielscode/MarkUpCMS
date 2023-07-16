@@ -33,7 +33,7 @@
                         <?php echo Errors::get($rules, 'title'); ?>
                     </div>    
                 </div>
-                <textarea name="body" type="body" id="code"><?php if(!empty($data['body'] )) { echo $data['body']; } ?></textarea>
+                <textarea name="body" id="code"><?php if(!empty($data['body'] )) { echo $data['body']; } ?></textarea>
                 <button name="submit" id="submit" type="submit" class="hiddenButton">Update</button>
                 <input type="hidden" name="token" value="<?php Csrf::token('add');?>" />
             </form>
@@ -87,7 +87,17 @@
                             </form>
 
                         <?php } ?>
-          
+                        <form class="updateMetaDataForm" action="update" method="POST">
+                            <div class="form-parts">
+                                <label for="metaTitle">Meta title: </label>
+                                <input id="metaTitle" type="text" name="metaTitle" value="<?php if(!empty($data['metaTitle']) && $data['metaTitle'] !== null) { echo $data['metaTitle']; } ?>" placeholder="<?php if(empty($data['metaTitle']) || $data['metaTitle'] === null) { echo '...'; } ?>"/>
+                            </div>
+                            <div class="form-parts">
+                                <label for="metaDescription">Meta description: </label>
+                                <textarea id="metaDescription" name="metaDescription" placeholder="<?php if(empty($data['metaDescription']) || $data['metaDescription'] === null) { echo '...'; } ?>"><?php if(!empty($data['metaDescription']) && $data['metaDescription'] !== null) { echo $data['metaDescription']; } ?></textarea>
+                            </div>
+                            <input type="submit" name="updateMetaData" value="Update"/>
+                        </form>
                 </div>
             </div>
         </div>

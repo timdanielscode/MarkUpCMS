@@ -83,7 +83,7 @@ class PostController extends Controller {
     public function edit($request) {
 
         $post = Post::get($request['id']);
-
+        
         $postSlug = explode('/', $post['slug']);
         $postSlug = "/" . $postSlug[array_key_last($postSlug)];
 
@@ -119,6 +119,10 @@ class PostController extends Controller {
         } else if(!empty($request['updateSlug']) && $request['updateSlug'] !== null) {
 
             $this->updateSlug($request);
+            exit();
+        } else if(!empty($request['updateMetaData']) && $request['updateMetaData'] !== null) {
+
+            $this->updateMetaData($request);
             exit();
         }
 
@@ -164,6 +168,27 @@ class PostController extends Controller {
             'slug' => "/" . $slug
         ]);
 
+        redirect("/admin/posts/$id/edit");
+    }
+
+    public function updateMetaData($request) {
+
+        $id = $request['id'];
+
+        if(!empty($request['metaTitle']) && $request['metaTitle'] !== null) {
+
+            Post::update(['id' => $id], [
+
+                'metaTitle' => $request['metaTitle']
+            ]);
+        }
+        if(!empty($request['metaDescription']) && $request['metaDescription'] !== null) {
+
+            Post::update(['id' => $id], [
+
+                'metaDescription' => $request['metaDescription']
+            ]);
+        }
         redirect("/admin/posts/$id/edit");
     }
 
