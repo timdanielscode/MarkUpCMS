@@ -57,6 +57,7 @@
                     </div>
                     <div class="buttonContainer">
                         <a id="cssButton" class="button">Css</a>
+                        <a id="jsButton" class="button">Js</a>
                     </div>
                     <span class="text">Slug:</span>
                     <span class="fullSlug"><?php if(!empty($data['slug']) && $data['slug'] !== null) { echo $data['slug']; } ?></span>
@@ -133,7 +134,7 @@
                             </select>
                         <input type="submit" name="linkCss" value="Link"/>
                     </form>
-                    <form id="linkedJsFiles" class="linkedJsFilesForm" action="update" method="POST">
+                    <form id="linkedJsFiles" class="linkedJsFilesForm display-none" action="update" method="POST">
                         <label for="linkedJsFiles">Linked js files:</label>
                         <select id="linkedJsFiles" name="linkedJsFiles[]" multiple>
                             <?php foreach($linkedJsFiles as $linkedJsFile) { ?>
@@ -144,7 +145,7 @@
                         </select>
                         <input type="submit" name="removeJs" value="Remove"/>
                     </form>
-                    <form id="jsFiles" class="jsFilesForm" action="update" method="POST">
+                    <form id="jsFiles" class="jsFilesForm display-none" action="update" method="POST">
                         <label for="jsFilesSelect">Other js files:</label>
                             <select id="jsFilesSelect" name="jsFiles[]" multiple>
                                 <?php foreach($notLinkedJsFiles as $notLinkedJsFile) { ?>
