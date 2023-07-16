@@ -126,9 +126,26 @@ class CssController extends Controller {
         $cssFile = Css::where('id', '=', $request['id'])[0];
         $code = $this->getFileContent($cssFile['file_name']);
 
-        $pages = DB::try()->select('id, title')->from('pages')->fetch();
+        
 
         $assingedPages = DB::try()->select('id, title')->from('pages')->join('css_page')->on('pages.id', '=', 'css_page.page_id')->where('css_page.css_id', '=', $request['id'])->fetch();
+
+        $listAssingedPageIds = [];
+
+        if(!empty($assingedPages) && $assingedPages !== null) {
+
+            foreach($assingedPages as $assingedPage) {
+
+                array_push($listAssingedPageIds, $assingedPage['id']);
+            }
+
+            $listAssingedPageIdString = implode(',', $listAssingedPageIds);
+
+            $pages = DB::try()->select('id, title')->from('pages')->whereNotIn('id', $listAssingedPageIdString)->fetch();
+        } else {
+            $pages = DB::try()->select('id, title')->from('pages')->fetch();
+        }
+
 
         $data['cssFile'] = $cssFile;
         $data['code'] = $code;

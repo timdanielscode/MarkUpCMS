@@ -108,9 +108,6 @@
     width: 100%;
     overflow: hidden;
 }
-.updateMetaDataForm {
-    margin-top: 20px;
-}
 .updateMetaDataForm label, .linkedCssFilesForm label, .cssFilesForm label {
     margin-bottom: 10px;
     color: #fff;
