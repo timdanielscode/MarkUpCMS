@@ -9,7 +9,7 @@
     
         <?php if(!empty($post[0]['metaKeywords']) && $post[0]['metaKeywords'] !== null) { ?><meta name="keywords" content="<?php echo $post[0]['metaKeywords']; ?>"/><?php } ?>
 <?php if(!empty($cssFiles) && $cssFiles !== null) { ?><?php foreach($cssFiles as $cssFile) { ?><link rel="stylesheet" href="/website/assets/css/<?php echo $cssFile['file_name'] . $cssFile['extension']; ?>"><?php } ?><?php } ?>
-
+<?php if(!empty($jsFiles) && $jsFiles !== null) { ?><?php foreach($jsFiles as $jsFile) { ?><script type="text/javascript" src="/website/assets/js/<?php echo $jsFile['file_name'] . $jsFile['extension']; ?>"></script><?php } ?><?php } ?>
     </head>
     <body>
         <?php if(!empty($menusTop ) ) { ?>

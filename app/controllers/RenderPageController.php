@@ -17,7 +17,6 @@ class RenderPageController extends Controller {
     public function render() {
 
         $req = new Request();
-
         $post = Post::where('slug', '=', $req->getUri());
 
         if(!empty($post) ) {
@@ -25,7 +24,8 @@ class RenderPageController extends Controller {
             $postId = $post[0]['id'];
 
             $cssFiles = DB::try()->select('file_name', 'extension')->from('css')->join('css_page')->on('css_page.css_id', '=', 'css.id')->where('css_page.page_id', '=', $postId)->fetch();
-            $jsFiles = DB::try()->select('file_name', 'extension')->from('js')->fetch();
+            $jsFiles = DB::try()->select('file_name', 'extension')->from('js')->join('js_page')->on('js_page.js_id', '=', 'js.id')->where('js_page.page_id', '=', $postId)->fetch();
+
             $menusTop = DB::try()->all('menus')->where('position', '=', 'top')->order('ordering')->fetch();
             $menusBottom = DB::try()->all('menus')->where('position', '=', 'bottom')->order('ordering')->fetch();
     
@@ -37,6 +37,5 @@ class RenderPageController extends Controller {
 
             return $this->view('page', $data);
         }
-        
     }
 }
