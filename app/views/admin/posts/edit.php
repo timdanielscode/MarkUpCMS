@@ -33,13 +33,6 @@
                         <?php echo Errors::get($rules, 'title'); ?>
                     </div>    
                 </div>
-                <div class="form-parts">
-                                <input type="text" name="postSlug" id="slug" value="<?php if(!empty($postSlug )) { echo $postSlug; } ?>">
-                            </div>
-                            <input type="hidden" name="slug" value="<?php if(!empty($data['slug']) && $data['slug'] !== null) { echo $data['slug']; } ?>">
-                            <div class="error-messages">
-                                <?php echo Errors::get($rules, 'slug'); ?>
-                            </div>
                 <textarea name="body" type="body" id="code"><?php if(!empty($data['body'] )) { echo $data['body']; } ?></textarea>
                 <button name="submit" id="submit" type="submit" class="hiddenButton">Update</button>
                 <input type="hidden" name="token" value="<?php Csrf::token('add');?>" />
@@ -56,9 +49,19 @@
                         <a target="_blank" href="/admin/posts/<?php echo $data['id']; ?>/read" class="button">Read</a>
                         <a href="#" id="codeEditorFullScreen" class="button">Full screen</a>
                     </div>
-
-                    <span class="text">Full slug: </span>
+                    <span class="text">Slug:</span>
                     <span class="fullSlug"><?php if(!empty($data['slug']) && $data['slug'] !== null) { echo $data['slug']; } ?></span>
+                    <form class="updateSlugForm" action="update" method="POST">
+                        <div class="form-parts">
+                            <input type="text" name="postSlug" id="slug" value="<?php if(!empty($postSlug )) { echo $postSlug; } ?>">
+                        </div>
+                        <input type="hidden" name="slug" value="<?php if(!empty($data['slug']) && $data['slug'] !== null) { echo $data['slug']; } ?>">
+                        <div class="error-messages">
+                            <?php echo Errors::get($rules, 'slug'); ?>
+                        </div>
+                        <input class="updateSlugButton" type="submit" name="updateSlug" value="Update"/>
+                    </form>
+                    
                     <span class="text">Category: </span>
                         <?php if(!empty($categories) && $categories !== null) { ?>
                             <form class="AddCategory" action="update" method="POST">

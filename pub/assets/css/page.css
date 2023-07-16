@@ -12,14 +12,6 @@
     font-size: 22px;
     margin-bottom: 20px;
 }
-#slug {
-    border: none;
-    width: 95%;
-    font-size: 13px;
-    padding: 0;
-    margin-top: 0;
-}
-
 /*
     Sidebar
 */
@@ -35,7 +27,7 @@
 .readAndFullScreenContainer {
     margin-bottom: 50px
 }
-.mainButtonContainer a, .mainButtonContainer label, .readAndFullScreenContainer a, .assignCategoryButton, .detachCategoryButton {
+.mainButtonContainer a, .mainButtonContainer label, .readAndFullScreenContainer a, .assignCategoryButton, .detachCategoryButton, .updateSlugButton {
     width: auto;
     display: flex;
     justify-content: center;
@@ -44,7 +36,7 @@
     border-radius: 4px;
     padding: 0 20px;
     transition: 0.3s;
-    font-size: 16px;
+    font-size: 14px;
 }
 .AssingCategoryContainer {
     margin-top: 20px;
@@ -59,7 +51,7 @@
     background: #6ba152;
     border: 1px solid #6ba152;
 }
-.mainButtonContainer a, .readAndFullScreenContainer a, .AssingCategoryContainer input, .detachCategoryButton {
+.mainButtonContainer a, .readAndFullScreenContainer a, .AssingCategoryContainer input, .detachCategoryButton, .updateSlugButton {
     border: 1px solid #fff;
     background: rgba(0,0,0,0.1);
     color: #fff;
@@ -67,7 +59,7 @@
 .readAndFullScreenContainer a:nth-child(1) {
     margin-right: 20px;
 }
-.mainButtonContainer a:hover, .readAndFullScreenContainer a:hover, .AssingCategoryContainer input:hover, .detachCategoryButton:hover {
+.mainButtonContainer a:hover, .readAndFullScreenContainer a:hover, .AssingCategoryContainer input:hover, .detachCategoryButton:hover, .updateSlugButton:hover {
     background: #fff;
     color: #000;
     cursor: pointer;
@@ -79,6 +71,9 @@
     color: #fff;
     font-size: 18px;
 }
+.updateSlugButton {
+    margin-bottom: 50px;
+}
 .fullSlug, .categoryTitle {
     background: #fff;
     color: #000;
@@ -89,8 +84,7 @@
     margin-top: 20px;
 }
 .fullSlug {
-    margin-bottom: 50px;
-    margin-right: 20px;
+    padding-right: 20px;
 }
 .categoryTitle {
     margin-bottom: 20px;
@@ -105,6 +99,23 @@
 .AddCategory select option {
     padding: 5px 0 5px 10px;
 }   
+.updateSlugForm, .updateSlugForm .form-parts {
+    width: 100%;
+    overflow: hidden;
+}
+.updateSlugForm .form-parts input {
+    padding: 10px;
+    margin-top: 20px;
+    border-radius: 3px;
+    font-size: 13px;
+    border: none;
+    width: 87%;
+    margin-bottom: 20px;
+}
+.updateSlugForm .form-parts input:focus {
+    border:none;
+    outline: none;
+}
 
 /*
     Metadata

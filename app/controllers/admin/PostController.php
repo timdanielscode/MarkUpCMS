@@ -116,6 +116,10 @@ class PostController extends Controller {
 
             $this->removeCategory($request);
             exit();
+        } else if(!empty($request['updateSlug']) && $request['updateSlug'] !== null) {
+
+            $this->updateSlug($request);
+            exit();
         }
 
         if(submitted("submit") === true && Csrf::validate(Csrf::token('get'), post('token')) === true ) {
@@ -127,16 +131,14 @@ class PostController extends Controller {
                 
                 $id = $request['id'];
 
-                $slug = explode('/', $request['slug']);
+                /*$slug = explode('/', $request['slug']);
                 $slug[array_key_last($slug)] = substr($request['postSlug'], 1);
-                $slug = implode('/', array_filter($slug));
+                $slug = implode('/', array_filter($slug));*/
 
-                if(!empty($request['slug']) ) {
-
+  
                     Post::update(['id' => $id], [
 
                         'title' => $request["title"],
-                        'slug' => "/" . $slug,
                         'body' => $request["body"],
                         'date_updated_at' => date("d/m/Y"),
                         'time_updated_at' => date("H:i")
@@ -144,9 +146,25 @@ class PostController extends Controller {
 
                     Session::set('updated', 'User updated successfully!');
                     redirect("/admin/posts/$id/edit");
-                }
+                
             //} 
         }
+    }
+
+    public function updateSlug($request) {
+
+        $id = $request['id'];
+
+        $slug = explode('/', $request['slug']);
+        $slug[array_key_last($slug)] = substr($request['postSlug'], 1);
+        $slug = implode('/', array_filter($slug));
+        
+        Post::update(['id' => $id], [
+
+            'slug' => "/" . $slug
+        ]);
+
+        redirect("/admin/posts/$id/edit");
     }
 
     public function updateCategory($request) {
