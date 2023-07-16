@@ -8,6 +8,7 @@
         <?php if(!empty($post[0]['metaDescription']) && $post[0]['metaDescription'] !== null) { ?><meta name="description" content="<?php echo $post[0]['metaDescription']; ?>"/><?php } ?>
     
         <?php if(!empty($post[0]['metaKeywords']) && $post[0]['metaKeywords'] !== null) { ?><meta name="keywords" content="<?php echo $post[0]['metaKeywords']; ?>"/><?php } ?>
+<?php if(!empty($cssFiles) && $cssFiles !== null) { ?><?php foreach($cssFiles as $cssFile) { ?><link rel="stylesheet" href="/website/assets/css/<?php echo $cssFile['file_name'] . $cssFile['extension']; ?>"><?php } ?><?php } ?>
 
     </head>
     <body>
@@ -30,6 +31,5 @@
             <?php } ?>
 
         <?php } ?>
-
     </body>
 </html>
