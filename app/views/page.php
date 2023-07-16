@@ -1,22 +1,33 @@
-<?php 
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width,initial-scale=1">
+        <?php if(!empty($post[0]['metaTitle']) && $post[0]['metaTitle'] !== null) { ?><title><?php echo $post[0]['metaTitle']; ?></title><?php } ?>
+        
+        <?php if(!empty($post[0]['metaDescription']) && $post[0]['metaDescription'] !== null) { ?><meta name="description" content="<?php echo $post[0]['metaDescription']; ?>"/><?php } ?>
     
-    if(!empty($menusTop ) ) { 
+    </head>
+    <body>
+        <?php if(!empty($menusTop ) ) { ?>
 
-        foreach($menusTop as $menuTop) {
+            <?php foreach($menusTop as $menuTop) { ?>
 
-            echo html_entity_decode($menuTop['content']); 
-        }
+                <?php echo html_entity_decode($menuTop['content']); ?> 
+            <?php } ?>
 
-    }
+        <?php } ?>
 
-    echo html_entity_decode($post[0]["body"]); 
-     
-    if(!empty($menusBottom ) ) { 
+        <?php echo html_entity_decode($post[0]["body"]); ?>
+            
+        <?php if(!empty($menusBottom ) ) { ?>
 
-        foreach($menusBottom as $menuBottom) {
+            <?php foreach($menusBottom as $menuBottom) { ?>
 
-            echo html_entity_decode($menuBottom['content']); 
-        }
+                <?php echo html_entity_decode($menuBottom['content']); ?>  
+            <?php } ?>
 
-    }
-
+        <?php } ?>
+        
+    </body>
+</html>
