@@ -146,10 +146,17 @@ class CssController extends Controller {
 
             $this->updatePage($request);
             exit();
-        }
-        if(!empty($request['removePage']) && $request['removePage'] !== null) {
+        } else if(!empty($request['removePage']) && $request['removePage'] !== null) {
 
             $this->removePage($request);
+            exit();
+        } else if(!empty($request['linkAll']) && $request['linkAll'] !== null) {
+
+            $this->linkAll($request);
+            exit();
+        } else if(!empty($request['removeAll']) && $request['removeAll'] !== null) {
+
+            $this->removeAll($request);
             exit();
         }
 
@@ -191,6 +198,37 @@ class CssController extends Controller {
                 return $this->view("/admin/css/edit", $data);
             }
         }
+    }
+
+    public function linkAll($request) {
+
+        $id = $request['id'];
+
+        $pageIds = DB::try()->select('id')->from('pages')->fetch();
+
+        CssPage::delete('css_id', $id);
+
+        if(!empty($pageIds) && $pageIds !== null) {
+
+            foreach($pageIds as $pageId) {
+
+                CssPage::insert([
+
+                    'page_id' => $pageId['id'],
+                    'css_id' => $id
+                ]);
+            }
+        }
+
+        redirect("/admin/css/$id/edit");
+    }
+
+    public function removeAll($request) {
+
+        $id = $request['id'];
+
+        CssPage::delete('css_id', $id);
+        redirect("/admin/css/$id/edit");
     }
 
     public function removePage($request) {

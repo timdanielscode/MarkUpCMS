@@ -43,6 +43,14 @@
                             <label for="submit" class="button update">Update</label>
                             <a href="/admin/css" class="button back">Back</a>
                         </div>
+                        <div class="mainButtonContainer">
+                            <form action="update" method="POST">
+                                <input type="submit" name="linkAll" value="Link all"/>
+                            </form>
+                            <form action="update" method="POST">
+                                <input type="submit" name="removeAll" value="Remove all"/>
+                            </form>
+                        </div>
                         <?php if(!empty($assingedPages) && $assingedPages !== null) { ?>
                             <form action="update" method="POST">
                                 <select name="pages[]" multiple>
