@@ -43,6 +43,20 @@
                             <label for="submit" class="button update">Update</label>
                             <a href="/admin/css" class="button back">Back</a>
                         </div>
+                        <?php if(!empty($assingedPages) && $assingedPages !== null) { ?>
+                            <form action="update" method="POST">
+                                <select name="pages[]" multiple>
+                                    <?php foreach($assingedPages as $page) { ?>
+                                        <option value="<?php echo $page['id']; ?>"><?php echo $page['title']; ?></option>
+                                    <?php } ?>
+                                </select>
+                                <input type="submit" name="removePage" value="Remove"/>
+                            </form>
+                        <?php } else { ?>
+
+                            <p>File is not linked yet.</p>
+
+                        <?php } ?>
                         <?php if(!empty($pages) && $pages !== null) { ?>
                             <form action="update" method="POST">
                                 <select name="pages[]" multiple>
@@ -50,7 +64,7 @@
                                         <option value="<?php echo $page['id']; ?>"><?php echo $page['title']; ?></option>
                                     <?php } ?>
                                 </select>
-                                <input type="submit" name="updatePage" value="Assign"/>
+                                <input type="submit" name="updatePage" value="Link"/>
                             </form>
                         <?php } ?>
                     </div>

@@ -128,9 +128,12 @@ class CssController extends Controller {
 
         $pages = DB::try()->select('id, title')->from('pages')->fetch();
 
+        $assingedPages = DB::try()->select('id, title')->from('pages')->join('css_page')->on('pages.id', '=', 'css_page.page_id')->where('css_page.css_id', '=', $request['id'])->fetch();
+
         $data['cssFile'] = $cssFile;
         $data['code'] = $code;
         $data['pages'] = $pages;
+        $data['assingedPages'] = $assingedPages;
         
         $data['rules'] = [];
 
@@ -142,6 +145,11 @@ class CssController extends Controller {
         if(!empty($request['updatePage']) && $request['updatePage'] !== null) {
 
             $this->updatePage($request);
+            exit();
+        }
+        if(!empty($request['removePage']) && $request['removePage'] !== null) {
+
+            $this->removePage($request);
             exit();
         }
 
@@ -183,6 +191,22 @@ class CssController extends Controller {
                 return $this->view("/admin/css/edit", $data);
             }
         }
+    }
+
+    public function removePage($request) {
+
+        $id = $request['id'];
+        $pageIds = $request['pages'];
+
+        if(!empty($pageIds) && $pageIds !== null) {
+
+            foreach($pageIds as $pageId) {
+
+                CssPage::delete('page_id', $pageId);
+            }
+        }
+
+        redirect("/admin/css/$id/edit");
     }
 
     public function updatePage($request) {
