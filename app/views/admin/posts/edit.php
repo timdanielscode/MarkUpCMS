@@ -52,20 +52,16 @@
                         <label for="submit" class="button">Update</label>
                         <a href="/admin/posts" class="button">Back</a>
                     </div>
-                    <ul class="postSidebarButtons">
-                        <li>
-                            <a href="/admin/posts/<?php echo $data['id']; ?>/preview" class="button">Preview</a>
-                        </li>
-                        <li>
-                            <a href="#" id="codeEditorFullScreen" class="button">Full screen</a>
-                        </li>
-                        <span class="color-white"><?php if(!empty($data['slug']) && $data['slug'] !== null) { echo $data['slug']; } ?></span>
-                        <!--<form action="update" method="POST">
-        
-                        </form>-->
+                    <div class="readAndFullScreenContainer">
+                        <a target="_blank" href="/admin/posts/<?php echo $data['id']; ?>/read" class="button">Read</a>
+                        <a href="#" id="codeEditorFullScreen" class="button">Full screen</a>
+                    </div>
 
+                    <span class="text">Full slug: </span>
+                    <span class="fullSlug"><?php if(!empty($data['slug']) && $data['slug'] !== null) { echo $data['slug']; } ?></span>
+                    <span class="text">Category: </span>
                         <?php if(!empty($categories) && $categories !== null) { ?>
-                            <form action="update" method="POST">
+                            <form class="AddCategory" action="update" method="POST">
                                 <select name="categories" multiple>
                                     <?php foreach($categories as $category) { ?>
                                         <option value="<?php echo $category['id']; ?>">    
@@ -73,21 +69,22 @@
                                         </option>
                                     <?php } ?>
                                 </select>
-                                <input type="submit" name="submitCategory" value="Assign"/>
+                                <div class="AssingCategoryContainer">
+                                    <input class="assignCategoryButton" type="submit" name="submitCategory" value="Assign"/>
+                                </div>
+                                
                             </form>
                         <?php } else { ?>
 
-                            <h3>Category:</h3>
-
-                            <?php echo $category['title']; ?>
+                            <span class="categoryTitle"><?php echo $category['title']; ?></span>
 
                             <form action="update" method="POST">
 
-                                <input type="submit" name="removeCategory" value="Detach"/>
+                                <input class="detachCategoryButton" type="submit" name="removeCategory" value="Detach"/>
                             </form>
 
                         <?php } ?>
-                    </ul>
+          
                 </div>
             </div>
         </div>

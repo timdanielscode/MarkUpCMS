@@ -24,13 +24,18 @@
     Sidebar
 */
 .mainButtonContainer {
+    margin-top: 63px;
+}
+.mainButtonContainer, .readAndFullScreenContainer, .AssingCategoryContainer {
     width: 100%;
     display: flex;
     flex-wrap: wrap;
-    margin-top: 63px;
-    margin-bottom: 50px;
+    margin-bottom: 20px;
 }
-.mainButtonContainer a, .mainButtonContainer label {
+.readAndFullScreenContainer {
+    margin-bottom: 50px
+}
+.mainButtonContainer a, .mainButtonContainer label, .readAndFullScreenContainer a, .assignCategoryButton, .detachCategoryButton {
     width: auto;
     display: flex;
     justify-content: center;
@@ -40,6 +45,9 @@
     padding: 0 20px;
     transition: 0.3s;
     font-size: 16px;
+}
+.AssingCategoryContainer {
+    margin-top: 20px;
 }
 .mainButtonContainer label {
     margin-right: 20px;
@@ -51,18 +59,52 @@
     background: #6ba152;
     border: 1px solid #6ba152;
 }
-.mainButtonContainer a {
+.mainButtonContainer a, .readAndFullScreenContainer a, .AssingCategoryContainer input, .detachCategoryButton {
     border: 1px solid #fff;
     background: rgba(0,0,0,0.1);
     color: #fff;
 }
-.mainButtonContainer a:hover {
+.readAndFullScreenContainer a:nth-child(1) {
+    margin-right: 20px;
+}
+.mainButtonContainer a:hover, .readAndFullScreenContainer a:hover, .AssingCategoryContainer input:hover, .detachCategoryButton:hover {
     background: #fff;
     color: #000;
+    cursor: pointer;
 }
 .mainButtonContainer label:hover {
     cursor: pointer;
 }
+.sidebarContainer .text {
+    color: #fff;
+    font-size: 18px;
+}
+.fullSlug, .categoryTitle {
+    background: #fff;
+    color: #000;
+    border-radius: 3px;
+    display: block;
+    width: auto;
+    padding: 10px;
+    margin-top: 20px;
+}
+.fullSlug {
+    margin-bottom: 50px;
+    margin-right: 20px;
+}
+.categoryTitle {
+    margin-bottom: 20px;
+}
+.AddCategory select {
+    width: 100%;
+    border-radius: 3px;
+    border: none;
+    height: 180px;
+    margin-top: 20px;
+}
+.AddCategory select option {
+    padding: 5px 0 5px 10px;
+}   
 
 /*
     Metadata
