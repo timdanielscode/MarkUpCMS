@@ -99,8 +99,29 @@ class PostController extends Controller {
             $data['category'] = $category;
         }
 
+        $linkedCssFiles = DB::try()->select('css.id, css.file_name, css.extension')->from('css')->join('css_page')->on('css_page.css_id', '=', 'css.id')->where('css_page.page_id', '=', $request['id'])->fetch();
+        
+        $linkedCssFileIds = [];
+
+        if(!empty($linkedCssFiles) && $linkedCssFiles !== null) {
+
+            foreach($linkedCssFiles as $linkedCssFile) {
+
+                array_push($linkedCssFileIds, $linkedCssFile['id']);
+            }
+
+            $linkedCssFileIdStrings = implode(',', $linkedCssFileIds);
+
+            $notLinkedCssFiles = DB::try()->select('id, file_name, extension')->from('css')->whereNotIn('id', $linkedCssFileIdStrings)->fetch();
+        } else {
+
+            $notLinkedCssFiles = DB::try()->select('id, file_name, extension')->from('css')->fetch();
+        }
+    
         $data['data'] = $post;
         $data['postSlug'] = $postSlug;
+        $data['linkedCssFiles'] = $linkedCssFiles;
+        $data['notLinkedCssFiles'] = $notLinkedCssFiles;
         $data['rules'] = [];
 
         return $this->view('admin/posts/edit', $data);
@@ -123,6 +144,14 @@ class PostController extends Controller {
         } else if(!empty($request['updateMetaData']) && $request['updateMetaData'] !== null) {
 
             $this->updateMetaData($request);
+            exit();
+        } else if(!empty($request['removeCss']) && $request['removeCss'] !== null) {
+
+            $this->removeCss($request);
+            exit();
+        } else if(!empty($request['linkCss']) && $request['linkCss'] !== null) {
+
+            $this->linkCss($request);
             exit();
         }
 
@@ -153,6 +182,42 @@ class PostController extends Controller {
                 
             //} 
         }
+    }
+
+    public function linkCss($request) {
+
+        $id = $request['id'];
+        $cssIds = $request['cssFiles'];
+
+        if(!empty($cssIds) && $cssIds !== null) {
+
+            foreach($cssIds as $cssId) {
+
+                DB::try()->insert('css_page', [
+
+                    'css_id' => $cssId,
+                    'page_id' => $id
+
+                ])->where('css_page', '=', $id)->and('css_id', '=', $cssId);
+            }
+        }
+        redirect("/admin/posts/$id/edit");
+    }
+
+    public function removeCss($request) {
+
+        $id = $request['id'];
+        $linkedCssIds = $request['linkedCssFiles'];
+
+        if(!empty($linkedCssIds) && $linkedCssIds !== null) {
+
+            foreach($linkedCssIds as $linkedCssId) {
+
+                DB::try()->delete('css_page')->where('page_id', '=', $id)->and('css_id', '=', $linkedCssId)->run();
+            }
+        }
+
+        redirect("/admin/posts/$id/edit");
     }
 
     public function updateSlug($request) {
