@@ -47,13 +47,16 @@
                         <label for="submit" class="button">Update</label>
                         <a href="/admin/posts" class="button">Back</a>
                     </div>
-                    <div class="readAndFullScreenContainer">
+                    <div class="buttonContainer">
                         <a target="_blank" href="/admin/posts/<?php echo $data['id']; ?>/read" class="button">Read</a>
                         <a href="#" id="codeEditorFullScreen" class="button">Full screen</a>
                     </div>
-                    <div class="readAndFullScreenContainer">
+                    <div class="buttonContainer">
                         <a id="metaButton" class="button">Meta data</a>
                         <a id="categoryButton" class="button">Categories</a>
+                    </div>
+                    <div class="buttonContainer">
+                        <a id="cssButton" class="button">Css</a>
                     </div>
                     <span class="text">Slug:</span>
                     <span class="fullSlug"><?php if(!empty($data['slug']) && $data['slug'] !== null) { echo $data['slug']; } ?></span>
@@ -108,7 +111,7 @@
                         </div>
                         <input type="submit" name="updateMetaData" value="Update"/>
                     </form>
-                    <form id="linkedCssFiles" class="linkedCssFilesForm" action="update" method="POST">
+                    <form id="linkedCssFiles" class="linkedCssFilesForm display-none" action="update" method="POST">
                         <label for="linkedFiles">Linked css files:</label>
                         <select id="linkedFiles" name="linkedCssFiles[]" multiple>
                             <?php foreach($linkedCssFiles as $linkedCssFile) { ?>
@@ -120,7 +123,7 @@
                         </select>
                         <input type="submit" name="removeCss" value="Remove"/>
                     </form>
-                    <form id="cssFiles" class="cssFilesForm" action="update" method="POST">
+                    <form id="cssFiles" class="cssFilesForm display-none" action="update" method="POST">
                         <label for="cssFilesSelect">Other css files:</label>
                             <select id="cssFilesSelect" name="cssFiles[]" multiple>
                                 <?php foreach($notLinkedCssFiles as $notLinkedCssFile) { ?>

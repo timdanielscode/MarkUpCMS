@@ -18,16 +18,16 @@
 .mainButtonContainer {
     margin-top: 20px;
 }
-.mainButtonContainer, .readAndFullScreenContainer {
+.mainButtonContainer, .buttonContainer {
     width: 100%;
     display: flex;
     flex-wrap: wrap;
     margin-bottom: 20px;
 }
-.readAndFullScreenContainer {
+.buttonContainer {
     margin-bottom: 20px
 }
-.mainButtonContainer a, .mainButtonContainer label, .readAndFullScreenContainer a, .assignCategoryButton, .detachCategoryButton, .updateSlugButton, .updateMetaDataForm .form-parts + input[type='submit'], .linkedCssFilesForm input, .cssFilesForm input {
+.mainButtonContainer a, .mainButtonContainer label, .buttonContainer a, .assignCategoryButton, .detachCategoryButton, .updateSlugButton, .updateMetaDataForm .form-parts + input[type='submit'], .linkedCssFilesForm input, .cssFilesForm input {
     width: auto;
     display: flex;
     justify-content: center;
@@ -51,15 +51,15 @@
     background: #6ba152;
     border: 1px solid #6ba152;
 }
-.mainButtonContainer a, .readAndFullScreenContainer a, .AssingCategoryContainer input, .detachCategoryButton, .updateSlugButton, .updateMetaDataForm .form-parts + input[type='submit'], .linkedCssFilesForm input, .cssFilesForm input {
+.mainButtonContainer a, .buttonContainer a, .AssingCategoryContainer input, .detachCategoryButton, .updateSlugButton, .updateMetaDataForm .form-parts + input[type='submit'], .linkedCssFilesForm input, .cssFilesForm input {
     border: 1px solid #fff;
     background: rgba(0,0,0,0.1);
     color: #fff;
 }
-.readAndFullScreenContainer a:nth-child(1) {
+.buttonContainer a:nth-child(1) {
     margin-right: 20px;
 }
-.mainButtonContainer a:hover, .readAndFullScreenContainer a:hover, .AssingCategoryContainer input:hover, .detachCategoryButton:hover, .updateSlugButton:hover, .updateMetaDataForm .form-parts + input[type='submit']:hover, .linkedCssFilesForm input:hover {
+.mainButtonContainer a:hover, .buttonContainer a:hover, .AssingCategoryContainer input:hover, .detachCategoryButton:hover, .updateSlugButton:hover, .updateMetaDataForm .form-parts + input[type='submit']:hover, .linkedCssFilesForm input:hover {
     background: #fff;
     color: #000;
     cursor: pointer;
@@ -146,3 +146,4 @@
     border:none;
     outline: none;
 }
+
