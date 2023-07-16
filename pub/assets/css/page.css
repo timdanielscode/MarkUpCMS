@@ -27,7 +27,7 @@
 .readAndFullScreenContainer {
     margin-bottom: 20px
 }
-.mainButtonContainer a, .mainButtonContainer label, .readAndFullScreenContainer a, .assignCategoryButton, .detachCategoryButton, .updateSlugButton, .updateMetaDataForm .form-parts + input[type='submit'] {
+.mainButtonContainer a, .mainButtonContainer label, .readAndFullScreenContainer a, .assignCategoryButton, .detachCategoryButton, .updateSlugButton, .updateMetaDataForm .form-parts + input[type='submit'], .linkedCssFilesForm input, .cssFilesForm input {
     width: auto;
     display: flex;
     justify-content: center;
@@ -38,7 +38,7 @@
     transition: 0.3s;
     font-size: 14px;
 }
-.AssingCategoryContainer {
+.AssingCategoryContainer, .linkedCssFilesForm input, .cssFilesForm input, .cssFilesForm {
     margin-top: 20px;
 }
 .mainButtonContainer label {
@@ -51,7 +51,7 @@
     background: #6ba152;
     border: 1px solid #6ba152;
 }
-.mainButtonContainer a, .readAndFullScreenContainer a, .AssingCategoryContainer input, .detachCategoryButton, .updateSlugButton, .updateMetaDataForm .form-parts + input[type='submit'] {
+.mainButtonContainer a, .readAndFullScreenContainer a, .AssingCategoryContainer input, .detachCategoryButton, .updateSlugButton, .updateMetaDataForm .form-parts + input[type='submit'], .linkedCssFilesForm input, .cssFilesForm input {
     border: 1px solid #fff;
     background: rgba(0,0,0,0.1);
     color: #fff;
@@ -59,7 +59,7 @@
 .readAndFullScreenContainer a:nth-child(1) {
     margin-right: 20px;
 }
-.mainButtonContainer a:hover, .readAndFullScreenContainer a:hover, .AssingCategoryContainer input:hover, .detachCategoryButton:hover, .updateSlugButton:hover, .updateMetaDataForm .form-parts + input[type='submit']:hover {
+.mainButtonContainer a:hover, .readAndFullScreenContainer a:hover, .AssingCategoryContainer input:hover, .detachCategoryButton:hover, .updateSlugButton:hover, .updateMetaDataForm .form-parts + input[type='submit']:hover, .linkedCssFilesForm input:hover {
     background: #fff;
     color: #000;
     cursor: pointer;
@@ -90,10 +90,15 @@
     margin-bottom: 20px;
 }
 .AddCategory select {
+    height: 250px;
+}
+.linkedCssFilesForm select, .cssFilesForm select {
+    height: 100px;
+}
+.AddCategory select, .linkedCssFilesForm select, .cssFilesForm select {
     width: 100%;
     border-radius: 3px;
     border: none;
-    height: 250px;
     margin-top: 10px;
 }
 .AddCategory select option {
@@ -106,7 +111,7 @@
 .updateMetaDataForm {
     margin-top: 20px;
 }
-.updateMetaDataForm label {
+.updateMetaDataForm label, .linkedCssFilesForm label, .cssFilesForm label {
     margin-bottom: 10px;
     color: #fff;
     font-size: 16px;

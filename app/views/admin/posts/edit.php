@@ -108,42 +108,27 @@
                         </div>
                         <input type="submit" name="updateMetaData" value="Update"/>
                     </form>
-                    <form id="linkedCssFiles" action="update" method="POST">
-
-                        <?php if(!empty($linkedCssFiles) && $linkedCssFiles !== null) { ?>
-
-                            <select name="linkedCssFiles[]" multiple>
-
-                                <?php foreach($linkedCssFiles as $linkedCssFile) { ?>
-                                    <?php echo $linkedCssFile['file_name']; ?>
-                                    <option value="<?php echo $linkedCssFile['id']; ?>">
-                                        <?php echo $linkedCssFile['file_name'] . $linkedCssFile['extension']; ?>
-                                    </option>
-
-                                <?php } ?>
-
-                            </select>
-
-                        <?php } ?>
+                    <form id="linkedCssFiles" class="linkedCssFilesForm" action="update" method="POST">
+                        <label for="linkedFiles">Linked css files:</label>
+                        <select id="linkedFiles" name="linkedCssFiles[]" multiple>
+                            <?php foreach($linkedCssFiles as $linkedCssFile) { ?>
+                                <?php echo $linkedCssFile['file_name']; ?>
+                                <option value="<?php echo $linkedCssFile['id']; ?>">
+                                    <?php echo $linkedCssFile['file_name'] . $linkedCssFile['extension']; ?>
+                                </option>
+                            <?php } ?>
+                        </select>
                         <input type="submit" name="removeCss" value="Remove"/>
                     </form>
-                    <form id="linkedCssFiles" action="update" method="POST">
-
-                        <?php if(!empty($notLinkedCssFiles) && $notLinkedCssFiles !== null) { ?>
-
-                            <select name="cssFiles[]" multiple>
-
+                    <form id="cssFiles" class="cssFilesForm" action="update" method="POST">
+                        <label for="cssFilesSelect">Other css files:</label>
+                            <select id="cssFilesSelect" name="cssFiles[]" multiple>
                                 <?php foreach($notLinkedCssFiles as $notLinkedCssFile) { ?>
-
                                     <option value="<?php echo $notLinkedCssFile['id']; ?>">
                                         <?php echo $notLinkedCssFile['file_name'] . $notLinkedCssFile['extension']; ?>
                                     </option>
-
                                 <?php } ?>
-
                             </select>
-
-                        <?php } ?>
                         <input type="submit" name="linkCss" value="Link"/>
                     </form>
                 </div>
