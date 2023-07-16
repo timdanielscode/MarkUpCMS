@@ -7,6 +7,8 @@
         
         <?php if(!empty($post[0]['metaDescription']) && $post[0]['metaDescription'] !== null) { ?><meta name="description" content="<?php echo $post[0]['metaDescription']; ?>"/><?php } ?>
     
+        <?php if(!empty($post[0]['metaKeywords']) && $post[0]['metaKeywords'] !== null) { ?><meta name="keywords" content="<?php echo $post[0]['metaKeywords']; ?>"/><?php } ?>
+
     </head>
     <body>
         <?php if(!empty($menusTop ) ) { ?>
@@ -28,6 +30,6 @@
             <?php } ?>
 
         <?php } ?>
-        
+
     </body>
 </html>

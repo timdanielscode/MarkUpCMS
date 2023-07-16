@@ -96,6 +96,10 @@
                                 <label for="metaDescription">Meta description: </label>
                                 <textarea id="metaDescription" name="metaDescription" placeholder="<?php if(empty($data['metaDescription']) || $data['metaDescription'] === null) { echo '...'; } ?>"><?php if(!empty($data['metaDescription']) && $data['metaDescription'] !== null) { echo $data['metaDescription']; } ?></textarea>
                             </div>
+                            <div class="form-parts">
+                                <label for="metaKeywords">Meta keywords: </label>
+                                <textarea id="metaKeywords" name="metaKeywords" placeholder="<?php if(empty($data['metaKeywords']) || $data['metaKeywords'] === null) { echo 'Enter seppareted with an comma'; } ?>"><?php if(!empty($data['metaKeywords']) && $data['metaKeywords'] !== null) { echo $data['metaKeywords']; } ?></textarea>
+                            </div>
                             <input type="submit" name="updateMetaData" value="Update"/>
                         </form>
                 </div>

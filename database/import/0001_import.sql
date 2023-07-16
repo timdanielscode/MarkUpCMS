@@ -118,3 +118,5 @@ CREATE TABLE category_sub (
     category_id int(11) NOT NULl,
     sub_id int(11) NOT NULL
 );
+
+ALTER TABLE pages ADD metaKeywords varchar(255) AFTER metaDescription;

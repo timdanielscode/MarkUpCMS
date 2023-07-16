@@ -83,7 +83,7 @@ class PostController extends Controller {
     public function edit($request) {
 
         $post = Post::get($request['id']);
-        
+
         $postSlug = explode('/', $post['slug']);
         $postSlug = "/" . $postSlug[array_key_last($postSlug)];
 
@@ -187,6 +187,13 @@ class PostController extends Controller {
             Post::update(['id' => $id], [
 
                 'metaDescription' => $request['metaDescription']
+            ]);
+        }
+        if(!empty($request['metaKeywords']) && $request['metaKeywords'] !== null) {
+
+            Post::update(['id' => $id], [
+
+                'metaKeywords' => $request['metaKeywords']
             ]);
         }
         redirect("/admin/posts/$id/edit");
