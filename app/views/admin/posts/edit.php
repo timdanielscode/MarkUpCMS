@@ -115,7 +115,6 @@
                         <label for="linkedFiles">Linked css files:</label>
                         <select id="linkedFiles" name="linkedCssFiles[]" multiple>
                             <?php foreach($linkedCssFiles as $linkedCssFile) { ?>
-                                <?php echo $linkedCssFile['file_name']; ?>
                                 <option value="<?php echo $linkedCssFile['id']; ?>">
                                     <?php echo $linkedCssFile['file_name'] . $linkedCssFile['extension']; ?>
                                 </option>
@@ -133,6 +132,28 @@
                                 <?php } ?>
                             </select>
                         <input type="submit" name="linkCss" value="Link"/>
+                    </form>
+                    <form id="linkedJsFiles" class="linkedJsFilesForm" action="update" method="POST">
+                        <label for="linkedJsFiles">Linked js files:</label>
+                        <select id="linkedJsFiles" name="linkedJsFiles[]" multiple>
+                            <?php foreach($linkedJsFiles as $linkedJsFile) { ?>
+                                <option value="<?php echo $linkedJsFile['id']; ?>">
+                                    <?php echo $linkedJsFile['file_name'] . $linkedJsFile['extension']; ?>
+                                </option>
+                            <?php } ?>
+                        </select>
+                        <input type="submit" name="removeJs" value="Remove"/>
+                    </form>
+                    <form id="jsFiles" class="jsFilesForm" action="update" method="POST">
+                        <label for="jsFilesSelect">Other js files:</label>
+                            <select id="jsFilesSelect" name="jsFiles[]" multiple>
+                                <?php foreach($notLinkedJsFiles as $notLinkedJsFile) { ?>
+                                    <option value="<?php echo $notLinkedJsFile['id']; ?>">
+                                        <?php echo $notLinkedJsFile['file_name'] . $notLinkedJsFile['extension']; ?>
+                                    </option>
+                                <?php } ?>
+                            </select>
+                        <input type="submit" name="includeJs" value="Link"/>
                     </form>
                 </div>
             </div>

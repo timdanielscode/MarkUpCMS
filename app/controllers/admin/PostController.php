@@ -117,11 +117,32 @@ class PostController extends Controller {
 
             $notLinkedCssFiles = DB::try()->select('id, file_name, extension')->from('css')->fetch();
         }
+
+        $linkedJsFiles = DB::try()->select('js.id, js.file_name, js.extension')->from('js')->join('js_page')->on('js_page.js_id', '=', 'js.id')->where('js_page.page_id', '=', $request['id'])->fetch();
+        
+        $linkedJsFileIds = [];
+
+        if(!empty($linkedJsFiles) && $linkedJsFiles !== null) {
+
+            foreach($linkedJsFiles as $linkedJsFile) {
+
+                array_push($linkedJsFileIds, $linkedJsFile['id']);
+            }
+
+            $linkedJsFileIdStrings = implode(',', $linkedJsFileIds);
+
+            $notLinkedJsFiles = DB::try()->select('id, file_name, extension')->from('js')->whereNotIn('id', $linkedJsFileIdStrings)->fetch();
+        } else {
+
+            $notLinkedJsFiles = DB::try()->select('id, file_name, extension')->from('js')->fetch();
+        }
     
         $data['data'] = $post;
         $data['postSlug'] = $postSlug;
         $data['linkedCssFiles'] = $linkedCssFiles;
         $data['notLinkedCssFiles'] = $notLinkedCssFiles;
+        $data['linkedJsFiles'] = $linkedJsFiles;
+        $data['notLinkedJsFiles'] = $notLinkedJsFiles;
         $data['rules'] = [];
 
         return $this->view('admin/posts/edit', $data);
@@ -153,6 +174,14 @@ class PostController extends Controller {
 
             $this->linkCss($request);
             exit();
+        } else if(!empty($request['includeJs']) && $request['includeJs'] !== null) {
+
+            $this->includeJs($request);
+            exit();
+        } else if (!empty($request['removeJs']) && $request['removeJs'] !== null) {
+
+            $this->removeJs($request);
+            exit();
         }
 
         if(submitted("submit") === true && Csrf::validate(Csrf::token('get'), post('token')) === true ) {
@@ -182,6 +211,43 @@ class PostController extends Controller {
                 
             //} 
         }
+    }
+
+    public function removeJs($request) {
+
+        $id = $request['id'];
+        $linkedJsIds = $request['linkedJsFiles'];
+
+        if(!empty($linkedJsIds) && $linkedJsIds !== null) {
+
+            foreach($linkedJsIds as $linkedJsId) {
+
+                DB::try()->delete('js_page')->where('page_id', '=', $id)->and('js_id', '=', $linkedJsId)->run();
+            }
+        }
+
+        redirect("/admin/posts/$id/edit");
+    }
+
+    public function includeJs($request) {
+
+        $id = $request['id'];
+        $jsIds = $request['jsFiles'];
+
+        if(!empty($jsIds) && $jsIds !== null) {
+
+            foreach($jsIds as $jsId) {
+
+                DB::try()->insert('js_page', [
+
+                    'js_id' => $jsId,
+                    'page_id' => $id
+
+                ])->where('js_page', '=', $id)->and('js_id', '=', $jsId);
+            }
+        }
+        
+        redirect("/admin/posts/$id/edit");
     }
 
     public function linkCss($request) {
