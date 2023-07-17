@@ -16,8 +16,6 @@ class UserController extends Controller {
 
     public function index() {
 
-        echo Session::get('username');
-
         $user = new User();
         
         $allUsers = Pagination::get($user->allUsersWithRoles(), 11);
