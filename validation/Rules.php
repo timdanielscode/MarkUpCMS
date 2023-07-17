@@ -161,30 +161,12 @@ class Rules {
     }*/
 
 
-    public function user_edit_username($username) {
+    public function user_edit($username, $email) {
 
       $validation = new Validate();
 
       $validation->input('f_username')->as('Username')->rules(['required' => true, 'min' => 5, 'max' => 50, 'unique' => $username]);
-
-      $this->errors = $validation->errors;
-      return $this;
-    }
-
-    public function user_edit_email($email) {
-
-      $validation = new Validate();
-
       $validation->input('email')->as('Email')->rules(['required' => true, 'min' => 5, 'max' => 50, 'unique' => $email]);
-
-      $this->errors = $validation->errors;
-      return $this;
-    }
-
-    public function user_edit_role() {
-
-      $validation = new Validate();
-
       $validation->input('role')->as('Role')->rules(['required' => true]);
 
       $this->errors = $validation->errors;

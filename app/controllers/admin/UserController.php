@@ -16,6 +16,8 @@ class UserController extends Controller {
 
     public function index() {
 
+        echo Session::get('username');
+
         $user = new User();
         
         $allUsers = Pagination::get($user->allUsersWithRoles(), 11);
@@ -119,55 +121,21 @@ class UserController extends Controller {
 
     public function update($request) {
 
-
-
-        // dus...
-
-        // veld kan niet onaangepast worden gesubmit want
-        // anders is die niet uniek
-
-
-        print_r($request);
-        exit();
-
-
-
-
-
-        //if(submitted("submit") === true && Csrf::validate(Csrf::token('get'), post('token')) === true ) {
-        
-        /*if(array_key_exists('f_username', $request)) {
-
-            $this->updateUsername($request);
-        } else if (array_key_exists('email', $request) ) {
-
-            $this->updateEmail($request);
-        } else if (array_key_exists('role', $request)) {
-
-            $this->updateRole($request);
-        }*/
-    }
-
-    /*private function updateUsername($request) {
-
         $username = $request['f_username'];
-        $uniqueUsername = User::where('username', '=', $username);
+        $uniqueUsername = DB::try()->select('username')->from('users')->where('username', '=', $request['f_username'])->and('username', '!=', $request['username'])->fetch();
+        $uniqueEmail = DB::try()->select('email')->from('users')->where('email', '=', $request['email'])->and('username', '!=', $request['username'])->fetch();
 
         $rules = new Rules();
 
-        if($rules->user_edit_username($uniqueUsername)->validated()) {
+        if($rules->user_edit($uniqueUsername, $uniqueEmail)->validated()) {
 
-            User::update(['username' => $request['username']],[
+            User::update(['username' => $request['f_username']],[
 
-                'username'  =>  $username
+                'username'  =>  $username,
+                'email' => $request['email']
             ]);
 
-            if(Session::get('username') === $request['f_username']) {
-
-                Session::set('username', $request['f_username']); 
-            }
-
-            redirect('/admin/users'); 
+            redirect('/admin/users/' . $request['f_username'] . '/edit'); 
 
         } else {
 
@@ -180,55 +148,6 @@ class UserController extends Controller {
             return $this->view('admin/users/edit', $data);
         }
     }
-
-    private function updateEmail($request) {
-
-        $email = $request['email'];
-        $uniqueEmail = User::where('email', '=', $email);
-
-        $rules = new Rules();
-
-        if($rules->user_edit_email($uniqueEmail)->validated()) {
-
-            User::update(['username' => $request['username']],[
-
-                'email'  =>  $email
-            ]);
-
-            redirect('/admin/users'); 
-
-        } else {
-
-            $data['user']['name'] = DB::try()->select('users.username', 'roles.name')->from('users')->join('user_role')->on('user_role.user_id', '=', 'users.id')->join('roles')->on('user_role.role_id', '=', 'roles.id')->where('users.username', '=', $request['username'])->fetch()[0]['name'];
-            $data['user']['username'] = User::where('username', '=', $request['username'])['username'];
-            $data['user']['email'] = $request['email'];
-
-            $data['rules'] = $rules->errors;
-            return $this->view('admin/users/edit', $data);
-        }
-    }
-
-    private function updateRole($request) {
-
-        $role = $request['role'];
-
-        $rules = new Rules();
-
-        if($rules->user_edit_role()->validated()) {
-
-            UserRole::update(['user_id' => $request['id']],[
-
-                'role_id'  =>  $role
-            ]);
-
-            redirect('/admin/users'); 
-
-        } else {
-
-            $data['rules'] = $rules->errors;
-            return $this->view('admin/users/edit', $data);
-        }
-    }*/
 
     public function delete($request) {
         
