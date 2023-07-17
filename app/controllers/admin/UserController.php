@@ -101,13 +101,16 @@ class UserController extends Controller {
 
     public function edit($request) {
 
+        $userRole = DB::try()->select('roles.name')->from('roles')->join('user_role')->on('user_role.role_id', '=', 'roles.id')->join('users')->on('user_role.user_id', '=', 'users.id')->where('users.username', '=', $request['username'])->first();
+
         $user = new User();
         $user = $user->userAndRole($request['username']);
        
         $data['user'] = $user;
         $data['rules'] = [];
 
-        if(empty($user)) {
+        if(empty($user) || $userRole['name'] === 'admin') {
+            
             return Response::statusCode(404)->view("/404/404");
         } else {
             return $this->view('admin/users/edit', $data);
@@ -117,6 +120,11 @@ class UserController extends Controller {
     public function update($request) {
 
 
+
+        // dus...
+
+        // veld kan niet onaangepast worden gesubmit want
+        // anders is die niet uniek
 
 
         print_r($request);
