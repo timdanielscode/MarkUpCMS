@@ -44,23 +44,27 @@
                             <label for="submit" class="button">Update</label>
                             <a href="/admin/css" class="button">Back</a>
                         </div>
-                        <div class="mainButtonContainer">
+                        <div class="buttonContainer">
                             <form action="update" method="POST">
-                                <input type="submit" name="includeAll" value="Include all"/>
+                                <input type="submit" name="includeAll" value="Include on all"/>
                             </form>
                             <form action="update" method="POST">
-                                <input type="submit" name="removeAll" value="Remove all"/>
+                                <input type="submit" name="removeAll" value="Exclude all"/>
                             </form>
                         </div>
-                        <form action="update" method="POST">
+                        <span class="text">File: </span>
+                        <span class="data"><?php echo $jsFile['file_name'] . $jsFile['extension']; ?></span>
+                        <form action="update" method="POST" class="removeJsForm">
+                            <label>Included on: </label>
                             <select name="pages[]" multiple>
                                 <?php foreach($assingedPages as $page) { ?>
                                     <option value="<?php echo $page['id']; ?>"><?php echo $page['title']; ?></option>
                                 <?php } ?> 
                             </select>
-                            <input type="submit" name="removePage" value="Remove"/>
+                            <input type="submit" name="removePage" value="Exclude"/>
                         </form>   
-                        <form action="update" method="POST">
+                        <form action="update" method="POST" class="includeJsForm">
+                            <label>Other pages: </label>
                             <select name="pages[]" multiple>
                                 <?php foreach($pages as $page) { ?>
                                     <option value="<?php echo $page['id']; ?>"><?php echo $page['title']; ?></option>
