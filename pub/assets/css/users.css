@@ -3,6 +3,48 @@
     margin-left: 5%;
 }
 
+h1 {
+    font-size: 28px;
+    color: #004297;
+    margin-top: 50px;
+}
+.usersCreateForm {
+    overflow: hidden;
+    width: 92%;
+    margin-top: 10px;
+}
+.usersCreateForm .form-parts label {
+    display: block;
+    font-size: 18px;
+}
+
+.usersCreateForm .form-parts input, .usersCreateForm .form-parts select {
+    height: 30px;
+    width: 100%;
+    margin-top: 10px;
+    margin-bottom: 20px;
+    border: none;
+    border-radius: 3px;
+    background: #fff;
+    padding-left: 10px;
+}
+.usersCreateForm .form-parts input:focus-visible {
+    border: none;
+    outline: none;
+}
+
+.usersCreateForm .button {
+    margin-top: 10px;
+    font-size: 14px;
+}
+.usersCreateForm .button:hover {
+    cursor: pointer;
+}
+
+
+
+
+
 /*
     Sidebar
 */

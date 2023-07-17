@@ -15,10 +15,10 @@
 ?>
 
 <div class="create-container">
+    <h1 class="mb-5">Add a new user</h1>
     <div class="row">
         <div class="col10 col9-L">
-            <form action="store" method="POST" class="">
-            <h1 class="text-color-sec mb-5">Register</h1>
+            <form action="store" method="POST" class="usersCreateForm">
             <div class="form-parts">
                     <label for="email">Username:</label>
                     <input name="f_username" type="username" id="username" value="<?php echo post('f_username'); ?>">
@@ -48,7 +48,7 @@
                     </div>
                 </div>
                 <div class="form-parts">
-                    <label for="role">User Role:</label>
+                    <label for="role">Type:</label>
                     <select name="role" id="role">
                         <option>Normal</option>
                         <option>Admin</option>
@@ -58,7 +58,7 @@
                     </div>
                 </div>
                 <div class="form-parts">
-                    <button name="submit" type="submit">Register</button>
+                    <button id="submit" name="submit" type="submit" class="display-none"></button>
                     <input type="hidden" name="token" value="<?php Csrf::token('add');?>" />
                 </div>
             </form>
@@ -67,7 +67,7 @@
             <div id="sidebar" class="width-25-L">
                 <div class="sidebarContainer">
                     <div class="mainButtonContainer">
-                        <label for="submit" class="button">Update</label>
+                        <label for="submit" class="button">Store</label>
                         <a href="/admin/css" class="button">Back</a>
                     </div>
                 </div>
