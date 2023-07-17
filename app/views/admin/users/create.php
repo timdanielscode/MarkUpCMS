@@ -5,6 +5,7 @@
 <?php 
     $this->include('headerOpen');  
 
+    $this->stylesheet("/assets/css/style.css");
     $this->stylesheet("/assets/css/navbar.css");
     $this->stylesheet("/assets/css/users.css");
     $this->stylesheet("/assets/css/sidebar.css");
