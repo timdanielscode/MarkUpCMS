@@ -51,11 +51,9 @@
                             <label for="submit" class="button">Create</label>
                             <a href="/admin/posts" class="button">Back</a>
                         </div>
-                        <ul class="postSidebarButtons">
-                            <li>
-                                <a href="#" id="codeEditorFullScreen" class="button">Full screen</a>
-                            </li>
-                        </ul>
+                        <div class="buttonContainer">
+                            <a href="#" id="codeEditorFullScreen" class="button">Full screen</a>
+                        </div>
                     </div>
                 </div>
             </div>

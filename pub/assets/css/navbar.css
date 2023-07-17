@@ -1,111 +1,29 @@
-#mainNav {
+#IndependentCMSMainNavbar {
     position: relative;
     box-shadow: 0 2px 2px -2px rgba(0,0,0,.2);
-
     height: 50px;
     background: #0c203d;
     width: 100%;
     z-index: 9999;
     top: 0;
 }
-.navbarItems {
+#IndependentCMSMainNavbar ul {
     display: inline-block;
     position: absolute;
     left: 0;
 }
-.navbarItem {
+#IndependentCMSMainNavbar ul li {
     list-style-type: none;
     display: inline-block;
     margin-left: 10px;
     margin-right: 10px;
 }
-.navbarItem a {
+#IndependentCMSMainNavbar ul li a {
     padding-left: 20px;
     color: #fff;
     text-decoration: none;
     font-weight: 300;
 }
-.navbarItem span {
+#IndependentCMSMainNavbar ul li a span {
 	padding-left: 20px;
-}
-.navbarLink {
-    text-decoration: none;
-}
-#navbarLogin {
-    position: absolute;
-    right: 12.5%;
-    top: 5px;
-    
-}
-#navbarLogo img {
-    width: 310px;
-    height: auto;
-}
-#navbarLogin a {
-    text-decoration: none;
-    color: #0047AB;
-    display: block;
-    margin-bottom: 5px;
-}
-#navbarLogo {
-    display:inline-block;
-    padding-left: 50px;
-    padding-top: 20px;
-}
-.navbarItemLast {
-    border-right: 1px solid #2573e0;
-}
-.dropdownItems {
-    display: none;
-    position: absolute;
-    background: #013c8f;
-    width: 200px;
-    line-height: 50px;
-    margin-top: 15px;
-    border-left: 1px solid #2573e0;
-    margin-left: -1px;
-    z-index: 999;
-}
-.dropdownItem {
-    display: block;
-    margin-left: 0;
-    border-bottom: 1px solid #2573e0;
-    text-decoration: none;
-    color: #99c3ff;
-}
-#navbarText {
-    color: #fff;
-    margin-top: 100px;
-    text-align: center;
-}
-#navbarText p {
-    width: 50%;
-    margin: auto;
-}
-#navbarText button {
-    text-decoration: none;
-    width: 175px;
-    height: 40px;
-    font-size: 20px;
-    border-radius: 0;
-    background: #013c8f !important;
-    color: white !important;
-    border: 2px solid #fff;
-    margin-left: 5px;
-    margin-right: 5px;
-    margin-top: 30px;
-}
-#navbarText button a {
-    color: #FFBF00;
-    text-decoration: none;
-}
-#navbarText button:hover {
-    background: #2573e0 !important;
-    cursor: pointer;
-}
-.firstNavbarItems {
-    bottom: -55px !important;
-}
-.firstNavbarItems .dropdown .dropdownItems {
-    margin-top: 17px !important;
 }
