@@ -129,21 +129,17 @@ class UserController extends Controller {
 
         if($rules->user_edit($uniqueUsername, $uniqueEmail)->validated()) {
 
-            User::update(['username' => $request['f_username']],[
+            User::update(['username' => $request['username']],[
 
                 'username'  =>  $username,
                 'email' => $request['email']
             ]);
 
-            redirect('/admin/users/' . $request['f_username'] . '/edit'); 
+            redirect('/admin/users/' . $username . '/edit'); 
 
         } else {
 
-            $data['user']['id'] = User::where('username', '=', $request['username'])[0]['id'];
-            $data['user']['username'] = $request['username'];
-            $data['user']['email'] = User::where('username', '=', $request['username'])[0]['email'];
-            $data['user']['name'] = DB::try()->select('users.username', 'roles.name')->from('users')->join('user_role')->on('user_role.user_id', '=', 'users.id')->join('roles')->on('user_role.role_id', '=', 'roles.id')->where('users.username', '=', $request['username'])->fetch()[0]['name'];
-
+            $data['user'] = DB::try()->select('users.id, users.username, users.email, roles.name')->from('users')->join('user_role')->on('users.id', '=', 'user_role.user_id')->join('roles')->on('user_role.role_id', '=', 'roles.id')->where('users.username', '=', $request['username'])->first();
             $data['rules'] = $rules->errors;
             return $this->view('admin/users/edit', $data);
         }
