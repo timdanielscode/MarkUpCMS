@@ -28,7 +28,7 @@ h1 {
     background: #fff;
     padding-left: 10px;
 }
-.usersCreateForm .form-parts input:focus-visible {
+.usersCreateForm .form-parts input:focus-visible, .usersEditForm .form-parts input:focus-visible {
     border: none;
     outline: none;
 }
