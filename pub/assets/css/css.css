@@ -13,14 +13,16 @@
 /*
     Sidebar
 */
-.mainButtonContainer {
+.mainButtonContainer, .buttonContainer {
     width: 100%;
     display: flex;
     flex-wrap: wrap;
-    margin-top: 63px;
-    margin-bottom: 50px;
+    margin-top: 20px;
 }
-.mainButtonContainer a, .mainButtonContainer label {
+.buttonContainer form input:nth-child(1) {
+    margin-right: 20px;
+}
+.mainButtonContainer a, .mainButtonContainer label, .buttonContainer form input, .removeCssForm input[type="submit"], .linkCssForm input[type="submit"] {
     width: auto;
     display: flex;
     justify-content: center;
@@ -29,7 +31,7 @@
     border-radius: 4px;
     padding: 0 20px;
     transition: 0.3s;
-    font-size: 16px;
+    font-size: 14px;
 }
 .mainButtonContainer label {
     margin-right: 20px;
@@ -41,15 +43,45 @@
     background: #6ba152;
     border: 1px solid #6ba152;
 }
-.mainButtonContainer a {
+.mainButtonContainer a, .buttonContainer form input, .removeCssForm input[type="submit"], .linkCssForm input[type="submit"] {
     border: 1px solid #fff;
     background: rgba(0,0,0,0.1);
     color: #fff;
 }
-.mainButtonContainer a:hover {
+.mainButtonContainer a:hover, .buttonContainer form input:hover, .removeCssForm input[type="submit"]:hover, .linkCssForm input[type="submit"]:hover {
     background: #fff;
     color: #000;
 }
-.mainButtonContainer label:hover {
+.mainButtonContainer label:hover, .buttonContainer form input:hover, .removeCssForm input[type="submit"]:hover, .linkCssForm input[type="submit"]:hover {
     cursor: pointer;
+}
+.removeCssForm, .linkCssForm {
+    margin-top: 20px;
+}
+.removeCssForm label, .linkCssForm label {
+    color: #fff;
+}
+.removeCssForm select, .linkCssForm select {
+    margin-top: 10px;
+    width: 100%;
+    height: 150px;
+}
+.removeCssForm input[type="submit"], .linkCssForm input[type="submit"] {
+    margin-top: 20px;
+}
+.removeCssForm select option, .linkCssForm select option {
+    padding: 4px 0 4px 10px;
+}
+.text {
+    margin-top: 20px;
+    color: #fff;
+    display: block;
+    margin-bottom: 10px;
+}
+.data {
+    width: 100%;
+    border-radius: 3px;
+    background: #fff;
+    display: block;
+    padding: 10px;
 }

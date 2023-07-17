@@ -44,38 +44,34 @@
                             <label for="submit" class="button update">Update</label>
                             <a href="/admin/css" class="button back">Back</a>
                         </div>
-                        <div class="mainButtonContainer">
+                        <div class="buttonContainer">
                             <form action="update" method="POST">
-                                <input type="submit" name="linkAll" value="Link all"/>
+                                <input type="submit" name="linkAll" value="Link on all"/>
                             </form>
                             <form action="update" method="POST">
-                                <input type="submit" name="removeAll" value="Remove all"/>
+                                <input type="submit" name="removeAll" value="Unlink all"/>
                             </form>
                         </div>
-                        <?php if(!empty($assingedPages) && $assingedPages !== null) { ?>
-                            <form action="update" method="POST">
-                                <select name="pages[]" multiple>
-                                    <?php foreach($assingedPages as $page) { ?>
-                                        <option value="<?php echo $page['id']; ?>"><?php echo $page['title']; ?></option>
-                                    <?php } ?>
-                                </select>
-                                <input type="submit" name="removePage" value="Remove"/>
-                            </form>
-                        <?php } else { ?>
-
-                            <p>File is not linked yet.</p>
-
-                        <?php } ?>
-                        <?php if(!empty($pages) && $pages !== null) { ?>
-                            <form action="update" method="POST">
-                                <select name="pages[]" multiple>
-                                    <?php foreach($pages as $page) { ?>
-                                        <option value="<?php echo $page['id']; ?>"><?php echo $page['title']; ?></option>
-                                    <?php } ?>
-                                </select>
-                                <input type="submit" name="updatePage" value="Link"/>
-                            </form>
-                        <?php } ?>
+                        <span class="text">File: </span>
+                        <span class="data"><?php echo $cssFile['file_name'] . $cssFile['extension']; ?></span>
+                        <form action="update" method="POST" class="removeCssForm">
+                            <label>Linked on: </label>
+                            <select name="pages[]" multiple>
+                                <?php foreach($assingedPages as $page) { ?>
+                                    <option value="<?php echo $page['id']; ?>"><?php echo $page['title']; ?></option>
+                                <?php } ?>
+                            </select>
+                            <input type="submit" name="removePage" value="Unlink"/>
+                        </form>
+                        <form action="update" method="POST" class="linkCssForm">
+                            <label>Other pages: </label>
+                            <select name="pages[]" multiple>
+                                <?php foreach($pages as $page) { ?>
+                                    <option value="<?php echo $page['id']; ?>"><?php echo $page['title']; ?></option>
+                                <?php } ?>
+                            </select>
+                            <input type="submit" name="updatePage" value="Link"/>
+                        </form>
                     </div>
                 </div>
             </div>
