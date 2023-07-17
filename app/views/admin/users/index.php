@@ -46,7 +46,7 @@
                         </td>
                     <td class="width-40">
                     <?php if($user['name'] === 'admin') { ?>
-                        <a href="/admin/users/<?php echo $user['username']; ?>/read" class="font-weight-500"><?php echo $user['username']; ?></a> |
+                        <a href="/admin/users/<?php echo $user['username']; ?>/read" class="font-weight-500"><?php echo $user['username']; ?></a>
                         
                     <?php } else { ?>
 
@@ -54,7 +54,7 @@
                         <a href="/admin/users/<?php echo $user['username']; ?>/edit" class="font-weight-300">Edit</a> |     
                     <?php } ?>
                         
-                        <a href="/admin/users/<?php echo $user['username']; ?>/read" class="font-weight-300">Read</a> <?php if($user['name'] !== 'admin') { ?> |
+                    <?php if($user['name'] !== 'admin') { ?> <a href="/admin/users/<?php echo $user['username']; ?>/read" class="font-weight-300">Read</a> |
 
                             <a href="/admin/users/<?php echo $user['username']; ?>/delete" class="font-weight-300 color-red">Remove</a>
                         <?php } ?>

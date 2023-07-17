@@ -29,7 +29,7 @@ class UserController extends Controller {
             $search = get('search');
             $allUsers = $user->allUsersWithRoles($search);
         }
-
+       
         $data['allUsers'] = $allUsers;
         $data['count'] = $count;
         $data['numberOfPages'] = $numberOfPages;

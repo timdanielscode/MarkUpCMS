@@ -6,6 +6,7 @@
 namespace app\models;
 
 use database\DB;
+use core\Session;
    
 class User extends Model {
 
@@ -20,7 +21,7 @@ class User extends Model {
 
             $users = DB::try()->select('users.*', 'roles.name')->from('users')->join('user_role')->on('users.id', '=', 'user_role.user_id')->join('roles')->on('user_role.role_id', '=', 'roles.id')->where('username', '=', $searchValue)->or('email', '=', $searchValue)->or('name', '=', $searchValue)->fetch();
         } else {
-            $users = DB::try()->select('users.*', 'roles.name')->from('users')->join('user_role')->on('users.id', '=', 'user_role.user_id')->join('roles')->on('user_role.role_id', '=', 'roles.id')->order('roles.name')->fetch();
+            $users = DB::try()->select('users.*', 'roles.name')->from('users')->join('user_role')->on('users.id', '=', 'user_role.user_id')->join('roles')->on('user_role.role_id', '=', 'roles.id')->where('users.username','!=', Session::get('username'))->order('roles.name')->fetch();
         }
 
         return $this->ifDataExists($users);
