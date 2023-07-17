@@ -110,7 +110,7 @@ class UserController extends Controller {
         $data['rules'] = [];
 
         if(empty($user) || $userRole['name'] === 'admin') {
-            
+
             return Response::statusCode(404)->view("/404/404");
         } else {
             return $this->view('admin/users/edit', $data);
@@ -232,7 +232,15 @@ class UserController extends Controller {
 
     public function delete($request) {
         
-        User::delete('username', $request['username']);
-        redirect("/admin/users");
+        $userRole = DB::try()->select('roles.name')->from('roles')->join('user_role')->on('user_role.role_id', '=', 'roles.id')->join('users')->on('user_role.user_id', '=', 'users.id')->where('users.username', '=', $request['username'])->first();
+
+        if($userRole['name'] === 'admin') {
+
+            return Response::statusCode(404)->view("/404/404");
+        } else {
+
+            User::delete('username', $request['username']);
+            redirect("/admin/users");
+        }
     }
 }

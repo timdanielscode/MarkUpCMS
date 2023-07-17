@@ -54,8 +54,10 @@
                         <a href="/admin/users/<?php echo $user['username']; ?>/edit" class="font-weight-300">Edit</a> |     
                     <?php } ?>
                         
-                        <a href="/admin/users/<?php echo $user['username']; ?>/read" class="font-weight-300">Read</a> |
-                        <a href="/admin/users/<?php echo $user['username']; ?>/delete" class="font-weight-300 color-red">Remove</a>
+                        <a href="/admin/users/<?php echo $user['username']; ?>/read" class="font-weight-300">Read</a> <?php if($user['name'] !== 'admin') { ?> |
+
+                            <a href="/admin/users/<?php echo $user['username']; ?>/delete" class="font-weight-300 color-red">Remove</a>
+                        <?php } ?>
                     </td>
 
                         <td>
