@@ -46,25 +46,24 @@
                         <label for="submit" class="button">Update</label>
                         <a href="/admin/menus" class="button">Back</a>
                     </div>
-                    <span id="menuPosition">Position: <?php echo $menu['position']; ?></span>
-
-                    <ul class="postSidebarButtons">
-                        <li>
-                            <a href="/admin/menus/<?php echo $post['id']; ?>/read" class="button">Preview</a>
-                        </li>
-                        <li>
-                            <a href="#" id="codeEditorFullScreen" class="button">Full screen</a>
-                        </li>
-                    </ul>
-                    <form action="update" method="POST">
-                        <select name="position">
+                    <div class="buttonContainer">
+                        <a href="/admin/menus/<?php echo $post['id']; ?>/read" class="button">Read</a>
+                        <a href="#" id="codeEditorFullScreen" class="button">Full screen</a>
+                    </div>
+                    <span class="text">Current position: </span>
+                    <span class="data"><?php echo $menu['position']; ?></span>
+                    <span class="text">Ordering: </span>
+                    <span class="data"><?php if(!empty($menu['ordering']) && $menu['ordering'] !== null) { echo $menu['ordering']; } else { echo 'Unset'; } ?></span>
+                    <form action="update" method="POST" class="updatePositionForm">
+                        <label>Position:</label>
+                        <select name="position" multiple>
                             <option value="top">Top</option>
                             <option value="bottom">Bottom</option>
                         </select>
                         <input type="submit" name="submitPosition" value="update"/>
                     </form>
-                    <form action="update" method="POST">
-                        <input type="number" name="ordering" min="1" max="10">
+                    <form action="update" method="POST" class="updateNumberForm">
+                        <input dir="rtl" type="number" name="ordering" min="1" max="99" value="1">
                         <input type="submit" name="submitOrdering" value="update"/>
                     </form>
                 </div>

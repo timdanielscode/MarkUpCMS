@@ -9,25 +9,19 @@
     font-size: 22px;
     margin-bottom: 20px;
 }
-
-#menuPosition {
-    color: #fff;
-    margin-top: 50px;
-    margin-left: 20px;
-    display: block;
-}
-
 /*
     Sidebar
 */
-.mainButtonContainer {
+.mainButtonContainer, .buttonContainer {
     width: 100%;
     display: flex;
     flex-wrap: wrap;
-    margin-top: 63px;
-    margin-bottom: 50px;
+    margin-top: 20px;
 }
-.mainButtonContainer a, .mainButtonContainer label {
+.buttonContainer a:nth-child(1) {
+    margin-right: 20px;
+}
+.mainButtonContainer a, .mainButtonContainer label, .buttonContainer a, .updatePositionForm input[type="submit"], .updateNumberForm input:nth-child(2) {
     width: auto;
     display: flex;
     justify-content: center;
@@ -36,7 +30,7 @@
     border-radius: 4px;
     padding: 0 20px;
     transition: 0.3s;
-    font-size: 16px;
+    font-size: 14px;
 }
 .mainButtonContainer label {
     margin-right: 20px;
@@ -48,15 +42,57 @@
     background: #6ba152;
     border: 1px solid #6ba152;
 }
-.mainButtonContainer a {
+.mainButtonContainer a, .buttonContainer a, .updatePositionForm input[type="submit"], .updateNumberForm input:nth-child(2) {
     border: 1px solid #fff;
     background: rgba(0,0,0,0.1);
     color: #fff;
 }
-.mainButtonContainer a:hover {
+.mainButtonContainer a:hover, .buttonContainer a:hover, .updatePositionForm input[type="submit"]:hover, .updateNumberForm input:nth-child(2):hover {
     background: #fff;
     color: #000;
 }
-.mainButtonContainer label:hover {
+.mainButtonContainer label:hover, .buttonContainer a:hover, .updatePositionForm input[type="submit"]:hover, .updateNumberForm input:nth-child(2):hover {
     cursor: pointer;
+}
+.updatePositionForm input[type="submit"], .updateNumberForm input:nth-child(2) {
+    margin: 20px 0;
+}
+.updatePositionForm select {
+    width: 100%;
+    background: #fff;
+    border: none;
+    padding: 10px;
+    border-radius: 3px;
+    overflow: hidden;
+    height: 68px;
+}
+.updateNumberForm input:nth-child(1) {
+    width: 83%;
+    padding: 10px 16px 10px 10px;
+}
+.updatePositionForm select option {
+    width: 100%;
+}
+.updatePositionForm select option {
+    padding: 4px 0 4px 10px;
+}
+.updatePositionForm label {
+    color: #fff;
+    margin-top: 20px;
+    margin-bottom: 10px;
+    display: block;
+}
+
+.text {
+    color: #fff;
+    display: block;
+    margin-top: 20px;
+    margin-bottom: 10px;
+}
+.data {
+    background: #fff;
+    display: block;
+    width: 100%;
+    border-radius: 3px;
+    padding: 10px;
 }
