@@ -19,7 +19,8 @@
     <div class="create-container">
         <div class="row">
             <div class="col10 col9-L">
-                <form action="" method="POST" class="" enctype="multipart/form-data">
+                <h1>Upload media files</h1>
+                <form action="" method="POST" class="uploadFileForm" enctype="multipart/form-data">
                     <div class="form-parts">
                         <input name="media_title" type="text" id="media_title" placeholder="Title" autofocus>
                         <div class="error-messages">
@@ -33,7 +34,7 @@
                         </div>
                     </div>
                     <div class="form-parts">
-                        <input name="file" type="file" multiple="true" id="file">
+                        <input name="file" type="file" multiple="true" id="file" class="display-none">
                         <div class="error-messages">
                             <?php echo Errors::get($rules, 'file'); ?>
                         </div>
@@ -44,11 +45,27 @@
                     </div>
                 </form>
             </div>
-            <div id="sidebar" class="width-25-L">
-                <div class="sidebarContainer">
-                    <div class="mainButtonContainer">
-                        <label for="submit" class="button">Create</label>
-                        <a href="/admin/categories" class="button">Back</a>
+            <div class="col2 col3-L">
+                <div id="sidebar" class="width-25-L">
+                    <div class="sidebarContainer">
+                        <div class="mainButtonContainer">
+                            <label for="submit" class="button">Upload</label>
+                            <a href="/admin/media" class="button">Back</a>
+                        </div>
+                        <div class="buttonContainer">
+                            <label for="file" class="button">Select files to upload</label>
+                        </div>
+                        <span class="text">Max upload size:</span>
+                        <span class="data">5 mb</span>
+                        <span class="text">Allowed file types: </span>
+                        <span class="data">.jpeg (image/jpeg)</span>
+                        <span class="data">.png (image/png)</span>
+                        <span class="data">.webp (image/webp)</span>
+                        <span class="data">.giff (image/gif)</span>
+                        <span class="data">.svg (image/svg+xml)</span>
+                        <span class="data">.mp4 (video/mp4)</span>
+                        <span class="data">.mov (video/quicktime)</span>
+                        <span class="data">.pdf (application/pdf)</span>
                     </div>
                 </div>
             </div>

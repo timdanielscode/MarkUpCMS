@@ -1,12 +1,113 @@
+/*
+    Create section
+*/
+
 .create-container {
     margin-top: 20px;
     margin-left: 5%;
 }
-
-#media_description {
-    margin-left: 50px;
-    width: 90%;
+.create-container h1 {
+    font-size: 22px;
+    color: #004297;
 }
+.uploadFileForm #media_title {
+    padding: 10px;
+    font-size: 16px;
+    border-radius: 3px;
+    background: #fff;
+    width: 500px;
+    margin-bottom: 20px;
+    border: 1px solid #333;
+}
+.uploadFileForm #media_title:focus-visible {
+    outline: none;
+}
+.uploadFileForm textarea {
+    width: 500px;
+    height: 50px;
+    border-radius: 3px;
+    padding: 10px;
+    background: #fff;
+    border: 1px solid #333;
+    margin-bottom: 20px;
+}
+
+/*
+    Sidebar
+*/
+.mainButtonContainer, .buttonContainer {
+    width: 100%;
+    display: flex;
+    flex-wrap: wrap;
+    margin-top: 20px;
+}
+.mainButtonContainer a, .mainButtonContainer label, .buttonContainer label {
+    width: auto;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 36px;
+    border-radius: 4px;
+    padding: 0 20px;
+    transition: 0.3s;
+    font-size: 16px;
+}
+.mainButtonContainer label {
+    margin-right: 20px;
+    color: #fff;
+    background: #42971c;
+    border: 1px solid #42971c;
+}
+.mainButtonContainer label:hover {
+    background: #6ba152;
+    border: 1px solid #6ba152;
+}
+.mainButtonContainer a, .buttonContainer label{
+    border: 1px solid #fff;
+    background: rgba(0,0,0,0.1);
+    color: #fff;
+}
+.mainButtonContainer a:hover, .buttonContainer label:hover {
+    background: #fff;
+    color: #000;
+}
+.mainButtonContainer label:hover, .buttonContainer label:hover {
+    cursor: pointer;
+}
+.text {
+    display: block;
+    margin-top: 20px;
+    color: #fff;
+}
+.data {
+    display: block;
+    background: #fff;
+    border-radius: 3px;
+    padding: 10px;
+    margin-top: 10px;
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 #media_description:focus {
     outline: none;
 }
@@ -112,46 +213,3 @@
     z-index: 999999;
 }
 
-/*
-    Sidebar
-*/
-.mainButtonContainer {
-    width: 100%;
-    display: flex;
-    flex-wrap: wrap;
-    margin-top: 63px;
-    margin-bottom: 50px;
-}
-.mainButtonContainer a, .mainButtonContainer label {
-    width: auto;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    height: 36px;
-    border-radius: 4px;
-    padding: 0 20px;
-    transition: 0.3s;
-    font-size: 16px;
-}
-.mainButtonContainer label {
-    margin-right: 20px;
-    color: #fff;
-    background: #42971c;
-    border: 1px solid #42971c;
-}
-.mainButtonContainer label:hover {
-    background: #6ba152;
-    border: 1px solid #6ba152;
-}
-.mainButtonContainer a {
-    border: 1px solid #fff;
-    background: rgba(0,0,0,0.1);
-    color: #fff;
-}
-.mainButtonContainer a:hover {
-    background: #fff;
-    color: #000;
-}
-.mainButtonContainer label:hover {
-    cursor: pointer;
-}
