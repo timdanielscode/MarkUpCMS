@@ -116,23 +116,31 @@ class UserController extends Controller {
 
     public function update($request) {
 
+
+
+
+        print_r($request);
+        exit();
+
+
+
+
+
         //if(submitted("submit") === true && Csrf::validate(Csrf::token('get'), post('token')) === true ) {
-        if(submitted("submit") === true) {
+        
+        /*if(array_key_exists('f_username', $request)) {
 
-            if(array_key_exists('f_username', $request)) {
+            $this->updateUsername($request);
+        } else if (array_key_exists('email', $request) ) {
 
-                $this->updateUsername($request);
-            } else if (array_key_exists('email', $request) ) {
+            $this->updateEmail($request);
+        } else if (array_key_exists('role', $request)) {
 
-                $this->updateEmail($request);
-            } else if (array_key_exists('role', $request)) {
-
-                $this->updateRole($request);
-            }
-        }
+            $this->updateRole($request);
+        }*/
     }
 
-    private function updateUsername($request) {
+    /*private function updateUsername($request) {
 
         $username = $request['f_username'];
         $uniqueUsername = User::where('username', '=', $username);
@@ -155,8 +163,9 @@ class UserController extends Controller {
 
         } else {
 
+            $data['user']['id'] = User::where('username', '=', $request['username'])[0]['id'];
             $data['user']['username'] = $request['username'];
-            $data['user']['email'] = User::where('username', '=', $request['username'])['email'];
+            $data['user']['email'] = User::where('username', '=', $request['username'])[0]['email'];
             $data['user']['name'] = DB::try()->select('users.username', 'roles.name')->from('users')->join('user_role')->on('user_role.user_id', '=', 'users.id')->join('roles')->on('user_role.role_id', '=', 'roles.id')->where('users.username', '=', $request['username'])->fetch()[0]['name'];
 
             $data['rules'] = $rules->errors;
@@ -211,7 +220,7 @@ class UserController extends Controller {
             $data['rules'] = $rules->errors;
             return $this->view('admin/users/edit', $data);
         }
-    }
+    }*/
 
     public function delete($request) {
         

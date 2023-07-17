@@ -19,7 +19,7 @@
 
             <h1><?php echo $user['username']; ?><span class="pl-3"><?php echo $user['name']; ?></span></h1>
             
-                <form action="update" method="POST" class="d-block m-auto">
+                <form action="update" method="POST" class="usersEditForm">
                     <div class="form-parts">
                         <label for="username">Username:</label>
                         <input name="f_username" type="text" id="username" value="<?php echo $user['username']; ?>">
@@ -27,15 +27,12 @@
                             <?php echo Errors::get($rules, 'f_username'); ?>
                         </div>
                     </div>
-                    <div class="form-parts">
-                        <button name="submit" type="submit" class="button">Update</button>
-                        <input type="hidden" name="token" value="<?php echo Csrf::token('add');?>" />
-                    </div>
-                </form>
-
-
-
-                <form action="update" method="POST" class="">
+                    <!--<div class="form-parts">
+                        <button name="submit" type="submit" class="display-none" id="updateUsername"></button>
+                        <input type="hidden" name="token" value="<?php //echo Csrf::token('add');?>" />
+                    </div>-->
+                <!--</form>
+                <form action="update" method="POST" class="usersEditForm">-->
                     <div class="form-parts">
                         <label for="email">Email:</label>
                         <input name="email" type="email" id="email" value="<?php echo $user["email"]; ?>">
@@ -43,39 +40,45 @@
                             <?php echo Errors::get($rules, 'email'); ?>
                         </div>
                     </div>
-                    <div class="form-parts">
-                        <button name="submit" type="submit" class="button">Update</button>
-                        <input type="hidden" name="token" value="<?php echo Csrf::token('add');?>" />
-                    </div>
-                </form>
+                    <!--<div class="form-parts">
+                        <button name="submit" type="submit" class="display-none" id="updateEmail"></button>
+                        <input type="hidden" name="token" value="<?php //echo Csrf::token('add');?>" />
+                    </div>-->
+                <!--</form>
 
-                <form action="update" method="POST" class="">
+                <form action="update" method="POST" class="usersEditForm">-->
                     <div class="form-parts">
                         <label for="role">User Role:</label>
                         <select name="role" id="role">
-                        <option value="1">Normal</option>
-                        <option value="2">Admin</option>
+                            <option value="1">Normal</option>
+                            <option value="2">Admin</option>
                         </select>
                         <div class="error-messages">
                             <?php echo Errors::get($rules, 'role'); ?>
                         </div>
                         <div class="form-parts">
-                        <input type="hidden" name="id" value="<?php echo $user["id"]; ?>"> 
-                        <button name="submit" type="submit" class="button">Update</button>
-                        <input type="hidden" name="token" value="<?php echo Csrf::token('add');?>" />
-                    </div>
+                            <input type="hidden" name="id" value="<?php echo $user["id"]; ?>"> 
+                            <button name="submit" type="submit" class="display-none" id="updateRole"></button>
+                            <input type="hidden" name="token" value="<?php echo Csrf::token('add');?>" />
+                        </div>
                     </div>
                 </form>
-</div>
+        </div>
         <div class="col2 col3-L">
             <div id="sidebar" class="width-25-L">
-            <div class="sidebarContainer">
+                <div class="sidebarContainer">
                     <div class="mainButtonContainer">
-                    <label for="submit" class="button">Update</label>
-                <a href="/admin/css" class="button">Back</a>
-                
-            </div>
-            </div>
+                        <label for="submit" class="button">Update</label>
+                        <a href="/admin/css" class="button">Back</a>
+                    </div>
+                    <div class="buttonContainer">
+                        <label for="updateUsername" class="button">Update username</label>
+                        <label for="updateEmail" class="button">Update email</label>
+                    </div>
+                    <div class="buttonContainer">
+                        <label for="updateRole" class="button">Update role</label>
+                    </div>
+                </div>
             </div>
         </div>
     </div>
