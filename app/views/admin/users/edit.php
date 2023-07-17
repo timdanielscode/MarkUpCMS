@@ -17,7 +17,7 @@
     <div class="row">
         <div class="col10 col9-L">
 
-            <h1><?php echo $user['username']; ?><span class="pl-3"><?php echo $user['name']; ?></span></h1>
+            <h1><?php echo $user['username']; ?></h1>
             
                 <form action="update" method="POST" class="usersEditForm">
                     <div class="form-parts">
@@ -27,12 +27,6 @@
                             <?php echo Errors::get($rules, 'f_username'); ?>
                         </div>
                     </div>
-                    <!--<div class="form-parts">
-                        <button name="submit" type="submit" class="display-none" id="updateUsername"></button>
-                        <input type="hidden" name="token" value="<?php //echo Csrf::token('add');?>" />
-                    </div>-->
-                <!--</form>
-                <form action="update" method="POST" class="usersEditForm">-->
                     <div class="form-parts">
                         <label for="email">Email:</label>
                         <input name="email" type="email" id="email" value="<?php echo $user["email"]; ?>">
@@ -40,13 +34,6 @@
                             <?php echo Errors::get($rules, 'email'); ?>
                         </div>
                     </div>
-                    <!--<div class="form-parts">
-                        <button name="submit" type="submit" class="display-none" id="updateEmail"></button>
-                        <input type="hidden" name="token" value="<?php //echo Csrf::token('add');?>" />
-                    </div>-->
-                <!--</form>
-
-                <form action="update" method="POST" class="usersEditForm">-->
                     <div class="form-parts">
                         <label for="role">User Role:</label>
                         <select name="role" id="role">
@@ -58,7 +45,7 @@
                         </div>
                         <div class="form-parts">
                             <input type="hidden" name="id" value="<?php echo $user["id"]; ?>"> 
-                            <button name="submit" type="submit" class="display-none" id="updateRole"></button>
+                            <button name="submit" type="submit" class="display-none" id="submit"></button>
                             <input type="hidden" name="token" value="<?php echo Csrf::token('add');?>" />
                         </div>
                     </div>
@@ -71,13 +58,12 @@
                         <label for="submit" class="button">Update</label>
                         <a href="/admin/css" class="button">Back</a>
                     </div>
-                    <div class="buttonContainer">
-                        <label for="updateUsername" class="button">Update username</label>
-                        <label for="updateEmail" class="button">Update email</label>
-                    </div>
-                    <div class="buttonContainer">
-                        <label for="updateRole" class="button">Update role</label>
-                    </div>
+                    <span class="text">Username:</span>
+                    <span class="data"><?php echo $user['username']; ?></span>
+                    <span class="text">Email:</span>
+                    <span class="data"><?php echo $user['email']; ?></span>
+                    <span class="text">Role:</span>
+                    <span class="data"><?php echo $user['name']; ?></span>
                 </div>
             </div>
         </div>

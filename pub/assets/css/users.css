@@ -88,3 +88,18 @@ h1 {
 .mainButtonContainer label:hover {
     cursor: pointer;
 }
+
+.text {
+    color: #fff;
+    margin-top: 20px;
+    margin-bottom: 10px;
+    display: block;
+}
+
+.data {
+    background: #fff;
+    width: 100%;
+    display: block;
+    padding: 10px;
+    border-radius: 3px;
+}
