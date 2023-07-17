@@ -48,7 +48,7 @@
                         <a href="/admin/posts" class="button">Back</a>
                     </div>
                     <div class="buttonContainer">
-                        <a target="_blank" href="/admin/posts/<?php echo $data['id']; ?>/read" class="button">Read</a>
+                        <a href="/admin/posts/<?php echo $data['id']; ?>/read" class="button">Read</a>
                         <a href="#" id="codeEditorFullScreen" class="button">Full screen</a>
                     </div>
                     <div class="buttonContainer">

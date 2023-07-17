@@ -80,6 +80,25 @@ class PostController extends Controller {
         }
     }
 
+    public function read($request) {
+
+        $post = Post::get($request['id']);
+
+        $cssFiles = DB::try()->select('file_name', 'extension')->from('css')->join('css_page')->on('css_page.css_id', '=', 'css.id')->where('css_page.page_id', '=', $request['id'])->fetch();
+        $jsFiles = DB::try()->select('file_name', 'extension')->from('js')->join('js_page')->on('js_page.js_id', '=', 'js.id')->where('js_page.page_id', '=', $request['id'])->fetch();
+
+        $menusTop = DB::try()->all('menus')->where('position', '=', 'top')->order('ordering')->fetch();
+        $menusBottom = DB::try()->all('menus')->where('position', '=', 'bottom')->order('ordering')->fetch();
+
+        $data['menusTop'] = $menusTop;
+        $data['menusBottom'] = $menusBottom;
+        $data['post'] = $post;
+        $data['cssFiles'] = $cssFiles;
+        $data['jsFiles'] = $jsFiles;
+
+        return $this->view('/admin/posts/read', $data);
+    }
+
     public function edit($request) {
 
         $post = Post::get($request['id']);
@@ -433,14 +452,6 @@ class PostController extends Controller {
             }
         }
     }*/
-
-    public function read($request) {
-
-        $post = Post::get($request['id']);
-        $data['post'] = $post;
-
-        return $this->view('/admin/posts/read', $data);
-    }
 
     public function delete($request) {
 
