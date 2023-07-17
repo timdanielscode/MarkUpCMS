@@ -34,19 +34,19 @@ class InstallationController extends Controller {
 
                 User::insert([
                     
-                    $user->username => $request["username"], 
-                    $user->email => $request["email"], 
-                    $user->password => password_hash($request["password"], PASSWORD_DEFAULT),
-                    $user->retypePassword => password_hash($request["retypePassword"], PASSWORD_DEFAULT),
-                    $user->created_at => date("Y-m-d H:i:s"), 
-                    $user->updated_at => date("Y-m-d H:i:s")
+                    'username' => $request["username"], 
+                    'email' => $request["email"], 
+                    'password' => password_hash($request["password"], PASSWORD_DEFAULT),
+                    'retypePassword' => password_hash($request["retypePassword"], PASSWORD_DEFAULT),
+                    'created_at' => date("Y-m-d H:i:s"), 
+                    'updated_at' => date("Y-m-d H:i:s")
                                  
                 ]); 
 
                 UserRole::insert([
     
-                    $userRole->user_id => 1,
-                    $userRole->role_id => 2
+                    'user_id' => 1,
+                    'role_id' => 2
                 ]);
 
                 redirect('/login');
