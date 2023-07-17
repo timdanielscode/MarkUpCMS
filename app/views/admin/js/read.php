@@ -36,11 +36,13 @@
             </div>
             <div class="col2 col3-L">
                 <div id="sidebar" class="width-25-L">
-                <div class="sidebarContainer">
-                    <div class="mainButtonContainer">
-                    <a href="/admin/css" class="button">Back</a>
-</div>
-</div>
+                    <div class="sidebarContainer">
+                        <div class="mainButtonContainer">
+                            <a href="/admin/js" class="button">Back</a>
+                        </div>
+                        <span class="text">File: </span>
+                        <span class="data"><?php echo $jsFile['file_name'] . $jsFile['extension']; ?></span>
+                    </div>
                 </div>
             </div>
         </div>

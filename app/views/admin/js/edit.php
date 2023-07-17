@@ -42,7 +42,7 @@
                     <div class="sidebarContainer">
                         <div class="mainButtonContainer">
                             <label for="submit" class="button">Update</label>
-                            <a href="/admin/css" class="button">Back</a>
+                            <a href="/admin/js" class="button">Back</a>
                         </div>
                         <div class="buttonContainer">
                             <form action="update" method="POST">
