@@ -48,19 +48,16 @@
             </div>
             <div class="col2 col3-L">
                 <div id="sidebar" class="width-25-L">
-                <div class="sidebarContainer">
-                    <div class="mainButtonContainer">
-                    <label for="submit" class="button">Create</label>
-                        <a href="/admin/menus" class="button">Back</a>
-                        
-                    </div>
-                    <ul class="postSidebarButtons">
-                        <li>
+                    <div class="sidebarContainer">
+                        <div class="mainButtonContainer">
+                            <label for="submit" class="button">Create</label>
+                            <a href="/admin/menus" class="button">Back</a>
+                        </div>
+                        <div class="buttonContainer">
                             <a href="#" id="codeEditorFullScreen" class="button">Full screen</a>
-                        </li>
-                    </ul>
+                        </div>
+                    </div>
                 </div>
-</div>
             </div>
         </div>
     </div>

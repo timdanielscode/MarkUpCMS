@@ -47,7 +47,7 @@
                         <a href="/admin/menus" class="button">Back</a>
                     </div>
                     <div class="buttonContainer">
-                        <a href="/admin/menus/<?php echo $post['id']; ?>/read" class="button">Read</a>
+                        <a href="/admin/menus/<?php echo $menu['id']; ?>/read" class="button">Read</a>
                         <a href="#" id="codeEditorFullScreen" class="button">Full screen</a>
                     </div>
                     <span class="text">Current position: </span>
