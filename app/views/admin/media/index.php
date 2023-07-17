@@ -55,7 +55,7 @@
             </form>
         </div>
         <a href="#" id="updateMediaModal" class="button">Update</a>
-        <a href="#" id="mediaModalClose" class="button">Exit</a>
+        <a href="#" id="mediaModalClose" class="button">Close</a>
     </div>
 
 

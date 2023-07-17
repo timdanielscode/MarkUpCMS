@@ -62,7 +62,7 @@
     background: #6ba152;
     border: 1px solid #6ba152;
 }
-.mainButtonContainer a, .buttonContainer label{
+.mainButtonContainer a, .buttonContainer label {
     border: 1px solid #fff;
     background: rgba(0,0,0,0.1);
     color: #fff;
@@ -132,6 +132,7 @@
     outline: none;
 }
 .mediaFilename {
+    display: block;
     border: none;
     background: none;
     font-size: 13px;
@@ -143,42 +144,70 @@
 .mediaFilename:focus {
     outline: none;
 }
-#mediaModalClose, #updateMediaModal {
-    bottom: 50px;
-    position: absolute;
+#updateMediaModal {
+    background: #42971c;
+    font-size: 14px;
+    padding: 10px;
     left: 50px;
-    color: red;
+    border: 2px solid #42971c;
+    bottom: 50px;
+    border-radius: 3px;
+    position: absolute;
+    color: #fff !important;
+}
+#updateMediaModal:hover {
+    background: #6ba152;
+    border-color: #6ba152;
+}
+#mediaModalClose {
+    background: #4f80c8;
+    color: #fff !important;
+    border: 2px solid #4f80c8;
+    padding: 10px;
+    margin-left: 20px;
+    border-radius: 3px;
+    position: absolute;
+    bottom: 50px;
+    font-size: 14px;
+    left: 110px;
+}
+#mediaModalClose:hover {
+    background: #83a7db;
+    border-color: #83a7db;
 }
 
-#updateMediaModal {
-    left: 100px;
-}
 
 .mediaModalFormContainer {
     position: absolute;
     left: 50px;
-    color: #fff;
+    color: #000;
     top: 50px;
     right: 50px;
 }
 
+#mediaModelForm label {
+    display: block;
+    margin-bottom: 10px;
+}
+
 .mediaModalFormContainer input {
     width: 100%;
-    border: none;
-    background: none;
     box-sizing: border-box;
-    color: #fff;
+    color: #000;
     margin-bottom: 20px;
-    padding: 0;
+    border: 1px solid #333;
+    padding: 10px;
+    border-radius: 3px;
 }
 
 .mediaModalFormContainer textarea {
     width: 100%;
     box-sizing: border-box;
-    height: 100px;
-    border: none;
-    background: none;
-    color: #fff;
+    height: 150px;
+    color: #000;
+    border: 1px solid #333;
+    padding: 10px;
+    border-radius: 3px;
 }
 
 .mediaModalFormContainer textarea, .mediaModalFormContainer input:focus {
@@ -210,6 +239,11 @@
     position: fixed;
     top: 100px;
     right: 100px;
-    z-index: 999999;
+    z-index: 99;
+    font-size: 24px;
+    color: #fff;
+}
+#update:hover {
+    cursor: pointer;
 }
 

@@ -208,13 +208,12 @@ h3 {
 #modal {
     width: 25%;
     height: 50%;
-    background: #0c203d;
+    background: #eaeaea;
     z-index: 9999;
     position: fixed;
     transform: translateY(-50%);
     left: 50%;
-    -webkit-transform: translateX(-50%);
-    border-radius: 3px;
+    transform: translateX(-50%);
 }
 .dark-layer:after {
     content:'';

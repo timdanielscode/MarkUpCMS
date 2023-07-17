@@ -70,8 +70,8 @@ class MediaController extends Controller {
 
     public function mediaModalFetchRead($request) {
 
-        $media = Media::where('id', '=', $request['id']);
-        
+        $media = Media::where('id', '=', $request['id'])[0];
+
         switch ($media['media_filetype']) {
 
             case 'image/png':
@@ -213,7 +213,7 @@ class MediaController extends Controller {
 
     private function updateFilename($request) {
 
-        $currentFile = Media::where('id', '=', $request['id']);
+        $currentFile = Media::where('id', '=', $request['id'])[0];
         $currentFileName = $currentFile['media_filename'];
 
         $type = $currentFile['media_filetype'];
