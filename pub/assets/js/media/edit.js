@@ -11,7 +11,7 @@ $(document).on('click', '.mediaEdit', function() {
 
         $.ajax({
             type: "GET",
-            url: "media/media-modal-fetch?id="+id,
+            url: "media/edit?id="+id,
             dataType: "html",
             success: function (data) {
 
@@ -23,42 +23,6 @@ $(document).on('click', '.mediaEdit', function() {
     });
 });
 
-$(document).on('click', '.mediaPreview', function() {
-    
-    var id = $(this).data('id');
-    var html = $('html');
-
-    $(document).ready(function() {
-
-        $.ajax({
-            type: "GET",
-            url: "media/media-modal-fetch-preview?id="+id,
-            dataType: "html",
-            success: function (data) {
-                html.addClass('dark-layer');
-                $('#mediaPreview').html(data);
-                $('#mediaPreviewFile').removeClass('display-none');
-            }
-        });
-    });
-
-});
-
-
-$(document).on('click', '#mediaPreviewClose', function() {
-    var html = $('html');
-    html.removeClass('dark-layer');
-    $('#mediaPreview').html("");
-
-});
-
-$(document).on('click', '#mediaModalClose', function() {
-    var modal = $('#modal');
-    modal.removeClass('display-block'); 
-    var html = $('html');
-    html.removeClass('dark-layer');
-});
-
 $(document).ready(function() {
     $(document).on('click', '#updateMediaModal', function() {
        
@@ -68,7 +32,7 @@ $(document).ready(function() {
 
         $.ajax({
                 type: "POST",
-                url: "media",
+                url: "media/update",
                 dataType: "json",
                 data: {
                     id: id,
@@ -88,19 +52,6 @@ $(document).ready(function() {
 });
 
 $(document).ready(function() {
-
-    $.ajax({
-        type: "GET",
-        url: "media/fetch-data",
-        dataType: "html",
-        success: function (data) {
-           
-            $('#mydata').html(data);
-        }
-    });
-});
-
-$(document).ready(function() {
     $(document).on('click', 'a[data-role=update]', function() {
 
         var id = $(this).data('id');
@@ -111,7 +62,7 @@ $(document).ready(function() {
 
             $.ajax({
                 type: "POST",
-                url: "media",
+                url: "media/update",
                 dataType: "json",
                 data: {
                     id: id,
@@ -134,4 +85,11 @@ $(document).ready(function() {
         });
 
     });
+});
+
+$(document).on('click', '#mediaModalClose', function() {
+    var modal = $('#modal');
+    modal.removeClass('display-block'); 
+    var html = $('html');
+    html.removeClass('dark-layer');
 });

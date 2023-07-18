@@ -13,7 +13,10 @@
     $this->stylesheet("/assets/css/media.css");
 
     $this->script('/assets/js/ajax.js');
-    $this->script('/assets/js/media.js');
+    $this->script('/assets/js/media/table.js');
+    $this->script('/assets/js/media/edit.js');
+    $this->script('/assets/js/media/read.js');
+
     $this->include('headerClose');
     $this->include('navbar');
 ?>
@@ -58,20 +61,18 @@
         <a href="#" id="mediaModalClose" class="button">Close</a>
     </div>
 
+    <?php if(count($numberOfPages) > 1) { ?>
+        <nav id="pagination" class="pagination">
+            <ul>
+                <?php 
+                    foreach($numberOfPages as $page) {
 
-        <?php if(count($numberOfPages) > 1) { ?>
-            <nav class="paginationPosts">
-                <ul class="pagination">
-                    <li class="page-item previous"><a href="/admin/medias?back=1">Previous</a></li>
-                    <?php 
-                        foreach($numberOfPages as $page) {
-                            echo '<li class="page-item"><a href="/admin/medias?page='.$page.'">'.$page.'</a></li>';
-                       }  
-                    ?>
-                    <li class="page-item next"><a href="/admin/medias?next=1">Next</a></li>
-                </ul>
-            </nav>
-        <?php } ?>
+                        echo '<li class="page-item"><a class="PAGE" id="'. $page. '">'.$page.'</a></li>';
+                    }  
+                ?>
+            </ul>
+        </nav>
+    <?php } ?>
     </div>
 <?php 
     $this->include('footer');

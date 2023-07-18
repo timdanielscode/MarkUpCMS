@@ -52,27 +52,20 @@ Route::middleware(['auth' => 'admin'])->run(function() {
     Route::crud('/admin/menus', '[id]')->add('admin\MenuController', 'crud');
 
     Route::get('/admin/media')->add('admin\MediaController', 'index');
+    Route::get('/admin/media/')->add('admin\MediaController', 'TABLE');
+    Route::get('/admin/media/edit')->add('admin\MediaController', 'EDIT');
+    Route::post('/admin/media/update')->add('admin\MediaController', 'UPDATE');
+
     Route::get('/admin/media/create')->add('admin\MediaController', 'create');
     Route::post('/admin/media/create')->add('admin\MediaController', 'store');
-    Route::get('/admin/media/fetch-data')->add('admin\MediaController', 'fetchData');
-    Route::get('/admin/media/media-modal-fetch')->add('admin\MediaController', 'mediaModalFetch');
-    Route::get('/admin/media/media-modal-fetch-preview')->add('admin\MediaController', 'mediaModalFetchRead');
-    Route::post('/admin/media')->add('admin\MediaController', 'update');
+
+    Route::get('/admin/media/read')->add('admin\MediaController', 'READ');
     Route::get('/admin/media/[id]/delete')->add('admin\MediaController', 'delete');
     
 
 
 
-
-
-
-
-
-
-
-    
     Route::get('/admin/categories')->add('admin\CategoryController', 'index');
-    //Route::get('/admin/categories/pagination')->add('admin\CategoryController', 'PAGINATION');
     Route::get('/admin/categories/')->add('admin\CategoryController', 'TABLE');
     
     Route::get('/admin/categories/read')->add('admin\CategoryController', 'READ');

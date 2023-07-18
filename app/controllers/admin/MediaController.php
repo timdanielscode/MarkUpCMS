@@ -24,12 +24,8 @@ class MediaController extends Controller {
 
             $allMedia = $media->mediaFilesOnSearch($search);
         }
-        if(empty($allMedia) ) {
-
-            $allMedia = array(["id" => "?","title" => "not found", "author" => "not found", "date_created_at" => "-", "time_created_at" => "", "date_updated_at" => "-", "time_updated_at" => ""]);
-        }
         
-        $allMedia = Pagination::get($allMedia, 10);
+        $allMedia = Pagination::get($allMedia, 1);
         $numberOfPages = Pagination::getPageNumbers();
 
         $data["allMedia"] = $allMedia;
@@ -39,22 +35,21 @@ class MediaController extends Controller {
         return $this->view('admin/media/index', $data);
     }
 
-    public function fetchData() {
+    public function TABLE() {
 
         $media = new Media();
         $allMedia = $media->allMediaButOrdered();
 
-        if(empty($allMedia) ) {
-
-            $allMedia = array(["id" => "?","media_title" => "not found", "media_filetype" => "-" , "media_filename" => "-", "media_filesize" => 0, "author" => "not found", "date_created_at" => "-", "time_created_at" => "", "date_updated_at" => "-", "time_updated_at" => ""]);
-        }
+        $allMedia = Pagination::get($allMedia, 1);
+        $numberOfPages = Pagination::getPageNumbers();
 
         $data['allMedia'] = $allMedia;
+        $data['numberOfPages'] = $numberOfPages;
 
         return $this->view('admin/media/table', $data);
     }
 
-    public function mediaModalFetch($request) {
+    public function EDIT($request) {
 
         $media = Media::where('id', '=', $request['id'])[0];
 
@@ -68,7 +63,7 @@ class MediaController extends Controller {
         return $this->view('admin/media/modal', $data);
     }
 
-    public function mediaModalFetchRead($request) {
+    public function READ($request) {
 
         $media = Media::where('id', '=', $request['id'])[0];
 
@@ -179,17 +174,7 @@ class MediaController extends Controller {
         }
     }
 
-    public function edit($request) {
-        
-        Media::where('id', '=', $request['id'])[0];
-
-        $data['media'] = $media;
-        $data['rules'] = [];
-
-        return $this->view('/admin/media/edit', $data);
-    }
-
-    public function update($request) { 
+    public function UPDATE($request) { 
 
         if(!empty($request['filename']) && $request['filename'] !== null) {
 
