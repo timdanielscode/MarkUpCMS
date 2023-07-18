@@ -113,7 +113,7 @@ class MediaController extends Controller {
 
         if(submitted('submit') && Csrf::validate(Csrf::token('get'), post('token') ) === true) {
 
-            $filename = $_FILES['file']['name'];
+            $filenames = $_FILES['file']['name'];
             $tmp = $_FILES['file']['tmp_name'];
             $size = $_FILES['file']['size'];
             $type = $_FILES['file']['type'];
@@ -121,47 +121,50 @@ class MediaController extends Controller {
             $rules = new Rules();
 
             if($rules->media()->validated()) {
-                    
-                switch ($type) {
 
-                    case 'image/png':
-                    case 'image/webp':
-                    case 'image/gif':
-                    case 'image/jpeg':
-                    case 'image/svg+xml':
+                foreach($filenames as $key => $filename) {
 
-                        $fileDestination = "website/assets/img/".$filename;
-                    break;
-                    case 'video/mp4':
-                    case 'video/quicktime':
-
-                        $fileDestination = "website/assets/video/".$filename;
-                    break;  
-                    case 'application/pdf':
-
-                        $fileDestination = "website/assets/application/".$filename;
-                    break;
-                    default:
-
-                        $fileDestination = '';
-                    break;
+                    switch ($type[$key]) {
+        
+                        case 'image/png':
+                        case 'image/webp':
+                        case 'image/gif':
+                        case 'image/jpeg':
+                        case 'image/svg+xml':
+        
+                            $fileDestination = "website/assets/img/".$filename;
+                        break;
+                        case 'video/mp4':
+                        case 'video/quicktime':
+        
+                            $fileDestination = "website/assets/video/".$filename;
+                        break;  
+                        case 'application/pdf':
+        
+                            $fileDestination = "website/assets/application/".$filename;
+                        break;
+                        default:
+        
+                            $fileDestination = '';
+                        break;
+                    }
+                        
+                    move_uploaded_file($tmp[$key], $fileDestination);
+        
+                    Media::insert([
+        
+                        'media_title'   => $request['media_title'],
+                        'media_description' => $request['media_description'],
+                        'media_filename'    => $filename,
+                        'media_filetype'    => $type[$key],
+                        'media_filesize'    => $size[$key],
+                        'date_created_at'   => date("d/m/Y"),
+                        'time_created_at'   => date("H:i"),
+                        'date_updated_at'   => date("d/m/Y"),
+                        'time_updated_at'   => date("H:i")
+                    ]);
                 }
-                    
-                move_uploaded_file($tmp, $fileDestination);
-
-                Media::insert([
-
-                    'media_title'   => $request['media_title'],
-                    'media_description' => $request['media_description'],
-                    'media_filename'    => $filename,
-                    'media_filetype'    => $type,
-                    'media_filesize'    => $size,
-                    'date_created_at'   => date("d/m/Y"),
-                    'time_created_at'   => date("H:i"),
-                    'date_updated_at'   => date("d/m/Y"),
-                    'time_updated_at'   => date("H:i")
-                ]);
-
+    
                 Session::set('create', 'You have successfully created a new post!');            
                 redirect('/admin/media');
 
@@ -170,6 +173,7 @@ class MediaController extends Controller {
                 $data['rules'] = $rules->errors;
                 return $this->view('admin/media/create', $data);
             }
+            
         }
     }
 

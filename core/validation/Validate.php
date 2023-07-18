@@ -126,33 +126,51 @@ class Validate {
                         }
                     break;
                     case 'selected':
+
                         if(empty($_FILES[$this->_inputName]['name']) && $value === true) {
 
                             $this->message($this->_inputName, "No file is selected.");
                         }
                     break;
                     case 'mimes':
-                        if(!in_array($_FILES[$this->_inputName]['type'], $value) ) {
 
-                            $value = implode(', ', $value);
-                            $this->message($this->_inputName, "Type of file must be one of the following: $value.");
+                        foreach($_FILES[$this->_inputName]['type'] as $type) {
+
+                            if(gettype($value) !== 'array') {
+                                
+                                $value = explode('', $vale);
+                            }
+
+                            if(!in_array($type, $value) ) {
+
+                                $value = implode(', ', $value);
+                                $this->message($this->_inputName, "Type of file must be one of the following: $value.");
+                            }
                         }
+
                     break;
                     case 'error':
-                        if($_FILES[$this->_inputName]['error'] === 1 && $value === true) {
+                        foreach($_FILES[$this->_inputName]['error'] as $error) {
 
-                            $this->message($this->_inputName, "Error found in file.");
+                            if($error === 1 && $value === true) {
+
+                                $this->message($this->_inputName, "Error found in file.");
+                            }
                         }
                     break;
                     case 'size':
-                        if($_FILES[$this->_inputName]['size'] > $value) {
 
-                            $mbs = $value / 1000000;
-                            $mbs = number_format((float)$mbs, 1, '.', '');
-                            $filesizeInMbs = $_FILES[$this->_inputName]['size'] / 1000000;
-                            $filesizeInMbs = number_format((float)$filesizeInMbs, 1, '.', '');
+                        foreach($_FILES[$this->_inputName]['size'] as $size) {
 
-                            $this->message($this->_inputName, "$filesizeInMbs mb is to big to upload, filesize can't be bigger than $mbs mb.");
+                            if($size > $value) {
+
+                                $mbs = $value / 1000000;
+                                $mbs = number_format((float)$mbs, 1, '.', '');
+                                $filesizeInMbs = $_FILES[$this->_inputName]['size'] / 1000000;
+                                $filesizeInMbs = number_format((float)$filesizeInMbs, 1, '.', '');
+    
+                                $this->message($this->_inputName, "$filesizeInMbs mb is to big to upload, filesize can't be bigger than $mbs mb.");
+                            }
                         }
                     break;
                 }

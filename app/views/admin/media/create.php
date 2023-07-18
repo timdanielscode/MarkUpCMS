@@ -34,7 +34,7 @@
                         </div>
                     </div>
                     <div class="form-parts">
-                        <input name="file" type="file" multiple="true" id="file" class="display-none">
+                        <input name="file[]" type="file" multiple="true" id="file" class="display-none">
                         <div class="error-messages">
                             <?php echo Errors::get($rules, 'file'); ?>
                         </div>
