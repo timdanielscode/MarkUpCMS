@@ -8,9 +8,4 @@ class UserRole extends Model {
 
         self::table("user_role");
     }
-
-    public $t = 'user_role',
-
-        $user_id = 'user_id', 
-        $role_id = 'role_id';
 }

@@ -24,20 +24,19 @@ class User extends Model {
             $users = DB::try()->select('users.*', 'roles.name')->from('users')->join('user_role')->on('users.id', '=', 'user_role.user_id')->join('roles')->on('user_role.role_id', '=', 'roles.id')->where('users.username','!=', Session::get('username'))->order('roles.name')->fetch();
         }
 
-        return $this->ifDataExists($users);
+        return $users;
     }
 
     public function userAndRole($username) {
 
         $user = DB::try()->select('users.*', 'roles.name')->from('users')->join('user_role')->on('user_id', '=', 'users.id')->join('roles')->on('role_id', '=', 'roles.id')->where('users.username', '=', $username)->first();
-        return $this->ifDataExists($user);
+        return $user;
     }
-
 
     public function getLastRegisteredUserId() {
 
         $user = DB::try()->getLastId('users')->first();
-        return $this->ifDataExists($user);
+        return $user;
     }
 
 

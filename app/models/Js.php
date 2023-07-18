@@ -14,7 +14,7 @@ class Js extends Model {
     public function allJsButOrderedOnDate() {
 
         $allJs = DB::try()->all('js')->order('date_created_at')->fetch();
-        return $this->ifDataExists($allJs);
+        return $allJs;
     }
 
     public function cssFilesOnSearch($searchValue) {
@@ -22,9 +22,7 @@ class Js extends Model {
         if(!empty($searchValue) && $searchValue !== null) {
 
             $jsFiles = DB::try()->all('js')->where('file_name', 'LIKE', '%'.$searchValue.'%')->or('date_created_at', 'LIKE', '%'.$searchValue.'%')->or('time_created_at', 'LIKE', '%'.$searchValue.'%')->or('date_updated_at', 'LIKE', '%'.$searchValue.'%')->or('time_updated_at', 'LIKE', '%'.$searchValue.'%')->fetch();
-            return $this->ifDataExists($jsFiles);
+            return $allJs;
         }
     }
-
-
 }

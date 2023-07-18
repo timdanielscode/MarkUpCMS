@@ -14,7 +14,7 @@ class Menu extends Model {
     public function allMenusButOrderedOnDate() {
 
         $menus = DB::try()->all('menus')->order('date_created_at')->fetch();
-        return $this->ifDataExists($menus);
+        return $menus;
     }
 
     public function menusOnSearch($searchValue) {
@@ -22,7 +22,7 @@ class Menu extends Model {
         if(!empty($searchValue) && $searchValue !== null) {
 
             $menus = DB::try()->all('menus')->where('title', 'LIKE', '%'.$searchValue.'%')->or('author', 'LIKE', '%'.$searchValue.'%')->or('date_created_at', 'LIKE', '%'.$searchValue.'%')->or('time_created_at', 'LIKE', '%'.$searchValue.'%')->or('date_updated_at', 'LIKE', '%'.$searchValue.'%')->or('time_updated_at', 'LIKE', '%'.$searchValue.'%')->fetch();
-            return $this->ifDataExists($menus);
+            return $menus;
         }
     }
 
