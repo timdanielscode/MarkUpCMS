@@ -138,7 +138,7 @@ class Validate {
 
                             if(gettype($value) !== 'array') {
                                 
-                                $value = explode('', $vale);
+                                $value = explode(',', $value);
                             }
 
                             if(!in_array($type, $value) ) {
