@@ -44,7 +44,7 @@
         </tbody>
     </table>
 
-    <?php if(count($numberOfPages) > 1) { ?>
+    <?php if(!empty($numberOfPages) && count($numberOfPages) > 1) { ?>
         <nav id="pagination" class="pagination">
             <ul>
                 <?php 
