@@ -18,11 +18,11 @@
             <?php if($media["media_filename"] !== "-") { ?>
                 <?php $type = $media['media_filetype']; ?>
                 <?php if($type == 'image/png' || $type  == 'image/webp' || $type  == 'image/gif' || $type  == 'image/jpeg' || $type  == 'image/svg+xml') { ?>
-                    <img src="/website/assets/img/<?php echo $media['media_filename']; ?>" id="imageSmall">
+                    <a href="#<?php echo $media['media_filename']; ?>" class="mediaPreview font-weight-300" data-id="<?php echo $media['id']; ?>"><img src="/website/assets/img/<?php echo $media['media_filename']; ?>" id="imageSmall"></a>
                 <?php } else if ($type == 'application/pdf') { ?>  
-                    <iframe src="/website/assets/application/<?php echo $media['media_filename']; ?>" id="pdfSmall"></iframe>
+                    <a href="#<?php echo $media['media_filename']; ?>" class="mediaPreview font-weight-300" data-id="<?php echo $media['id']; ?>"><iframe src="/website/assets/application/<?php echo $media['media_filename']; ?>" id="pdfSmall"></iframe></a>
                 <?php } else if ($type == 'video/mp4' || $type == 'video/quicktime') { ?>
-                    <video src="/website/assets/video/<?php echo $media['media_filename']; ?>" id="imageSmall"></video>
+                    <a href="#<?php echo $media['media_filename']; ?>" class="mediaPreview font-weight-300" data-id="<?php echo $media['id']; ?>"><video src="/website/assets/video/<?php echo $media['media_filename']; ?>" id="imageSmall"></video></a>
                 <?php } ?>
             <?php } else { ?>
                 <span class="font-weight-500"><?php echo $media["media_filename"]; ?></span>
@@ -49,7 +49,7 @@
             <?php } ?>
         </td>
         <td class="width-10">
-            <a data-role="update" id="update" data-id="<?php echo $media['id']; ?>">update</a>
+            <a data-role="update" id="update" class="button" data-id="<?php echo $media['id']; ?>">Update</a>
         </td>
         <td class="width-10">
             <span class="font-weight-500"><?php echo $media['media_filetype']; ?></span>
