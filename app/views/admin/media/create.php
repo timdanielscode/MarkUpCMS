@@ -56,7 +56,7 @@
                             <label for="file" class="button">Select files to upload</label>
                         </div>
                         <span class="text">Max upload size:</span>
-                        <span class="data">5 mb</span>
+                        <span class="data"><?php echo ini_get('upload_max_filesize'); ?></span>
                         <span class="text">Allowed file types: </span>
                         <span class="data">.jpeg (image/jpeg)</span>
                         <span class="data">.png (image/png)</span>

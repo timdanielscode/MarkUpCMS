@@ -13,7 +13,7 @@ use validation\Rules;
 class MediaController extends Controller {
 
     public function index() {
-        
+
         $media = new Media();
         $allMedia = $media->allMediaButOrdered();
 

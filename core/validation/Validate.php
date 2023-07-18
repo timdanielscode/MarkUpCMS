@@ -159,7 +159,8 @@ class Validate {
 
                             if($error === 1 && $value === true) {
 
-                                $this->message($this->_inputName, "Error found in file.");
+                                $maxUploadSize = ini_get('upload_max_filesize');
+                                $this->message($this->_inputName, "File size cannot be bigger than " . $maxUploadSize . '.');
                             }
                         }
                     break;
