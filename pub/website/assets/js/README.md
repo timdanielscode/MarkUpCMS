@@ -1,0 +1,1 @@
+Js files will be stored inside this folder
