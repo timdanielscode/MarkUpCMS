@@ -29,14 +29,14 @@
             <?php } ?>
         </td>
         <td>
-            <span class="font-weight-400">
+            <span class="font-weight-400" id="mediaPath-<?php echo $media['id']; ?>">
                 <?php $type = $media['media_filetype']; ?>
                     <?php if($type == 'image/png' || $type  == 'image/webp' || $type  == 'image/gif' || $type  == 'image/jpeg' || $type  == 'image/svg+xml') { ?>
-                        <?php echo '/website/assets/img/'; ?>
+                        <?php echo '/website/assets/img/' . $media["media_filename"]; ?>
                     <?php } else if($type == 'video/mp4' || $type == 'video/quicktime') { ?>
-                        <?php echo '/website/assets/video/'; ?>
+                        <?php echo '/website/assets/video/' . $media["media_filename"] ?>
                     <?php } else if($type == 'application/pdf') { ?>
-                        <?php echo '/website/assets/application/'; ?>
+                        <?php echo '/website/assets/application/' . $media["media_filename"] ?>
                     <?php } ?>
             </span>
             <?php if($media["media_filename"] !== "-") { ?>

@@ -29,7 +29,7 @@ class MediaController extends Controller {
             $allMedia = array(["id" => "?","title" => "not found", "author" => "not found", "date_created_at" => "-", "time_created_at" => "", "date_updated_at" => "-", "time_updated_at" => ""]);
         }
         
-        $allMedia = Pagination::get($allMedia, 20);
+        $allMedia = Pagination::get($allMedia, 10);
         $numberOfPages = Pagination::getPageNumbers();
 
         $data["allMedia"] = $allMedia;

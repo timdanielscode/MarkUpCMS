@@ -106,6 +106,8 @@ $(document).ready(function() {
         var id = $(this).data('id');
         var filename = $("#filename-"+id).val();
         var message = $("#message-"+id); 
+        var mediaPath = $('#mediaPath-'+id)[0];
+        var mediaPathParts = mediaPath.innerText.split('/');
 
             $.ajax({
                 type: "POST",
@@ -115,15 +117,19 @@ $(document).ready(function() {
                     id: id,
                     filename: filename
             },
+
                 success: function(data) {
                     
-                message.html("Updated successfully!").fadeIn(10).fadeOut(1000);
-                message.addClass('message'); 
+                    mediaPathParts[4] = filename;
+                    mediaPath.innerText = mediaPathParts.join('/');
+
+                    message.html("Updated successfully!").fadeIn(10).fadeOut(1000);
+                    message.addClass('message'); 
             },
                 error: function(xhr, status, error) {
 
-                message.html("Oops, something went wrong!").fadeIn(10).fadeOut(1000);
-                message.addClass('message'); 
+                    message.html("Oops, something went wrong!").fadeIn(10).fadeOut(1000);
+                    message.addClass('message'); 
             }
         });
 
