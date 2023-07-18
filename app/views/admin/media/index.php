@@ -31,7 +31,7 @@
     </div>
     <form action="" method="GET">
         <input type="text" name="search" placeholder="Search" id="search">
-        <input type="hidden" name="submit" value="search">
+        <input id="searchValue" type="hidden" name="submit" value="<?php if(!empty($search) && $search !== null) { echo $search; } ?>">
     </form>
 
     <div id="mediaPreview"></div>
@@ -45,7 +45,7 @@
             <th>Size</th>
             <th>Date</th>
         </thead>
-        <tbody id="mydata">
+        <tbody id="mediaTableBody">
    
         </tbody>
 

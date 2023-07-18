@@ -25,12 +25,13 @@ class MediaController extends Controller {
             $allMedia = $media->mediaFilesOnSearch($search);
         }
         
-        $allMedia = Pagination::get($allMedia, 1);
+        $allMedia = Pagination::get($allMedia, 4);
         $numberOfPages = Pagination::getPageNumbers();
 
         $data["allMedia"] = $allMedia;
         $data['numberOfPages'] = $numberOfPages;
         $data['count'] = $count;
+        $data['search'] = $search;
 
         return $this->view('admin/media/index', $data);
     }
@@ -40,11 +41,19 @@ class MediaController extends Controller {
         $media = new Media();
         $allMedia = $media->allMediaButOrdered();
 
-        $allMedia = Pagination::get($allMedia, 1);
+        $search = get('search');
+
+        if(!empty($search) ) {
+
+            $allMedia = $media->mediaFilesOnSearch($search);
+        }
+
+        $allMedia = Pagination::get($allMedia, 4);
         $numberOfPages = Pagination::getPageNumbers();
 
         $data['allMedia'] = $allMedia;
         $data['numberOfPages'] = $numberOfPages;
+        $data['search'] = $search;
 
         return $this->view('admin/media/table', $data);
     }
