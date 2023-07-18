@@ -3,7 +3,7 @@
 <?php foreach($allMedia as $media) { ?>
     <tr id="<?php echo $media["id"]; ?>">
         <?php if($media["media_title"] !== "not found") { ?>
-            <td class="width-30">
+            <td class="width-20">
                 <a href="#<?php echo $media['media_filename']; ?>" data-role="edit" data-id="<?php echo $media['id']; ?>" id="mediaTitle-<?php echo $media['id']; ?>" class="mediaEdit font-weight-500"><?php echo $media["media_title"]; ?></a> |
                 <a href="#<?php echo $media['media_filename']; ?>" data-role="edit" data-id="<?php echo $media['id']; ?>" class="mediaEdit font-weight-300">Edit</a> |
                 <a href="#<?php echo $media['media_filename']; ?>" class="mediaPreview font-weight-300" data-id="<?php echo $media['id']; ?>">Read</a> |
@@ -42,12 +42,14 @@
             <?php if($media["media_filename"] !== "-") { ?>
             <form>
                 <input class="mediaFilename" name="filename" id="filename-<?php echo $media['id']; ?>" type="text" value="<?php echo $media["media_filename"]; ?>"/>
-                <a data-role="update" id="update" data-id="<?php echo $media['id']; ?>">update</a>
                 <div id="message-<?php echo $media['id'] ?>"></div>
             </form>
             <?php } else { ?>
                 <span class="font-weight-500"><?php echo $media["media_filename"]; ?></span>
             <?php } ?>
+        </td>
+        <td class="width-10">
+            <a data-role="update" id="update" data-id="<?php echo $media['id']; ?>">update</a>
         </td>
         <td class="width-10">
             <span class="font-weight-500"><?php echo $media['media_filetype']; ?></span>

@@ -41,6 +41,7 @@
             <th>Title</th>
             <th>File</th>
             <th>Filename</th>
+            <th>Update</th>
             <th>Type</th>
             <th>Size</th>
             <th>Date</th>
