@@ -120,9 +120,11 @@ class MediaController extends Controller {
 
             $rules = new Rules();
 
-            if($rules->media()->validated()) {
+            foreach($filenames as $key => $filename) {
 
-                foreach($filenames as $key => $filename) {
+                $uniqueFilename = Media::where('media_filename', '=', $filename);
+
+                if($rules->media($uniqueFilename)->validated()) {
 
                     switch ($type[$key]) {
         
@@ -163,17 +165,17 @@ class MediaController extends Controller {
                         'date_updated_at'   => date("d/m/Y"),
                         'time_updated_at'   => date("H:i")
                     ]);
-                }
+               
     
-                Session::set('create', 'You have successfully created a new post!');            
-                redirect('/admin/media');
+                    Session::set('create', 'You have successfully created a new post!');            
+                    redirect('/admin/media');
 
-            } else {
+                } else {
 
-                $data['rules'] = $rules->errors;
-                return $this->view('admin/media/create', $data);
-            }
-            
+                    $data['rules'] = $rules->errors;
+                    return $this->view('admin/media/create', $data);
+                }
+            } 
         }
     }
 

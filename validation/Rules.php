@@ -230,13 +230,13 @@ class Rules {
         return $this;
     }
 
-    public function media() {
+    public function media($uniqueFilename) {
 
         $validation = new Validate();
         
         $validation->input('media_title')->as('Title')->rules(['required' => true, 'min' => 2, 'max' => 40, 'special' => true]);
         $validation->input('media_description')->as('Description')->rules(['required' => true, 'min' => 1, 'max' => 100, 'special' => true]);
-        $validation->input('file')->as('File')->rules(['selected' => true, 'size' => 5000000, 'error' => true, 'mimes' => array('image/png', 'image/jpeg', 'image/gif', 'image/webp', 'image/svg+xml', 'application/pdf', 'video/mp4', 'video/quicktime')]);
+        $validation->input('file')->as('File')->rules(['unique' => $uniqueFilename, 'selected' => true, 'size' => 5000000, 'error' => true, 'mimes' => array('image/png', 'image/jpeg', 'image/gif', 'image/webp', 'image/svg+xml', 'application/pdf', 'video/mp4', 'video/quicktime')]);
         
         $this->errors = $validation->errors;
         return $this;
