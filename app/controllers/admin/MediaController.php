@@ -263,7 +263,40 @@ class MediaController extends Controller {
 
     public function delete($request) {
 
+        $file = Media::where('id', '=', $request['id'])[0];
+        $filename = $file['media_filename'];
+
+        $type = $file['media_filetype'];
+         
+        switch ($type) {
+
+            case 'image/png':
+            case 'image/webp':
+            case 'image/gif':
+            case 'image/jpeg':
+            case 'image/svg+xml':
+
+                $filePath = "website/assets/img/";
+            break;
+            case 'video/mp4':
+            case 'video/quicktime':
+
+                $filePath = "website/assets/video/";
+            break;  
+            case 'application/pdf':
+
+                $filePath = "website/assets/application/";
+            break;
+            default:
+
+                $filePath = '';
+            break;
+        }
+
+        unlink($filePath . $filename);
+
         Media::delete('id', $request['id']);
+        
         redirect("/admin/media");
     }
 }

@@ -281,7 +281,7 @@ class JsController extends Controller {
 
     public function delete($request) {
 
-        $filename = Js::where('id', '=', $request['id'])['file_name'];
+        $filename = Js::where('id', '=', $request['id'])[0]['file_name'];
         $path = "website/assets/js/" . $filename . ".js";
         unlink($path);
 

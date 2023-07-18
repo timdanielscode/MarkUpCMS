@@ -286,8 +286,9 @@ class CssController extends Controller {
 
     public function delete($request) {
 
-        $filename = Css::where('id', '=', $request['id'])['file_name'];
+        $filename = Css::where('id', '=', $request['id'])[0]['file_name'];
         $path = "website/assets/css/" . $filename . ".css";
+        
         unlink($path);
 
         Css::delete('id', $request['id']);
