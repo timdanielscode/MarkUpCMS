@@ -171,7 +171,7 @@ class Validate {
 
                                 $mbs = $value / 1000000;
                                 $mbs = number_format((float)$mbs, 1, '.', '');
-                                $filesizeInMbs = $_FILES[$this->_inputName]['size'] / 1000000;
+                                $filesizeInMbs = $size / 1000000;
                                 $filesizeInMbs = number_format((float)$filesizeInMbs, 1, '.', '');
     
                                 $this->message($this->_inputName, "$filesizeInMbs mb is to big to upload, filesize can't be bigger than $mbs mb.");
