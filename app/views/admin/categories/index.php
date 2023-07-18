@@ -27,7 +27,7 @@
     </div>
     <form action="" method="GET">
         <input type="text" name="search" placeholder="Search" id="search">
-        <input type="hidden" name="submit" value="search">
+        <input id="searchValue" type="hidden" name="submit" value="<?php if(!empty($search) && $search !== null) { echo $search; } else { echo 'Search'; } ?>">
     </form>
     <table>
         

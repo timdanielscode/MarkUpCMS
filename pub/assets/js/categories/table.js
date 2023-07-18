@@ -1,8 +1,10 @@
 $(document).ready(function() {
 
+    var searchValue = $('#searchValue').val();
+    
     $.ajax({
         type: "GET",
-        url: "categories/",
+        url: "categories/?search=" + searchValue,
         dataType: "html",
         success: function (data) {
            
@@ -14,9 +16,11 @@ $(document).ready(function() {
 
 $(document).on('click', '.PAGE', function() {
 
+    var searchValue = $('#searchValue').val();
+
     $.ajax({
         type: "GET",
-        url: "categories/?page=" + this.id,
+        url: "categories/?page=" + this.id + "&search=" + searchValue,
         dataType: "html",
         success: function (data) {
            

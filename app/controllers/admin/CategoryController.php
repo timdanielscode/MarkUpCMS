@@ -17,34 +17,15 @@ class CategoryController extends Controller {
 
     public function index() {
 
-        /*$category = new Category();
-
+        $category = new Category();
         $categories = $category->allCategoriesButOrdered();
 
-        if(empty($categories) ) {
-            $categories = array(["id" => "?","title" => "no category created", "extension" => "","date_created_at" => "-", "time_created_at" => "", "date_updated_at" => "-", "time_updated_at" => ""]);
-        }
-        $count = count($categories);
         $search = get('search');
 
         if(!empty($search) ) {
 
             $categories = $category->categoriesFilesOnSearch($search);
-
-            if(empty($categories) ) {
-                $categories = array(["id" => "?","file_name" => "not found", "date_created_at" => "-", "time_created_at" => "", "date_updated_at" => "-", "time_updated_at" => ""]);
-            }
         }
-
-        $categories = Pagination::get($categories, 7);
-        $numberOfPages = Pagination::getPageNumbers();
-
-        $data['categories'] = $categories;
-        $data['numberOfPages'] = $numberOfPages;
-        $data['count'] = $count;*/
-
-        $category = new Category();
-        $categories = $category->allCategoriesButOrdered();
 
         $count = count($categories);
 
@@ -53,6 +34,7 @@ class CategoryController extends Controller {
 
         $data['count'] = $count;
         $data['numberOfPages'] = $numberOfPages;
+        $data['search'] = $search;
 
         return $this->view('admin/categories/index', $data);
     }
@@ -123,6 +105,13 @@ class CategoryController extends Controller {
 
         $category = new Category();
         $categories = $category->allCategoriesButOrdered();
+
+        $search = get('search');
+        
+        if(!empty($search) ) {
+
+            $categories = $category->categoriesFilesOnSearch($search);
+        }
 
         $categories = Pagination::get($categories, 2);
         $numberOfPages = Pagination::getPageNumbers();
