@@ -77,7 +77,6 @@ margin-top: 50px;
     top: 50%;
     transform: translate(-50%, -50% ) !important;
 }
-
 .modal-add, .modal-add .container, .modal-add .container, .modal-add .container #modalForm, .modal-add .container #modalForm .row:nth-child(2), .modal-add .container #modalForm .row:nth-child(2) .col6, .modal-add .container .row:nth-child(2) .col6 form { 
     position: relative;
     height: 100%;
@@ -93,8 +92,6 @@ margin-top: 50px;
 #SUBCATEGORYSLUGCONTAINER div {
     display: inline-block;
 }
-
-
 #ASSINGEDSUBCATEGORYID option, #NOTASSINGEDSUBCATEGORYID option, #ASSIGNEDPAGEID option, #NOTASSIGNEDPAGEID option {
     padding: 3px 0px 3px 7px;
 }
@@ -130,7 +127,9 @@ margin-top: 50px;
 #ASSINGEDSUBCATEGORYID, #ASSIGNPAGES {
     margin-left: 3.5%;
 }
-
+.modal-add form label {
+    margin-left: 30px;
+}
 #BACK {
     background: #4f80c8;
     border-color: #4f80c8;
@@ -172,4 +171,69 @@ margin-top: 50px;
 .categorySlug:focus-visible {
     border: none;
     outline: none;
+}
+.modal-edit {
+    position: absolute !important;
+    top: 50%;
+    transform: translate(-50%, -50%) !important;
+}
+.modal-edit #modalForm {
+    position: absolute;
+    left: 50px;
+    color: #000;
+    top: 50px;
+    right: 50px;
+}
+.modal-edit #modalForm input {
+    width: 100%;
+    box-sizing: border-box;
+    color: #000;
+    margin-bottom: 20px;
+    border: 1px solid #333;
+    padding: 10px;
+    border-radius: 3px;
+}
+.modal-edit #modalForm textarea {
+    width: 100%;
+    box-sizing: border-box;
+    height: 150px;
+    color: #000;
+    border: 1px solid #333;
+    padding: 10px;
+    border-radius: 3px;
+}
+.modal-edit #modalForm label {
+    display: block;
+    margin-bottom: 10px;
+}
+.modal-edit #modalForm #EDITUPDATE {
+    background: #42971c;
+    font-size: 14px;
+    padding: 10px;
+    border: 2px solid #42971c;
+    bottom: 20px;
+    border-radius: 3px;
+    color: #fff !important;
+    margin-top: 50px;
+}
+.modal-edit #modalForm #EDITUPDATE:hover {
+    background: #6ba152;
+    border-color: #6ba152;
+    cursor: pointer;
+}
+.modal-edit #modalForm #EDITCLOSE {
+    background: #4f80c8;
+    color: #fff !important;
+    border: 2px solid #4f80c8;
+    padding: 10px;
+    margin-left: 20px;
+    border-radius: 3px;
+    bottom: 20px;
+    font-size: 14px;
+    margin-top: 50px;
+}
+.modal-edit #modalForm #EDITCLOSE:hover {
+    cursor: pointer;
+    background: #83a7db;
+    border-color:  #83a7db;
 }

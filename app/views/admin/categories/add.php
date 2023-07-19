@@ -13,7 +13,9 @@
         <div class="row">
             <div class="col6">
                 <form action="" method="POST">
+                <label>Categories: </label>
                     <select id="ASSINGEDSUBCATEGORYID" name="subcategoryid" multiple>
+                        
                         <?php if(!empty($assingedSubCategories) && $assingedSubCategories !== null) { ?>
                             <?php foreach($assingedSubCategories as $assingedSubCategory) { ?>           
                                 <option class="assingedSubCategory" value="<?php echo $assingedSubCategory['id']; ?>">          
@@ -34,6 +36,7 @@
             </div>
             <div class="col6">
             <form action="" method="POST">
+            <label>Pages: </label>
                 <select id="ASSIGNEDPAGEID" name="pageid" multiple>
                     <?php if(!empty($assignedPages) && $assignedPages !== null) { ?>
                         <?php foreach($assignedPages as $assignedPage) { ?>

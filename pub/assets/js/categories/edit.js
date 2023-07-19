@@ -2,6 +2,7 @@ $(document).on('click', '.edit', function() {
 
     var modal = $('#modal');
     modal.addClass('display-block');
+    modal.addClass('modal-edit');
 
     var id = $(this).data('id');
     var html = $('html');
@@ -22,7 +23,7 @@ $(document).on('click', '.edit', function() {
 });
 
 $(document).ready(function() {
-    $(document).on('click', '#UPDATE', function() {
+    $(document).on('click', '#EDITUPDATE', function() {
 
         var id = $('#ID').val();
         var title = $('#TITLE').val();

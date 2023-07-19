@@ -62,10 +62,9 @@
     <div id="categoriesPreview"></div>
 
     <div id="modal" class="display-none">
-        <div class="container">
-            <div id="modalForm">
 
-            </div>
+        <div id="modalForm">
+
         </div>
     </div>
 </div>
