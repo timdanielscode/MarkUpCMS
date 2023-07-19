@@ -86,7 +86,7 @@ $(document).ready(function() {
                 }
             },error: function(xhr, status, error) {
 
-                message.html("Pages are already assinged!").fadeIn(10).fadeOut(1000);
+                message.html("Cannot apply while page is assigned!").fadeIn(10).fadeOut(1000);
                 message.addClass('message');
             }
         });
@@ -168,7 +168,7 @@ $(document).ready(function() {
                     }
                 },error: function(xhr, status, error) {
 
-                    message.html("Page is already assinged!").fadeIn(10).fadeOut(1000);
+                    message.html("Page is not selected!").fadeIn(10).fadeOut(1000);
                     message.addClass('message');
                 }
             });

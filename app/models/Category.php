@@ -13,7 +13,8 @@ class Category extends Model {
 
     public function allCategoriesButOrdered() {
 
-        return DB::try()->all('categories')->order('date_created_at')->fetch();
+        $categories = DB::try()->all('categories')->order('date_created_at')->fetch();
+        return $categories;
     }
 
     public function categoriesFilesOnSearch($searchValue) {
