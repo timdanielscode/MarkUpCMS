@@ -26,33 +26,36 @@
     <div class="create-container">
         <div class="row">
             <div class="col10 col9-L">
+                <h1>Create new category</h1>
                 <form action="" method="POST" class="form-code">
                     <div class="form-parts">
-                        <input type="text" name="title" id="title" placeholder="Title" autofocus>
+                        <label>Name: </label>
+                        <input type="text" name="title" id="title" placeholder="..." autofocus>
                         <div class="error-messages">
                             <?php echo Errors::get($rules, 'title'); ?>
                         </div>
                     </div>
                     <div class="form-parts">
-                        <textarea type="text" name="description" id="description"></textarea>
+                        <label>Description: </label>
+                        <textarea type="text" name="description" id="description" placeholder="..."></textarea>
                         <div class="error-messages">
                             <?php echo Errors::get($rules, 'description'); ?>
                         </div>
                     </div>
-                    <div class="form-parts">
+                    <!--<div class="form-parts">
                         <div class="containerCategoryPagesCheckbox">
-                            <?php foreach($pages as $page) { ?>
+                            <?php //foreach($pages as $page) { ?>
                                 <div class="row">
                                     <div class="col6">
-                                        <label><?php echo $page['title']; ?></label>
+                                        <label><?php //echo $page['title']; ?></label>
                                     </div>
                                     <div class="col6">
-                                        <input name="page[]" type="checkbox" value="<?php echo $page['id'] ?>">
+                                        <input name="page[]" type="checkbox" value="<?php //echo $page['id'] ?>">
                                     </div>
                                 </div>
-                            <?php } ?>
+                            <?php //} ?>
                         </div>
-                    </div>
+                    </div>-->
                     <div class="form-parts">
                         <button name="submit" id="submit" type="submit" class="display-none">Create</button>
                         <input type="hidden" name="token" value="<?php Csrf::token('add');?>" />
