@@ -27,12 +27,10 @@ class CategoryController extends Controller {
             $categories = $category->categoriesFilesOnSearch($search);
         }
 
-        $count = count($categories);
-
-        $categories = Pagination::get($categories, 2);
+        $categories = Pagination::get($categories, 6);
         $numberOfPages = Pagination::getPageNumbers();
 
-        $data['count'] = $count;
+        $data['categories'] = $categories;
         $data['numberOfPages'] = $numberOfPages;
         $data['search'] = $search;
 
@@ -113,12 +111,8 @@ class CategoryController extends Controller {
             $categories = $category->categoriesFilesOnSearch($search);
         }
 
-        $categories = Pagination::get($categories, 2);
+        $categories = Pagination::get($categories, 6);
         $numberOfPages = Pagination::getPageNumbers();
-
-        if(empty($categories) ) {
-            $categories = array(["id" => "?","title" => "no category created", "extension" => "","date_created_at" => "-", "time_created_at" => "", "date_updated_at" => "-", "time_updated_at" => ""]);
-        }
 
         $data['categories'] = $categories;
         $data['numberOfPages'] = $numberOfPages;

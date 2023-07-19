@@ -4,6 +4,7 @@
     $this->stylesheet("/assets/css/style.css");
     $this->stylesheet("/assets/css/navbar.css");
     $this->stylesheet("/assets/css/index.css");
+    $this->stylesheet("/assets/css/categories.css");
     $this->stylesheet("/assets/css/pagination.css");
 
     $this->script('/assets/js/ajax.js', true);
@@ -23,7 +24,7 @@
     </div>
     <div class="countContainer">
         <span>All</span>
-        <span>(<?php echo $count; ?>)</span>
+        <span>(<?php echo count($categories); ?>)</span>
     </div>
     <form action="" method="GET">
         <input type="text" name="search" placeholder="Search" id="search">
@@ -36,7 +37,8 @@
                 <th>#</th>
                 <th>Title</th>
                 <th>Slug</th>
-                <th class="width-10">Date</th>
+                <th></th>
+                <th>Date</th>
             </tr>
         </thead>
         <tbody id="categoryTableBody">

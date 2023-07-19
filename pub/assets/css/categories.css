@@ -19,17 +19,7 @@ margin-top: 50px;
 
     display: none;
 }
-.categoryAddContainer {
-    position: relative;
-    width: 800px;
-    min-height: 800px;
-    background: #fff;
-}
 
-.categoryAddContainer .listedItem {
-
-    display: inline-block;
-}
 
 
 /*
@@ -74,4 +64,89 @@ margin-top: 50px;
 }
 .mainButtonContainer label:hover {
     cursor: pointer;
+}
+
+
+/*
+    Modal
+*/
+.modal-add {
+    overflow: hidden;
+    width: 65% !important;
+    height: 65% !important;
+    top: 50%;
+    transform: translate(-50%, -50% ) !important;
+}
+
+.modal-add, .modal-add .container, .modal-add .container, .modal-add .container #modalForm, .modal-add .container #modalForm .row:nth-child(2), .modal-add .container #modalForm .row:nth-child(2) .col6, .modal-add .container .row:nth-child(2) .col6 form { 
+    position: relative;
+    height: 100%;
+}
+#SUBCATEGORYSLUGCONTAINER {
+    background: #fff;
+    border-radius: 5px;
+    margin-left: 20px;
+    margin-top: 20px;
+    margin-bottom: 20px;
+    padding: 10px;
+}
+#SUBCATEGORYSLUGCONTAINER div {
+    display: inline-block;
+}
+
+
+#ASSINGEDSUBCATEGORYID option, #NOTASSINGEDSUBCATEGORYID option, #ASSIGNEDPAGEID option, #NOTASSIGNEDPAGEID option {
+    padding: 3px 0px 3px 7px;
+}
+#ASSIGNEDPAGEID, #NOTASSIGNEDPAGEID, #ASSINGEDSUBCATEGORYID, #NOTASSINGEDSUBCATEGORYID {
+    width: 93%;
+    height: 30%;
+    border: none;
+    margin: 0 auto;
+    display: block;
+}
+#ASSIGNCATEGORY {
+    margin-left: 20px;
+}
+#ASSIGNCATEGORY, #ASSIGNPAGES {
+    width: 75px;
+    background: #42971c;
+    border-color: #42971c;
+    border-radius: 3px;
+    margin-top: 20px;
+    color: #fff;
+    padding: 8px;
+    text-align: center;
+}
+#ASSINGEDSUBCATEGORYID, #ASSIGNEDPAGEID {
+    margin-bottom: 20px;
+    margin-top: 20px;
+}
+#ASSINGEDSUBCATEGORYID, #ASSIGNPAGES {
+    margin-left: 3.5%;
+}
+
+#BACK {
+    background: #4f80c8;
+    border-color: #4f80c8;
+    border-radius: 3px;
+    color: #fff;
+    margin-top: 20px;
+    margin-right: 20px;
+    width: 65px;
+    float: right;
+    text-align: center;
+    padding: 8px;
+}
+.selectedCategory, .selectedPage {
+    font-weight: bold;
+    padding-left: 15px !important;
+}
+.assingedPage, .assingedSubCategory {
+    color: #277505;
+}
+#PAGEMESSAGE {
+    position: absolute;
+    bottom: 78px;
+    left: 136px;
 }

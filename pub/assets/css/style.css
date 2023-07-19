@@ -129,8 +129,14 @@ h3 {
 .col9 {
     flex: 75%;
 }
+.col8 {
+    flex: 66.66%;
+}
 .col6 {
     flex: 50%;
+}
+.col4 {
+    flex: 33.33%;
 }
 .col3 {
     flex: 25%;
