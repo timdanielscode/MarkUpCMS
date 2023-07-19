@@ -19,12 +19,10 @@ class User extends Model {
 
         if(!empty($searchValue) && $searchValue !== null) {
 
-            $users = DB::try()->select('users.*', 'roles.name')->from('users')->join('user_role')->on('users.id', '=', 'user_role.user_id')->join('roles')->on('user_role.role_id', '=', 'roles.id')->where('username', '=', $searchValue)->or('email', '=', $searchValue)->or('name', '=', $searchValue)->fetch();
+            return DB::try()->select('users.*', 'roles.name')->from('users')->join('user_role')->on('users.id', '=', 'user_role.user_id')->join('roles')->on('user_role.role_id', '=', 'roles.id')->where('users.username', 'LIKE', '%'.$searchValue.'%')->or('users.email', 'LIKE', '%'.$searchValue.'%')->or('roles.name', 'LIKE', '%'.$searchValue.'%')->and('users.username','!=', Session::get('username'))->fetch();
         } else {
-            $users = DB::try()->select('users.*', 'roles.name')->from('users')->join('user_role')->on('users.id', '=', 'user_role.user_id')->join('roles')->on('user_role.role_id', '=', 'roles.id')->where('users.username','!=', Session::get('username'))->order('roles.name')->fetch();
+            return DB::try()->select('users.*', 'roles.name')->from('users')->join('user_role')->on('users.id', '=', 'user_role.user_id')->join('roles')->on('user_role.role_id', '=', 'roles.id')->where('users.username','!=', Session::get('username'))->order('roles.name')->fetch();
         }
-
-        return $users;
     }
 
     public function userAndRole($username) {

@@ -158,6 +158,9 @@ h3 {
 /*
     Widths
 */
+.width-60 {
+    width: 60%;
+}
 .width-50 {
     width: 50%;
 }
@@ -186,7 +189,6 @@ h3 {
 .float-right {
     float: right;
 }
-
 /*
     Button
 */

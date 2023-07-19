@@ -39,35 +39,52 @@
                 </tr>
             </thead>
             <tbody>
-                <?php foreach($allUsers as $user) { ?>
-                    <tr>
-                    <td>
-                            <?php echo $user['id']; ?>
-                        </td>
-                    <td class="width-40">
-                    <?php if($user['name'] === 'admin') { ?>
-                        <a href="/admin/users/<?php echo $user['username']; ?>/read" class="font-weight-500"><?php echo $user['username']; ?></a>
-                        
-                    <?php } else { ?>
+                <?php if(!empty($allUsers) && $allUsers !== null) { ?>
+                    <?php foreach($allUsers as $user) { ?>
+                        <tr>
+                            <td >
+                                <?php echo $user['id']; ?>
+                            </td>
+                            <td class="width-20">
+                            <?php if($user['name'] === 'admin') { ?>
+                                <a href="/admin/users/<?php echo $user['username']; ?>/read" class="font-weight-500"><?php echo $user['username']; ?></a>
+                                
+                            <?php } else { ?>
 
-                        <a href="/admin/users/<?php echo $user['username']; ?>/edit" class="font-weight-500"><?php echo $user['username']; ?></a> |
-                        <a href="/admin/users/<?php echo $user['username']; ?>/edit" class="font-weight-300">Edit</a> |     
+                                <a href="/admin/users/<?php echo $user['username']; ?>/edit" class="font-weight-500"><?php echo $user['username']; ?></a> |
+                                <a href="/admin/users/<?php echo $user['username']; ?>/edit" class="font-weight-300">Edit</a> |     
+                            <?php } ?>
+                                
+                            <?php if($user['name'] !== 'admin') { ?> <a href="/admin/users/<?php echo $user['username']; ?>/read" class="font-weight-300">Read</a> |
+
+                                    <a href="/admin/users/<?php echo $user['username']; ?>/delete" class="font-weight-300 color-red">Remove</a>
+                                <?php } ?>
+                            </td>
+                            <td class="width-20">
+                                <?php echo $user['email']; ?>
+                            </td>
+                            <td class="width-60">
+                                <?php echo $user['name']; ?>
+                            </td>
+                        </tr>
                     <?php } ?>
-                        
-                    <?php if($user['name'] !== 'admin') { ?> <a href="/admin/users/<?php echo $user['username']; ?>/read" class="font-weight-300">Read</a> |
+                <?php } else { ?>
 
-                            <a href="/admin/users/<?php echo $user['username']; ?>/delete" class="font-weight-300 color-red">Remove</a>
-                        <?php } ?>
-                    </td>
-
+                    <tr>
                         <td>
-                            <?php echo $user['email']; ?>
+                            <span class="">-</span>
                         </td>
                         <td>
-                            <?php echo $user['name']; ?>
+                            <span class="">-</span>
                         </td>
-
+                        <td>
+                            <span class="">-</span>
+                        </td>
+                        <td>
+                            <span class="">-</span>
+                        </td>
                     </tr>
+
                 <?php } ?>
             </tbody>
         </table>
