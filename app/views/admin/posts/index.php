@@ -46,7 +46,7 @@
                     <td>
                         <?php echo $post['id']; ?>
                     </td>
-                    <td class="width-25">
+                    <td class="width-20">
                         <a href="/admin/posts/<?php echo $post['id']; ?>/edit" class="font-weight-500"><?php echo $post[1]; ?></a> |
                         <a href="/admin/posts/<?php echo $post['id']; ?>/edit" class="font-weight-300">Edit</a> |
                         <a href="/admin/posts/<?php echo $post['id']; ?>/read" class="font-weight-300">Read</a> |
@@ -55,16 +55,16 @@
                     <td class="width-30">
                         <a href="<?php echo $_SERVER['HTTP_HOST'] . $post['slug']; ?>"><?php echo $post['slug']; ?></a>
                     </td>
-                    <td class="width-10">
+                    <td class="width-15">
                         <?php if(!empty($post[10]) ) { echo $post[10]; } else { echo '-'; } ?>
                     </td>
-                    <td class="width-10">
+                    <td class="width-15">
                         <?php echo $post['author']; ?>
                     </td>
                     <td class="width-10">
                         <?php if(!empty($post['metaTitle']) && !empty($post['metaDescription'])) { echo '<span class="font-weight-300">ok</span>'; } else {echo '<span class="font-weight-300">-</span>'; } ?>
                     </td>
-                    <td class="width-15">
+                    <td>
                         <span class="padding-b-2">Created:</span> <span class="font-weight-300"><?php echo $post["date_created_at"] . " " . $post["time_created_at"]; ?></span><br>
                         <span>Updated:</span> <span class="font-weight-300"><?php echo $post["date_updated_at"] . " " . $post["time_updated_at"]; ?></span>
                     </td> 
