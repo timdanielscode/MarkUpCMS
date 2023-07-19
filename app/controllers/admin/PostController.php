@@ -21,7 +21,6 @@ class PostController extends Controller {
         $post = new Post();
         $posts = $post->allPostsWithCategories();
 
-        $count = count($posts);
         $search = get('search');
 
         if(!empty($search) ) {
@@ -34,7 +33,6 @@ class PostController extends Controller {
 
         $data["posts"] = $posts;
         $data['numberOfPages'] = $numberOfPages;
-        $data['count'] = $count;
 
         return $this->view('admin/posts/index', $data);
     }

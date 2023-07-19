@@ -22,20 +22,11 @@ class CssController extends Controller {
         $css = new Css();
         $cssFiles = $css->allCssButOrderedOnDate();
 
-        if(empty($cssFiles) ) {
-
-            $cssFiles = array(["id" => "?","file_name" => "no css file created yet", "extension" => "","date_created_at" => "-", "time_created_at" => "", "date_updated_at" => "-", "time_updated_at" => ""]);
-        }
-        $count = count($cssFiles);
         $search = get('search');
 
         if(!empty($search) ) {
 
             $cssFiles = $css->cssFilesOnSearch($search);
-
-            if(empty($cssFiles) ) {
-                $cssFiles = array(["id" => "?","file_name" => "not found", "date_created_at" => "-", "time_created_at" => "", "date_updated_at" => "-", "time_updated_at" => ""]);
-            }
         }
 
         $cssFiles = Pagination::get($cssFiles, 20);
@@ -43,7 +34,6 @@ class CssController extends Controller {
 
         $data['cssFiles'] = $cssFiles;
         $data['numberOfPages'] = $numberOfPages;
-        $data['count'] = $count;
 
         return $this->view('admin/css/index', $data);
     }

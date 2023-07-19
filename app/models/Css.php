@@ -13,16 +13,14 @@ class Css extends Model {
 
     public function allCssButOrderedOnDate() {
 
-        $allCss = DB::try()->all('css')->order('date_created_at')->fetch();
-        return $allCss;
+        return DB::try()->all('css')->order('date_created_at')->fetch();
     }
 
     public function cssFilesOnSearch($searchValue) {
 
         if(!empty($searchValue) && $searchValue !== null) {
 
-            $cssFiles = DB::try()->all('css')->where('file_name', 'LIKE', '%'.$searchValue.'%')->or('date_created_at', 'LIKE', '%'.$searchValue.'%')->or('time_created_at', 'LIKE', '%'.$searchValue.'%')->or('date_updated_at', 'LIKE', '%'.$searchValue.'%')->or('time_updated_at', 'LIKE', '%'.$searchValue.'%')->fetch();
-            return $allCss;
+            return DB::try()->all('css')->where('file_name', 'LIKE', '%'.$searchValue.'%')->or('date_created_at', 'LIKE', '%'.$searchValue.'%')->or('time_created_at', 'LIKE', '%'.$searchValue.'%')->or('date_updated_at', 'LIKE', '%'.$searchValue.'%')->or('time_updated_at', 'LIKE', '%'.$searchValue.'%')->fetch();
         }
     }
 }
