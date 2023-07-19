@@ -46,22 +46,22 @@
                     <td>
                         <?php echo $post['id']; ?>
                     </td>
-                    <td class="width-20">
+                    <td class="width-25">
                         <a href="/admin/posts/<?php echo $post['id']; ?>/edit" class="font-weight-500"><?php echo $post[1]; ?></a> |
                         <a href="/admin/posts/<?php echo $post['id']; ?>/edit" class="font-weight-300">Edit</a> |
                         <a href="/admin/posts/<?php echo $post['id']; ?>/read" class="font-weight-300">Read</a> |
                         <a href="/admin/posts/<?php echo $post['id']; ?>/delete" class="font-weight-300 color-red">Remove</a>
                     </td>
-                    <td>
+                    <td class="width-30">
                         <a href="<?php echo $_SERVER['HTTP_HOST'] . $post['slug']; ?>"><?php echo $post['slug']; ?></a>
                     </td>
-                    <td class="">
+                    <td class="width-10">
                         <?php if(!empty($post[10]) ) { echo $post[10]; } else { echo '-'; } ?>
                     </td>
-                    <td class="width-15">
+                    <td class="width-10">
                         <?php echo $post['author']; ?>
                     </td>
-                    <td class="width-15">
+                    <td class="width-10">
                         <?php if(!empty($post['metaTitle']) && !empty($post['metaDescription'])) { echo '<span class="font-weight-300">ok</span>'; } else {echo '<span class="font-weight-300">-</span>'; } ?>
                     </td>
                     <td class="width-15">
