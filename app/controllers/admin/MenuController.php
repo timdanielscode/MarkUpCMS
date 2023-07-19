@@ -17,24 +17,18 @@ class MenuController extends Controller {
         $menu = new Menu();
         $menus = $menu->allMenusButOrderedOnDate();
 
-        $count = count($menus);
         $search = get('search');
 
         if(!empty($search) ) {
 
             $menus = $menu->menusOnSearch($search);
         }
-        if(empty($menus) ) {
 
-            $menus = array(["id" => "?","title" => "not found", "author" => "-", "position" => "-", "date_created_at" => "-", "time_created_at" => "", "date_updated_at" => "-", "time_updated_at" => ""]);
-        }
-        
         $menus = Pagination::get($menus, 20);
         $numberOfPages = Pagination::getPageNumbers();
 
         $data["menus"] = $menus;
         $data['numberOfPages'] = $numberOfPages;
-        $data['count'] = $count;
 
         return $this->view('admin/menus/index', $data);
     }

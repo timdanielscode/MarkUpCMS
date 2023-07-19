@@ -27,7 +27,7 @@
     </div>
     <div class="countContainer">
         <span>All</span>
-        <span>(<?php echo $count; ?>)</span>
+        <span>(<?php echo count($allMedia); ?>)</span>
     </div>
     <form action="" method="GET">
         <input type="text" name="search" placeholder="Search" id="search">
@@ -38,6 +38,7 @@
 
     <table>
         <thead>
+            <th>#</th>
             <th>Title</th>
             <th>File</th>
             <th>Filename</th>

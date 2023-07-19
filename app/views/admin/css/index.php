@@ -28,7 +28,7 @@
                 <tr>
                     <th>#</th>
                     <th>Filename</th>
-                    <th class="width-10">Date</th>
+                    <th>Date</th>
                 </tr>
             </thead>
             <tbody>
@@ -44,7 +44,7 @@
                                 <a href="/admin/css/<?php echo $cssFile['id']; ?>/read" class="font-weight-300">Read</a> |
                                 <a href="/admin/css/<?php echo $cssFile['id']; ?>/delete" class="font-weight-300 color-red">Remove</a>
                             </td>
-                            <td>
+                            <td class="width-10">
                                 <span class="padding-b-2">Created:</span> <span class="font-weight-300"><?php echo $cssFile["date_created_at"] . " " . $cssFile["time_created_at"]; ?></span><br>
                                 <span>Updated:</span> <span class="font-weight-300"><?php echo $cssFile["date_updated_at"] . " " . $cssFile["time_updated_at"]; ?></span>
                             </td>
@@ -54,8 +54,8 @@
 
                         <tr>
                             <td>-</td>
-                            <td>-</td>
-                     
+                            <td class="width-90">-</td>
+                            <td class="width-10">-</td>
                         </tr>
 
                 <?php } ?>
@@ -66,7 +66,7 @@
         <ul>
             <?php 
                 foreach($cssFiles as $cssFile) {
-                    echo '<li class="page-item"><a href="/admin/posts?page='.$cssFile.'">'.$cssFile.'</a></li>';
+                    echo '<li class="page-item"><a href="/admin/css?page='.$cssFile.'">'.$cssFile.'</a></li>';
                 }  
             ?>
         </ul>

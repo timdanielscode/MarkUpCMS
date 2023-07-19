@@ -67,7 +67,7 @@
                             <td class="width-50">
                                 <?php echo $user['name']; ?>
                             </td>
-                            <td>
+                            <td class="width-10">
                                 <span class="padding-b-2">Created:</span> <span class="font-weight-300"><?php echo $user["created_at"]; ?></span><br>
                                 <span>Updated:</span> <span class="font-weight-300"><?php echo $user["updated_at"]; ?></span>
                             </td>
@@ -76,18 +76,11 @@
                 <?php } else { ?>
 
                     <tr>
-                        <td>
-                            <span class="">-</span>
-                        </td>
-                        <td>
-                            <span class="">-</span>
-                        </td>
-                        <td>
-                            <span class="">-</span>
-                        </td>
-                        <td>
-                            <span class="">-</span>
-                        </td>
+                        <td>-</td>
+                        <td class="width-20">-</td>
+                        <td class="width-20">-</td>
+                        <td class="width-50">-</td>
+                        <td class="width-10">-</td>
                     </tr>
 
                 <?php } ?>

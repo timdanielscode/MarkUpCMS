@@ -16,7 +16,7 @@
     </div>
     <div class="countContainer">
         <span>All</span>
-        <span>(<?php echo $count; ?>)</span>
+        <span>(<?php echo count($jsFiles); ?>)</span>
     </div>
     <form action="" method="GET">
         <input type="text" name="search" placeholder="Search" id="search">
@@ -26,44 +26,47 @@
         
             <thead>
                 <tr>
+                    <th>#</th>
                     <th>Filename</th>
-                    <th class="width-10">Date</th>
+                    <th>Date</th>
                 </tr>
             </thead>
             <tbody>
-                
-                <?php foreach($jsFiles as $jsFile) { ?>
-                    <tr>
-                        <?php if($jsFile["file_name"] !== "not found" && $jsFile["file_name"] !== "no js file created yet") {?>
-                        <td class="width-50">
-                            <a href="/admin/js/<?php echo $jsFile['id']; ?>/edit" class="font-weight-500"><?php echo $jsFile['file_name'] . $jsFile['extension']; ?></a> |
-                            <a href="/admin/js/<?php echo $jsFile['id']; ?>/edit" class="font-weight-300">Edit</a> |
-                            <a href="/admin/js/<?php echo $jsFile['id']; ?>/read" class="font-weight-300">Read</a> |
-                            <a href="/admin/js/<?php echo $jsFile['id']; ?>/delete" class="font-weight-300 color-red">Remove</a>
-                        </td>
-                        <?php } else { ?>
-                        <td class="width-50">
-                            <span class="font-weight-500"><?php echo $jsFile['file_name'];?></span>
-                        </td>
-                        <?php } ?>
-                        <td class="width-15">
-                            <span class="padding-b-2">Created:</span> <span class="font-weight-300"><?php echo $jsFile["date_created_at"] . " " . $jsFile["time_created_at"]; ?></span><br>
-                            <span>Updated:</span> <span class="font-weight-300"><?php echo $jsFile["date_updated_at"] . " " . $jsFile["time_updated_at"]; ?></span>
-                        </td>
-                    </tr>
+                <?php if(!empty($jsFiles) && $jsFiles !== null) { ?>
+                    <?php foreach($jsFiles as $jsFile) { ?>
+                        <tr>
+                            <td>
+                                <?php echo $jsFile['id']; ?>
+                            </td>
+                            <td class="width-90">
+                                <a href="/admin/js/<?php echo $jsFile['id']; ?>/edit" class="font-weight-500"><?php echo $jsFile['file_name'] . $jsFile['extension']; ?></a> |
+                                <a href="/admin/js/<?php echo $jsFile['id']; ?>/edit" class="font-weight-300">Edit</a> |
+                                <a href="/admin/js/<?php echo $jsFile['id']; ?>/read" class="font-weight-300">Read</a> |
+                                <a href="/admin/js/<?php echo $jsFile['id']; ?>/delete" class="font-weight-300 color-red">Remove</a>
+                            </td>
+                            <td class="width-10">
+                                <span class="padding-b-2">Created:</span> <span class="font-weight-300"><?php echo $jsFile["date_created_at"] . " " . $jsFile["time_created_at"]; ?></span><br>
+                                <span>Updated:</span> <span class="font-weight-300"><?php echo $jsFile["date_updated_at"] . " " . $jsFile["time_updated_at"]; ?></span>
+                            </td>
+                        </tr>
+                    <?php } ?>
+                <?php } else { ?>
+                        <tr>
+                            <td>-</td>
+                            <td class="width-90">-</td>
+                            <td class="width-10">-</td>
+                        </tr>
                 <?php } ?>
             </tbody>
         </table>
-        <?php if(count($numberOfPages) > 1) { ?>
-            <nav class="paginationPosts">
-                <ul class="pagination">
-                    <li class="page-item previous"><a href="/admin/posts?back=1">Previous</a></li>
+        <?php if($numberOfPages !== null && count($numberOfPages) > 1) { ?>
+            <nav class="pagination">
+                <ul>
                     <?php 
                         foreach($numberOfPages as $page) {
-                            echo '<li class="page-item"><a href="/admin/posts?page='.$page.'">'.$page.'</a></li>';
+                            echo '<li class="page-item"><a href="/admin/js?page='.$page.'">'.$page.'</a></li>';
                         }  
                     ?>
-                    <li class="page-item next"><a href="/admin/posts?next=1">Next</a></li>
                 </ul>
             </nav>
         <?php } ?>

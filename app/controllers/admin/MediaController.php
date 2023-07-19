@@ -17,7 +17,6 @@ class MediaController extends Controller {
         $media = new Media();
         $allMedia = $media->allMediaButOrdered();
 
-        $count = count($allMedia);
         $search = get('search');
 
         if(!empty($search) ) {
@@ -30,7 +29,6 @@ class MediaController extends Controller {
 
         $data["allMedia"] = $allMedia;
         $data['numberOfPages'] = $numberOfPages;
-        $data['count'] = $count;
         $data['search'] = $search;
 
         return $this->view('admin/media/index', $data);

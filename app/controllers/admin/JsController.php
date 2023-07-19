@@ -21,21 +21,11 @@ class JsController extends Controller {
         $js = new Js();
         $jsFiles = $js->allJsButOrderedOnDate();
 
-        if(empty($jsFiles) ) {
-            $jsFiles = array(["id" => "?","file_name" => "no js file created yet", "extension" => "","date_created_at" => "-", "time_created_at" => "", "date_updated_at" => "-", "time_updated_at" => ""]);
-        }
-
-        $count = count($jsFiles);
         $search = get('search');
 
         if(!empty($search) ) {
 
-            $js->cssFilesOnSearch($search);
-            
-            if(empty($jsFiles) ) {
-
-                $jsFiles = array(["id" => "?","file_name" => "not found", "date_created_at" => "-", "time_created_at" => "", "date_updated_at" => "-", "time_updated_at" => ""]);
-            }
+            $jsFiles = $js->cssFilesOnSearch($search);
         }
 
         $jsFiles = Pagination::get($jsFiles, 20);
@@ -43,7 +33,6 @@ class JsController extends Controller {
 
         $data['jsFiles'] = $jsFiles;
         $data['numberOfPages'] = $numberOfPages;
-        $data['count'] = $count;
 
         return $this->view('admin/js/index', $data);
     }

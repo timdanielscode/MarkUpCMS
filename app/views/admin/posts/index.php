@@ -36,7 +36,7 @@
                 <th>Category</th>
                 <th>Author</th>
                 <th>Meta</th>
-                <th class="width-10">Date</th>
+                <th>Date</th>
             </tr>
         </thead>
         <tbody>
@@ -64,7 +64,7 @@
                     <td class="width-10">
                         <?php if(!empty($post['metaTitle']) && !empty($post['metaDescription'])) { echo '<span class="font-weight-300">ok</span>'; } else {echo '<span class="font-weight-300">-</span>'; } ?>
                     </td>
-                    <td>
+                    <td class="width-10">
                         <span class="padding-b-2">Created:</span> <span class="font-weight-300"><?php echo $post["date_created_at"] . " " . $post["time_created_at"]; ?></span><br>
                         <span>Updated:</span> <span class="font-weight-300"><?php echo $post["date_updated_at"] . " " . $post["time_updated_at"]; ?></span>
                     </td> 
@@ -73,27 +73,13 @@
             <?php } else { ?>
 
                 <tr>
-                    <td>
-                        <span class="">-</span>
-                    </td>
-                    <td>
-                        <span class="">-</span>
-                    </td>
-                    <td>
-                        <span class="">-</span>
-                    </td>
-                    <td>
-                        <span class="">-</span>
-                    </td>
-                    <td>
-                        <span class="">-</span>
-                    </td>
-                    <td>
-                        <span class="">-</span>
-                    </td>
-                    <td>
-                        <span class="">-</span>
-                    </td>
+                    <td>-</td>
+                    <td class="width-20">-</td>
+                    <td class="width-30">-</td>
+                    <td class="width-15">-</td>
+                    <td class="width-15">-</td>
+                    <td class="width-10">-</td>
+                    <td class="width-10">-</td>
                 </tr>
             <?php } ?>    
         </tbody>
