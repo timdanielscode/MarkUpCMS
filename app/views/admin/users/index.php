@@ -23,7 +23,7 @@
 
     <div class="countContainer">
         <span>All</span>
-        <span>(<?php echo $count; ?>)</span>
+        <span>(<?php echo count($allUsers); ?>)</span>
     </div>
     <form action="" method="GET">
         <input type="text" name="search" placeholder="Search" id="search">
@@ -36,6 +36,7 @@
                     <th>Username</th>
                     <th>Email</th>
                     <th>Role</th>
+                    <th>Date</th>
                 </tr>
             </thead>
             <tbody>
@@ -63,8 +64,12 @@
                             <td class="width-20">
                                 <?php echo $user['email']; ?>
                             </td>
-                            <td class="width-60">
+                            <td class="width-50">
                                 <?php echo $user['name']; ?>
+                            </td>
+                            <td>
+                                <span class="padding-b-2">Created:</span> <span class="font-weight-300"><?php echo $user["created_at"]; ?></span><br>
+                                <span>Updated:</span> <span class="font-weight-300"><?php echo $user["updated_at"]; ?></span>
                             </td>
                         </tr>
                     <?php } ?>
