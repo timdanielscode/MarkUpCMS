@@ -449,6 +449,8 @@ class PostController extends Controller {
     public function delete($request) {
 
         Post::delete("id", $request['id']);
+        CategoryPage::delete('page_id', $request['id']);
+
         redirect("/admin/posts");
     }
 
