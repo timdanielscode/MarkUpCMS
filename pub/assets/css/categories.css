@@ -108,7 +108,7 @@ margin-top: 50px;
 #ASSIGNCATEGORY {
     margin-left: 20px;
 }
-#ASSIGNCATEGORY, #ASSIGNPAGES {
+#ASSIGNCATEGORY, #ASSIGNPAGES, #update {
     width: 75px;
     background: #42971c;
     border-color: #42971c;
@@ -117,6 +117,11 @@ margin-top: 50px;
     color: #fff;
     padding: 8px;
     text-align: center;
+}
+#ASSIGNCATEGORY:hover, #ASSIGNPAGES:hover, #update:hover {
+    background: #6ba152;
+    cursor: pointer;
+    border-color: #6ba152;
 }
 #ASSINGEDSUBCATEGORYID, #ASSIGNEDPAGEID {
     margin-bottom: 20px;
@@ -138,15 +143,33 @@ margin-top: 50px;
     text-align: center;
     padding: 8px;
 }
+#update {
+    float: unset;
+}
+#BACK:hover {
+    cursor: pointer;
+    background: #83a7db;
+    border-color: #83a7db;
+}
 .selectedCategory, .selectedPage {
     font-weight: bold;
     padding-left: 15px !important;
 }
 .assingedPage, .assingedSubCategory {
-    color: #277505;
+    font-weight: bold;
 }
 #PAGEMESSAGE {
     position: absolute;
     bottom: 78px;
     left: 136px;
+}
+.categorySlug {
+    background: none;
+    border: none;
+    font-weight: bold;
+    width: 100%;
+}
+.categorySlug:focus-visible {
+    border: none;
+    outline: none;
 }

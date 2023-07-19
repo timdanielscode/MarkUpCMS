@@ -15,7 +15,7 @@
                 </td>
                 <td class="width-20">
                     <form>
-                        <input class="mediaFilename" name="slug" id="slug-<?php echo $category['id']; ?>" type="text" value="<?php echo $category["slug"]; ?>"/>
+                        <input class="categorySlug" name="slug" id="slug-<?php echo $category['id']; ?>" type="text" value="<?php echo $category["slug"]; ?>"/>
                             <div id="message-<?php echo $category['id'] ?>"></div>
                     </form>
                 </td>

@@ -3,7 +3,7 @@
         <div id="SUBCATEGORYSLUGCONTAINER"><div id="CATEGORYSLUG" class="listedItem"><?php echo $slug; ?></div><?php if(!empty($assingedSubCategories) && $assingedSubCategories !== null) { ?><?php foreach($assingedSubCategories as $assingedSubCategory) { ?><div id="LISTEDCATEGORY-<?php echo $assingedSubCategory['id']; ?>" class="listedItem"><?php echo $assingedSubCategory['slug']; ?></div><?php } ?><?php } ?></div>
     </div>
     <div class="col4">
-        <a id="BACK" class="button">Back</a>
+        <a id="BACK" class="button">Close</a>
     </div>
 </div>
     
@@ -20,8 +20,6 @@
                                     <?php echo $assingedSubCategory['title']; ?>
                                 </option>
                             <?php } ?>
-                        <?php } else { ?>
-                            <p>No category assinged yet</p>
                         <?php } ?>
                     </select>
                     <select id="NOTASSINGEDSUBCATEGORYID" name="subcategoryid" multiple>
@@ -41,8 +39,6 @@
                         <?php foreach($assignedPages as $assignedPage) { ?>
                             <option class="assingedPage" value="<?php echo $assignedPage['id']; ?>"><?php  echo $assignedPage['title']; ?></option>
                         <?php } ?>
-                    <?php } else { ?>
-                        <p>No assigned pages yet.<p>
                     <?php } ?>
                 </select>
                 <select id="NOTASSIGNEDPAGEID" name="pageid" multiple>
