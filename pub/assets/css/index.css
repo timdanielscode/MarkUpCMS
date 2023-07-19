@@ -16,6 +16,10 @@
 }
 .headerAndButtonContainer a {
     display: inline-block;
+    border: 1px solid #0c203d;
+}
+.headerAndButtonContainer a:hover {
+    background: #bcbdbd;
 }
 .countContainer {
     font-size: 13px;
@@ -47,7 +51,7 @@ table {
 }
 table td a {
     text-decoration: none;
-    color: #0c203d;
+    color: #144080;
 }
 table td, table th {
     padding-left: 20px;

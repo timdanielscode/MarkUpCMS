@@ -18,20 +18,15 @@ class PostController extends Controller {
 
     public function index() {
 
-        $posts = Post::all();
+        $post = new Post();
+        $posts = $post->allPostsWithCategories();
 
         $count = count($posts);
         $search = get('search');
 
         if(!empty($search) ) {
 
-            $post = new Post();
             $posts = $post->allPostsWithCategories($search);
-            
-            if(empty($posts) ) {
-
-                $posts = array(["id" => "?","title" => "not found", "author" => "not found", "date_created_at" => "-", "time_created_at" => "", "date_updated_at" => "-", "time_updated_at" => ""]);
-            }
         }
         
         $posts = Pagination::get($posts, 11);

@@ -11,12 +11,15 @@ class Post extends Model {
         self::table("pages");
     }
 
-    public function allPostsWithCategories($searchValue) {
+    public function allPostsWithCategories($searchValue = null) {
 
         if(!empty($searchValue) && $searchValue !== null) {
 
-            $posts = DB::try()->all('pages')->where('title', 'LIKE', '%'.$searchValue.'%')->or('author', 'LIKE', '%'.$searchValue.'%')->or('date_created_at', 'LIKE', '%'.$searchValue.'%')->or('time_created_at', 'LIKE', '%'.$searchValue.'%')->or('date_updated_at', 'LIKE', '%'.$searchValue.'%')->or('time_updated_at', 'LIKE', '%'.$searchValue.'%')->fetch();
-            return $posts;
+            return DB::try()->select('pages.id, pages.title, pages.slug, pages.author, pages.metaTitle, pages.metaDescription, pages.date_created_at, pages.date_updated_at, pages.time_created_at, pages.time_updated_at, categories.title')->from('pages')->joinLeft('category_page')->on('category_page.page_id', '=', 'pages.id')->joinLeft('categories')->on('categories.id', '=', 'category_page.category_id')->where('pages.title', 'LIKE', '%'.$searchValue.'%')->or('pages.author', 'LIKE', '%'.$searchValue.'%')->or('pages.date_created_at', 'LIKE', '%'.$searchValue.'%')->or('pages.time_created_at', 'LIKE', '%'.$searchValue.'%')->or('pages.date_updated_at', 'LIKE', '%'.$searchValue.'%')->or('pages.time_updated_at', 'LIKE', '%'.$searchValue.'%')->fetch();
+            
+        } else {
+
+            return DB::try()->select('pages.id, pages.title, pages.slug, pages.author, pages.metaTitle, pages.metaDescription, pages.date_created_at, pages.date_updated_at, pages.time_created_at, pages.time_updated_at, categories.title')->from('pages')->joinLeft('category_page')->on('category_page.page_id', '=', 'pages.id')->joinLeft('categories')->on('categories.id', '=', 'category_page.category_id')->fetch();
         }
     }
 }
