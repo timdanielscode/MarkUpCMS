@@ -64,7 +64,7 @@
         <ul>
             <?php 
                 foreach($numberOfPages as $page) {
-                    echo '<li class="page-item"><a href="/admin/posts?page='.$page.'">'.$page.'</a></li>';
+                    echo '<li class="page-item"><a href="/admin/js?page='.$page.'">'.$page.'</a></li>';
                 }  
             ?>
         </ul>

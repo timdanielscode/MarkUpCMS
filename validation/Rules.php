@@ -147,21 +147,21 @@ class Rules {
       return $this;
     }
 
-    public function css() {
+    public function css($unique) {
         
         $validation = new Validate();
         
-        $validation->input('filename')->as('Filename')->rules(['required' => true, 'max' => 29, 'special' => true]);
+        $validation->input('filename')->as('Filename')->rules(['required' => true, 'max' => 29, 'special' => true, 'unique' => $unique]);
         
         $this->errors = $validation->errors;
         return $this;
     }
 
-    public function js() {
+    public function js($unique) {
         
         $validation = new Validate();
         
-        $validation->input('filename')->as('Filename')->rules(['required' => true, 'max' => 29, 'special' => true]);
+        $validation->input('filename')->as('Filename')->rules(['required' => true, 'max' => 29, 'special' => true, 'unique' => $unique]);
         
         $this->errors = $validation->errors;
         return $this;

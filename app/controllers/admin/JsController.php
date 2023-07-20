@@ -63,7 +63,9 @@ class JsController extends Controller {
 
             $rules = new Rules();
 
-            if($rules->js()->validated()) {
+            $uniqueFilename = DB::try()->select('file_name')->from('js')->where('file_name', '=', $request['filename'])->and('id', '!=', $request['id'])->fetch();
+
+            if($rules->js($uniqueFilename)->validated()) {
                     
                 $filename = "/".post('filename');
                 $filename = str_replace(" ", "-", $filename);
@@ -179,7 +181,9 @@ class JsController extends Controller {
 
             $rules = new Rules();
 
-            if($rules->Js()->validated()) {
+            $uniqueFilename = DB::try()->select('file_name')->from('js')->where('file_name', '=', $request['filename'])->and('id', '!=', $request['id'])->fetch();
+
+            if($rules->Js($uniqueFilename)->validated()) {
 
                 rename($this->_folderLocation . $currentJsFileName . $this->_fileExtension, $this->_folderLocation . $filename . $this->_fileExtension);
 

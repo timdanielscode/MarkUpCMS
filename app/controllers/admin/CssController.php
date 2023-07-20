@@ -55,7 +55,9 @@ class CssController extends Controller {
 
                 $rules = new Rules();
 
-                if($rules->css()->validated()) {
+                $uniqueFilename = DB::try()->select('file_name')->from('css')->where('file_name', '=', $request['filename'])->and('id', '!=', $request['id'])->fetch();
+
+                if($rules->css($uniqueFilename)->validated()) {
                     
                     $filename = "/".$request['filename'];
                     $filename = str_replace(" ", "-", $filename);
@@ -184,7 +186,9 @@ class CssController extends Controller {
 
             $rules = new Rules();
 
-            if($rules->css()->validated()) {
+            $uniqueFilename = DB::try()->select('file_name')->from('css')->where('file_name', '=', $request['filename'])->and('id', '!=', $request['id'])->fetch();
+
+            if($rules->css($uniqueFilename)->validated()) {
 
                 rename($this->_folderLocation . $currentCssFileName . $this->_fileExtension, $this->_folderLocation . $filename . $this->_fileExtension);
 
