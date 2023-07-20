@@ -47,7 +47,9 @@ class MenuController extends Controller {
 
             $rules = new Rules();
 
-            if($rules->create_menu()->validated()) {
+            $unique = DB::try()->select('title')->from('menus')->where('title', '=', $request['title'])->and('id', '!=', $request['id'])->fetch();
+
+            if($rules->create_menu($unique)->validated()) {
                     
                 Menu::insert([
 
@@ -60,8 +62,7 @@ class MenuController extends Controller {
                     'date_updated_at'   =>     date("d/m/Y"),
                     'time_updated_at'   =>     date("H:i")   
                 ]);
-
-                Session::set('create', 'You have successfully created a new menu!');            
+          
                 redirect('/admin/menus');
 
             } else {
@@ -92,31 +93,28 @@ class MenuController extends Controller {
 
     public function update($request) {
 
-        //if(Csrf::validate(Csrf::token('get'), post('token'))) {
-        
-            $id = $request['id'];
+        if(submitted('submit') ) {
 
-            if(submitted('submit') ) {
+            return $this->updateTitleAndContent($request);
+        } else if (submitted('submitPosition') ) {
 
-                $this->updateTitleAndContent($id, $request);
+            return $this->updatePosition($request);
+        } else if (submitted('submitOrdering')) {
 
-            } else if (submitted('submitPosition') ) {
-
-                $this->updatePosition($id, $request);
-
-            } else if (submitted('submitOrdering')) {
-
-                $this->updateOrdering($id, $request);
-            }
-        //}
+            return $this->updateOrdering($request);
+        }
     }
 
-    private function updateTitleAndContent($id, $request) {
+    private function updateTitleAndContent($request) {
 
         $rules = new Rules();
 
-        if($rules->menu_update()->validated()) {
+        $unique = DB::try()->select('title')->from('menus')->where('title', '=', $request['title'])->and('id', '!=', $request['id'])->fetch();
+
+        if($rules->menu_update($unique)->validated()) {
                 
+            $id = $request['id'];
+
             Menu::update(['id' => $id], [
 
                 'title'     => $request['title'],
@@ -125,20 +123,21 @@ class MenuController extends Controller {
                 'time_updated_at'   => date("H:i")
             ]);
 
-            Session::set('updated', 'User updated successfully!');
             redirect("/admin/menus/$id/edit");
                 
         } else {
 
             $data['rules'] = $rules->errors;
-            $data['menu'] = Menu::where('id', '=', $id);
+            $data['menu'] = Menu::where('id', '=', $request['id'])[0];
+
             return $this->view("/admin/menus/edit", $data);
         }
     }
 
-    private function updatePosition($id, $request) {
+    private function updatePosition($request) {
 
         $id = $request['id'];
+
         Menu::update(['id' => $id], [
             'position' => $request['position']
         ]); 
@@ -146,9 +145,10 @@ class MenuController extends Controller {
         redirect("/admin/menus/$id/edit");
     }
 
-    private function updateOrdering($id, $request) {
+    private function updateOrdering($request) {
 
         $id = $request['id'];
+
         Menu::update(['id' => $id], [
             'ordering'  => $request['ordering']
         ]);
