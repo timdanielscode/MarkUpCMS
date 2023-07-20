@@ -119,9 +119,20 @@ class CssController extends Controller {
         $cssFile = Css::where('id', '=', $request['id'])[0];
         $code = $this->getFileContent($cssFile['file_name']);
 
-        
-
         $assingedPages = DB::try()->select('id, title')->from('pages')->join('css_page')->on('pages.id', '=', 'css_page.page_id')->where('css_page.css_id', '=', $request['id'])->fetch();
+        $pages = $this->notAssingedPages($assingedPages);
+
+        $data['data'] = $cssFile;
+        $data['data']['code'] = $code;
+        $data['data']['pages'] = $pages;
+        $data['data']['assingedPages'] = $assingedPages;
+        
+        $data['rules'] = [];
+
+        return $this->view('admin/css/edit', $data);
+    }
+
+    public function notAssingedPages($assingedPages) {
 
         $listAssingedPageIds = [];
 
@@ -138,43 +149,38 @@ class CssController extends Controller {
         } else {
             $pages = DB::try()->select('id, title')->from('pages')->fetch();
         }
-
-
-        $data['cssFile'] = $cssFile;
-        $data['code'] = $code;
-        $data['pages'] = $pages;
-        $data['assingedPages'] = $assingedPages;
-        
-        $data['rules'] = [];
-
-        return $this->view('admin/css/edit', $data);
+        return $pages;
     }
 
     public function update($request) {
 
         if(!empty($request['updatePage']) && $request['updatePage'] !== null) {
 
-            $this->updatePage($request);
-            exit();
+            return $this->updatePage($request);
         } else if(!empty($request['removePage']) && $request['removePage'] !== null) {
 
-            $this->removePage($request);
-            exit();
+            return $this->removePage($request);
         } else if(!empty($request['linkAll']) && $request['linkAll'] !== null) {
 
-            $this->linkAll($request);
-            exit();
+            return $this->linkAll($request);
         } else if(!empty($request['removeAll']) && $request['removeAll'] !== null) {
 
-            $this->removeAll($request);
-            exit();
+            return $this->removeAll($request);
+        } else if(!empty($request['submit']) && $request['submit'] !== null) {
+
+            return $this->updateCss($request);
+        } else {
+            return;
         }
+    }
+
+    public function updateCss($request) {
 
         if(submitted('submit') && Csrf::validate(Csrf::token('get'), post('token'))) {
                 
             $id = $request['id'];
             $filename = str_replace(" ", "-", $request["filename"]);
-            $currentCssFileName = Css::where('id', '=', $id)['file_name'];
+            $currentCssFileName = Css::where('id', '=', $id)[0]['file_name'];
 
             $rules = new Rules();
 
@@ -201,9 +207,11 @@ class CssController extends Controller {
                 $filePath = $this->_folderLocation . $currentCssFileName . $this->_fileExtension; 
                 $code = file_get_contents($filePath);
 
-                $data['code'] = $code;
+                $data['data'] = Css::where('id', '=', $id)[0];
+                $data['data']['assingedPages'] = DB::try()->select('id, title')->from('pages')->join('css_page')->on('pages.id', '=', 'css_page.page_id')->where('css_page.css_id', '=', $request['id'])->fetch();
+                $data['data']['pages'] = $this->notAssingedPages($data['data']['assingedPages']);           
+                $data['data']['code'] = $code;
                 $data['rules'] = $rules->errors;
-                $data['cssFile'] = Css::where('id', '=', $id);
                 
                 return $this->view("/admin/css/edit", $data);
             }

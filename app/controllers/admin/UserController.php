@@ -53,7 +53,7 @@ class UserController extends Controller {
 
             $rules = new Rules();
             
-            if($rules->register_rules_admin($uniqueUsername, $uniqueEmail)->validated()) {
+            if($rules->user_create($uniqueUsername, $uniqueEmail)->validated()) {
                     
                 User::insert([
 

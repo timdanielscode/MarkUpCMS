@@ -79,44 +79,6 @@ class Rules {
         return $this;
     }
 
-    /*public function user_edit($username, $email) {
-
-        $validation = new Validate();
-
-        $validation->input('username')->as('Username')->rules(['required' => true, 'min' => 5, 'max' => 50, 'unique' => $username]);
-        $validation->input('email')->as('Email')->rules(['required' => true, 'min' => 5, 'max' => 50, 'unique', $email]);
-
-        $this->errors = $validation->errors;
-        return $this;
-    }*/
-
-
-    public function user_edit($username, $email) {
-
-      $validation = new Validate();
-
-      $validation->input('f_username')->as('Username')->rules(['required' => true, 'min' => 5, 'max' => 50, 'unique' => $username]);
-      $validation->input('email')->as('Email')->rules(['required' => true, 'min' => 5, 'max' => 50, 'unique' => $email]);
-      $validation->input('role')->as('Role')->rules(['required' => true]);
-
-      $this->errors = $validation->errors;
-      return $this;
-    }
-
-    public function register_rules_admin($username, $email) {
-        
-        $validation = new Validate();
-        
-        $validation->input('f_username')->as('Username')->rules(['required' => true, 'min' => 5, 'max' => 40, 'special' => true, 'unique' => $username]);
-        $validation->input('email')->as('Email')->rules(['required' => true, 'min' => 5, 'max' => 40, 'special' => true, 'unique' => $email]);
-        $validation->input('password')->as('Password')->rules(['required' => true, 'min' => 5, 'max' => 50]);
-        $validation->input('password_confirm')->as('Password')->rules(['required' => true, 'match' => 'password']);
-        $validation->input('role')->as('User role')->rules(['required' => true]);
-        
-        $this->errors = $validation->errors;
-        return $this;
-    }
-
     public function create_post($uniqueTitle) {
         
         $validation = new Validate();
@@ -159,11 +121,37 @@ class Rules {
       return $this;
     }
 
+    public function user_create($username, $email) {
+        
+        $validation = new Validate();
+        
+        $validation->input('f_username')->as('Username')->rules(['required' => true, 'max' => 49, 'special' => true, 'unique' => $username]);
+        $validation->input('email')->as('Email')->rules(['required' => true, 'min' => 5, 'max' => 49, 'special' => true, 'unique' => $email]);
+        $validation->input('password')->as('Password')->rules(['required' => true, 'min' => 16, 'max' => 249]);
+        $validation->input('password_confirm')->as('Password')->rules(['required' => true, 'match' => 'password']);
+        $validation->input('role')->as('User role')->rules(['required' => true]);
+        
+        $this->errors = $validation->errors;
+        return $this;
+    }
+
+    public function user_edit($username, $email) {
+
+      $validation = new Validate();
+
+      $validation->input('f_username')->as('Username')->rules(['required' => true, 'max' => 49, 'special' => true, 'unique' => $username]);
+      $validation->input('email')->as('Email')->rules(['required' => true, 'min' => 5, 'max' => 49, 'special' => true, 'unique' => $email]);
+      $validation->input('role')->as('Role')->rules(['required' => true]);
+
+      $this->errors = $validation->errors;
+      return $this;
+    }
+
     public function css() {
         
         $validation = new Validate();
         
-        $validation->input('filename')->as('Filename')->rules(['required' => true, 'min' => 5, 'max' => 40, 'special' => true]);
+        $validation->input('filename')->as('Filename')->rules(['required' => true, 'max' => 29, 'special' => true]);
         
         $this->errors = $validation->errors;
         return $this;
