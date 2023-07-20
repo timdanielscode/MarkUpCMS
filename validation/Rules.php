@@ -149,6 +149,16 @@ class Rules {
         return $this;
     }
 
+    public function update_post_slug() {
+
+      $validation = new Validate();
+
+      $validation->input('postSlug')->as('Slug')->rules(['max' => 49, 'special' => true]);
+
+      $this->errors = $validation->errors;
+      return $this;
+    }
+
     public function css() {
         
         $validation = new Validate();

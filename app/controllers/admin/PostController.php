@@ -351,15 +351,54 @@ class PostController extends Controller {
     public function updateSlug($request) {
 
         $id = $request['id'];
-
-        $slug = explode('/', $request['slug']);
-        $slug[array_key_last($slug)] = substr($request['postSlug'], 1);
-        $slug = implode('/', array_filter($slug));
         
-        Post::update(['id' => $id], [
+        $rules = new Rules();
 
-            'slug' => "/" . $slug
-        ]);
+        if($rules->update_post_slug()->validated()) {
+
+            $slug = explode('/', "/" . $request['slug']);
+            $slug[array_key_last($slug)] = substr("/" . $request['postSlug'], 1);
+            $slug = implode('/', array_filter($slug));
+
+            Post::update(['id' => $id], [
+
+                'slug' => "/" . $slug
+            ]);
+
+        } else {
+
+            $ifAlreadyAssingedToCategory = DB::try()->select('page_id')->from('category_page')->where('page_id', '=', $request['id'])->fetch();
+
+            if(empty($ifAlreadyAssingedToCategory)) {
+    
+                $categories = DB::try()->select('id, title')->from("categories")->fetch();
+                $data['data']['categories'] = $categories;
+            } else {
+    
+                $category = DB::try()->select('categories.title, categories.slug')->from('categories')->join('category_page')->on('category_page.category_id', '=', 'categories.id')->where('category_page.page_id', '=', $request['id'])->first();
+                $data['data']['category'] = $category;
+            }
+
+            $data['data']['linkedCssFiles'] = $linkedCssFiles = DB::try()->select('css.id, css.file_name, css.extension')->from('css')->join('css_page')->on('css_page.css_id', '=', 'css.id')->where('css_page.page_id', '=', $request['id'])->fetch();
+            $data['data']['notLinkedCssFiles'] = $notLinkedCssFiles = $this->notLinkedCssFiles($linkedCssFiles);
+            $data['data']['linkedJsFiles'] =  $linkedJsFiles = DB::try()->select('js.id, js.file_name, js.extension')->from('js')->join('js_page')->on('js_page.js_id', '=', 'js.id')->where('js_page.page_id', '=', $request['id'])->fetch();
+            $data['data']['notLinkedJsFiles'] =  $notLinkedJsFiles = $this->notLinkedJsFiles($linkedJsFiles);
+            $data['data']['id'] = DB::try()->select('id')->from('pages')->where('id', '=', $request['id'])->first()['id'];
+            $data['data']['title'] = DB::try()->select('title')->from('pages')->where('id', '=', $request['id'])->first()['title'];
+            $data['data']['body'] = DB::try()->select('body')->from('pages')->where('id', '=', $request['id'])->first()['body'];
+            $data['data']['slug'] = DB::try()->select('slug')->from('pages')->where('id', '=', $request['id'])->first()['slug'];
+            $data['data']['metaTitle'] = DB::try()->select('metaTitle')->from('pages')->where('id', '=', $request['id'])->first()['metaTitle'];
+            $data['data']['metaDescription'] = DB::try()->select('metaDescription')->from('pages')->where('id', '=', $request['id'])->first()['metaDescription'];
+            $data['data']['metaKeywords'] = DB::try()->select('metaKeywords')->from('pages')->where('id', '=', $request['id'])->first()['metaKeywords'];
+
+            $postSlug = explode('/', $data['data']['slug']);
+            $postSlug = "/" . $postSlug[array_key_last($postSlug)];
+            $data['data']['postSlug'] = $postSlug;
+
+            $data['rules'] = $rules->errors;
+
+            return $this->view('admin/posts/edit', $data);
+        }
 
         redirect("/admin/posts/$id/edit");
     }

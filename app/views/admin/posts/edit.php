@@ -63,7 +63,10 @@
                     <span class="fullSlug"><?php if(!empty($data['slug']) ) { echo $data['slug']; } ?></span>
                     <form class="updateSlugForm" action="update" method="POST">
                         <div class="form-parts">
-                            <input type="text" name="postSlug" id="slug" value="<?php if(!empty($data['postSlug'] )) { echo $data['postSlug']; } ?>">
+                            <input type="text" name="postSlug" id="slug" value="<?php if(!empty($data['postSlug'] )) { echo substr($data['postSlug'], 1); } ?>">
+                            <div class="error-messages">
+                                <?php echo Errors::get($rules, 'postSlug'); ?>
+                            </div>   
                         </div>
                         <input type="hidden" name="slug" value="<?php if(!empty($data['slug']) ) { echo $data['slug']; } ?>">
                         <div class="error-messages">
