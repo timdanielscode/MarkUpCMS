@@ -167,28 +167,6 @@ class Rules {
         return $this;
     }
 
-    public function media($uniqueFilename) {
-
-        $validation = new Validate();
-        
-        $validation->input('media_title')->as('Title')->rules(['required' => true, 'min' => 2, 'max' => 40, 'special' => true]);
-        $validation->input('media_description')->as('Description')->rules(['required' => true, 'min' => 1, 'max' => 100, 'special' => true]);
-        $validation->input('file')->as('File')->rules(['unique' => $uniqueFilename, 'selected' => true, 'error' => true, 'mimes' => array('image/png', 'image/jpeg', 'image/gif', 'image/webp', 'image/svg+xml', 'application/pdf', 'video/mp4', 'video/quicktime')]);
-        
-        $this->errors = $validation->errors;
-        return $this;
-    }
-
-    public function update_media_filename() {
-
-        $validation = new Validate();
-        
-        $validation->input('filename')->as('Filename')->rules(['min' => 2, 'max' => 40, 'special' => true]);
-        
-        $this->errors = $validation->errors;
-        return $this;
-    }
-
     public function create_menu($unique) {
         
         $validation = new Validate();
@@ -204,6 +182,39 @@ class Rules {
         $validation = new Validate();
         
         $validation->input('title')->as('Title')->rules(['required' => true, 'max' => 49, 'special' => true, 'unique' => $unique]);
+        
+        $this->errors = $validation->errors;
+        return $this;
+    }
+
+    public function media($uniqueFilename) {
+
+        $validation = new Validate();
+        
+        $validation->input('media_title')->as('Title')->rules(['required' => true, 'max' => 49, 'special' => true]);
+        $validation->input('media_description')->as('Description')->rules(['max' => 99, 'special' => true]);
+        $validation->input('file')->as('File')->rules(['unique' => $uniqueFilename, 'selected' => true, 'error' => true, 'mimes' => array('image/png', 'image/jpeg', 'image/gif', 'image/webp', 'image/svg+xml', 'application/pdf', 'video/mp4', 'video/quicktime')]);
+        
+        $this->errors = $validation->errors;
+        return $this;
+    }
+
+    public function media_update_title_description() {
+
+        $validation = new Validate();
+        
+        $validation->input('title')->as('Title')->rules(['required' => true, 'max' => 49, 'special' => true]);
+        $validation->input('description')->as('Description')->rules(['max' => 99, 'special' => true]);
+
+        $this->errors = $validation->errors;
+        return $this;
+    }
+
+    public function update_media_filename() {
+
+        $validation = new Validate();
+        
+        $validation->input('filename')->as('Filename')->rules(['required' => true, 'max' => 49, 'special' => true]);
         
         $this->errors = $validation->errors;
         return $this;

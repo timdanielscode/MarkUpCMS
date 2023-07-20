@@ -42,10 +42,15 @@ $(document).ready(function() {
             },
                 success: function(data) {
                     $('#mediaTitle-'+id).text(data.title);
-                    $('.modalUpdateMessage').html('Updated successfully!').fadeIn(10).fadeOut(1000);
+                    $('.modalUpdateMessage').html('Updated successfully!').fadeIn(10).fadeOut(2000);
+                    $('.modalUpdateMessage').addClass('message-success'); 
+                    $('.modalUpdateMessage').removeClass('message-failed');
+
             },
                 error: function(xhr, status, error) {
-                    $('.modalUpdateMessage').html('Oops, something went wrong!').fadeIn(10).fadeOut(1000);
+                    $('.modalUpdateMessage').html('Oops, something went wrong!').fadeIn(10);
+                    $('.modalUpdateMessage').addClass('message-failed'); 
+                    $('.modalUpdateMessage').removeClass('message-success');
             }
         });
 
@@ -75,13 +80,15 @@ $(document).ready(function() {
                     mediaPathParts[4] = filename;
                     mediaPath.innerText = mediaPathParts.join('/');
 
-                    message.html("Updated successfully!").fadeIn(10).fadeOut(1000);
-                    message.addClass('message'); 
+                    message.html("Updated successfully!").fadeIn(10).fadeOut(2000);
+                    message.addClass('message-success'); 
+                    message.removeClass('message-failed');
             },
                 error: function(xhr, status, error) {
 
-                    message.html("Oops, something went wrong!").fadeIn(10).fadeOut(1000);
-                    message.addClass('message'); 
+                    message.html("Filename is not valid!").fadeIn(10);
+                    message.addClass('message-failed'); 
+                    message.removeClass('message-success');
             }
         });
 

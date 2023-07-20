@@ -187,80 +187,82 @@ class MediaController extends Controller {
 
     public function UPDATE($request) { 
 
-        if(!empty($request['filename']) && $request['filename'] !== null) {
+        if(submitted('filename') ) {
 
-            $data['id'] = $request['id'];
-            $data['filename'] = $request['filename'];
-    
-            $rules = new Rules();
-    
-            if($rules->update_media_filename()->validated()) {
-
-                $this->updateFilename($request);
-
-                echo json_encode($data);
-            }
-
-        } else if (!empty($request['title']) && $request['title'] !== null) {
-            
-            $data['id'] = $request['id'];
-            $data['title'] = $request['title'];
-            $data['description'] = $request['description'];
-
-            $this->updateTitleAndDescription($request);
-
-            echo json_encode($data);
+            return $this->updateFilename($request);
+        } else if (submitted('title') ) {
+            return $this->updateTitleAndDescription($request);
         }
     }
 
     private function updateFilename($request) {
 
-        $currentFile = Media::where('id', '=', $request['id'])[0];
-        $currentFileName = $currentFile['media_filename'];
+        $data['id'] = $request['id'];
+        $data['filename'] = $request['filename'];
 
-        $type = $currentFile['media_filetype'];
-         
-        switch ($type) {
+        $rules = new Rules();
 
-            case 'image/png':
-            case 'image/webp':
-            case 'image/gif':
-            case 'image/jpeg':
-            case 'image/svg+xml':
+        if($rules->update_media_filename()->validated()) {
 
-                $fileDestination = "website/assets/img/";
-            break;
-            case 'video/mp4':
-            case 'video/quicktime':
+            $currentFile = Media::where('id', '=', $request['id'])[0];
+            $currentFileName = $currentFile['media_filename'];
 
-                $fileDestination = "website/assets/video/";
-            break;  
-            case 'application/pdf':
+            $type = $currentFile['media_filetype'];
+            
+            switch ($type) {
 
-                $fileDestination = "website/assets/application/";
-            break;
-            default:
+                case 'image/png':
+                case 'image/webp':
+                case 'image/gif':
+                case 'image/jpeg':
+                case 'image/svg+xml':
 
-                $fileDestination = '';
-            break;
-        }
+                    $fileDestination = "website/assets/img/";
+                break;
+                case 'video/mp4':
+                case 'video/quicktime':
 
-        rename($fileDestination.$currentFileName, $fileDestination.$request['filename']);
+                    $fileDestination = "website/assets/video/";
+                break;  
+                case 'application/pdf':
 
-        Media::update(['id' => $request['id']], [
-                
-            'media_filename'    => $request['filename']
-        ]);
+                    $fileDestination = "website/assets/application/";
+                break;
+                default:
+
+                    $fileDestination = '';
+                break;
+            }
+
+            rename($fileDestination.$currentFileName, $fileDestination.$request['filename']);
+
+            Media::update(['id' => $request['id']], [
+                    
+                'media_filename'    => $request['filename']
+            ]);
+
+            echo json_encode($data);
+        } 
     }
 
     private function updateTitleAndDescription($request) {
 
-        Media::update(['id' => $request['id']], [
+        $data['id'] = $request['id'];
+        $data['title'] = $request['title'];
+        $data['description'] = $request['description'];
 
-            'media_title'   => $request['title'],
-            'media_description' => $request['description']
+        $rules = new Rules();
 
-        ]);
+        if($rules->media_update_title_description()->validated() ) {
+
+            Media::update(['id' => $request['id']], [
+
+                'media_title'   => $request['title'],
+                'media_description' => $request['description']
+            ]);
+
+            echo json_encode($data);
+        }
     }
 
     public function delete($request) {

@@ -247,4 +247,12 @@
     border-color: #6ba152;
     cursor: pointer;
 }
-
+.modalUpdateMessage {
+    margin-top: 10px;
+}
+.message-failed {
+    color: rgb(199, 48, 48);
+}
+.message-success {
+    color: #42971c;
+}
