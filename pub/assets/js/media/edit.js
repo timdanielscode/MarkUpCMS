@@ -2,6 +2,7 @@ $(document).on('click', '.mediaEdit', function() {
 
     var modal = $('#modal');
     modal.addClass('display-block'); 
+    modal.addClass('modal-edit');
 
     var id = $(this).data('id');
     var filename = $('.mediaEdit').val();

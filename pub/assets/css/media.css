@@ -87,26 +87,16 @@
     margin-top: 10px;
 }
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+/*
+    modal
+*/
+.modal-edit {
+    position: absolute !important;
+    top: 50%;
+    transform: translate(-50%, -50%) !important;
+    width: 600px !important;
+    height: 450px !important;
+}
 
 #media_description:focus {
     outline: none;

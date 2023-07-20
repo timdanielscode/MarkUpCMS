@@ -207,6 +207,8 @@ margin-top: 50px;
     position: absolute !important;
     top: 50%;
     transform: translate(-50%, -50%) !important;
+    width: 600px !important;
+    height: 450px !important;
 }
 .modal-edit #modalForm {
     position: absolute;
