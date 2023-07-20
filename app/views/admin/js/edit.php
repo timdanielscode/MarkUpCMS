@@ -15,6 +15,10 @@
     $this->script("/assets/js/codemirror/codemirror.js");
     $this->script("/assets/js/codemirror/css.js");
     $this->script("/assets/js/codemirror/closebrackets.js");
+
+    $this->script('/assets/js/ajax.js');
+    $this->script('/assets/js/fullscreen.js');
+
     $this->title("IndependentCMS");
     $this->include("headerClose");
     $this->include('navbar');
@@ -43,6 +47,9 @@
                         <div class="mainButtonContainer">
                             <label for="submit" class="button">Update</label>
                             <a href="/admin/js" class="button">Back</a>
+                        </div>
+                        <div class="buttonContainer">
+                            <a href="#" id="codeEditorFullScreen" class="button">Full screen</a>
                         </div>
                         <div class="buttonContainer">
                             <form action="update" method="POST">

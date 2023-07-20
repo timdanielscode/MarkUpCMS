@@ -15,6 +15,10 @@
     $this->script("/assets/js/codemirror/codemirror.js");
     $this->script("/assets/js/codemirror/css.js");
     $this->script("/assets/js/codemirror/closebrackets.js");
+
+    $this->script('/assets/js/ajax.js');
+    $this->script('/assets/js/fullscreen.js');
+    
     $this->title("IndependentCMS");
     $this->include("headerClose");
     $this->include('navbar');
@@ -44,13 +48,15 @@
             </div>
             <div class="col2 col3-L">
                 <div id="sidebar" class="width-25-L">
-                <div class="sidebarContainer">
-                    <div class="mainButtonContainer">
-                    <label for="submit" class="button">Create</label>
-                    <a href="/admin/css" class="button">Back</a>
-                    
-                </div>
-                </div>
+                    <div class="sidebarContainer">
+                        <div class="mainButtonContainer">
+                            <label for="submit" class="button">Create</label>
+                            <a href="/admin/css" class="button">Back</a>
+                        </div>
+                        <div class="buttonContainer">
+                            <a href="#" id="codeEditorFullScreen" class="button">Full screen</a>
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>

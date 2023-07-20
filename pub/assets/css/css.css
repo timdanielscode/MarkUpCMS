@@ -23,7 +23,7 @@
 .buttonContainer form input:nth-child(1) {
     margin-right: 20px;
 }
-.mainButtonContainer a, .mainButtonContainer label, .buttonContainer form input, .removeCssForm input[type="submit"], .linkCssForm input[type="submit"] {
+.mainButtonContainer a, .mainButtonContainer label, .buttonContainer form input, .removeCssForm input[type="submit"], .linkCssForm input[type="submit"], .buttonContainer a {
     width: auto;
     display: flex;
     justify-content: center;
@@ -44,16 +44,16 @@
     background: #6ba152;
     border: 1px solid #6ba152;
 }
-.mainButtonContainer a, .buttonContainer form input, .removeCssForm input[type="submit"], .linkCssForm input[type="submit"] {
+.mainButtonContainer a, .buttonContainer form input, .removeCssForm input[type="submit"], .linkCssForm input[type="submit"], .buttonContainer a {
     border: 1px solid #fff;
     background: rgba(0,0,0,0.1);
     color: #fff;
 }
-.mainButtonContainer a:hover, .buttonContainer form input:hover, .removeCssForm input[type="submit"]:hover, .linkCssForm input[type="submit"]:hover {
+.mainButtonContainer a:hover, .buttonContainer form input:hover, .removeCssForm input[type="submit"]:hover, .linkCssForm input[type="submit"]:hover, .buttonContainer a:hover {
     background: #fff;
     color: #000;
 }
-.mainButtonContainer label:hover, .buttonContainer form input:hover, .removeCssForm input[type="submit"]:hover, .linkCssForm input[type="submit"]:hover {
+.mainButtonContainer label:hover, .buttonContainer form input:hover, .removeCssForm input[type="submit"]:hover, .linkCssForm input[type="submit"]:hover, .buttonContainer a:hover {
     cursor: pointer;
 }
 .removeCssForm, .linkCssForm {
