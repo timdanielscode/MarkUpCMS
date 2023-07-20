@@ -19,10 +19,6 @@
     text-decoration: none;
     font-weight: 300;
 }
-/*.previous a {
-    border-radius: 3px;
+.pagination .page-item a:hover {
+    cursor: pointer;
 }
-.next a {
-    border-radius: 3px;
-}*/
-

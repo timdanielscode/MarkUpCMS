@@ -35,38 +35,10 @@ class Rules {
                 
       $validation = new Validate();
                 
-      $validation->input("username")->as("Username")->rules([
-                
-        "required" => true, 
-        "min" => "6", 
-        "max" => "30", 
-        "special" => true
-                
-      ]);
-                
-      $validation->input("email")->as("Email")->rules([
-                
-        "required" => true, 
-        "min" => "6", 
-        "max" => "30", 
-        "special" => true
-                
-      ]);
-                
-      $validation->input("password")->as("Password")->rules([
-                
-        "required" => true, 
-        "min" => "6", 
-        "max" => "60"
-                
-      ]);
-                 
-      $validation->input("retypePassword")->as("Password")->rules([
-                
-        "required" => true, 
-        "match" => "password"
-                
-      ]);
+      $validation->input("username")->as("Username")->rules(["required" => true, "min" => "6", "max" => "30", "special" => true]);         
+      $validation->input("email")->as("Email")->rules(["required" => true, "min" => "6", "max" => "30", "special" => true]);         
+      $validation->input("password")->as("Password")->rules(["required" => true, "min" => "6", "max" => "60"]);          
+      $validation->input("retypePassword")->as("Password")->rules(["required" => true, "match" => "password"]);
                  
       $this->errors = $validation->errors;
       return $this;
@@ -76,38 +48,10 @@ class Rules {
                 
         $validation = new Validate();
                   
-        $validation->input("username")->as("Username")->rules([
-                  
-          "required" => true, 
-          "min" => "6", 
-          "max" => "30", 
-          "special" => true
-                  
-        ]);
-                  
-        $validation->input("email")->as("Email")->rules([
-                  
-          "required" => true, 
-          "min" => "6", 
-          "max" => "30", 
-          "special" => true
-                  
-        ]);
-                  
-        $validation->input("password")->as("Password")->rules([
-                  
-          "required" => true, 
-          "min" => "6", 
-          "max" => "60"
-                  
-        ]);
-                   
-        $validation->input("retypePassword")->as("Password")->rules([
-                  
-          "required" => true, 
-          "match" => "password"
-                  
-        ]);
+        $validation->input("username")->as("Username")->rules(["required" => true, "min" => "6", "max" => "30", "special" => true]);         
+        $validation->input("email")->as("Email")->rules(["required" => true, "min" => "6", "max" => "30", "special" => true]);        
+        $validation->input("password")->as("Password")->rules(["required" => true, "min" => "6", "max" => "60"]);   
+        $validation->input("retypePassword")->as("Password")->rules(["required" => true, "match" => "password"]);
                    
         $this->errors = $validation->errors;
         return $this;
@@ -117,22 +61,8 @@ class Rules {
                     
         $validation = new Validate();
                   
-        $validation->input("username")->as("Username")->rules([
-                  
-          "required" => true,             
-          "min" => "6",          
-          "max" => "30",          
-          "special" => true            
-  
-        ]);
-                  
-        $validation->input("password")->as("Password")->rules([
-                  
-          "required" => true,              
-          "min" => "6",              
-          "max" => "60"
-                  
-        ]);
+        $validation->input("username")->as("Username")->rules(["required" => true, "min" => "6", "max" => "30", "special" => true]);       
+        $validation->input("password")->as("Password")->rules(["required" => true, "min" => "6", "max" => "60"]);
                    
         $this->errors = $validation->errors;
         return $this;
@@ -187,25 +117,34 @@ class Rules {
         return $this;
     }
 
-    public function create_post() {
+    public function create_post($uniqueTitle) {
         
         $validation = new Validate();
         
-        $validation->input('title')->as('Title')->rules(['required' => true, 'min' => 5, 'max' => 50, 'special' => true]);
-        $validation->input('body')->as('Body')->rules(['required' => true, 'min' => 5]);
+        $validation->input('title')->as('Title')->rules(['required' => true, 'max' => 49, 'special' => true, 'unique' => $uniqueTitle]);
         
         $this->errors = $validation->errors;
         return $this;
     }
 
-    public function update_post() {
+    public function update_post($uniqueTitle) {
         
         $validation = new Validate();
         
-        $validation->input('title')->as('Title')->rules(['required' => true, 'min' => 5, 'max' => 50, 'special' => true]);
-        $validation->input('body')->as('Body')->rules(['required' => true, 'min' => 5]);
-        $validation->input('slug')->as('Slug')->rules(['required' => true, 'first' => '/']);
+        $validation->input('title')->as('Title')->rules(['required' => true, 'max' => 49, 'special' => true, 'unique' => $uniqueTitle]);
         
+        $this->errors = $validation->errors;
+        return $this;
+    }
+
+    public function update_metadata() {
+
+        $validation = new Validate();
+
+        $validation->input('metaTitle')->as('Title')->rules(['max' => 60, 'special' => true]);
+        $validation->input('metaDescription')->as('Description')->rules(['max' => 160, 'special' => true]);
+        $validation->input('metaKeywords')->as('Keywords')->rules(['max' => 500]);
+
         $this->errors = $validation->errors;
         return $this;
     }

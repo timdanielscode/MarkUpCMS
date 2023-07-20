@@ -45,23 +45,25 @@ class PostController extends Controller {
         return $this->view('admin/posts/create', $data);
     }
 
-    public function store() {
+    public function store($request) {
 
         if(submitted("submit") === true && Csrf::validate(Csrf::token('get'), post('token')) === true ) {
 
             $rules = new Rules();
             $post = new Post();
+
+            $uniqueTitle = DB::try()->select('id, title')->from('pages')->where('title', '=', $request['title'])->and('id', '!=', $request['id'])->fetch();
     
-            if($rules->create_post()->validated()) {
+            if($rules->create_post($uniqueTitle)->validated()) {
                         
                 $slug = "/".post('title');
                 $slug = str_replace(" ", "-", $slug);
     
                 Post::insert([
     
-                    'title' => post('title'),
+                    'title' => $request['title'],
                     'slug' => $slug,
-                    'body' => post('body'),
+                    'body' => $request['body'],
                     'author' => Session::get('username'),
                     'date_created_at' => date("d/m/Y"),
                     'time_created_at' => date("H:i"),
@@ -71,7 +73,11 @@ class PostController extends Controller {
     
                 Session::set('create', 'You have successfully created a new post!');            
                 redirect('/admin/posts');
-            } 
+            } else {
+
+                $data['rules'] = $rules->errors;
+                return $this->view('admin/posts/create', $data);
+            }
         }
     }
 
@@ -101,20 +107,37 @@ class PostController extends Controller {
         $postSlug = explode('/', $post['slug']);
         $postSlug = "/" . $postSlug[array_key_last($postSlug)];
 
+        $linkedCssFiles = DB::try()->select('css.id, css.file_name, css.extension')->from('css')->join('css_page')->on('css_page.css_id', '=', 'css.id')->where('css_page.page_id', '=', $request['id'])->fetch();
+        $notLinkedCssFiles = $this->notLinkedCssFiles($linkedCssFiles);
+        $linkedJsFiles = DB::try()->select('js.id, js.file_name, js.extension')->from('js')->join('js_page')->on('js_page.js_id', '=', 'js.id')->where('js_page.page_id', '=', $request['id'])->fetch();
+        $notLinkedJsFiles = $this->notLinkedJsFiles($linkedJsFiles);
+    
+        $data['data'] = $post;
+
         $ifAlreadyAssingedToCategory = DB::try()->select('page_id')->from('category_page')->where('page_id', '=', $request['id'])->fetch();
 
         if(empty($ifAlreadyAssingedToCategory)) {
 
             $categories = DB::try()->select('id, title')->from("categories")->fetch();
-            $data['categories'] = $categories;
+            $data['data']['categories'] = $categories;
         } else {
 
             $category = DB::try()->select('categories.title, categories.slug')->from('categories')->join('category_page')->on('category_page.category_id', '=', 'categories.id')->where('category_page.page_id', '=', $request['id'])->first();
-            $data['category'] = $category;
+            $data['data']['category'] = $category;
         }
 
-        $linkedCssFiles = DB::try()->select('css.id, css.file_name, css.extension')->from('css')->join('css_page')->on('css_page.css_id', '=', 'css.id')->where('css_page.page_id', '=', $request['id'])->fetch();
-        
+        $data['data']['postSlug'] = $postSlug;
+        $data['data']['linkedCssFiles'] = $linkedCssFiles;
+        $data['data']['notLinkedCssFiles'] = $notLinkedCssFiles;
+        $data['data']['linkedJsFiles'] = $linkedJsFiles;
+        $data['data']['notLinkedJsFiles'] = $notLinkedJsFiles;
+        $data['rules'] = [];
+
+        return $this->view('admin/posts/edit', $data);
+    }
+
+    public function notLinkedCssFiles($linkedCssFiles) {
+
         $linkedCssFileIds = [];
 
         if(!empty($linkedCssFiles) && $linkedCssFiles !== null) {
@@ -132,8 +155,11 @@ class PostController extends Controller {
             $notLinkedCssFiles = DB::try()->select('id, file_name, extension')->from('css')->fetch();
         }
 
-        $linkedJsFiles = DB::try()->select('js.id, js.file_name, js.extension')->from('js')->join('js_page')->on('js_page.js_id', '=', 'js.id')->where('js_page.page_id', '=', $request['id'])->fetch();
-        
+        return $notLinkedCssFiles;
+    }
+
+    public function notLinkedJsFiles($linkedJsFiles) {
+
         $linkedJsFileIds = [];
 
         if(!empty($linkedJsFiles) && $linkedJsFiles !== null) {
@@ -150,68 +176,57 @@ class PostController extends Controller {
 
             $notLinkedJsFiles = DB::try()->select('id, file_name, extension')->from('js')->fetch();
         }
-    
-        $data['data'] = $post;
-        $data['postSlug'] = $postSlug;
-        $data['linkedCssFiles'] = $linkedCssFiles;
-        $data['notLinkedCssFiles'] = $notLinkedCssFiles;
-        $data['linkedJsFiles'] = $linkedJsFiles;
-        $data['notLinkedJsFiles'] = $notLinkedJsFiles;
-        $data['rules'] = [];
 
-        return $this->view('admin/posts/edit', $data);
+        return $notLinkedJsFiles;
     }
 
     public function update($request) {
 
         if(!empty($request['submitCategory']) && $request['submitCategory'] !== null) {
 
-            $this->updateCategory($request);
-            exit();
+            return $this->updateCategory($request);
         } else if (!empty($request['removeCategory']) && $request['removeCategory'] !== null) {
 
-            $this->removeCategory($request);
-            exit();
+            return $this->removeCategory($request);
         } else if(!empty($request['updateSlug']) && $request['updateSlug'] !== null) {
 
-            $this->updateSlug($request);
-            exit();
+            return $this->updateSlug($request);
         } else if(!empty($request['updateMetaData']) && $request['updateMetaData'] !== null) {
 
-            $this->updateMetaData($request);
-            exit();
+            return $this->updateMetaData($request);
         } else if(!empty($request['removeCss']) && $request['removeCss'] !== null) {
 
-            $this->removeCss($request);
-            exit();
+            return $this->removeCss($request);
         } else if(!empty($request['linkCss']) && $request['linkCss'] !== null) {
 
-            $this->linkCss($request);
-            exit();
+            return $this->linkCss($request);
         } else if(!empty($request['includeJs']) && $request['includeJs'] !== null) {
 
-            $this->includeJs($request);
-            exit();
+            return $this->includeJs($request);
         } else if (!empty($request['removeJs']) && $request['removeJs'] !== null) {
 
-            $this->removeJs($request);
-            exit();
+            return $this->removeJs($request);
+        } else if(!empty($request['submit']) && $request['submit'] !== null) {
+
+            return $this->updatePost($request);
+        } else {
+            return;
         }
+    }
+
+    public function updatePost($request) {
 
         if(submitted("submit") === true && Csrf::validate(Csrf::token('get'), post('token')) === true ) {
                 
             $post = new Post();
             $rules = new Rules();
 
-            //if($rules->update_post()->validated($request)) {
+            $uniqueTitle = DB::try()->select('id, title')->from('pages')->where('title', '=', $request['title'])->and('id', '!=', $request['id'])->fetch();
+
+            if($rules->update_post($uniqueTitle)->validated()) {
                 
                 $id = $request['id'];
 
-                /*$slug = explode('/', $request['slug']);
-                $slug[array_key_last($slug)] = substr($request['postSlug'], 1);
-                $slug = implode('/', array_filter($slug));*/
-
-  
                     Post::update(['id' => $id], [
 
                         'title' => $request["title"],
@@ -223,7 +238,40 @@ class PostController extends Controller {
                     Session::set('updated', 'User updated successfully!');
                     redirect("/admin/posts/$id/edit");
                 
-            //} 
+            } else {
+
+                $ifAlreadyAssingedToCategory = DB::try()->select('page_id')->from('category_page')->where('page_id', '=', $request['id'])->fetch();
+
+                if(empty($ifAlreadyAssingedToCategory)) {
+        
+                    $categories = DB::try()->select('id, title')->from("categories")->fetch();
+                    $data['data']['categories'] = $categories;
+                } else {
+        
+                    $category = DB::try()->select('categories.title, categories.slug')->from('categories')->join('category_page')->on('category_page.category_id', '=', 'categories.id')->where('category_page.page_id', '=', $request['id'])->first();
+                    $data['data']['category'] = $category;
+                }
+
+                $data['data']['linkedCssFiles'] = $linkedCssFiles = DB::try()->select('css.id, css.file_name, css.extension')->from('css')->join('css_page')->on('css_page.css_id', '=', 'css.id')->where('css_page.page_id', '=', $request['id'])->fetch();
+                $data['data']['notLinkedCssFiles'] = $notLinkedCssFiles = $this->notLinkedCssFiles($linkedCssFiles);
+                $data['data']['linkedJsFiles'] =  $linkedJsFiles = DB::try()->select('js.id, js.file_name, js.extension')->from('js')->join('js_page')->on('js_page.js_id', '=', 'js.id')->where('js_page.page_id', '=', $request['id'])->fetch();
+                $data['data']['notLinkedJsFiles'] =  $notLinkedJsFiles = $this->notLinkedJsFiles($linkedJsFiles);
+                $data['data']['id'] = DB::try()->select('id')->from('pages')->where('id', '=', $request['id'])->first()['id'];
+                $data['data']['title'] = DB::try()->select('title')->from('pages')->where('id', '=', $request['id'])->first()['title'];
+                $data['data']['body'] = DB::try()->select('body')->from('pages')->where('id', '=', $request['id'])->first()['body'];
+                $data['data']['slug'] = DB::try()->select('slug')->from('pages')->where('id', '=', $request['id'])->first()['slug'];
+                $data['data']['metaTitle'] = DB::try()->select('metaTitle')->from('pages')->where('id', '=', $request['id'])->first()['metaTitle'];
+                $data['data']['metaDescription'] = DB::try()->select('metaDescription')->from('pages')->where('id', '=', $request['id'])->first()['metaDescription'];
+                $data['data']['metaKeywords'] = DB::try()->select('metaKeywords')->from('pages')->where('id', '=', $request['id'])->first()['metaKeywords'];
+
+                $postSlug = explode('/', $data['data']['slug']);
+                $postSlug = "/" . $postSlug[array_key_last($postSlug)];
+                $data['data']['postSlug'] = $postSlug;
+
+                $data['rules'] = $rules->errors;
+
+                return $this->view('admin/posts/edit', $data);
+            }
         }
     }
 
@@ -320,27 +368,52 @@ class PostController extends Controller {
 
         $id = $request['id'];
 
-        if(!empty($request['metaTitle']) && $request['metaTitle'] !== null) {
+        $rules = new Rules();
+
+        if($rules->update_metadata()->validated()) {
 
             Post::update(['id' => $id], [
 
-                'metaTitle' => $request['metaTitle']
-            ]);
-        }
-        if(!empty($request['metaDescription']) && $request['metaDescription'] !== null) {
-
-            Post::update(['id' => $id], [
-
-                'metaDescription' => $request['metaDescription']
-            ]);
-        }
-        if(!empty($request['metaKeywords']) && $request['metaKeywords'] !== null) {
-
-            Post::update(['id' => $id], [
-
+                'metaTitle' => $request['metaTitle'],
+                'metaDescription' => $request['metaDescription'],
                 'metaKeywords' => $request['metaKeywords']
             ]);
+
+        } else {
+
+            $ifAlreadyAssingedToCategory = DB::try()->select('page_id')->from('category_page')->where('page_id', '=', $request['id'])->fetch();
+
+            if(empty($ifAlreadyAssingedToCategory)) {
+    
+                $categories = DB::try()->select('id, title')->from("categories")->fetch();
+                $data['data']['categories'] = $categories;
+            } else {
+    
+                $category = DB::try()->select('categories.title, categories.slug')->from('categories')->join('category_page')->on('category_page.category_id', '=', 'categories.id')->where('category_page.page_id', '=', $request['id'])->first();
+                $data['data']['category'] = $category;
+            }
+
+            $data['data']['linkedCssFiles'] = $linkedCssFiles = DB::try()->select('css.id, css.file_name, css.extension')->from('css')->join('css_page')->on('css_page.css_id', '=', 'css.id')->where('css_page.page_id', '=', $request['id'])->fetch();
+            $data['data']['notLinkedCssFiles'] = $notLinkedCssFiles = $this->notLinkedCssFiles($linkedCssFiles);
+            $data['data']['linkedJsFiles'] =  $linkedJsFiles = DB::try()->select('js.id, js.file_name, js.extension')->from('js')->join('js_page')->on('js_page.js_id', '=', 'js.id')->where('js_page.page_id', '=', $request['id'])->fetch();
+            $data['data']['notLinkedJsFiles'] =  $notLinkedJsFiles = $this->notLinkedJsFiles($linkedJsFiles);
+            $data['data']['id'] = DB::try()->select('id')->from('pages')->where('id', '=', $request['id'])->first()['id'];
+            $data['data']['body'] = DB::try()->select('body')->from('pages')->where('id', '=', $request['id'])->first()['body'];
+            $data['data']['title'] = DB::try()->select('title')->from('pages')->where('id', '=', $request['id'])->first()['title'];
+            $data['data']['slug'] = DB::try()->select('slug')->from('pages')->where('id', '=', $request['id'])->first()['slug'];
+            $data['data']['metaTitle'] = DB::try()->select('metaTitle')->from('pages')->where('id', '=', $request['id'])->first()['metaTitle'];
+            $data['data']['metaDescription'] = DB::try()->select('metaDescription')->from('pages')->where('id', '=', $request['id'])->first()['metaDescription'];
+            $data['data']['metaKeywords'] = DB::try()->select('metaKeywords')->from('pages')->where('id', '=', $request['id'])->first()['metaKeywords'];
+
+            $postSlug = explode('/', $data['data']['slug']);
+            $postSlug = "/" . $postSlug[array_key_last($postSlug)];
+            $data['data']['postSlug'] = $postSlug;
+
+            $data['rules'] = $rules->errors;
+
+            return $this->view('admin/posts/edit', $data);
         }
+
         redirect("/admin/posts/$id/edit");
     }
 
@@ -410,44 +483,6 @@ class PostController extends Controller {
         redirect('/admin/posts/'. $request['id'] . '/edit');
     }
 
-    /*public function metaData($request) {
-            
-        $posts = new Post();
-        $post = DB::try()->select('*')->from($posts->t)->where($posts->id, '=', $request['id'])->first();
-        $data['post'] = $post;
-        $data['rules'] = [];
-
-        return $this->view('admin/posts/meta', $data);
-    }*/
-
-    /*public function metaDataUpdate($request) {
-
-        if(submitted('meta')) {
-
-            if(CSRF::validate(CSRF::token('get'), post('tokenMeta'))) {
-                
-                $post = new Post();
-                $id = $request['id'];
-                $metaTitle = $request["metaTitle"];
-                $metaDescription = $request["metaDescription"];
-
-                if(!empty($metaTitle) ) {
-                    DB::try()->update($post->t)->set([
-                        $post->metaTitle => $metaTitle
-                    ])->where($post->id, '=', $id)->run(); 
-                }
-                if(!empty($metaDescription) ) {
-                    DB::try()->update($post->t)->set([
-                        $post->metaDescription => $metaDescription
-                    ])->where($post->id, '=', $id)->run(); 
-                }
-
-                Session::set('updated', 'User updated successfully!');
-                redirect("/admin/posts/$id/meta/edit");
-            }
-        }
-    }*/
-
     public function delete($request) {
 
         Post::delete("id", $request['id']);
@@ -455,5 +490,4 @@ class PostController extends Controller {
 
         redirect("/admin/posts");
     }
-
 }

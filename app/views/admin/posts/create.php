@@ -28,16 +28,13 @@
             <div class="col10 col9-L">
                 <form action="store" method="POST" class="form-code">
                     <div class="form-parts">
-                        <input type="text" autofocus name="title" type="title" id="title" placeholder="Title" autofocus>
+                        <input type="text" name="title" type="title" id="title" value="<?php echo post('title'); ?>" autofocus>
                         <div class="error-messages">
                             <?php echo Errors::get($rules, 'title'); ?>
                         </div>
                     </div>
                     <div class="form-parts">
                         <textarea type="text" name="body" type="body" id="code"></textarea>
-                        <div class="error-messages">
-                            <?php echo Errors::get($rules, 'body'); ?>
-                        </div>
                     </div>
                     <div class="form-parts">
                         <button name="submit" id="submit" type="submit" class="display-none">Create</button>

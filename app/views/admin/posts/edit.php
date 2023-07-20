@@ -25,7 +25,6 @@
     $this->include('navbar');
     
 ?>
-
 <div class="edit-container">
     <div class="row">
         <div class="col10 col9-L">
@@ -37,7 +36,7 @@
                     </div>    
                 </div>
                 <textarea name="body" id="code"><?php if(!empty($data['body'] )) { echo $data['body']; } ?></textarea>
-                <button name="submit" id="submit" type="submit" class="hiddenButton">Update</button>
+                <button name="submit" id="submit" type="submit" class="hiddenButton" value="submit">Update</button>
                 <input type="hidden" name="token" value="<?php Csrf::token('add'); ?>" />
             </form>
         </div>
@@ -49,7 +48,7 @@
                         <a href="/admin/posts" class="button">Back</a>
                     </div>
                     <div class="buttonContainer">
-                        <a href="/admin/posts/<?php echo $data['id']; ?>/read" class="button">Read</a>
+                        <a href="/admin/posts/<?php if(!empty($data['id']) ) { echo $data['id']; } ?>/read" class="button">Read</a>
                         <a href="#" id="codeEditorFullScreen" class="button">Full screen</a>
                     </div>
                     <div class="buttonContainer">
@@ -61,12 +60,12 @@
                         <a id="jsButton" class="button">Js</a>
                     </div>
                     <span class="text">Slug:</span>
-                    <span class="fullSlug"><?php if(!empty($data['slug']) && $data['slug'] !== null) { echo $data['slug']; } ?></span>
+                    <span class="fullSlug"><?php if(!empty($data['slug']) ) { echo $data['slug']; } ?></span>
                     <form class="updateSlugForm" action="update" method="POST">
                         <div class="form-parts">
-                            <input type="text" name="postSlug" id="slug" value="<?php if(!empty($postSlug )) { echo $postSlug; } ?>">
+                            <input type="text" name="postSlug" id="slug" value="<?php if(!empty($data['postSlug'] )) { echo $data['postSlug']; } ?>">
                         </div>
-                        <input type="hidden" name="slug" value="<?php if(!empty($data['slug']) && $data['slug'] !== null) { echo $data['slug']; } ?>">
+                        <input type="hidden" name="slug" value="<?php if(!empty($data['slug']) ) { echo $data['slug']; } ?>">
                         <div class="error-messages">
                             <?php echo Errors::get($rules, 'slug'); ?>
                         </div>
@@ -74,10 +73,10 @@
                     </form>
                     <div id="category" class="display-none">
                         <span class="text">Category: </span>
-                            <?php if(!empty($categories) && $categories !== null) { ?>
+                            <?php if(!empty($data['categories']) && $data['categories'] !== null) { ?>
                                 <form class="AddCategory" action="update" method="POST">
                                     <select name="categories" multiple>
-                                        <?php foreach($categories as $category) { ?>
+                                        <?php foreach($data['categories'] as $category) { ?>
                                             <option value="<?php echo $category['id']; ?>">    
                                                 <?php echo $category['title']; ?>
                                             </option>
@@ -86,14 +85,10 @@
                                     <div class="AssingCategoryContainer">
                                         <input class="assignCategoryButton" type="submit" name="submitCategory" value="Assign"/>
                                     </div>
-                                    
                                 </form>
                             <?php } else { ?>
-
-                                <span class="categoryTitle"><?php echo $category['title']; ?></span>
-
+                                <span class="categoryTitle"><?php echo $data['category']['title']; ?></span>
                                 <form action="update" method="POST">
-
                                     <input class="detachCategoryButton" type="submit" name="removeCategory" value="Detach"/>
                                 </form>
                         <?php } ?>
@@ -101,22 +96,31 @@
                     <form id="metaForm" class="updateMetaDataForm display-none" action="update" method="POST">
                         <div class="form-parts">
                             <label for="metaTitle">Meta title: </label>
-                            <input id="metaTitle" type="text" name="metaTitle" value="<?php if(!empty($data['metaTitle']) && $data['metaTitle'] !== null) { echo $data['metaTitle']; } ?>" placeholder="<?php if(empty($data['metaTitle']) || $data['metaTitle'] === null) { echo '...'; } ?>"/>
+                            <input id="metaTitle" type="text" name="metaTitle" value="<?php if(!empty($data['metaTitle']) && $data['metaTitle'] !== null) { echo $data['metaTitle']; } ?>"/>
+                            <div class="error-messages">
+                                <?php echo Errors::get($rules, 'metaTitle'); ?>
+                            </div>   
                         </div>
                         <div class="form-parts">
                             <label for="metaDescription">Meta description: </label>
-                            <textarea id="metaDescription" name="metaDescription" placeholder="<?php if(empty($data['metaDescription']) || $data['metaDescription'] === null) { echo '...'; } ?>"><?php if(!empty($data['metaDescription']) && $data['metaDescription'] !== null) { echo $data['metaDescription']; } ?></textarea>
+                            <textarea id="metaDescription" name="metaDescription"><?php if(!empty($data['metaDescription']) && $data['metaDescription'] !== null) { echo $data['metaDescription']; } ?></textarea>
+                            <div class="error-messages">
+                                <?php echo Errors::get($rules, 'metaDescription'); ?>
+                            </div>   
                         </div>
                         <div class="form-parts">
                             <label for="metaKeywords">Meta keywords: </label>
-                            <textarea id="metaKeywords" name="metaKeywords" placeholder="<?php if(empty($data['metaKeywords']) || $data['metaKeywords'] === null) { echo 'Enter seppareted with an comma'; } ?>"><?php if(!empty($data['metaKeywords']) && $data['metaKeywords'] !== null) { echo $data['metaKeywords']; } ?></textarea>
+                            <textarea id="metaKeywords" name="metaKeywords"><?php if(!empty($data['metaKeywords']) && $data['metaKeywords'] !== null) { echo $data['metaKeywords']; } ?></textarea>
+                            <div class="error-messages">
+                                <?php echo Errors::get($rules, 'metaKeywords'); ?>
+                            </div>   
                         </div>
                         <input type="submit" name="updateMetaData" value="Update"/>
                     </form>
                     <form id="linkedCssFiles" class="linkedCssFilesForm display-none" action="update" method="POST">
                         <label for="linkedFiles">Linked css files:</label>
                         <select id="linkedFiles" name="linkedCssFiles[]" multiple>
-                            <?php foreach($linkedCssFiles as $linkedCssFile) { ?>
+                            <?php foreach($data['linkedCssFiles'] as $linkedCssFile) { ?>
                                 <option value="<?php echo $linkedCssFile['id']; ?>">
                                     <?php echo $linkedCssFile['file_name'] . $linkedCssFile['extension']; ?>
                                 </option>
@@ -127,7 +131,7 @@
                     <form id="cssFiles" class="cssFilesForm display-none" action="update" method="POST">
                         <label for="cssFilesSelect">Other css files:</label>
                             <select id="cssFilesSelect" name="cssFiles[]" multiple>
-                                <?php foreach($notLinkedCssFiles as $notLinkedCssFile) { ?>
+                                <?php foreach($data['notLinkedCssFiles'] as $notLinkedCssFile) { ?>
                                     <option value="<?php echo $notLinkedCssFile['id']; ?>">
                                         <?php echo $notLinkedCssFile['file_name'] . $notLinkedCssFile['extension']; ?>
                                     </option>
@@ -138,7 +142,7 @@
                     <form id="linkedJsFiles" class="linkedJsFilesForm display-none" action="update" method="POST">
                         <label for="linkedJsFiles">Linked js files:</label>
                         <select id="linkedJsFiles" name="linkedJsFiles[]" multiple>
-                            <?php foreach($linkedJsFiles as $linkedJsFile) { ?>
+                            <?php foreach($data['linkedJsFiles'] as $linkedJsFile) { ?>
                                 <option value="<?php echo $linkedJsFile['id']; ?>">
                                     <?php echo $linkedJsFile['file_name'] . $linkedJsFile['extension']; ?>
                                 </option>
@@ -149,7 +153,7 @@
                     <form id="jsFiles" class="jsFilesForm display-none" action="update" method="POST">
                         <label for="jsFilesSelect">Other js files:</label>
                             <select id="jsFilesSelect" name="jsFiles[]" multiple>
-                                <?php foreach($notLinkedJsFiles as $notLinkedJsFile) { ?>
+                                <?php foreach($data['notLinkedJsFiles'] as $notLinkedJsFile) { ?>
                                     <option value="<?php echo $notLinkedJsFile['id']; ?>">
                                         <?php echo $notLinkedJsFile['file_name'] . $notLinkedJsFile['extension']; ?>
                                     </option>
