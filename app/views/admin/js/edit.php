@@ -25,14 +25,14 @@
             <div class="col10 col9-L">
                 <form action="update" method="POST" class="form-code">
                     <div class="form-parts">
-                        <input name="filename" type="text" id="filename" placeholder="Filename" value="<?php echo $jsFile['file_name']; ?>">
+                        <input name="filename" type="text" id="filename" placeholder="Filename" value="<?php echo $data['file_name']; ?>">
                         <div class="error-messages">
                             <?php echo Errors::get($rules, 'filename'); ?>
                         </div>
-                        <textarea name="code" id="code"><?php echo $code; ?></textarea>
+                        <textarea name="code" id="code"><?php echo $data['code']; ?></textarea>
                     </div>
                     <div class="form-parts">
-                        <button name="submit" id="submit" type="submit" class="display-none">Create</button>
+                        <button name="submit" id="submit" type="submit" class="display-none" value="submit">Create</button>
                         <input type="hidden" name="token" value="<?php Csrf::token('add');?>" />
                     </div>
                 </form>
@@ -53,11 +53,11 @@
                             </form>
                         </div>
                         <span class="text">File: </span>
-                        <span class="data"><?php echo $jsFile['file_name'] . $jsFile['extension']; ?></span>
+                        <span class="data"><?php echo $data['file_name'] . $data['extension']; ?></span>
                         <form action="update" method="POST" class="removeJsForm">
                             <label>Included on: </label>
                             <select name="pages[]" multiple>
-                                <?php foreach($assingedPages as $page) { ?>
+                                <?php foreach($data['assingedPages'] as $page) { ?>
                                     <option value="<?php echo $page['id']; ?>"><?php echo $page['title']; ?></option>
                                 <?php } ?> 
                             </select>
@@ -66,7 +66,7 @@
                         <form action="update" method="POST" class="includeJsForm">
                             <label>Other pages: </label>
                             <select name="pages[]" multiple>
-                                <?php foreach($pages as $page) { ?>
+                                <?php foreach($data['pages'] as $page) { ?>
                                     <option value="<?php echo $page['id']; ?>"><?php echo $page['title']; ?></option>
                                 <?php } ?> 
                             </select>

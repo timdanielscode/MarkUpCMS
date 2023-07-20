@@ -161,7 +161,7 @@ class Rules {
         
         $validation = new Validate();
         
-        $validation->input('filename')->as('Filename')->rules(['required' => true, 'min' => 5, 'max' => 10, 'special' => true]);
+        $validation->input('filename')->as('Filename')->rules(['required' => true, 'max' => 29, 'special' => true]);
         
         $this->errors = $validation->errors;
         return $this;

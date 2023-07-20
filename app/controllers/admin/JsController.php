@@ -115,6 +115,18 @@ class JsController extends Controller {
         $code = $this->getFileContent($file['file_name']);
 
         $assingedPages = DB::try()->select('id, title')->from('pages')->join('js_page')->on('pages.id', '=', 'js_page.page_id')->where('js_page.js_id', '=', $request['id'])->fetch();
+        $pages = $this->getPages($assingedPages);
+
+        $data['data'] = $file;
+        $data['data']['pages'] = $pages;
+        $data['data']['assingedPages'] = $assingedPages;
+        $data['data']['code'] = $code;
+        $data['rules'] = [];
+
+        return $this->view('admin/js/edit', $data);
+    }
+
+    public function getPages($assingedPages) {
 
         $listAssingedPageIds = [];
 
@@ -132,44 +144,38 @@ class JsController extends Controller {
             $pages = DB::try()->select('id, title')->from('pages')->fetch();
         }
 
-
-        $data['jsFile'] = $file;
-        $data['pages'] = $pages;
-        $data['assingedPages'] = $assingedPages;
-        $data['code'] = $code;
-        $data['rules'] = [];
-
-        return $this->view('admin/js/edit', $data);
+        return $pages;
     }
 
     public function update($request) {
 
         if(!empty($request['updatePage']) && $request['updatePage'] !== null) {
 
-            $this->updatePage($request);
-            exit();
-        }
-        if(!empty($request['removePage']) && $request['removePage'] !== null) {
+            return $this->updatePage($request);
+        } else if(!empty($request['removePage']) && $request['removePage'] !== null) {
 
-            $this->removePage($request);
-            exit();
-        }
-        if(!empty($request['includeAll']) && $request['includeAll'] !== null) {
+            return $this->removePage($request);
+        } else if(!empty($request['includeAll']) && $request['includeAll'] !== null) {
 
-            $this->includeAll($request);
-            exit();
-        }
-        if(!empty($request['removeAll']) && $request['removeAll'] !== null) {
+            return $this->includeAll($request);
+        } else if(!empty($request['removeAll']) && $request['removeAll'] !== null) {
 
-            $this->removeAll($request);
-            exit();
+            return $this->removeAll($request);
+        } else if(!empty($request['submit']) && $request['submit'] !== null) {
+
+            return $this->updateJs($request);
+        } else {
+            return;
         }
+    }
+
+    public function updateJs($request) {
 
         if(submitted('submit') && Csrf::validate(Csrf::token('get'), post('token'))) {
                 
             $id = $request['id'];
             $filename = str_replace(" ", "-", $request["filename"]);
-            $currentJsFileName = Js::where('id', '=', $id)['file_name'];
+            $currentJsFileName = Js::where('id', '=', $id)[0]['file_name'];
 
             $rules = new Rules();
 
@@ -195,10 +201,12 @@ class JsController extends Controller {
                 
                 $filePath = $this->_folderLocation . $currentJsFileName . $this->_fileExtension; 
                 $code = file_get_contents($filePath);
-
-                $data['code'] = $code;
+                
+                $data['data'] = Js::where('id', '=', $id)[0];
+                $data['data']['assingedPages'] = DB::try()->select('id, title')->from('pages')->join('js_page')->on('pages.id', '=', 'js_page.page_id')->where('js_page.js_id', '=', $request['id'])->fetch();
+                $data['data']['pages'] = $this->getPages($data['data']['assingedPages']);
+                $data['data']['code'] = $code;
                 $data['rules'] = $rules->errors;
-                $data['cssFile'] = Js::where('id', '=', $id);
                 
                 return $this->view("/admin/css/edit", $data);
             }
