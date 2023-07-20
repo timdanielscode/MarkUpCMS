@@ -43,10 +43,14 @@ $(document).ready(function() {
             },
                 success: function(data) {
                     $('#TABLE-TITLE-'+id).text(data.title);
-                    $('.MESSAGE').html('Updated successfully!').fadeIn(10).fadeOut(1000);
+                    $('.MESSAGE').html('Updated successfully!').fadeIn(10).fadeOut(2000);
+                    $('.MESSAGE').addClass('message-success'); 
+                    $('.MESSAGE').removeClass('message-failed');
             },
                 error: function(xhr, status, error) {
-                    $('.MESSAGE').html('Oops, something went wrong!').fadeIn(10).fadeOut(1000);
+                    $('.MESSAGE').html('Oops, something went wrong!').fadeIn(10);
+                    $('.MESSAGE').addClass('message-failed'); 
+                    $('.MESSAGE').removeClass('message-success');
             }
         });
 

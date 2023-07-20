@@ -42,10 +42,7 @@ class CategoryController extends Controller {
 
     public function create() {
 
-        $pages = Post::all();
-
         $data['rules'] = [];
-        $data['pages'] = $pages;
 
         return $this->view('admin/categories/create', $data);
     }
@@ -55,8 +52,10 @@ class CategoryController extends Controller {
         if(submitted('submit') && Csrf::validate(Csrf::token('get'), post('token') ) === true) {
 
             $rules = new Rules();
-           
-            if($rules->create_category()->validated()) {
+        
+            $uniqueTitle = DB::try()->select('title')->from('categories')->where('title', '=', $request['title'])->fetch();
+
+            if($rules->create_category($uniqueTitle)->validated()) {
 
                 $slug = post('title');
                 $slug = str_replace(" ", "-", $slug);
@@ -151,19 +150,25 @@ class CategoryController extends Controller {
         return $this->view('admin/categories/edit', $data);
     }
 
-
     public function UPDATE($request) {
 
-        Category::update(['id' => $request['id']], [
+        $rules = new Rules();
 
-            'title'   => $request['title'],
-            'category_description' => $request['description']
+        $uniqueTitle = DB::try()->select('title')->from('categories')->where('title', '=', $request['title'])->fetch();
 
-        ]);
+        if($rules->edit_category($uniqueTitle)->validated()) {
+
+            Category::update(['id' => $request['id']], [
+
+                'title'   => $request['title'],
+                'category_description' => $request['description']
+
+            ]);
   
-        $DATA['id'] = $request['id'];
-        $DATA['title'] = $request['title'];
-        $DATA['description'] = $request['description'];
+            $DATA['id'] = $request['id'];
+            $DATA['title'] = $request['title'];
+            $DATA['description'] = $request['description'];
+        }
 
         echo json_encode($DATA);
     }

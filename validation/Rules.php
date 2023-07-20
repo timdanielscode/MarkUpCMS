@@ -220,12 +220,23 @@ class Rules {
         return $this;
     }
 
-    public function create_category() {
+    public function create_category($unique) {
         
         $validation = new Validate();
         
-        $validation->input('title')->as('Title')->rules(['required' => true, 'min' => 1, 'max' => 50, 'special' => true]);
-        $validation->input('description')->as('Description')->rules(['max' => 100, 'special' => true]);
+        $validation->input('title')->as('Title')->rules(['required' => true, 'max' => 49, 'special' => true, 'unique' => $unique]);
+        $validation->input('description')->as('Description')->rules(['max' => 99, 'special' => true]);
+        
+        $this->errors = $validation->errors;
+        return $this;
+    }     
+
+    public function edit_category($unique) {
+        
+        $validation = new Validate();
+        
+        $validation->input('title')->as('Title')->rules(['required' => true, 'max' => 49, 'special' => true, 'unique' => $unique]);
+        $validation->input('description')->as('Description')->rules(['max' => 99, 'special' => true]);
         
         $this->errors = $validation->errors;
         return $this;

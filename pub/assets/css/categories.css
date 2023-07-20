@@ -325,3 +325,12 @@ margin-top: 50px;
     background: #83a7db;
     border-color:  #83a7db;
 }
+
+.message-success {
+    color: #42971c;
+    margin-top: 10px;
+}
+.message-failed {
+    color: rgb(199, 48, 48);
+    margin-top: 10px;
+}

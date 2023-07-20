@@ -77,7 +77,7 @@ Route::middleware(['auth' => 'admin'])->run(function() {
     Route::post('/admin/categories/slug')->add('admin\CategoryController', 'SLUG');
 
     Route::get('/admin/categories/create')->add('admin\CategoryController', 'create');
-    Route::post('/admin/categories/create')->add('admin\CategoryController', 'store');
+    Route::post('/admin/categories/store')->add('admin\CategoryController', 'store');
     Route::get('/admin/categories/[id]/delete')->add('admin\CategoryController', 'delete');
 });    
 
