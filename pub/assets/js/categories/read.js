@@ -2,6 +2,9 @@ $(document).on('click', '.read', function() {
 
     var modal = $('#modal');
     modal.addClass('display-block'); 
+    modal.removeClass('modal-edit');
+    modal.removeClass('modal-add');
+    modal.addClass('modal-read');
     
     var id = $(this).data('id');
     var html = $('html');

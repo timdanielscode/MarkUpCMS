@@ -125,12 +125,14 @@ class CategoryController extends Controller {
     public function READ($request) {
 
         $category = new Category();
+        
         $pages = $category->allCategoriesWithPosts($request['id']);
-
         $subCategories = DB::try()->select('categories.title, categories.slug')->from('categories')->join("category_sub")->on("categories.id", '=', 'category_sub.sub_id')->where('category_sub.category_id', '=', $request['id'])->fetch();
+        $categorySlug = Category::where('id', '=', $request['id'])[0];
 
         $data['pages'] = $pages;
         $data['categories'] = $subCategories;
+        $data['categorySlug'] = $categorySlug;
 
         return $this->view('admin/categories/read', $data);
     }

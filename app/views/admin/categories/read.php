@@ -1,42 +1,46 @@
-<?php if(!empty($categories) ) { ?>
-
-    <?php foreach($categories as $category) { ?> <li><?php echo $category['slug']; ?></li><?php } ?>
-
-<?php } else { ?>
-
-    <span>-</span>
-
-<?php } ?>
+<div class="readSlugContainer">
+    <span><?php echo $categorySlug['slug']; ?></span><?php if(!empty($categories) ) { ?>
+        <?php foreach($categories as $category) { ?> <span><?php echo $category['slug']; ?></span><?php } ?>
+    <?php } ?>
+</div>
 
 
 
-<p>Pages:</p>
-<?php if(!empty($pages) ) { ?>
-    <ul class="categoriesRead">
-        <?php foreach($pages as $page) { ?> 
+<div class="row">
 
-            <li><?php echo $page['title']; ?></li>
+<div class="col6">
 
-        <?php } ?>
-    </ul>
-<?php } else { ?>
+<span class="categories">Categories: </span>
+<ul class="categoriesRead">
 
-    <span>-</span>
-
-<?php } ?>
-
-<p>Categories:</p>
-<?php if(!empty($pages) ) { ?>
-    <ul class="categoriesRead">
+    
         <?php foreach($categories as $category) { ?> 
 
             <li><?php echo $category['title']; ?></li>
 
         <?php } ?>
-    </ul>
-<?php } else { ?>
+    
 
-    <span>-</span>
+</ul>
+</div>
+<div class="col6">
 
-<?php } ?>
+<span class="pages">Pages: </span>
+<ul class="pagesRead">
+
+    
+        <?php foreach($pages as $page) { ?> 
+
+            <li><?php echo $page['title']; ?></li>
+
+        <?php } ?>
+    
+
+</ul>
+</div>
+
+</div>
+<button id="EDITCLOSE">Close</button>
+
+
 
