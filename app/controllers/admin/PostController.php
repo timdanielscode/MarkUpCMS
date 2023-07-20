@@ -20,18 +20,20 @@ class PostController extends Controller {
 
         $post = new Post();
         $posts = $post->allPostsWithCategories();
-
+        
         $search = get('search');
 
         if(!empty($search) ) {
 
             $posts = $post->allPostsWithCategories($search);
         }
-        
-        $posts = Pagination::get($posts, 11);
+        $count = count($posts);
+
+        $posts = Pagination::get($posts, 3);
         $numberOfPages = Pagination::getPageNumbers();
 
         $data["posts"] = $posts;
+        $data["count"] = $count;
         $data['numberOfPages'] = $numberOfPages;
 
         return $this->view('admin/posts/index', $data);

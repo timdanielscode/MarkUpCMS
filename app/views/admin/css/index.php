@@ -16,7 +16,7 @@
     </div>
     <div class="countContainer">
         <span>All</span>
-        <span>(<?php echo count($cssFiles); ?>)</span>
+        <span>(<?php echo $count; ?>)</span>
     </div>
     <form action="" method="GET">
         <input type="text" name="search" placeholder="Search" id="search">
@@ -65,8 +65,8 @@
     <nav class="pagination">
         <ul>
             <?php 
-                foreach($cssFiles as $cssFile) {
-                    echo '<li class="page-item"><a href="/admin/css?page='.$cssFile.'">'.$cssFile.'</a></li>';
+                foreach($numberOfPages as $page) {
+                    echo '<li class="page-item"><a href="/admin/css?page='.$page.'">'.$page.'</a></li>';
                 }  
             ?>
         </ul>

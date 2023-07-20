@@ -16,6 +16,7 @@ class MediaController extends Controller {
 
         $media = new Media();
         $allMedia = $media->allMediaButOrdered();
+        
 
         $search = get('search');
 
@@ -24,9 +25,12 @@ class MediaController extends Controller {
             $allMedia = $media->mediaFilesOnSearch($search);
         }
         
+        $count = count($allMedia);
+
         $allMedia = Pagination::get($allMedia, 4);
         $numberOfPages = Pagination::getPageNumbers();
 
+        $data['count'] = $count;
         $data["allMedia"] = $allMedia;
         $data['numberOfPages'] = $numberOfPages;
         $data['search'] = $search;

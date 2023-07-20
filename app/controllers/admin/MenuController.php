@@ -16,18 +16,20 @@ class MenuController extends Controller {
 
         $menu = new Menu();
         $menus = $menu->allMenusButOrderedOnDate();
-
+        
         $search = get('search');
 
         if(!empty($search) ) {
 
             $menus = $menu->menusOnSearch($search);
         }
-
-        $menus = Pagination::get($menus, 20);
+        $count = count($menus);
+        
+        $menus = Pagination::get($menus, 3);
         $numberOfPages = Pagination::getPageNumbers();
 
         $data["menus"] = $menus;
+        $data["count"] = $count;
         $data['numberOfPages'] = $numberOfPages;
 
         return $this->view('admin/menus/index', $data);

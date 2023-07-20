@@ -20,18 +20,21 @@ class JsController extends Controller {
 
         $js = new Js();
         $jsFiles = $js->allJsButOrderedOnDate();
-
+        
         $search = get('search');
 
         if(!empty($search) ) {
 
             $jsFiles = $js->cssFilesOnSearch($search);
         }
+        
+        $count = count($jsFiles);
 
-        $jsFiles = Pagination::get($jsFiles, 20);
+        $jsFiles = Pagination::get($jsFiles, 3);
         $numberOfPages = Pagination::getPageNumbers();
 
         $data['jsFiles'] = $jsFiles;
+        $data['count'] = $count;
         $data['numberOfPages'] = $numberOfPages;
 
         return $this->view('admin/js/index', $data);

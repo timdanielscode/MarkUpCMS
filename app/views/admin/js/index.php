@@ -16,7 +16,7 @@
     </div>
     <div class="countContainer">
         <span>All</span>
-        <span>(<?php echo count($jsFiles); ?>)</span>
+        <span>(<?php echo $count; ?>)</span>
     </div>
     <form action="" method="GET">
         <input type="text" name="search" placeholder="Search" id="search">
@@ -60,16 +60,16 @@
             </tbody>
         </table>
         <?php if($numberOfPages !== null && count($numberOfPages) > 1) { ?>
-            <nav class="pagination">
-                <ul>
-                    <?php 
-                        foreach($numberOfPages as $page) {
-                            echo '<li class="page-item"><a href="/admin/js?page='.$page.'">'.$page.'</a></li>';
-                        }  
-                    ?>
-                </ul>
-            </nav>
-        <?php } ?>
+    <nav class="pagination">
+        <ul>
+            <?php 
+                foreach($numberOfPages as $page) {
+                    echo '<li class="page-item"><a href="/admin/posts?page='.$page.'">'.$page.'</a></li>';
+                }  
+            ?>
+        </ul>
+    </nav>
+<?php } ?>
     </div>
 <?php 
     $this->include('footer');

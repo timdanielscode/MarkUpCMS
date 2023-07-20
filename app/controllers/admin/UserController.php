@@ -18,11 +18,7 @@ class UserController extends Controller {
 
         $user = new User();
         
-        $allUsers = Pagination::get($user->allUsersWithRoles(), 11);
-
-        $count = count($allUsers);
-
-        $numberOfPages = Pagination::getPageNumbers();
+        $allUsers = $user->allUsersWithRoles();
         
         if(submitted('search')) {
 
@@ -30,6 +26,11 @@ class UserController extends Controller {
             $allUsers = $user->allUsersWithRoles($search);
         }
        
+        $count = count($allUsers);
+
+        $allUsers = Pagination::get($allUsers, 3);
+        $numberOfPages = Pagination::getPageNumbers();
+
         $data['allUsers'] = $allUsers;
         $data['count'] = $count;
         $data['numberOfPages'] = $numberOfPages;

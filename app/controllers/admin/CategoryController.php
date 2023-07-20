@@ -27,12 +27,15 @@ class CategoryController extends Controller {
             $categories = $category->categoriesFilesOnSearch($search);
         }
 
+        $count = count($categories);
+
         $categories = Pagination::get($categories, 6);
         $numberOfPages = Pagination::getPageNumbers();
 
         $data['categories'] = $categories;
         $data['numberOfPages'] = $numberOfPages;
         $data['search'] = $search;
+        $data['count'] = $count;
 
         return $this->view('admin/categories/index', $data);
     }

@@ -23,7 +23,7 @@
 
     <div class="countContainer">
         <span>All</span>
-        <span>(<?php echo count($allUsers); ?>)</span>
+        <span>(<?php echo $count; ?>)</span>
     </div>
     <form action="" method="GET">
         <input type="text" name="search" placeholder="Search" id="search">

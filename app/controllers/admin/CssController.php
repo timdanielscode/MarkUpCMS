@@ -29,9 +29,12 @@ class CssController extends Controller {
             $cssFiles = $css->cssFilesOnSearch($search);
         }
 
-        $cssFiles = Pagination::get($cssFiles, 20);
+        $count = count($cssFiles);
+
+        $cssFiles = Pagination::get($cssFiles, 3);
         $numberOfPages = Pagination::getPageNumbers();
 
+        $data['count'] = $count;
         $data['cssFiles'] = $cssFiles;
         $data['numberOfPages'] = $numberOfPages;
 
