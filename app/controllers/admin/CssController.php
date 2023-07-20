@@ -156,19 +156,19 @@ class CssController extends Controller {
 
     public function update($request) {
 
-        if(!empty($request['updatePage']) && $request['updatePage'] !== null) {
+        if(submitted('updatePage') ) {
 
             return $this->updatePage($request);
-        } else if(!empty($request['removePage']) && $request['removePage'] !== null) {
+        } else if(submitted('removePage') ) {
 
             return $this->removePage($request);
-        } else if(!empty($request['linkAll']) && $request['linkAll'] !== null) {
+        } else if(submitted('linkAll') ) {
 
             return $this->linkAll($request);
-        } else if(!empty($request['removeAll']) && $request['removeAll'] !== null) {
+        } else if(submitted('removeAll') ) {
 
             return $this->removeAll($request);
-        } else if(!empty($request['submit']) && $request['submit'] !== null) {
+        } else if(submitted('submit') ) {
 
             return $this->updateCss($request);
         } else {
@@ -176,7 +176,7 @@ class CssController extends Controller {
         }
     }
 
-    public function updateCss($request) {
+    private function updateCss($request) {
 
         if(submitted('submit') && Csrf::validate(Csrf::token('get'), post('token'))) {
                 
@@ -222,7 +222,7 @@ class CssController extends Controller {
         }
     }
 
-    public function linkAll($request) {
+    private function linkAll($request) {
 
         $id = $request['id'];
 
@@ -245,7 +245,7 @@ class CssController extends Controller {
         redirect("/admin/css/$id/edit");
     }
 
-    public function removeAll($request) {
+    private function removeAll($request) {
 
         $id = $request['id'];
 
@@ -253,7 +253,7 @@ class CssController extends Controller {
         redirect("/admin/css/$id/edit");
     }
 
-    public function removePage($request) {
+    private function removePage($request) {
 
         $id = $request['id'];
         $pageIds = $request['pages'];
@@ -269,7 +269,7 @@ class CssController extends Controller {
         redirect("/admin/css/$id/edit");
     }
 
-    public function updatePage($request) {
+    private function updatePage($request) {
 
         $id = $request['id'];
         $pageIds = $request['pages'];

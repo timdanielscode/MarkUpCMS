@@ -136,7 +136,7 @@ class PostController extends Controller {
         return $this->view('admin/posts/edit', $data);
     }
 
-    public function notLinkedCssFiles($linkedCssFiles) {
+    private function notLinkedCssFiles($linkedCssFiles) {
 
         $linkedCssFileIds = [];
 
@@ -158,7 +158,7 @@ class PostController extends Controller {
         return $notLinkedCssFiles;
     }
 
-    public function notLinkedJsFiles($linkedJsFiles) {
+    private function notLinkedJsFiles($linkedJsFiles) {
 
         $linkedJsFileIds = [];
 
@@ -182,31 +182,31 @@ class PostController extends Controller {
 
     public function update($request) {
 
-        if(!empty($request['submitCategory']) && $request['submitCategory'] !== null) {
+        if(submitted('submitCategory')) {
 
             return $this->updateCategory($request);
-        } else if (!empty($request['removeCategory']) && $request['removeCategory'] !== null) {
+        } else if (submitted('removeCategory') ) {
 
             return $this->removeCategory($request);
-        } else if(!empty($request['updateSlug']) && $request['updateSlug'] !== null) {
+        } else if(submitted('updateSlug') ) {
 
             return $this->updateSlug($request);
-        } else if(!empty($request['updateMetaData']) && $request['updateMetaData'] !== null) {
+        } else if(submitted('updateMetaData') ) {
 
             return $this->updateMetaData($request);
-        } else if(!empty($request['removeCss']) && $request['removeCss'] !== null) {
+        } else if(submitted('removeCss') ) {
 
             return $this->removeCss($request);
-        } else if(!empty($request['linkCss']) && $request['linkCss'] !== null) {
+        } else if(submitted('linkCss') ) {
 
             return $this->linkCss($request);
-        } else if(!empty($request['includeJs']) && $request['includeJs'] !== null) {
+        } else if(submitted('includeJs') ) {
 
             return $this->includeJs($request);
-        } else if (!empty($request['removeJs']) && $request['removeJs'] !== null) {
+        } else if (submitted('removeJs') ) {
 
             return $this->removeJs($request);
-        } else if(!empty($request['submit']) && $request['submit'] !== null) {
+        } else if(submitted('submit') ) {
 
             return $this->updatePost($request);
         } else {
@@ -214,7 +214,7 @@ class PostController extends Controller {
         }
     }
 
-    public function updatePost($request) {
+    private function updatePost($request) {
 
         if(submitted("submit") === true && Csrf::validate(Csrf::token('get'), post('token')) === true ) {
                 
@@ -275,7 +275,7 @@ class PostController extends Controller {
         }
     }
 
-    public function removeJs($request) {
+    private function removeJs($request) {
 
         $id = $request['id'];
         $linkedJsIds = $request['linkedJsFiles'];
@@ -291,7 +291,7 @@ class PostController extends Controller {
         redirect("/admin/posts/$id/edit");
     }
 
-    public function includeJs($request) {
+    private function includeJs($request) {
 
         $id = $request['id'];
         $jsIds = $request['jsFiles'];
@@ -312,7 +312,7 @@ class PostController extends Controller {
         redirect("/admin/posts/$id/edit");
     }
 
-    public function linkCss($request) {
+    private function linkCss($request) {
 
         $id = $request['id'];
         $cssIds = $request['cssFiles'];
@@ -332,7 +332,7 @@ class PostController extends Controller {
         redirect("/admin/posts/$id/edit");
     }
 
-    public function removeCss($request) {
+    private function removeCss($request) {
 
         $id = $request['id'];
         $linkedCssIds = $request['linkedCssFiles'];
@@ -348,7 +348,7 @@ class PostController extends Controller {
         redirect("/admin/posts/$id/edit");
     }
 
-    public function updateSlug($request) {
+    private function updateSlug($request) {
 
         $id = $request['id'];
         
@@ -403,7 +403,7 @@ class PostController extends Controller {
         redirect("/admin/posts/$id/edit");
     }
 
-    public function updateMetaData($request) {
+    private function updateMetaData($request) {
 
         $id = $request['id'];
 
@@ -456,7 +456,7 @@ class PostController extends Controller {
         redirect("/admin/posts/$id/edit");
     }
 
-    public function updateCategory($request) {
+    private function updateCategory($request) {
 
         $categoryId = $request['categories'];
         $pageId = $request['id'];
@@ -502,7 +502,7 @@ class PostController extends Controller {
         redirect('/admin/posts/'. $pageId . '/edit');
     }
 
-    public function removeCategory($request) {
+    private function removeCategory($request) {
 
         $pageId = $request['id'];
 

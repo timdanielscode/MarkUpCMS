@@ -151,19 +151,19 @@ class JsController extends Controller {
 
     public function update($request) {
 
-        if(!empty($request['updatePage']) && $request['updatePage'] !== null) {
+        if(submitted('updatePage') ) {
 
             return $this->updatePage($request);
-        } else if(!empty($request['removePage']) && $request['removePage'] !== null) {
+        } else if(submitted('removePage') ) {
 
             return $this->removePage($request);
-        } else if(!empty($request['includeAll']) && $request['includeAll'] !== null) {
+        } else if(submitted('includeAll') ) {
 
             return $this->includeAll($request);
-        } else if(!empty($request['removeAll']) && $request['removeAll'] !== null) {
+        } else if(submitted('removeAll') ) {
 
             return $this->removeAll($request);
-        } else if(!empty($request['submit']) && $request['submit'] !== null) {
+        } else if(submitted('submit') ) {
 
             return $this->updateJs($request);
         } else {
@@ -171,7 +171,7 @@ class JsController extends Controller {
         }
     }
 
-    public function updateJs($request) {
+    private function updateJs($request) {
 
         if(submitted('submit') && Csrf::validate(Csrf::token('get'), post('token'))) {
                 
@@ -217,7 +217,7 @@ class JsController extends Controller {
         }
     }
 
-    public function updatePage($request) {
+    private function updatePage($request) {
 
         $id = $request['id'];
         $pageIds = $request['pages'];
@@ -237,7 +237,7 @@ class JsController extends Controller {
         redirect("/admin/js/$id/edit");
     }
 
-    public function removePage($request) {
+    private function removePage($request) {
 
         $id = $request['id'];
         $pageIds = $request['pages'];
@@ -253,7 +253,7 @@ class JsController extends Controller {
         redirect("/admin/js/$id/edit");
     }
 
-    public function includeAll($request) {
+    private function includeAll($request) {
 
         $id = $request['id'];
         $pageIds = DB::try()->select('id')->from('pages')->fetch();
@@ -275,7 +275,7 @@ class JsController extends Controller {
         redirect("/admin/js/$id/edit");
     }
 
-    public function removeAll($request) {
+    private function removeAll($request) {
 
         $id = $request['id'];
 
