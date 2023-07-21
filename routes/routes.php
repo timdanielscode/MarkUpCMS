@@ -26,6 +26,7 @@ Route::middleware('login')->run(function() {
 
     Route::get('/profile/[username]')->add('ProfileController', 'index');
     Route::post('/profile/[username]/update')->add('ProfileController', 'updateDetails');
+    Route::post('/profile/[username]/update-role')->add('ProfileController', 'updateRole');
     Route::get('/logout')->add('LogoutController', 'logout');
 });
 

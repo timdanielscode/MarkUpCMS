@@ -48,7 +48,7 @@
                     </div>
                 </div>
                 <div class="form-parts">
-                    <label for="role">Type:</label>
+                    <label for="role">Role:</label>
                     <select name="role" id="role">
                         <option>Normal</option>
                         <option>Admin</option>

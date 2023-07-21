@@ -77,7 +77,17 @@ class Rules {
   
         $this->errors = $validation->errors;
         return $this;
-      }
+    }
+
+    public function profile_edit_role() {
+
+        $validation = new Validate();
+  
+        $validation->input('role')->as('Role')->rules(['required' => true]);
+  
+        $this->errors = $validation->errors;
+        return $this;
+    }
 
     public function create_post($uniqueTitle) {
         

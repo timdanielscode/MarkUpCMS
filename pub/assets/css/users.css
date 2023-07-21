@@ -55,7 +55,7 @@ h1 {
     flex-wrap: wrap;
     margin-top: 20px;
 }
-.mainButtonContainer a, .mainButtonContainer label {
+.mainButtonContainer a, .mainButtonContainer label, .updateRoleButton {
     width: auto;
     display: flex;
     justify-content: center;
@@ -76,16 +76,16 @@ h1 {
     background: #6ba152;
     border: 1px solid #6ba152;
 }
-.mainButtonContainer a {
+.mainButtonContainer a, .updateRoleButton {
     border: 1px solid #fff;
     background: rgba(0,0,0,0.1);
     color: #fff;
 }
-.mainButtonContainer a:hover {
+.mainButtonContainer a:hover, .updateRoleButton:hover {
     background: #fff;
     color: #000;
 }
-.mainButtonContainer label:hover {
+.mainButtonContainer label:hover, .updateRoleButton:hover {
     cursor: pointer;
 }
 
@@ -102,4 +102,25 @@ h1 {
     display: block;
     padding: 10px;
     border-radius: 3px;
+}
+
+/*
+    Profile
+*/
+.profileUpdateRoleForm {
+    margin-top: 20px;
+    color: #fff;
+}
+.profileUpdateRoleForm select {
+    width: 100%;
+    background: #fff;
+    border: none;
+    padding: 10px;
+    border-radius: 3px;
+    overflow: hidden;
+    height: 68px;
+    margin: 20px 0 10px 0;
+}
+.profileUpdateRoleForm select option {
+    padding: 4px 0 4px 10px;
 }
