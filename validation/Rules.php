@@ -151,7 +151,6 @@ class Rules {
 
       $validation->input('f_username')->as('Username')->rules(['required' => true, 'max' => 49, 'special' => true, 'unique' => $username]);
       $validation->input('email')->as('Email')->rules(['required' => true, 'min' => 5, 'max' => 49, 'special' => true, 'unique' => $email]);
-      $validation->input('role')->as('Role')->rules(['required' => true]);
 
       $this->errors = $validation->errors;
       return $this;

@@ -34,6 +34,11 @@
                             <?php echo Errors::get($rules, 'email'); ?>
                         </div>
                     </div>
+                    <div class="form-parts">
+                        <button name="submit" type="submit" id="submit" class="display-none">Update</button>
+                        <input type="hidden" name="id" value="<?php echo $user['id']; ?>"/>
+                        <input type="hidden" name="token" value="<?php echo Csrf::token('add');?>" />
+                    </div>
                 </form>
         </div>
         <div class="col2 col3-L">
@@ -57,7 +62,7 @@
                             </select>
                         </div>
                         <div class="form-parts">
-                            <button name="submit" type="submit" id="submit" class="button updateRoleButton">Update</button>
+                            <button name="submit" type="submit" class="button updateRoleButton">Update</button>
                             <input type="hidden" name="id" value="<?php echo $user['id']; ?>"/>
                             <input type="hidden" name="token" value="<?php echo Csrf::token('add');?>" />
                         </div>
