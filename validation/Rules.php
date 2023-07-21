@@ -210,11 +210,11 @@ class Rules {
         return $this;
     }
 
-    public function update_media_filename() {
+    public function update_media_filename($unique) {
 
         $validation = new Validate();
         
-        $validation->input('filename')->as('Filename')->rules(['required' => true, 'max' => 49, 'special' => true]);
+        $validation->input('filename')->as('Filename')->rules(['required' => true, 'max' => 49, 'special' => true, 'unique' => $unique]);
         
         $this->errors = $validation->errors;
         return $this;

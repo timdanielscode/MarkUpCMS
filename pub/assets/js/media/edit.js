@@ -42,13 +42,13 @@ $(document).ready(function() {
             },
                 success: function(data) {
                     $('#mediaTitle-'+id).text(data.title);
-                    $('.modalUpdateMessage').html('Updated successfully!').fadeIn(10).fadeOut(2000);
+                    $('.modalUpdateMessage').html('<span>Updated successfully!</span>').fadeIn(10).fadeOut(2000);
                     $('.modalUpdateMessage').addClass('message-success'); 
                     $('.modalUpdateMessage').removeClass('message-failed');
 
             },
                 error: function(xhr, status, error) {
-                    $('.modalUpdateMessage').html('Oops, something went wrong!').fadeIn(10);
+                    $('.modalUpdateMessage').html("<span class='message-failed-media-title'>Title can't be empty, max 49 characters, no special characters!</span><span class='message-failed-media-description'>Description max 99 characters, no special characters!</span>").fadeIn(10);
                     $('.modalUpdateMessage').addClass('message-failed'); 
                     $('.modalUpdateMessage').removeClass('message-success');
             }
@@ -80,13 +80,13 @@ $(document).ready(function() {
                     mediaPathParts[4] = filename;
                     mediaPath.innerText = mediaPathParts.join('/');
 
-                    message.html("Updated successfully!").fadeIn(10).fadeOut(2000);
+                    message.html("<span>Updated successfully!</span>").fadeIn(10).fadeOut(2000);
                     message.addClass('message-success'); 
                     message.removeClass('message-failed');
             },
                 error: function(xhr, status, error) {
 
-                    message.html("Filename is not valid!").fadeIn(10);
+                    message.html("<span>Filename can't be empty, must be unique, max 49 characters, no special characters!</span>").fadeIn(10);
                     message.addClass('message-failed'); 
                     message.removeClass('message-success');
             }

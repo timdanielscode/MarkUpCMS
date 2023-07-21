@@ -202,7 +202,9 @@ class MediaController extends Controller {
 
         $rules = new Rules();
 
-        if($rules->update_media_filename()->validated()) {
+        $uniqueFilename = DB::try()->select('media_filename')->from('media')->where('media_filename', '=', $request['filename'])->and('id', '!=', $request['id'])->fetch();
+
+        if($rules->update_media_filename($uniqueFilename)->validated()) {
 
             $currentFile = Media::where('id', '=', $request['id'])[0];
             $currentFileName = $currentFile['media_filename'];

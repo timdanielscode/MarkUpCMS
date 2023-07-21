@@ -95,7 +95,7 @@
     top: 50%;
     transform: translate(-50%, -50%) !important;
     width: 600px !important;
-    height: 450px !important;
+    height: 500px !important;
 }
 
 #media_description:focus {
@@ -255,4 +255,11 @@
 }
 .message-success {
     color: #42971c;
+}
+.message-failed-media-title {
+    display: block;
+}
+.message-failed-media-description {
+    display: block;
+    margin-top: 10px;
 }
