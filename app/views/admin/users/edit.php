@@ -34,21 +34,6 @@
                             <?php echo Errors::get($rules, 'email'); ?>
                         </div>
                     </div>
-                    <div class="form-parts">
-                        <label for="role">Role:</label>
-                        <select name="role" id="role">
-                            <option value="1">Normal</option>
-                            <option value="2">Admin</option>
-                        </select>
-                        <div class="error-messages">
-                            <?php echo Errors::get($rules, 'role'); ?>
-                        </div>
-                        <div class="form-parts">
-                            <input type="hidden" name="id" value="<?php echo $user["id"]; ?>"> 
-                            <button name="submit" type="submit" class="display-none" id="submit"></button>
-                            <input type="hidden" name="token" value="<?php echo Csrf::token('add');?>" />
-                        </div>
-                    </div>
                 </form>
         </div>
         <div class="col2 col3-L">
@@ -64,6 +49,19 @@
                     <span class="data"><?php echo $user['email']; ?></span>
                     <span class="text">Role:</span>
                     <span class="data"><?php echo $user['name']; ?></span>
+                    <form action="/admin/users/<?php echo $user['username']; ?>/update-role" method="POST" class="profileUpdateRoleForm">
+                        <div class="form-parts">
+                            <label for="role">Update role:</label>
+                            <select name="role" multiple>
+                                <option value="2" selected>Admin</option>
+                            </select>
+                        </div>
+                        <div class="form-parts">
+                            <button name="submit" type="submit" id="submit" class="button updateRoleButton">Update</button>
+                            <input type="hidden" name="id" value="<?php echo $user['id']; ?>"/>
+                            <input type="hidden" name="token" value="<?php echo Csrf::token('add');?>" />
+                        </div>
+                    </form>
                 </div>
             </div>
         </div>

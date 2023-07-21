@@ -145,6 +145,17 @@ class UserController extends Controller {
         }
     }
 
+    public function updateRole($request) {
+
+        UserRole::update(['user_id' => $request['id']], [
+
+            'role_id'  =>  2,
+            'user_id' => $request['id']
+        ]);
+        
+        redirect('/admin/users/'); 
+    }
+
     public function delete($request) {
         
         $userRole = DB::try()->select('roles.name')->from('roles')->join('user_role')->on('user_role.role_id', '=', 'roles.id')->join('users')->on('user_role.user_id', '=', 'users.id')->where('users.username', '=', $request['username'])->first();

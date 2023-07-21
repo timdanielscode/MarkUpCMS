@@ -47,6 +47,7 @@ Route::middleware(['auth' => 'admin'])->run(function() {
     Route::post('/admin/posts/[id]/meta/edit')->add('admin\PostController', 'metaDataUpdate');
     
     Route::crud('/admin/users', '[username]')->add('admin\UserController', 'crud');
+    Route::post('/admin/users/[username]/update-role')->add('admin\UserController', 'updateRole');
     
     Route::crud('/admin/css', '[id]')->add('admin\CssController', 'crud');
     Route::crud('/admin/js', '[id]')->add('admin\JsController', 'crud');
