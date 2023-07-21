@@ -1,8 +1,6 @@
 $(document).ready(function() {
 
     var searchValue = $('#searchValue').val();
-
-    console.log(searchValue)
     
     $.ajax({
         type: "GET",

@@ -30,6 +30,7 @@
     background: #fff;
     border: 1px solid #aaa;
     margin-bottom: 20px;
+    font-size: 16px;
 }
 
 /*
@@ -229,8 +230,18 @@
     top: 100px;
     right: 100px;
     z-index: 99;
-    font-size: 24px;
     color: #fff;
+    border-radius: 4px;
+    transition: 0.3s;
+    font-size: 16px;
+    text-decoration: none;
+    background: #4f80c8;
+    border: 2px solid #4f80c8;
+    padding: 12px;
+}
+#mediaPreviewClose:hover {
+    background: #83a7db;
+    border-color: #83a7db;
 }
 #update {
     background: #42971c;

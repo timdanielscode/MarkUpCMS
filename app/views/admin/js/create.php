@@ -29,7 +29,7 @@
             <div class="col10 col9-L">
                 <form action="store" method="POST" class="form-code">
                     <div class="form-parts">
-                        <input name="filename" type="text" id="filename" placeholder="Filename" autofocus>
+                        <input name="filename" type="text" id="filename" placeholder="Filename without extension" autofocus>
                         <div class="error-messages">
                             <?php echo Errors::get($rules, 'filename'); ?>
                         </div>

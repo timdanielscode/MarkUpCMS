@@ -1,5 +1,2 @@
-//tinymce.init({
-//    selector: '#body'
-//});
 
 

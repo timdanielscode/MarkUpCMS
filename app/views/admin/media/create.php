@@ -28,7 +28,7 @@
                         </div>
                     </div>
                     <div class="form-parts">
-                        <textarea name="media_description" type="text" id="media_description" autofocus></textarea>
+                        <textarea name="media_description" type="text" id="media_description" placeholder="Description" autofocus></textarea>
                         <div class="error-messages">
                             <?php echo Errors::get($rules, 'media_description'); ?>
                         </div>

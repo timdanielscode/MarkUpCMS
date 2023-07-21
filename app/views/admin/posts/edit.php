@@ -99,21 +99,21 @@
                     <form id="metaForm" class="updateMetaDataForm display-none" action="update" method="POST">
                         <div class="form-parts">
                             <label for="metaTitle">Meta title: </label>
-                            <input id="metaTitle" type="text" name="metaTitle" value="<?php if(!empty($data['metaTitle']) && $data['metaTitle'] !== null) { echo $data['metaTitle']; } ?>"/>
+                            <input id="metaTitle" type="text" name="metaTitle" value="<?php if(!empty($data['metaTitle']) && $data['metaTitle'] !== null) { echo $data['metaTitle']; } ?>" placeholder="Title"/>
                             <div class="error-messages">
                                 <?php echo Errors::get($rules, 'metaTitle'); ?>
                             </div>   
                         </div>
                         <div class="form-parts">
                             <label for="metaDescription">Meta description: </label>
-                            <textarea id="metaDescription" name="metaDescription"><?php if(!empty($data['metaDescription']) && $data['metaDescription'] !== null) { echo $data['metaDescription']; } ?></textarea>
+                            <textarea id="metaDescription" name="metaDescription" placeholder="Description"><?php if(!empty($data['metaDescription']) && $data['metaDescription'] !== null) { echo $data['metaDescription']; } ?></textarea>
                             <div class="error-messages">
                                 <?php echo Errors::get($rules, 'metaDescription'); ?>
                             </div>   
                         </div>
                         <div class="form-parts">
                             <label for="metaKeywords">Meta keywords: </label>
-                            <textarea id="metaKeywords" name="metaKeywords"><?php if(!empty($data['metaKeywords']) && $data['metaKeywords'] !== null) { echo $data['metaKeywords']; } ?></textarea>
+                            <textarea id="metaKeywords" name="metaKeywords" placeholder="Keywords separated with a comma"><?php if(!empty($data['metaKeywords']) && $data['metaKeywords'] !== null) { echo $data['metaKeywords']; } ?></textarea>
                             <div class="error-messages">
                                 <?php echo Errors::get($rules, 'metaKeywords'); ?>
                             </div>   

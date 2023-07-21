@@ -86,7 +86,7 @@ $(document).ready(function() {
             },
                 error: function(xhr, status, error) {
 
-                    message.html("<span>Filename can't be empty, must be unique, max 49 characters, no special characters!</span>").fadeIn(10);
+                    message.html("<span>Title can't be empty, must be unique, max 49 characters, no special characters!</span>").fadeIn(10);
                     message.addClass('message-failed'); 
                     message.removeClass('message-success');
             }

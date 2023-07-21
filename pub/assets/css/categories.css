@@ -23,6 +23,7 @@ h1 {
     background: #fff;
     border: 1px solid #aaa;
     margin-bottom: 20px;
+    font-size: 16px;
 }
 .create-container form label {
     display: block;

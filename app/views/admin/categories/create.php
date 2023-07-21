@@ -30,14 +30,14 @@
                 <form action="store" method="POST" class="form-code">
                     <div class="form-parts">
                         <label>Name: </label>
-                        <input type="text" name="title" id="title" placeholder="..." autofocus>
+                        <input type="text" name="title" id="title" placeholder="Title" autofocus>
                         <div class="error-messages">
                             <?php echo Errors::get($rules, 'title'); ?>
                         </div>
                     </div>
                     <div class="form-parts">
                         <label>Description: </label>
-                        <textarea type="text" name="description" id="description" placeholder="..."></textarea>
+                        <textarea type="text" name="description" id="description" placeholder="Description"></textarea>
                         <div class="error-messages">
                             <?php echo Errors::get($rules, 'description'); ?>
                         </div>

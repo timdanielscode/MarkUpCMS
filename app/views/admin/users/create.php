@@ -20,7 +20,7 @@
         <div class="col10 col9-L">
             <form action="store" method="POST" class="usersCreateForm">
             <div class="form-parts">
-                    <label for="email">Username:</label>
+                    <label for="username">Username:</label>
                     <input name="f_username" type="username" id="username" value="<?php echo post('f_username'); ?>">
                     <div class="error-messages">
                         <?php echo Errors::get($rules, 'f_username'); ?>

@@ -28,7 +28,7 @@
             <div class="col10 col9-L">
                 <form action="store" method="POST" class="form-code">
                     <div class="form-parts">
-                        <input type="text" name="title" type="title" id="title" value="<?php echo post('title'); ?>" autofocus>
+                        <input type="text" name="title" type="title" id="title" value="<?php echo post('title'); ?>" placeholder="Title" autofocus>
                         <div class="error-messages">
                             <?php echo Errors::get($rules, 'title'); ?>
                         </div>

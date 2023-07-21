@@ -23,5 +23,4 @@ $(document).on('click', '#mediaPreviewClose', function() {
     var html = $('html');
     html.removeClass('dark-layer');
     $('#mediaPreview').html("");
-
 });
