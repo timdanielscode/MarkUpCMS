@@ -55,7 +55,7 @@ h1 {
     flex-wrap: wrap;
     margin-top: 20px;
 }
-.mainButtonContainer a, .mainButtonContainer label, .updateRoleButton, .buttonContainer a {
+.mainButtonContainer a, .mainButtonContainer label, .updateRoleButton, .buttonContainer a, .buttonContainer input {
     width: auto;
     display: flex;
     justify-content: center;
@@ -76,16 +76,16 @@ h1 {
     background: #6ba152;
     border: 1px solid #6ba152;
 }
-.mainButtonContainer a, .updateRoleButton, .buttonContainer a {
+.mainButtonContainer a, .updateRoleButton, .buttonContainer a, .buttonContainer input {
     border: 1px solid #fff;
     background: rgba(0,0,0,0.1);
     color: #fff;
 }
-.mainButtonContainer a:hover, .updateRoleButton:hover, .buttonContainer a:hover {
+.mainButtonContainer a:hover, .updateRoleButton:hover, .buttonContainer a:hover, .buttonContainer input:hover {
     background: #fff;
     color: #000;
 }
-.mainButtonContainer label:hover, .updateRoleButton:hover, .buttonContainer a:hover {
+.mainButtonContainer label:hover, .updateRoleButton:hover, .buttonContainer a:hover, .buttonContainer input:hover {
     cursor: pointer;
 }
 

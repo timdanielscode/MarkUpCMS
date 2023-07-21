@@ -103,7 +103,7 @@
                 'retypePassword' => password_hash($request['password_confirm'], PASSWORD_DEFAULT),
             ]);
         
-            redirect('/profile/' . Session::get('username'));
+            redirect('login');
 
         } else {
 
@@ -112,5 +112,16 @@
 
             return $this->view('/profile/changePassword', $data);
         }
+    }
+
+    public function delete($request) {
+
+        User::delete('username', Session::get('username'));
+
+        Session::delete('username');
+        Session::delete('user_role');
+        Session::delete("logged_in");
+
+        redirect('/');
     }
 }  

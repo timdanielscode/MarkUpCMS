@@ -14,6 +14,7 @@
                      
       Session::delete("logged_in");
       Session::delete("username");
+      Session::delete('user_role');
       
       redirect("/");
     }

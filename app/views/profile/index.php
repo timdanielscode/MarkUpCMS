@@ -54,6 +54,11 @@
                     <div class="buttonContainer">
                         <a href="/profile/<?php echo Session::get('username'); ?>/change-password" class="button">Change password</a>
                     </div>
+                    <div class="buttonContainer">
+                        <form action="/profile/<?php echo Session::get('username'); ?>/delete" method="POST">
+                            <input type="submit" name="delete" class="button" value="Delete account"/>
+                        </form>
+                    </div>
                     <span class="text">Username:</span>
                     <span class="data"><?php echo $user['username']; ?></span>
                     <span class="text">Email:</span>

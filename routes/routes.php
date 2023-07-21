@@ -29,6 +29,8 @@ Route::middleware('login')->run(function() {
     Route::post('/profile/[username]/update-role')->add('ProfileController', 'updateRole');
     Route::get('/profile/[username]/change-password')->add('ProfileController', 'editPassword');
     Route::post('/profile/[username]/change-password')->add('ProfileController', 'updatePassword');
+    Route::post('/profile/[username]/delete')->add('ProfileController', 'delete');
+
     Route::get('/logout')->add('LogoutController', 'logout');
 });
 
