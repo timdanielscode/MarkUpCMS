@@ -59,7 +59,7 @@ $(document).ready(function() {
         var categoryid = $('#CATEGORYID').val();
         var subcategoryid = [];
         var selectedOptionElements = $(".selectedCategory");
-        var message = $("#PAGEMESSAGE");
+        var message = $("#CATEGORYMESSAGE");
 
         if(selectedOptionElements.length !== 0) {
             
@@ -87,10 +87,22 @@ $(document).ready(function() {
                         updateSubCategories(this);
                     });
                 }
+
+                message.html("<span>pdated successfully!</span>").fadeIn(10).fadeOut(2000);
+                message.addClass('message-success'); 
+                message.removeClass('message-failed');
+
             },error: function(xhr, status, error) {
 
-                message.html("Cannot apply while page is assigned!").fadeIn(10).fadeOut(1000);
-                message.addClass('message');
+                if(selectedOptionElements.length === 0) {
+
+                    message.html("<span>Category is not selected!</span>").fadeIn(10);
+                } else {
+                    message.html("<span>Cannot apply if any page is assigned!</span>").fadeIn(10);
+                }
+
+                message.removeClass('message-success'); 
+                message.addClass('message-failed');
             }
         });
     });
@@ -169,10 +181,16 @@ $(document).ready(function() {
                             updatePages(this);
                         });
                     }
+
+                    message.html("<span>Updated successfulley!</span>").fadeIn(10).fadeOut(2000);
+                    message.addClass('message-success'); 
+                    message.removeClass('message-failed');
+
                 },error: function(xhr, status, error) {
 
-                    message.html("Page is not selected!").fadeIn(10).fadeOut(1000);
-                    message.addClass('message');
+                    message.html("<span>Page is not selected!</span>").fadeIn(10);
+                    message.addClass('message-failed'); 
+                    message.removeClass('message-success');
                 }
             });
     });

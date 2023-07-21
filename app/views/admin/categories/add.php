@@ -1,19 +1,16 @@
 <div class="row">
     <div class="col8">
-        <div id="SUBCATEGORYSLUGCONTAINER"><div id="CATEGORYSLUG" class="listedItem"><?php echo $slug; ?></div><?php if(!empty($assingedSubCategories) && $assingedSubCategories !== null) { ?><?php foreach($assingedSubCategories as $assingedSubCategory) { ?><div id="LISTEDCATEGORY-<?php echo $assingedSubCategory['id']; ?>" class="listedItem"><?php echo $assingedSubCategory['slug']; ?></div><?php } ?><?php } ?></div>
+        <span class="categorySlugAdd">Slug: </span><div id="SUBCATEGORYSLUGCONTAINER"><div id="CATEGORYSLUG" class="listedItem"><?php echo $slug; ?></div><?php if(!empty($assingedSubCategories) && $assingedSubCategories !== null) { ?><?php foreach($assingedSubCategories as $assingedSubCategory) { ?><div id="LISTEDCATEGORY-<?php echo $assingedSubCategory['id']; ?>" class="listedItem"><?php echo $assingedSubCategory['slug']; ?></div><?php } ?><?php } ?></div>
     </div>
     <div class="col4">
         <a id="BACK" class="button">Close</a>
     </div>
 </div>
-    
-    
-        
 
         <div class="row">
             <div class="col6">
                 <form action="" method="POST">
-                <label>Categories: </label>
+                <label>Assigned categories: </label>
                     <select id="ASSINGEDSUBCATEGORYID" name="subcategoryid" multiple>
                         
                         <?php if(!empty($assingedSubCategories) && $assingedSubCategories !== null) { ?>
@@ -36,7 +33,7 @@
             </div>
             <div class="col6">
             <form action="" method="POST">
-            <label>Pages: </label>
+            <label>Assigned pages: </label>
                 <select id="ASSIGNEDPAGEID" name="pageid" multiple>
                     <?php if(!empty($assignedPages) && $assignedPages !== null) { ?>
                         <?php foreach($assignedPages as $assignedPage) { ?>
@@ -55,6 +52,7 @@
             </div>
         </div>
         <div id="PAGEMESSAGE"></div>
+        <div id="CATEGORYMESSAGE"></div>
    
     
     

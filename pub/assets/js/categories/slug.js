@@ -15,13 +15,15 @@ $(document).ready(function() {
             },
                 success: function(data) {
                     
-                message.html("Updated successfully!").fadeIn(10).fadeOut(1000);
-                message.addClass('message'); 
+                    message.html("<span>Updated successfully!</span>").fadeIn(10).fadeOut(2000);
+                    message.addClass('message-success'); 
+                    message.removeClass('message-failed');
             },
                 error: function(xhr, status, error) {
 
-                message.html("Oops, something went wrong!").fadeIn(10).fadeOut(1000);
-                message.addClass('message'); 
+                    message.html("<span>Slug can't be empty, max 49 characters, no special characters!</span>").fadeIn(10);
+                    message.addClass('message-failed'); 
+                    message.removeClass('message-success');
             }
         });
 

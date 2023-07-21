@@ -102,7 +102,7 @@ margin-top: 50px;
 .modal-add {
     overflow: hidden;
     width: 65% !important;
-    height: 65% !important;
+    height: 75% !important;
     top: 50%;
     transform: translate(-50%, -50% ) !important;
 }
@@ -117,6 +117,7 @@ margin-top: 50px;
     margin-top: 20px;
     margin-bottom: 20px;
     padding: 10px;
+    display: inline-block;
 }
 #SUBCATEGORYSLUGCONTAINER div {
     display: inline-block;
@@ -186,10 +187,15 @@ margin-top: 50px;
 .assingedPage, .assingedSubCategory {
     font-weight: bold;
 }
+#CATEGORYMESSAGE {
+    position: absolute;
+    bottom: 45px;
+    left: 136px;
+}
 #PAGEMESSAGE {
     position: absolute;
-    bottom: 78px;
-    left: 136px;
+    bottom: 45px;
+    left: 765px;
 }
 .categorySlug {
     background: none;
@@ -208,7 +214,7 @@ margin-top: 50px;
     top: 50%;
     transform: translate(-50%, -50%) !important;
     width: 600px !important;
-    height: 450px !important;
+    height: 500px !important;
 }
 .modal-edit #modalForm {
     position: absolute;
@@ -247,7 +253,7 @@ margin-top: 50px;
     bottom: 20px;
     border-radius: 3px;
     color: #fff !important;
-    margin-top: 50px;
+    margin-top: 25px;
 }
 .modal-edit #modalForm #EDITUPDATE:hover {
     background: #6ba152;
@@ -263,7 +269,7 @@ margin-top: 50px;
     border-radius: 3px;
     bottom: 20px;
     font-size: 14px;
-    margin-top: 50px;
+    margin-top: 25px;
 }
 .modal-edit #modalForm #EDITCLOSE:hover {
     cursor: pointer;
@@ -332,5 +338,18 @@ margin-top: 50px;
 }
 .message-failed {
     color: rgb(199, 48, 48);
+    margin-top: 10px;
+}
+.categorySlugAdd {
+    margin-top: 20px;
+    display: block;
+    margin-left: 25px;
+}
+
+.message-failed-category-title {
+    display: block;
+}
+.message-failed-category-description {
+    display: block;
     margin-top: 10px;
 }

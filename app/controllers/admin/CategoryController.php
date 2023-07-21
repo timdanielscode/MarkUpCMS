@@ -154,7 +154,7 @@ class CategoryController extends Controller {
 
         $rules = new Rules();
 
-        $uniqueTitle = DB::try()->select('title')->from('categories')->where('title', '=', $request['title'])->fetch();
+        $uniqueTitle = DB::try()->select('title')->from('categories')->where('title', '=', $request['title'])->and('id', '!=', $request['id'])->fetch();
 
         if($rules->edit_category($uniqueTitle)->validated()) {
 
@@ -162,7 +162,6 @@ class CategoryController extends Controller {
 
                 'title'   => $request['title'],
                 'category_description' => $request['description']
-
             ]);
   
             $DATA['id'] = $request['id'];
@@ -404,60 +403,72 @@ class CategoryController extends Controller {
 
         if(!empty($request['slug']) && $request['slug'] !== null) {
     
-            $currentSlug = Category::where('id', '=', $request['id'])[0];
-
-            $assingedSubCategorySlugsPages = DB::try()->select('id, slug')->from('pages')->join('category_page')->on("category_page.page_id",'=','pages.id')->join('category_sub')->on('category_sub.category_id', '=', 'category_page.category_id')->where('category_sub.sub_id', '=', $request['id'])->fetch();
-            $assingedCategorySlugsPages = DB::try()->select('id, slug')->from('pages')->join('category_page')->on("category_page.page_id", '=', 'pages.id')->where('category_page.category_id', '=', $request['id'])->fetch();
-
-            if(!empty($assingedCategorySlugsPages) && $assingedCategorySlugsPages !== null) {
-        
-                foreach($assingedCategorySlugsPages as $page) {
-        
-                    $slugParts = explode('/', $page['slug']);
-                    $categorySlugKey = array_search(substr($currentSlug['slug'], 1), $slugParts);
-                    
-                    if(!empty($categorySlugKey) && $categorySlugKey !== null) {
-
-                        $slugParts[$categorySlugKey] = substr($request['slug'], 1);
-                        $slug = implode('/', $slugParts);
-                
-                        Post::update(['id' => $page['id']], [
-                
-                            'slug'  => $slug
-                        ]);
-                    }
-                } 
-            }
-
-            if(!empty($assingedSubCategorySlugsPages) && $assingedSubCategorySlugsPages !== null) {
-        
-                foreach($assingedSubCategorySlugsPages as $page) {
-        
-                    $slugParts = explode('/', $page['slug']);
-                    $categorySlugKey = array_search(substr($currentSlug['slug'], 1), $slugParts);
-                    
-                    if(!empty($categorySlugKey) && $categorySlugKey !== null) {
-
-                        $slugParts[$categorySlugKey] = substr($request['slug'], 1);
-                        $slug = implode('/', $slugParts);
-                
-                        Post::update(['id' => $page['id']], [
-                
-                            'slug'  => $slug
-                        ]);
-                    }
-                } 
-            }
-
-            Category::update(['id' => $request['id']], [
-
-                'slug'  => $request['slug']
-            ]);
-
-            $data['id'] = $request['id'];
-            $data['slug'] = $request['slug'];
+            $rules = new Rules();
     
-            echo json_encode($data);
+            if($rules->slug_category()->validated()) {
+
+                $currentSlug = Category::where('id', '=', $request['id'])[0];
+
+                $assingedSubCategorySlugsPages = DB::try()->select('id, slug')->from('pages')->join('category_page')->on("category_page.page_id",'=','pages.id')->join('category_sub')->on('category_sub.category_id', '=', 'category_page.category_id')->where('category_sub.sub_id', '=', $request['id'])->fetch();
+                $assingedCategorySlugsPages = DB::try()->select('id, slug')->from('pages')->join('category_page')->on("category_page.page_id", '=', 'pages.id')->where('category_page.category_id', '=', $request['id'])->fetch();
+
+                if(!empty($assingedCategorySlugsPages) && $assingedCategorySlugsPages !== null) {
+            
+                    $this->updateCategoryInPostSlug($currentSlug, $request, $assingedCategorySlugsPages);
+                } else if(!empty($assingedSubCategorySlugsPages) && $assingedSubCategorySlugsPages !== null) {
+                    $this->updateSubCategoryInPostSlug($currentSlug, $request, $assingedSubCategorySlugsPages);
+                }
+
+                Category::update(['id' => $request['id']], [
+
+                    'slug'  => "/" . $request['slug']
+                ]);
+
+                $data['id'] = $request['id'];
+                $data['slug'] = $request['slug'];
+        
+                echo json_encode($data);
+            }
+        } 
+    }
+
+    private function updateSubCategoryInPostSlug($currentSlug, $request, $assingedSubCategorySlugsPages) {
+
+        foreach($assingedSubCategorySlugsPages as $page) {
+        
+            $slugParts = explode('/', $page['slug']);
+            $categorySlugKey = array_search(substr($currentSlug['slug'], 1), $slugParts);
+            
+            if(!empty($categorySlugKey) && $categorySlugKey !== null) {
+
+                $slugParts[$categorySlugKey] = substr("/" . $request['slug'], 1);
+                $slug = implode('/', $slugParts);
+        
+                Post::update(['id' => $page['id']], [
+        
+                    'slug'  => $slug
+                ]);
+            }
+        } 
+    }
+
+    private function updateCategoryInPostSlug($currentSlug, $request, $assingedCategorySlugsPages) {
+
+        foreach($assingedCategorySlugsPages as $page) {
+        
+            $slugParts = explode('/', $page['slug']);
+            $categorySlugKey = array_search(substr($currentSlug['slug'], 1), $slugParts);
+            
+            if(!empty($categorySlugKey) && $categorySlugKey !== null) {
+
+                $slugParts[$categorySlugKey] = substr("/" . $request['slug'], 1);
+                $slug = implode('/', $slugParts);
+        
+                Post::update(['id' => $page['id']], [
+        
+                    'slug'  => $slug
+                ]);
+            }
         } 
     }
 

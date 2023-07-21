@@ -242,6 +242,16 @@ class Rules {
         return $this;
     }     
 
+    public function slug_category() {
+        
+        $validation = new Validate();
+        
+        $validation->input('slug')->as('Slug')->rules(['required' => true, 'max' => 49, 'special' => true]);
+        
+        $this->errors = $validation->errors;
+        return $this;
+    } 
+
     /**
      * Validating validation rules
      * On fail, returning view with extracted validation error rules and if exists request data
