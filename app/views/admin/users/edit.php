@@ -56,7 +56,7 @@
                 <div class="sidebarContainer">
                     <div class="mainButtonContainer">
                         <label for="submit" class="button">Update</label>
-                        <a href="/admin/css" class="button">Back</a>
+                        <a href="/admin/users" class="button">Back</a>
                     </div>
                     <span class="text">Username:</span>
                     <span class="data"><?php echo $user['username']; ?></span>

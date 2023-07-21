@@ -13,7 +13,7 @@ h1 {
     background: #fff;
     width: 500px;
     margin-bottom: 20px;
-    border: 1px solid #333;
+    border: 1px solid #aaa;
 }
 .create-container form textarea {
     width: 500px;
@@ -21,7 +21,7 @@ h1 {
     border-radius: 3px;
     padding: 10px;
     background: #fff;
-    border: 1px solid #333;
+    border: 1px solid #aaa;
     margin-bottom: 20px;
 }
 .create-container form label {
@@ -118,6 +118,7 @@ margin-top: 50px;
     margin-bottom: 20px;
     padding: 10px;
     display: inline-block;
+    color: #000;
 }
 #SUBCATEGORYSLUGCONTAINER div {
     display: inline-block;
@@ -184,9 +185,6 @@ margin-top: 50px;
     font-weight: bold;
     padding-left: 15px !important;
 }
-.assingedPage, .assingedSubCategory {
-    font-weight: bold;
-}
 #CATEGORYMESSAGE {
     position: absolute;
     bottom: 60px;
@@ -198,15 +196,14 @@ margin-top: 50px;
     left: 765px;
 }
 .categorySlug {
-    background: none;
-    border: none;
-    font-weight: bold;
-    width: 100%;
+    border: 1px solid #aaa;
+    width: 75%;
     font-style: italic;
     font-size: 11px;
+    padding: 5px 0px 5px 10px;
+    border-radius: 3px;
 }
 .categorySlug:focus-visible {
-    border: none;
     outline: none;
 }
 .modal-edit {
@@ -228,16 +225,19 @@ margin-top: 50px;
     box-sizing: border-box;
     color: #000;
     margin-bottom: 20px;
-    border: 1px solid #333;
+    border: 1px solid #aaa;
     padding: 10px;
     border-radius: 3px;
+}
+.modal-edit #modalForm input, .modal-edit #modalForm textarea {
+    outline: none;
 }
 .modal-edit #modalForm textarea {
     width: 100%;
     box-sizing: border-box;
     height: 150px;
     color: #000;
-    border: 1px solid #333;
+    border: 1px solid #aaa;
     padding: 10px;
     border-radius: 3px;
 }

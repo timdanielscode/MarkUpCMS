@@ -68,7 +68,7 @@
                 <div class="sidebarContainer">
                     <div class="mainButtonContainer">
                         <label for="submit" class="button">Store</label>
-                        <a href="/admin/css" class="button">Back</a>
+                        <a href="/admin/users" class="button">Back</a>
                     </div>
                 </div>
             </div>

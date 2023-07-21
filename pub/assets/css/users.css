@@ -19,17 +19,18 @@ h1 {
 }
 
 .usersCreateForm .form-parts input, .usersCreateForm .form-parts select, .usersEditForm .form-parts input, .usersEditForm .form-parts select {
-    height: 30px;
-    width: 100%;
+    height: 38px;
+    width: 75%;
     margin-top: 10px;
-    margin-bottom: 20px;
+    margin-bottom: 10px;
     border: none;
     border-radius: 3px;
     background: #fff;
     padding-left: 10px;
+    border: 1px solid #aaa;
+    box-sizing: border-box;
 }
 .usersCreateForm .form-parts input:focus-visible, .usersEditForm .form-parts input:focus-visible {
-    border: none;
     outline: none;
 }
 
@@ -52,8 +53,7 @@ h1 {
     width: 100%;
     display: flex;
     flex-wrap: wrap;
-    margin-top: 63px;
-    margin-bottom: 50px;
+    margin-top: 20px;
 }
 .mainButtonContainer a, .mainButtonContainer label {
     width: auto;

@@ -18,9 +18,6 @@
     display: inline-block;
     border: 1px solid #0c203d;
 }
-.headerAndButtonContainer a:hover {
-    background: #bcbdbd;
-}
 .countContainer {
     font-size: 13px;
     font-weight: 500;

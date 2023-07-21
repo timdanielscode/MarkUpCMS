@@ -17,7 +17,7 @@
     background: #fff;
     width: 500px;
     margin-bottom: 20px;
-    border: 1px solid #333;
+    border: 1px solid #aaa;
 }
 .uploadFileForm #media_title:focus-visible {
     outline: none;
@@ -28,7 +28,7 @@
     border-radius: 3px;
     padding: 10px;
     background: #fff;
-    border: 1px solid #333;
+    border: 1px solid #aaa;
     margin-bottom: 20px;
 }
 
@@ -123,15 +123,12 @@
     outline: none;
 }
 .mediaFilename {
-    display: block;
-    border: none;
-    background: none;
-    font-size: 13px;
-    margin: 0;
-    padding: 8px 0px;
-    font-weight: bold;
-    font-style: italic;
-    width: 100%;
+    border: 1px solid #aaa;
+    width: 75%;
+    font-size: 11px;
+    padding: 5px 0px 5px 10px;
+    border-radius: 3px;
+    margin-top: 5px;
 }
 .mediaFilename:focus {
     outline: none;
@@ -187,7 +184,7 @@
     box-sizing: border-box;
     color: #000;
     margin-bottom: 20px;
-    border: 1px solid #333;
+    border: 1px solid #aaa;
     padding: 10px;
     border-radius: 3px;
 }
@@ -197,7 +194,7 @@
     box-sizing: border-box;
     height: 150px;
     color: #000;
-    border: 1px solid #333;
+    border: 1px solid #aaa;
     padding: 10px;
     border-radius: 3px;
 }

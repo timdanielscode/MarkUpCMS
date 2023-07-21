@@ -88,7 +88,7 @@ $(document).ready(function() {
                     });
                 }
 
-                message.html("<span>pdated successfully!</span>").fadeIn(10).fadeOut(2000);
+                message.html("<span>Updated successfully!</span>").fadeIn(10).fadeOut(2000);
                 message.addClass('message-success'); 
                 message.removeClass('message-failed');
 
