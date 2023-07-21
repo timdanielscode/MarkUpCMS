@@ -37,7 +37,7 @@ class Rules {
                 
       $validation->input("username")->as("Username")->rules(["required" => true, "min" => "6", "max" => "30", "special" => true]);         
       $validation->input("email")->as("Email")->rules(["required" => true, "min" => "6", "max" => "30", "special" => true]);         
-      $validation->input("password")->as("Password")->rules(["required" => true, "min" => "6", "max" => "60"]);          
+      $validation->input("password")->as("Password")->rules(["required" => true, "min" => "16", "max" => "200"]);          
       $validation->input("retypePassword")->as("Password")->rules(["required" => true, "match" => "password"]);
                  
       $this->errors = $validation->errors;
@@ -50,7 +50,7 @@ class Rules {
                   
         $validation->input("username")->as("Username")->rules(["required" => true, "min" => "6", "max" => "30", "special" => true]);         
         $validation->input("email")->as("Email")->rules(["required" => true, "min" => "6", "max" => "30", "special" => true]);        
-        $validation->input("password")->as("Password")->rules(["required" => true, "min" => "6", "max" => "60"]);   
+        $validation->input("password")->as("Password")->rules(["required" => true, "min" => "16", "max" => "200"]);   
         $validation->input("retypePassword")->as("Password")->rules(["required" => true, "match" => "password"]);
                    
         $this->errors = $validation->errors;
@@ -62,7 +62,7 @@ class Rules {
         $validation = new Validate();
                   
         $validation->input("username")->as("Username")->rules(["required" => true, "min" => "6", "max" => "30", "special" => true]);       
-        $validation->input("password")->as("Password")->rules(["required" => true, "min" => "6", "max" => "60"]);
+        $validation->input("password")->as("Password")->rules(["required" => true, "min" => "16", "max" => "200"]);
                    
         $this->errors = $validation->errors;
         return $this;
@@ -87,6 +87,18 @@ class Rules {
   
         $this->errors = $validation->errors;
         return $this;
+    }
+
+    public function change_password() {
+
+        $validation = new Validate();
+  
+        $validation->input("password")->as("Password")->rules(["required" => true, "min" => "16", "max" => "60"]);   
+        $validation->input("retypePassword")->as("Password")->rules(["required" => true, "match" => "password"]);
+  
+        $this->errors = $validation->errors;
+        return $this;
+
     }
 
     public function create_post($uniqueTitle) {

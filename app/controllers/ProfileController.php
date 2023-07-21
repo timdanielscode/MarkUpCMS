@@ -71,13 +71,46 @@
         
             Session::set('user_role', 'normal');
             redirect('/profile/' . Session::get('username'));
-            
+
         } else {
 
             $data['user'] = DB::try()->select('users.id, users.username, users.email, roles.name')->from('users')->join('user_role')->on('users.id', '=', 'user_role.user_id')->join('roles')->on('user_role.role_id', '=', 'roles.id')->where('users.username', '=', $request['username'])->first();
             $data['rules'] = $rules->errors;
 
             return $this->view('/profile/index', $data);
+        }
+    }
+
+    public function editPassword() {
+
+        $user = DB::try()->select('users.id, users.username, users.email, roles.name')->from('users')->join('user_role')->on('user_role.user_id', '=', 'users.id')->join('roles')->on('roles.id', '=', 'user_role.role_id')->where('users.username', '=', Session::get('username'))->first();
+
+        $data['user'] = $user;
+        $data['rules'] = [];
+
+        return $this->view('/profile/changePassword', $data);
+    }
+
+    public function updatePassword($request) {
+
+        $rules = new Rules();
+
+        if($rules->change_password()->validated()) {
+
+            User::update(['id' => $request['id']], [
+
+                'password' => password_hash($request['password'], PASSWORD_DEFAULT),
+                'retypePassword' => password_hash($request['password_confirm'], PASSWORD_DEFAULT),
+            ]);
+        
+            redirect('/profile/' . Session::get('username'));
+
+        } else {
+
+            $data['user'] = DB::try()->select('users.id, users.username, users.email, roles.name')->from('users')->join('user_role')->on('users.id', '=', 'user_role.user_id')->join('roles')->on('user_role.role_id', '=', 'roles.id')->where('users.username', '=', $request['username'])->first();
+            $data['rules'] = $rules->errors;
+
+            return $this->view('/profile/changePassword', $data);
         }
     }
 }  

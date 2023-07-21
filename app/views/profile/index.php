@@ -51,6 +51,9 @@
                         <label for="submit" class="button">Update</label>
                         <a href="/admin/users" class="button">Back</a>
                     </div>
+                    <div class="buttonContainer">
+                        <a href="/profile/<?php echo Session::get('username'); ?>/change-password" class="button">Change password</a>
+                    </div>
                     <span class="text">Username:</span>
                     <span class="data"><?php echo $user['username']; ?></span>
                     <span class="text">Email:</span>
