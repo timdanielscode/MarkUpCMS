@@ -152,7 +152,6 @@ class Validate {
                                 $this->message($this->_inputName, "Type of file must be one of the following: $value.");
                             }
                         }
-
                     break;
                     case 'error':
                         foreach($_FILES[$this->_inputName]['error'] as $error) {
@@ -177,6 +176,13 @@ class Validate {
     
                                 $this->message($this->_inputName, "$filesizeInMbs mb is to big to upload, filesize can't be bigger than $mbs mb.");
                             }
+                        }
+                    break;
+                    case 'min-one-admin':
+                        
+                        if(count($value) < 2) {
+
+                            $this->message($this->_inputName,"There should be at least one admin.");
                         }
                     break;
                 }

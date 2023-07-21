@@ -59,26 +59,24 @@
 
         $rules = new Rules();
 
-        if(!empty($request['role']) && $request['role'] !== null && $rules->profile_edit_role()->validated()) {
+        $adminIds = UserRole::where('role_id', '=', 2);
+
+        if($rules->profile_edit_role($adminIds)->validated()) {
 
             UserRole::update(['user_id' => $request['id']], [
 
-                'role_id'  =>  $request['role'],
+                'role_id'  =>  1,
                 'user_id' => $request['id']
             ]);
         
-            if($request['role'] == 1) {
-                Session::set('user_role', 'normal');
-            } else {
-                Session::set('user_role', 'admin');
-            }
-        
+            Session::set('user_role', 'normal');
             redirect('/profile/' . Session::get('username'));
-
+            
         } else {
-    
+
             $data['user'] = DB::try()->select('users.id, users.username, users.email, roles.name')->from('users')->join('user_role')->on('users.id', '=', 'user_role.user_id')->join('roles')->on('user_role.role_id', '=', 'roles.id')->where('users.username', '=', $request['username'])->first();
             $data['rules'] = $rules->errors;
+
             return $this->view('/profile/index', $data);
         }
     }

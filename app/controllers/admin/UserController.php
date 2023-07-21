@@ -140,6 +140,7 @@ class UserController extends Controller {
 
             $data['user'] = DB::try()->select('users.id, users.username, users.email, roles.name')->from('users')->join('user_role')->on('users.id', '=', 'user_role.user_id')->join('roles')->on('user_role.role_id', '=', 'roles.id')->where('users.username', '=', $request['username'])->first();
             $data['rules'] = $rules->errors;
+
             return $this->view('admin/users/edit', $data);
         }
     }

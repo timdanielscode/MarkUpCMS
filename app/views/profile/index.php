@@ -60,10 +60,9 @@
                     <?php if(Session::get('user_role') === 'admin') { ?>
                         <form action="/profile/<?php echo Session::get('username'); ?>/update-role" method="POST" class="profileUpdateRoleForm">
                             <div class="form-parts">
-                                <label for="role">Role:</label>
+                                <label for="role">Update role:</label>
                                 <select name="role" multiple>
-                                    <option value="1">Normal</option>
-                                    <option value="2">Admin</option>
+                                    <option value="1" selected>Normal</option>
                                 </select>
                                 <div class="error-messages">
                                     <?php echo Errors::get($rules, 'role'); ?>

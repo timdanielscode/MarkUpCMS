@@ -79,11 +79,11 @@ class Rules {
         return $this;
     }
 
-    public function profile_edit_role() {
+    public function profile_edit_role($adminIds) {
 
         $validation = new Validate();
   
-        $validation->input('role')->as('Role')->rules(['required' => true]);
+        $validation->input('role')->as('Role')->rules(['required' => true, 'min-one-admin' => $adminIds]);
   
         $this->errors = $validation->errors;
         return $this;
