@@ -20,9 +20,9 @@
     <div class="row">
         <div class="col10 col9-L">
 
-            <h1><?php echo $user['username']; ?></h1>
+            <h1>Details</h1>
             
-                <form action="update" method="POST" class="usersEditForm">
+                <form action="/profile/<?php echo Session::get('username'); ?>/update" method="POST" class="usersEditForm">
                     <div class="form-parts">
                         <label for="username">Username:</label>
                         <input name="f_username" type="text" id="username" value="<?php echo $user['username']; ?>">

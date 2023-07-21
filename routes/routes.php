@@ -25,6 +25,7 @@ if(!empty($postPaths) && $postPaths !== null) {
 Route::middleware('login')->run(function() { 
 
     Route::get('/profile/[username]')->add('ProfileController', 'index');
+    Route::post('/profile/[username]/update')->add('ProfileController', 'updateDetails');
     Route::get('/logout')->add('LogoutController', 'logout');
 });
 
