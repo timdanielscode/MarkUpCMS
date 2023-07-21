@@ -62,9 +62,6 @@ Route::middleware(['auth' => 'admin'])->run(function() {
     Route::get('/admin/media/read')->add('admin\MediaController', 'READ');
     Route::get('/admin/media/[id]/delete')->add('admin\MediaController', 'delete');
     
-
-
-
     Route::get('/admin/categories')->add('admin\CategoryController', 'index');
     Route::get('/admin/categories/')->add('admin\CategoryController', 'TABLE');
     

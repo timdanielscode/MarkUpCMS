@@ -11,6 +11,8 @@
     $this->stylesheet("/assets/css/index.css");
     $this->stylesheet("/assets/css/pagination.css");
 
+    $this->script("/assets/js/navbar.js", true);
+
     $this->include('headerClose');
     $this->include('navbar');
 ?>

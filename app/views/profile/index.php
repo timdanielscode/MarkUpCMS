@@ -1,24 +1,67 @@
+<?php use core\Csrf; ?>
+<?php use core\Session; ?>
+<?php use validation\Errors; ?>
+
 <?php 
     $this->include('headerOpen');  
+
+    $this->stylesheet("/assets/css/style.css");
+    $this->stylesheet("/assets/css/navbar.css");
+    $this->stylesheet("/assets/css/sidebar.css");
+    $this->stylesheet("/assets/css/users.css");
+
+    $this->script("/assets/js/navbar.js", true);
+
     $this->include('headerClose');
     $this->include('navbar');
 ?>
 
-<?php use core\Session; ?>
+<div class="edit-container">
+    <div class="row">
+        <div class="col10 col9-L">
 
-<a href="/logout">Logout</a>
-
-<h1>User details</h1>
-
-<?php if(Session::get("logged_in") === true) { ?>    
-
-  <p><span>Username:</span> <span><?php echo Session::get("username"); ?></span></p>
-  
-  <p><span>Role type:</span> <span><?php echo Session::get("user_role"); ?></span></p>
-
-<?php } ?>
-
-
+            <h1><?php echo $user['username']; ?></h1>
+            
+                <form action="update" method="POST" class="usersEditForm">
+                    <div class="form-parts">
+                        <label for="username">Username:</label>
+                        <input name="f_username" type="text" id="username" value="<?php echo $user['username']; ?>">
+                        <div class="error-messages">
+                            <?php echo Errors::get($rules, 'f_username'); ?>
+                        </div>
+                    </div>
+                    <div class="form-parts">
+                        <label for="email">Email:</label>
+                        <input name="email" type="email" id="email" value="<?php echo $user["email"]; ?>">
+                        <div class="error-messages">
+                            <?php echo Errors::get($rules, 'email'); ?>
+                        </div>
+                    </div>
+                    <div class="form-parts">
+                        <input type="hidden" name="id" value="<?php echo $user["id"]; ?>"> 
+                        <button name="submit" type="submit" class="display-none" id="submit"></button>
+                        <input type="hidden" name="token" value="<?php echo Csrf::token('add');?>" />
+                    </div>
+                </form>
+        </div>
+        <div class="col2 col3-L">
+            <div id="sidebar" class="width-25-L">
+                <div class="sidebarContainer">
+                    <div class="mainButtonContainer">
+                        <label for="submit" class="button">Update</label>
+                        <a href="/admin/users" class="button">Back</a>
+                    </div>
+                    <span class="text">Username:</span>
+                    <span class="data"><?php echo $user['username']; ?></span>
+                    <span class="text">Email:</span>
+                    <span class="data"><?php echo $user['email']; ?></span>
+                    <span class="text">Role:</span>
+                    <span class="data"><?php echo $user['name']; ?></span>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
 <?php 
     $this->include('footer');
 ?>
