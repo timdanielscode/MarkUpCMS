@@ -11,29 +11,55 @@
                 
     public function index() {    
 
-      $data["rules"] = [];
-      return $this->view("login", $data);     
+        $data['failedLoginMessage'] = "";
+        $data["rules"] = [];
+
+        return $this->view("login", $data);     
     }
                   
     public function authenticateUsers() {    
                            
-          $rules = new Rules();  
+        $rules = new Rules();  
                   
-          if($rules->loginRules()->validated()) {
+        if($rules->loginRules()->validated()) {
   
-            if(Auth::authenticate() ) {
-                   
-                  redirect("/profile/" . Session::get("username") ); 
-                   
-            } else {
-
-                redirect("/login");      
-            }
+            $this->authentication();
   
-          } else {
+        } else {
               
+            $data['failedLoginMessage'] = $this->getFailedLoginAttemptMessages();
             $data["rules"] = $rules->errors;
+
             return $this->view("login", $data);  
-          }     
-      }
-  }  
+        }     
+    }
+
+    private function authentication() {
+
+        if(Auth::authenticate() ) {
+                   
+            redirect("/profile/" . Session::get("username") ); 
+           
+        } else {
+
+            $data['failedLoginMessage'] = $this->getFailedLoginAttemptMessages();
+            $data["rules"] = [];
+
+            return $this->view("login", $data);       
+        }
+    }
+
+    private function getFailedLoginAttemptMessages() {
+
+        if(Session::exists('failed_login_attempt') === true && Session::exists('failed_login_attempts_timestamp') === false) {
+
+            $message = "Incorrect login credentials.";
+        } else if(Session::exists('failed_login_attempt') === true && Session::exists('failed_login_attempts_timestamp') === true) {
+            $message = "Too many failed login attempts.";
+        } else {
+            $message = "";
+        }
+
+        return $message;
+    }
+}  

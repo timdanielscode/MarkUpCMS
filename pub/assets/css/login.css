@@ -1,0 +1,53 @@
+.container {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    background: #0c203d;
+    width: 350px;
+    height: 350px;
+}
+.container span {
+    font-size: 20px;
+    color: #fff;
+    margin-left: 25px;
+    margin-top: 25px;
+    display: block;
+}
+form {
+    position: relative;
+    margin: 25px;
+}
+form input {
+    display: block;
+    width: 100%;
+    box-sizing: border-box;
+    margin-bottom: 15px;
+    height: 32px;
+    background: #fff;
+    border: none;
+    padding-left: 10px;
+}
+
+form label {
+    color: #fff;
+    font-size: 14px;
+    margin-bottom: 10px;
+    display: block;
+}
+
+form button {
+    border: none;
+    padding: 10px;
+    background: #42971c;
+    border-radius: 3px;
+    color: #fff;
+    margin-top: 10px;
+}
+form button:hover {
+    cursor: pointer;
+    background: #6ba152;
+}
+.form-rules {
+    color: rgb(199, 48, 48);
+}
