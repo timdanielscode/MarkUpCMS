@@ -1,7 +1,8 @@
 <?php
                 
-  namespace app\controllers;
+  namespace app\controllers\admin;
 
+  use app\controllers\Controller;
   use core\Session; 
   use core\http\Response;
   use database\DB;

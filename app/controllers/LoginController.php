@@ -38,7 +38,7 @@
 
         if(Auth::authenticate() ) {
                    
-            redirect("/profile/" . Session::get("username") ); 
+            redirect("/admin/dashboard"); 
            
         } else {
 

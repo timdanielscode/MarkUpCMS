@@ -22,22 +22,29 @@ if(!empty($postPaths) && $postPaths !== null) {
     });
 }
 
+Route::middleware('notLoggedIn')->run(function() {
+
+    Route::get("/register")->add("RegisterController", "create");
+    Route::post("/register")->add("RegisterController", "store");
+
+    Route::get("/login-independentcms")->add("LoginController", "index");
+    Route::post("/login-independentcms")->add("LoginController", "authenticateUsers");
+});
+
 Route::middleware('login')->run(function() { 
 
-    Route::get('/profile/[username]')->add('ProfileController', 'index');
-    Route::post('/profile/[username]/update')->add('ProfileController', 'updateDetails');
-    Route::post('/profile/[username]/update-role')->add('ProfileController', 'updateRole');
-    Route::get('/profile/[username]/change-password')->add('ProfileController', 'editPassword');
-    Route::post('/profile/[username]/change-password')->add('ProfileController', 'updatePassword');
-    Route::post('/profile/[username]/delete')->add('ProfileController', 'delete');
+    Route::get('/admin/dashboard')->add('admin\DashboardController', 'index');
 
+    /*Route::get('/admin/[username]')->add('admin\ProfileController', 'index');
+    Route::post('/admin/[username]/update')->add('admin\ProfileController', 'updateDetails');
+    Route::post('/admin/[username]/update-role')->add('admin\ProfileController', 'updateRole');
+    Route::get('/admin/[username]/change-password')->add('admin\ProfileController', 'editPassword');
+    Route::post('/admin/[username]/change-password')->add('admin\ProfileController', 'updatePassword');
+    Route::post('/admin/[username]/delete')->add('admin\ProfileController', 'delete');
+*/
     Route::get('/logout')->add('LogoutController', 'logout');
 
-    Route::get('/admin/dashboard')->add('admin\AdminController', 'index');
-
     Route::crud('/admin/posts', '[id]')->add('admin\PostController', 'crud');
-    Route::get('/admin/posts/[id]/meta/edit')->add('admin\PostController', 'metaData');
-    Route::post('/admin/posts/[id]/meta/edit')->add('admin\PostController', 'metaDataUpdate');
     
     Route::crud('/admin/users', '[username]')->add('admin\UserController', 'crud');
     Route::post('/admin/users/[username]/update-role')->add('admin\UserController', 'updateRole');
@@ -73,21 +80,3 @@ Route::middleware('login')->run(function() {
     Route::post('/admin/categories/store')->add('admin\CategoryController', 'store');
     Route::get('/admin/categories/[id]/delete')->add('admin\CategoryController', 'delete');
 });
-
-Route::middleware('notLoggedIn')->run(function() {
-
-    Route::get("/register")->add("RegisterController", "create");
-    Route::post("/register")->add("RegisterController", "store");
-    Route::get("/login")->add("LoginController", "index");
-    Route::post("/login")->add("LoginController", "authenticateUsers");
-});
-    
-
-
-
-
-
-
-
-
-
