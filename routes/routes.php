@@ -32,17 +32,6 @@ Route::middleware('login')->run(function() {
     Route::post('/profile/[username]/delete')->add('ProfileController', 'delete');
 
     Route::get('/logout')->add('LogoutController', 'logout');
-});
-
-Route::middleware('notLoggedIn')->run(function() {
-
-    Route::get("/register")->add("RegisterController", "create");
-    Route::post("/register")->add("RegisterController", "store");
-    Route::get("/login")->add("LoginController", "index");
-    Route::post("/login")->add("LoginController", "authenticateUsers");
-});
-    
-
 
     Route::get('/admin/dashboard')->add('admin\AdminController', 'index');
 
@@ -83,6 +72,19 @@ Route::middleware('notLoggedIn')->run(function() {
     Route::get('/admin/categories/create')->add('admin\CategoryController', 'create');
     Route::post('/admin/categories/store')->add('admin\CategoryController', 'store');
     Route::get('/admin/categories/[id]/delete')->add('admin\CategoryController', 'delete');
+});
+
+Route::middleware('notLoggedIn')->run(function() {
+
+    Route::get("/register")->add("RegisterController", "create");
+    Route::post("/register")->add("RegisterController", "store");
+    Route::get("/login")->add("LoginController", "index");
+    Route::post("/login")->add("LoginController", "authenticateUsers");
+});
+    
+
+
+
 
 
 
