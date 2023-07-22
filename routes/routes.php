@@ -42,7 +42,7 @@ Route::middleware('notLoggedIn')->run(function() {
     Route::post("/login")->add("LoginController", "authenticateUsers");
 });
     
-Route::middleware(['auth' => 'admin'])->run(function() { 
+
 
     Route::get('/admin/dashboard')->add('admin\AdminController', 'index');
 
@@ -83,7 +83,7 @@ Route::middleware(['auth' => 'admin'])->run(function() {
     Route::get('/admin/categories/create')->add('admin\CategoryController', 'create');
     Route::post('/admin/categories/store')->add('admin\CategoryController', 'store');
     Route::get('/admin/categories/[id]/delete')->add('admin\CategoryController', 'delete');
-});    
+
 
 
 

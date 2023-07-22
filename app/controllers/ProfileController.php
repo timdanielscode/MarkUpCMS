@@ -117,6 +117,7 @@
     public function delete($request) {
 
         User::delete('username', Session::get('username'));
+        UserRole::delete('user_id', $request['id']);
 
         Session::delete('username');
         Session::delete('user_role');

@@ -10,34 +10,30 @@
   class LoginController extends Controller {
                 
     public function index() {    
-                  
+
       $data["rules"] = [];
       return $this->view("login", $data);     
     }
                   
-                
     public function authenticateUsers() {    
-                  
-        if(submitted("submit") && Csrf::validate(Csrf::token("get"), post("token")) ) {
-                     
+                           
           $rules = new Rules();  
                   
           if($rules->loginRules()->validated()) {
   
-            if(Auth::authenticate(['role' => 'admin']) ) {
+            if(Auth::authenticate() ) {
                    
-              redirect("/profile/" . Session::get("username") ); 
+                  redirect("/profile/" . Session::get("username") ); 
                    
             } else {
-                              
-              redirect("/login");      
+
+                redirect("/login");      
             }
   
           } else {
               
             $data["rules"] = $rules->errors;
             return $this->view("login", $data);  
-          }   
-        }     
+          }     
       }
   }  

@@ -56,6 +56,7 @@
                     </div>
                     <div class="buttonContainer">
                         <form action="/profile/<?php echo Session::get('username'); ?>/delete" method="POST">
+                            <input type="hidden" name="id" value="<?php echo $user["id"]; ?>"> 
                             <input type="submit" name="delete" class="button" value="Delete account"/>
                         </form>
                     </div>
