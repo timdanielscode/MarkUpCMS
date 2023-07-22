@@ -29,11 +29,9 @@ class Auth {
 
         if($userRole !== null) {
 
-            $userRoleType = $userRole['role'];
-            $sql = DB::try()->select('users.id', 'users.username', 'users.password','roles.name')->from('users')->join('user_role')->on('users.id', '=','user_role.user_id')->join('roles')->on('user_role.role_id', '=', 'roles.id')->where('users'.'.'.self::$_userCredentialInputName, '=', self::$_userCredentialInputValue)->and('roles.name', '=', $userRoleType)->first();
+            $sql = DB::try()->select('users.id', 'users.'.self::$_userCredentialInputName, 'users.password','roles.name')->from('users')->join('user_role')->on('users.id', '=','user_role.user_id')->join('roles')->on('user_role.role_id', '=', 'roles.id')->where('users'.'.'.self::$_userCredentialInputName, '=', self::$_userCredentialInputValue)->and('roles.name', '=', $userRole['role'])->first();
         } else {
-
-            $sql = DB::try()->select(self::$_userCredentialInputName, 'username', 'password')->from('users')->where(self::$_userCredentialInputName, '=', self::$_userCredentialInputValue)->first();
+            $sql = DB::try()->select('users.id', 'users.'.self::$_userCredentialInputName, 'users.password','roles.name')->from('users')->join('user_role')->on('users.id', '=','user_role.user_id')->join('roles')->on('user_role.role_id', '=', 'roles.id')->where('users'.'.'.self::$_userCredentialInputName, '=', self::$_userCredentialInputValue)->first();
         }
 
         return self::verifyPassword($sql);
@@ -53,6 +51,7 @@ class Auth {
 
             self::$_userCredentialInputName = 'email';
             self::$_userCredentialInputValue = $request->get()['email'];
+
         } else if(!empty($request->get()['username']) && $request->get()['username'] !== null) {
 
             self::$_userCredentialInputName = 'username';

@@ -19,7 +19,7 @@
 
             <h1>Change password: </h1>
             
-                <form action="/profile/<?php echo $user['username']; ?>/change-password" method="POST" class="usersEditForm">
+                <form action="/admin/profile/<?php echo $user['username']; ?>/change-password" method="POST" class="usersEditForm">
                     <div class="form-parts">
                         <label for="password">Password:</label>
                         <input name="password" type="password" id="password">

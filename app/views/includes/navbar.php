@@ -16,7 +16,7 @@
             <ul id="profileDropdown">
                 <span class="profileIcon"><?php echo substr(Session::get('username'), 0, 1); ?></span>
                 <li class="text-center username"><?php echo Session::get('username'); ?></li>
-                <li><a href="/profile/<?php echo Session::get('username'); ?>">Profile</a></li>
+                <li><a href="/admin/profile/<?php echo Session::get('username'); ?>">Profile</a></li>
                 <li><a href="#">Dashboard</a></li>
                 <li><a href="#">Settings</a></li>
                 <li class="/logout"><a href="/logout">Logout</a></li>

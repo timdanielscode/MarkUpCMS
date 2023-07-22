@@ -22,7 +22,7 @@
 
             <h1>Details</h1>
             
-                <form action="/profile/<?php echo Session::get('username'); ?>/update" method="POST" class="usersEditForm">
+                <form action="/admin/profile/<?php echo Session::get('username'); ?>/update" method="POST" class="usersEditForm">
                     <div class="form-parts">
                         <label for="username">Username:</label>
                         <input name="f_username" type="text" id="username" value="<?php echo $user['username']; ?>">
@@ -49,10 +49,10 @@
                 <div class="sidebarContainer">
                     <div class="mainButtonContainer">
                         <label for="submit" class="button">Update</label>
-                        <a href="/admin/users" class="button">Back</a>
+                        <a href="/admin/dashboard" class="button">Back</a>
                     </div>
                     <div class="buttonContainer">
-                        <a href="/profile/<?php echo Session::get('username'); ?>/change-password" class="button">Change password</a>
+                        <a href="/admin/profile/<?php echo Session::get('username'); ?>/change-password" class="button">Change password</a>
                     </div>
                     <div class="buttonContainer">
                         <form action="/profile/<?php echo Session::get('username'); ?>/delete" method="POST">
@@ -67,7 +67,7 @@
                     <span class="text">Role:</span>
                     <span class="data"><?php echo $user['name']; ?></span>
                     <?php if(Session::get('user_role') === 'admin') { ?>
-                        <form action="/profile/<?php echo Session::get('username'); ?>/update-role" method="POST" class="profileUpdateRoleForm">
+                        <form action="/admin/profile/<?php echo Session::get('username'); ?>/update-role" method="POST" class="profileUpdateRoleForm">
                             <div class="form-parts">
                                 <label for="role">Update role:</label>
                                 <select name="role" multiple>

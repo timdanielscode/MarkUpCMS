@@ -2,6 +2,7 @@
 
 use core\routing\Route;
 use database\DB;
+use core\Session;
 
 Route::setRouteKeys(['id', 'username']);
 
@@ -35,13 +36,13 @@ Route::middleware('login')->run(function() {
 
     Route::get('/admin/dashboard')->add('admin\DashboardController', 'index');
 
-    /*Route::get('/admin/[username]')->add('admin\ProfileController', 'index');
-    Route::post('/admin/[username]/update')->add('admin\ProfileController', 'updateDetails');
-    Route::post('/admin/[username]/update-role')->add('admin\ProfileController', 'updateRole');
-    Route::get('/admin/[username]/change-password')->add('admin\ProfileController', 'editPassword');
-    Route::post('/admin/[username]/change-password')->add('admin\ProfileController', 'updatePassword');
-    Route::post('/admin/[username]/delete')->add('admin\ProfileController', 'delete');
-*/
+    Route::get('/admin/profile/' . Session::get('username'))->add('admin\ProfileController', 'index');
+    Route::post('/admin/profile/' . Session::get('username') . '/update')->add('admin\ProfileController', 'updateDetails');
+    Route::post('/admin/profile/' . Session::get('username') . '/update-role')->add('admin\ProfileController', 'updateRole');
+    Route::get('/admin/profile/' . Session::get('username') . '/change-password')->add('admin\ProfileController', 'editPassword');
+    Route::post('/admin/profile/' . Session::get('username') . '/change-password')->add('admin\ProfileController', 'updatePassword');
+    Route::post('/admin/profile/' . Session::get('username') . '/delete')->add('admin\ProfileController', 'delete');
+
     Route::get('/logout')->add('LogoutController', 'logout');
 
     Route::crud('/admin/posts', '[id]')->add('admin\PostController', 'crud');
