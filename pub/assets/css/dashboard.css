@@ -23,6 +23,15 @@
     padding: 10px 0px 10px 25px;
     font-size: 16px;
 }
+#navigationMenu #dropdownItems .dropdownItem .count {
+    background: #dfaf42;
+    float: right;
+    margin-right: 20px;
+    color: #0c203d;
+    width: 20px;
+    text-align: center;
+    font-size: 12px;
+}
 #navigationMenu #dropdownItems .dropdownItem:hover {
     cursor: pointer;
     color: #c6c6c6;
