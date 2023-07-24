@@ -10,11 +10,22 @@ use core\Csrf;
 use validation\Rules;
 use core\Session;
 use extensions\Pagination;
+use core\http\Response;
 
 class JsController extends Controller {
 
     private $_fileExtension = ".js";
     private $_folderLocation = "website/assets/js/";
+
+    private function ifExists($id) {
+
+        $js = new Js();
+
+        if(empty($js->ifRowExists($id)) ) {
+
+            return Response::statusCode(404)->view("/404/404") . exit();
+        }
+    }
 
     public function index() {
 
@@ -47,6 +58,8 @@ class JsController extends Controller {
     }
 
     public function read($request) {
+
+        $this->ifExists($request['id']);
 
         $file = Js::get($request['id']);
         $code = $this->getFileContent($file['file_name']);
@@ -113,6 +126,8 @@ class JsController extends Controller {
 
     public function edit($request) {
 
+        $this->ifExists($request['id']);
+
         $file = Js::where('id', '=', $request['id'])[0];
         $code = $this->getFileContent($file['file_name']);
 
@@ -150,6 +165,8 @@ class JsController extends Controller {
     }
 
     public function update($request) {
+
+        $this->ifExists($request['id']);
 
         if(submitted('submit') && Csrf::validate(Csrf::token('get'), post('token'))) {
                 
@@ -197,6 +214,8 @@ class JsController extends Controller {
 
     public function includePages($request) {
 
+        $this->ifExists($request['id']);
+
         if(submitted("submit") === true && Csrf::validate(Csrf::token('get'), post('token')) === true ) {
 
             $id = $request['id'];
@@ -220,6 +239,8 @@ class JsController extends Controller {
 
     public function removePages($request) {
 
+        $this->ifExists($request['id']);
+
         if(submitted("submit") === true && Csrf::validate(Csrf::token('get'), post('token')) === true ) {
 
             $id = $request['id'];
@@ -238,6 +259,8 @@ class JsController extends Controller {
     }
 
     public function includeAll($request) {
+
+        $this->ifExists($request['id']);
 
         if(submitted("submit") === true && Csrf::validate(Csrf::token('get'), post('token')) === true ) {
 
@@ -263,6 +286,8 @@ class JsController extends Controller {
 
     public function removeAll($request) {
 
+        $this->ifExists($request['id']);
+
         if(submitted("submit") === true && Csrf::validate(Csrf::token('get'), post('token')) === true ) {
 
             $id = $request['id'];
@@ -273,6 +298,8 @@ class JsController extends Controller {
     }
 
     public function delete($request) {
+
+        $this->ifExists($request['id']);
 
         $filename = Js::where('id', '=', $request['id'])[0]['file_name'];
         $path = "website/assets/js/" . $filename . ".js";

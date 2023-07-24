@@ -11,6 +11,11 @@ class Js extends Model {
         self::table('js');
     }
 
+    public function ifRowExists($id) {
+
+        return DB::try()->select('id')->from('js')->where('id', '=', $id)->first();
+    }
+
     public function allJsButOrderedOnDate() {
 
         return DB::try()->all('js')->order('date_created_at')->fetch();

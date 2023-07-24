@@ -27,7 +27,7 @@
     <div class="edit-container">
         <div class="row">
             <div class="col10 col9-L">
-                <form action="update" method="POST" class="form-code">
+                <form action="/admin/js/<?php echo $data['id']; ?>/update" method="POST" class="form-code">
                     <div class="form-parts">
                         <input name="filename" type="text" id="filename" placeholder="Filename" value="<?php echo $data['file_name']; ?>">
                         <div class="error-messages">
