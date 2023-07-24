@@ -11,6 +11,11 @@ class Menu extends Model {
         self::table('menus');
     }
 
+    public function ifRowExists($id) {
+
+        return DB::try()->select('id')->from('menus')->where('id', '=', $id)->first();
+    }
+
     public function allMenusButOrderedOnDate() {
 
         return DB::try()->all('menus')->order('date_created_at')->fetch();

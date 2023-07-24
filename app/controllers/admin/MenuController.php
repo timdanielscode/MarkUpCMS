@@ -9,8 +9,19 @@ use app\models\Menu;
 use core\Session;
 use database\DB;
 use extensions\Pagination;
+use core\http\Response;
 
 class MenuController extends Controller {
+
+    private function ifExists($id) {
+
+        $menu = new Menu();
+
+        if(empty($menu->ifRowExists($id)) ) {
+
+            return Response::statusCode(404)->view("/404/404") . exit();
+        }
+    }
 
     public function index() {
 
@@ -75,6 +86,8 @@ class MenuController extends Controller {
 
     public function read($request) {
 
+        $this->ifExists($request['id']);
+
         $menu = Menu::where('id', '=', $request['id'])[0];
         $data['menu'] = $menu;
 
@@ -82,6 +95,8 @@ class MenuController extends Controller {
     }
 
     public function edit($request) {
+
+        $this->ifExists($request['id']);
 
         $menu = Menu::where('id', '=', $request['id'])[0];
         $data['menu'] = $menu;
@@ -92,6 +107,8 @@ class MenuController extends Controller {
     }
 
     public function update($request) {
+
+        $this->ifExists($request['id']);
 
         if(submitted("submit") === true && Csrf::validate(Csrf::token('get'), post('token')) === true ) {
 
@@ -125,6 +142,8 @@ class MenuController extends Controller {
 
     public function updatePosition($request) {
 
+        $this->ifExists($request['id']);
+
         if(submitted("submit") === true && Csrf::validate(Csrf::token('get'), post('token')) === true ) {
 
             $id = $request['id'];
@@ -139,6 +158,8 @@ class MenuController extends Controller {
 
     public function updateOrdering($request) {
 
+        $this->ifExists($request['id']);
+
         if(submitted("submit") === true && Csrf::validate(Csrf::token('get'), post('token')) === true ) {
 
             $id = $request['id'];
@@ -152,6 +173,8 @@ class MenuController extends Controller {
     }
 
     public function delete($request) {
+
+        $this->ifExists($request['id']);
 
         Menu::delete('id', $request['id']);
         redirect("/admin/menus");
