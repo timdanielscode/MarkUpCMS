@@ -53,10 +53,12 @@
                         </div>
                         <div class="buttonContainer">
                             <form action="/admin/js/<?php echo $data['id']; ?>/include-all" method="POST">
-                                <input type="submit" name="includeAll" value="Include on all"/>
+                                <input type="submit" name="submit" value="Include on all"/>
+                                <input type="hidden" name="token" value="<?php Csrf::token('add');?>" />
                             </form>
                             <form action="/admin/js/<?php echo $data['id']; ?>/remove-all" method="POST">
-                                <input type="submit" name="removeAll" value="Remove all"/>
+                                <input type="submit" name="submit" value="Remove all"/>
+                                <input type="hidden" name="token" value="<?php Csrf::token('add');?>" />
                             </form>
                         </div>
                         <span class="text">File: </span>
@@ -68,7 +70,8 @@
                                     <option value="<?php echo $page['id']; ?>"><?php echo $page['title']; ?></option>
                                 <?php } ?> 
                             </select>
-                            <input type="submit" name="removePage" value="Remove"/>
+                            <input type="submit" name="submit" value="Remove"/>
+                            <input type="hidden" name="token" value="<?php Csrf::token('add');?>" />
                         </form>   
                         <form action="/admin/js/<?php echo $data['id']; ?>/include-pages" method="POST" class="includeJsForm">
                             <label>Other pages: </label>
@@ -77,7 +80,8 @@
                                     <option value="<?php echo $page['id']; ?>"><?php echo $page['title']; ?></option>
                                 <?php } ?> 
                             </select>
-                            <input type="submit" name="updatePage" value="Include"/>
+                            <input type="submit" name="submit" value="Include"/>
+                            <input type="hidden" name="token" value="<?php Csrf::token('add');?>" />
                         </form>   
                     </div>
                 </div>

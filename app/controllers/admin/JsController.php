@@ -197,68 +197,79 @@ class JsController extends Controller {
 
     public function includePages($request) {
 
-        $id = $request['id'];
-        $pageIds = $request['pages'];
-        
-        if(!empty($pageIds) && $pageIds !== null) {
+        if(submitted("submit") === true && Csrf::validate(Csrf::token('get'), post('token')) === true ) {
 
-            foreach($pageIds as $pageId) {
+            $id = $request['id'];
+            $pageIds = $request['pages'];
+            
+            if(!empty($pageIds) && $pageIds !== null) {
 
-                JsPage::insert([
+                foreach($pageIds as $pageId) {
 
-                    'page_id' => $pageId,
-                    'js_id' => $id
-                ]);
+                    JsPage::insert([
+
+                        'page_id' => $pageId,
+                        'js_id' => $id
+                    ]);
+                }
             }
-        }
 
-        redirect("/admin/js/$id/edit");
+            redirect("/admin/js/$id/edit");
+        }
     }
 
     public function removePages($request) {
 
-        $id = $request['id'];
-        $pageIds = $request['pages'];
+        if(submitted("submit") === true && Csrf::validate(Csrf::token('get'), post('token')) === true ) {
 
-        if(!empty($pageIds) && $pageIds !== null) {
+            $id = $request['id'];
+            $pageIds = $request['pages'];
 
-            foreach($pageIds as $pageId) {
+            if(!empty($pageIds) && $pageIds !== null) {
 
-                JsPage::delete('page_id', $pageId);
+                foreach($pageIds as $pageId) {
+
+                    JsPage::delete('page_id', $pageId);
+                }
             }
-        }
 
-        redirect("/admin/js/$id/edit");
+            redirect("/admin/js/$id/edit");
+        }
     }
 
     public function includeAll($request) {
 
-        $id = $request['id'];
-        $pageIds = DB::try()->select('id')->from('pages')->fetch();
+        if(submitted("submit") === true && Csrf::validate(Csrf::token('get'), post('token')) === true ) {
 
-        JsPage::delete('js_id', $id);
+            $id = $request['id'];
+            $pageIds = DB::try()->select('id')->from('pages')->fetch();
 
-        if(!empty($pageIds) && $pageIds !== null) {
+            JsPage::delete('js_id', $id);
 
-            foreach($pageIds as $pageId) {
+            if(!empty($pageIds) && $pageIds !== null) {
 
-                JsPage::insert([
+                foreach($pageIds as $pageId) {
 
-                    'page_id' => $pageId['id'],
-                    'js_id' => $id
-                ]);
+                    JsPage::insert([
+
+                        'page_id' => $pageId['id'],
+                        'js_id' => $id
+                    ]);
+                }
             }
+            redirect("/admin/js/$id/edit");
         }
-
-        redirect("/admin/js/$id/edit");
     }
 
     public function removeAll($request) {
 
-        $id = $request['id'];
+        if(submitted("submit") === true && Csrf::validate(Csrf::token('get'), post('token')) === true ) {
 
-        JsPage::delete('js_id', $id);
-        redirect("/admin/js/$id/edit");
+            $id = $request['id'];
+
+            JsPage::delete('js_id', $id);
+            redirect("/admin/js/$id/edit");
+        }
     }
 
     public function delete($request) {
