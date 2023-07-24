@@ -24,11 +24,6 @@
     $this->include('navbar');
 ?>
 
-    
-<?php if(Session::exists("csrf")) { ?>
-        <div class="my-5 w-75 mx-auto"><?php echo Alert::display("warning", "csrf"); ?></div>
-    <?php Session::delete('csrf'); } ?>
-
     <div class="create-container">
         <div class="row">
             <div class="col10 col9-L">

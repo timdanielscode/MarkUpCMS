@@ -65,6 +65,10 @@ Route::middleware('login')->run(function() {
     Route::post('/admin/css/[id]/unlink-all')->add('admin\CssController', 'unlinkAll');
 
     Route::crud('/admin/js', '[id]')->add('admin\JsController', 'crud');
+    Route::post('/admin/js/[id]/include-pages')->add('admin\JsController', 'includePages');
+    Route::post('/admin/js/[id]/remove-pages')->add('admin\JsController', 'removePages');
+    Route::post('/admin/js/[id]/include-all')->add('admin\JsController', 'includeAll');
+    Route::post('/admin/js/[id]/remove-all')->add('admin\JsController', 'removeAll');
 
     Route::crud('/admin/menus', '[id]')->add('admin\MenuController', 'crud');
     Route::post('/admin/menus/[id]/update-position')->add('admin\MenuController', 'updatePosition');

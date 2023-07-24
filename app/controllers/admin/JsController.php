@@ -151,28 +151,6 @@ class JsController extends Controller {
 
     public function update($request) {
 
-        if(submitted('updatePage') ) {
-
-            return $this->updatePage($request);
-        } else if(submitted('removePage') ) {
-
-            return $this->removePage($request);
-        } else if(submitted('includeAll') ) {
-
-            return $this->includeAll($request);
-        } else if(submitted('removeAll') ) {
-
-            return $this->removeAll($request);
-        } else if(submitted('submit') ) {
-
-            return $this->updateJs($request);
-        } else {
-            return;
-        }
-    }
-
-    private function updateJs($request) {
-
         if(submitted('submit') && Csrf::validate(Csrf::token('get'), post('token'))) {
                 
             $id = $request['id'];
@@ -217,7 +195,7 @@ class JsController extends Controller {
         }
     }
 
-    private function updatePage($request) {
+    public function includePages($request) {
 
         $id = $request['id'];
         $pageIds = $request['pages'];
@@ -237,7 +215,7 @@ class JsController extends Controller {
         redirect("/admin/js/$id/edit");
     }
 
-    private function removePage($request) {
+    public function removePages($request) {
 
         $id = $request['id'];
         $pageIds = $request['pages'];
@@ -253,7 +231,7 @@ class JsController extends Controller {
         redirect("/admin/js/$id/edit");
     }
 
-    private function includeAll($request) {
+    public function includeAll($request) {
 
         $id = $request['id'];
         $pageIds = DB::try()->select('id')->from('pages')->fetch();
@@ -275,7 +253,7 @@ class JsController extends Controller {
         redirect("/admin/js/$id/edit");
     }
 
-    private function removeAll($request) {
+    public function removeAll($request) {
 
         $id = $request['id'];
 

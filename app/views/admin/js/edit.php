@@ -52,25 +52,25 @@
                             <a href="#" id="codeEditorFullScreen" class="button">Full screen</a>
                         </div>
                         <div class="buttonContainer">
-                            <form action="update" method="POST">
+                            <form action="/admin/js/<?php echo $data['id']; ?>/include-all" method="POST">
                                 <input type="submit" name="includeAll" value="Include on all"/>
                             </form>
-                            <form action="update" method="POST">
-                                <input type="submit" name="removeAll" value="Exclude all"/>
+                            <form action="/admin/js/<?php echo $data['id']; ?>/remove-all" method="POST">
+                                <input type="submit" name="removeAll" value="Remove all"/>
                             </form>
                         </div>
                         <span class="text">File: </span>
                         <span class="data"><?php echo $data['file_name'] . $data['extension']; ?></span>
-                        <form action="update" method="POST" class="removeJsForm">
+                        <form action="/admin/js/<?php echo $data['id']; ?>/remove-pages" method="POST" class="removeJsForm">
                             <label>Included on: </label>
                             <select name="pages[]" multiple>
                                 <?php foreach($data['assingedPages'] as $page) { ?>
                                     <option value="<?php echo $page['id']; ?>"><?php echo $page['title']; ?></option>
                                 <?php } ?> 
                             </select>
-                            <input type="submit" name="removePage" value="Exclude"/>
+                            <input type="submit" name="removePage" value="Remove"/>
                         </form>   
-                        <form action="update" method="POST" class="includeJsForm">
+                        <form action="/admin/js/<?php echo $data['id']; ?>/include-pages" method="POST" class="includeJsForm">
                             <label>Other pages: </label>
                             <select name="pages[]" multiple>
                                 <?php foreach($data['pages'] as $page) { ?>
