@@ -72,7 +72,8 @@
                         <div class="error-messages">
                             <?php echo Errors::get($rules, 'slug'); ?>
                         </div>
-                        <input class="updateSlugButton" type="submit" name="updateSlug" value="Update"/>
+                        <input class="updateSlugButton" type="submit" name="submit" value="Update"/>
+                        <input type="hidden" name="token" value="<?php Csrf::token('add'); ?>" />
                     </form>
                     <div id="category" class="display-none">
                         <span class="text">Category: </span>
@@ -88,11 +89,13 @@
                                     <div class="AssingCategoryContainer">
                                         <input class="assignCategoryButton" type="submit" name="submit" value="Assign"/>
                                     </div>
+                                    <input type="hidden" name="token" value="<?php Csrf::token('add'); ?>" />
                                 </form>
                             <?php } else { ?>
                                 <span class="categoryTitle"><?php echo $data['category']['title']; ?></span>
                                 <form action="/admin/posts/<?php echo $data['id']; ?>/detach-category" method="POST">
                                     <input class="detachCategoryButton" type="submit" name="submit" value="Detach"/>
+                                    <input type="hidden" name="token" value="<?php Csrf::token('add'); ?>" />
                                 </form>
                         <?php } ?>
                     </div>
@@ -118,7 +121,8 @@
                                 <?php echo Errors::get($rules, 'metaKeywords'); ?>
                             </div>   
                         </div>
-                        <input type="submit" name="updateMetaData" value="Update"/>
+                        <input type="submit" name="submit" value="Update"/>
+                        <input type="hidden" name="token" value="<?php Csrf::token('add'); ?>" />
                     </form>
                     <form id="linkedCssFiles" class="linkedCssFilesForm display-none" action="/admin/posts/<?php echo $data['id']; ?>/unlink-css" method="POST">
                         <label for="linkedFiles">Linked css files:</label>
@@ -129,18 +133,20 @@
                                 </option>
                             <?php } ?>
                         </select>
-                        <input type="submit" name="removeCss" value="Remove"/>
+                        <input type="submit" name="submit" value="Remove"/>
+                        <input type="hidden" name="token" value="<?php Csrf::token('add'); ?>" />
                     </form>
                     <form id="cssFiles" class="cssFilesForm display-none" action="/admin/posts/<?php echo $data['id']; ?>/link-css" method="POST">
                         <label for="cssFilesSelect">Other css files:</label>
-                            <select id="cssFilesSelect" name="cssFiles[]" multiple>
-                                <?php foreach($data['notLinkedCssFiles'] as $notLinkedCssFile) { ?>
-                                    <option value="<?php echo $notLinkedCssFile['id']; ?>">
-                                        <?php echo $notLinkedCssFile['file_name'] . $notLinkedCssFile['extension']; ?>
-                                    </option>
-                                <?php } ?>
-                            </select>
-                        <input type="submit" name="linkCss" value="Link"/>
+                        <select id="cssFilesSelect" name="cssFiles[]" multiple>
+                            <?php foreach($data['notLinkedCssFiles'] as $notLinkedCssFile) { ?>
+                                <option value="<?php echo $notLinkedCssFile['id']; ?>">
+                                    <?php echo $notLinkedCssFile['file_name'] . $notLinkedCssFile['extension']; ?>
+                                </option>
+                            <?php } ?>
+                        </select>
+                        <input type="hidden" name="token" value="<?php Csrf::token('add'); ?>" />
+                        <input type="submit" name="submit" value="Link"/>
                     </form>
                     <form id="linkedJsFiles" class="linkedJsFilesForm display-none" action="/admin/posts/<?php echo $data['id'] ?>/remove-js" method="POST">
                         <label for="linkedJsFiles">Linked js files:</label>
@@ -151,7 +157,8 @@
                                 </option>
                             <?php } ?>
                         </select>
-                        <input type="submit" name="removeJs" value="Remove"/>
+                        <input type="hidden" name="token" value="<?php Csrf::token('add'); ?>" />
+                        <input type="submit" name="submit" value="Remove"/>
                     </form>
                     <form id="jsFiles" class="jsFilesForm display-none" action="/admin/posts/<?php echo $data['id']; ?>/include-js" method="POST">
                         <label for="jsFilesSelect">Other js files:</label>
@@ -162,7 +169,8 @@
                                     </option>
                                 <?php } ?>
                             </select>
-                        <input type="submit" name="includeJs" value="Include"/>
+                        <input type="hidden" name="token" value="<?php Csrf::token('add'); ?>" />
+                        <input type="submit" name="submit" value="Include"/>
                     </form>
                 </div>
             </div>
