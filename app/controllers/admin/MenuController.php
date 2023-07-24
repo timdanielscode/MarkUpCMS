@@ -93,53 +93,62 @@ class MenuController extends Controller {
 
     public function update($request) {
 
-        $rules = new Rules();
+        if(submitted("submit") === true && Csrf::validate(Csrf::token('get'), post('token')) === true ) {
 
-        $unique = DB::try()->select('title')->from('menus')->where('title', '=', $request['title'])->and('id', '!=', $request['id'])->fetch();
+            $rules = new Rules();
 
-        if($rules->menu_update($unique)->validated()) {
-                
-            $id = $request['id'];
+            $unique = DB::try()->select('title')->from('menus')->where('title', '=', $request['title'])->and('id', '!=', $request['id'])->fetch();
 
-            Menu::update(['id' => $id], [
+            if($rules->menu_update($unique)->validated()) {
+                    
+                $id = $request['id'];
 
-                'title'     => $request['title'],
-                'content'   => $request['content'],
-                'date_updated_at'   => date("d/m/Y"),
-                'time_updated_at'   => date("H:i")
-            ]);
+                Menu::update(['id' => $id], [
 
-            redirect("/admin/menus/$id/edit");
-                
-        } else {
+                    'title'     => $request['title'],
+                    'content'   => $request['content'],
+                    'date_updated_at'   => date("d/m/Y"),
+                    'time_updated_at'   => date("H:i")
+                ]);
 
-            $data['rules'] = $rules->errors;
-            $data['menu'] = Menu::where('id', '=', $request['id'])[0];
+                redirect("/admin/menus/$id/edit");
+                    
+            } else {
 
-            return $this->view("/admin/menus/edit", $data);
+                $data['rules'] = $rules->errors;
+                $data['menu'] = Menu::where('id', '=', $request['id'])[0];
+
+                return $this->view("/admin/menus/edit", $data);
+            }
         }
     }
 
     public function updatePosition($request) {
 
-        $id = $request['id'];
+        if(submitted("submit") === true && Csrf::validate(Csrf::token('get'), post('token')) === true ) {
 
-        Menu::update(['id' => $id], [
-            'position' => $request['position']
-        ]); 
+            $id = $request['id'];
 
-        redirect("/admin/menus/$id/edit");
+            Menu::update(['id' => $id], [
+                'position' => $request['position']
+            ]); 
+
+            redirect("/admin/menus/$id/edit");
+        }
     }
 
     public function updateOrdering($request) {
 
-        $id = $request['id'];
+        if(submitted("submit") === true && Csrf::validate(Csrf::token('get'), post('token')) === true ) {
 
-        Menu::update(['id' => $id], [
-            'ordering'  => $request['ordering']
-        ]);
-        
-        redirect("/admin/menus/$id/edit");
+            $id = $request['id'];
+
+            Menu::update(['id' => $id], [
+                'ordering'  => $request['ordering']
+            ]);
+            
+            redirect("/admin/menus/$id/edit");
+        }
     }
 
     public function delete($request) {

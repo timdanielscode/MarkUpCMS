@@ -36,7 +36,7 @@
                 </div>
                 <textarea name="content" type="content" id="code"><?php echo $menu['content']; ?></textarea>
                 <button name="submit" id="submit" type="submit" class="display-none">Create</button>
-                <input type="hidden" name="token" value="<?php Csrf::token('add');?>" />
+                <input type="hidden" name="token" value="<?php Csrf::token('add'); ?>" />
             </form>
         </div>
         <div class="col2 col3-L">
@@ -60,11 +60,13 @@
                             <option value="top">Top</option>
                             <option value="bottom">Bottom</option>
                         </select>
-                        <input type="submit" name="submitPosition" value="update"/>
+                        <input type="submit" name="submit" value="update"/>
+                        <input type="hidden" name="token" value="<?php Csrf::token('add'); ?>" />
                     </form>
                     <form action="/admin/menus/<?php echo $menu['id']; ?>/update-ordering" method="POST" class="updateNumberForm">
                         <input dir="rtl" type="number" name="ordering" min="1" max="99" value="1">
-                        <input type="submit" name="submitOrdering" value="update"/>
+                        <input type="submit" name="submit" value="update"/>
+                        <input type="hidden" name="token" value="<?php Csrf::token('add'); ?>" />
                     </form>
                 </div>
             </div>
