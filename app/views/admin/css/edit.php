@@ -53,10 +53,12 @@
                         </div>
                         <div class="buttonContainer">
                             <form action="/admin/css/<?php echo $data['id']; ?>/link-all" method="POST">
-                                <input type="submit" name="linkAll" value="Link on all"/>
+                                <input type="submit" name="submit" value="Link on all"/>
+                                <input type="hidden" name="token" value="<?php Csrf::token('add');?>" />
                             </form>
                             <form action="/admin/css/<?php echo $data['id']; ?>/unlink-all" method="POST">
-                                <input type="submit" name="removeAll" value="Unlink all"/>
+                                <input type="submit" name="submit" value="Unlink all"/>
+                                <input type="hidden" name="token" value="<?php Csrf::token('add');?>" />
                             </form>
                         </div>
                         <span class="text">File: </span>
@@ -68,7 +70,8 @@
                                     <option value="<?php echo $page['id']; ?>"><?php echo $page['title']; ?></option>
                                 <?php } ?>
                             </select>
-                            <input type="submit" name="removePage" value="Unlink"/>
+                            <input type="submit" name="submit" value="Unlink"/>
+                            <input type="hidden" name="token" value="<?php Csrf::token('add');?>" />
                         </form>
                         <form action="/admin/css/<?php echo $data['id']; ?>/link-pages" method="POST" class="linkCssForm">
                             <label>Other pages: </label>
@@ -78,6 +81,7 @@
                                 <?php } ?>
                             </select>
                             <input type="submit" name="submit" value="Link"/>
+                            <input type="hidden" name="token" value="<?php Csrf::token('add');?>" />
                         </form>
                     </div>
                 </div>

@@ -202,69 +202,81 @@ class CssController extends Controller {
 
     public function linkAll($request) {
 
-        $id = $request['id'];
+        if(submitted("submit") === true && Csrf::validate(Csrf::token('get'), post('token')) === true ) {
 
-        $pageIds = DB::try()->select('id')->from('pages')->fetch();
+            $id = $request['id'];
 
-        CssPage::delete('css_id', $id);
+            $pageIds = DB::try()->select('id')->from('pages')->fetch();
 
-        if(!empty($pageIds) && $pageIds !== null) {
+            CssPage::delete('css_id', $id);
 
-            foreach($pageIds as $pageId) {
+            if(!empty($pageIds) && $pageIds !== null) {
 
-                CssPage::insert([
+                foreach($pageIds as $pageId) {
 
-                    'page_id' => $pageId['id'],
-                    'css_id' => $id
-                ]);
+                    CssPage::insert([
+
+                        'page_id' => $pageId['id'],
+                        'css_id' => $id
+                    ]);
+                }
             }
-        }
 
-        redirect("/admin/css/$id/edit");
+            redirect("/admin/css/$id/edit");
+        }
     }
 
     public function unlinkAll($request) {
 
-        $id = $request['id'];
+        if(submitted("submit") === true && Csrf::validate(Csrf::token('get'), post('token')) === true ) {
 
-        CssPage::delete('css_id', $id);
-        redirect("/admin/css/$id/edit");
+            $id = $request['id'];
+
+            CssPage::delete('css_id', $id);
+            redirect("/admin/css/$id/edit");
+        }
     }
 
     public function unlinkPages($request) {
 
-        $id = $request['id'];
-        $pageIds = $request['pages'];
+        if(submitted("submit") === true && Csrf::validate(Csrf::token('get'), post('token')) === true ) {
 
-        if(!empty($pageIds) && $pageIds !== null) {
+            $id = $request['id'];
+            $pageIds = $request['pages'];
 
-            foreach($pageIds as $pageId) {
+            if(!empty($pageIds) && $pageIds !== null) {
 
-                CssPage::delete('page_id', $pageId);
+                foreach($pageIds as $pageId) {
+
+                    CssPage::delete('page_id', $pageId);
+                }
             }
-        }
 
-        redirect("/admin/css/$id/edit");
+            redirect("/admin/css/$id/edit");
+        }
     }
 
     public function linkPages($request) {
 
-        $id = $request['id'];
-        $pageIds = $request['pages'];
-        
-        if(!empty($pageIds) && $pageIds !== null) {
+        if(submitted("submit") === true && Csrf::validate(Csrf::token('get'), post('token')) === true ) {
 
-            foreach($pageIds as $pageId) {
+            $id = $request['id'];
+            $pageIds = $request['pages'];
+            
+            if(!empty($pageIds) && $pageIds !== null) {
 
-                CssPage::insert([
+                foreach($pageIds as $pageId) {
 
-                    'page_id' => $pageId,
-                    'css_id' => $id
-                ]);
+                    CssPage::insert([
+
+                        'page_id' => $pageId,
+                        'css_id' => $id
+                    ]);
+                }
             }
-        }
 
-        redirect("/admin/css/$id/edit");
+            redirect("/admin/css/$id/edit");
+        }
     }
 
     public function delete($request) {
