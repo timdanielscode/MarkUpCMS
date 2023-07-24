@@ -182,40 +182,6 @@ class PostController extends Controller {
 
     public function update($request) {
 
-        if(submitted('submitCategory')) {
-
-            return $this->updateCategory($request);
-        } else if (submitted('removeCategory') ) {
-
-            return $this->removeCategory($request);
-        } else if(submitted('updateSlug') ) {
-
-            return $this->updateSlug($request);
-        } else if(submitted('updateMetaData') ) {
-
-            return $this->updateMetaData($request);
-        } else if(submitted('removeCss') ) {
-
-            return $this->removeCss($request);
-        } else if(submitted('linkCss') ) {
-
-            return $this->linkCss($request);
-        } else if(submitted('includeJs') ) {
-
-            return $this->includeJs($request);
-        } else if (submitted('removeJs') ) {
-
-            return $this->removeJs($request);
-        } else if(submitted('submit') ) {
-
-            return $this->updatePost($request);
-        } else {
-            return;
-        }
-    }
-
-    private function updatePost($request) {
-
         if(submitted("submit") === true && Csrf::validate(Csrf::token('get'), post('token')) === true ) {
                 
             $post = new Post();
@@ -275,7 +241,53 @@ class PostController extends Controller {
         }
     }
 
-    private function removeJs($request) {
+    public function assignCategory($request) {
+
+        $categoryId = $request['categories'];
+        $pageId = $request['id'];
+
+        CategoryPage::insert([
+
+            'category_id' => $categoryId,
+            'page_id'    => $pageId
+        ]);
+
+        $currentCategorySlug = DB::try()->select('categories.slug')->from('categories')->join('category_page')->on('category_page.category_id', '=', 'categories.id')->where('categories.id', '=', $categoryId)->first();
+        $currentSlugs = DB::try()->select('slug')->from('pages')->where('id', '=', $pageId)->fetch();
+
+        foreach($currentSlugs as $currentSlug) {
+
+            $subCategories = DB::try()->select('categories.slug')->from('categories')->join('category_sub')->on('categories.id', '=', 'category_sub.sub_id')->where('category_sub.category_id', '=', $categoryId)->fetch();
+
+            if(!empty($subCategories) ) {
+    
+                $subCategoriesArray = [];
+    
+                foreach($subCategories as $subCategory) {
+    
+                    array_push($subCategoriesArray, $subCategory['slug']);
+                }
+    
+                $subCategoriesSlug = implode('', $subCategoriesArray);
+    
+                Post::update(['id' => $pageId], [
+    
+                    'slug'  => $currentCategorySlug['slug'] . $subCategoriesSlug . $currentSlug['slug']
+                ]);
+    
+            } else {
+    
+                Post::update(['id' => $pageId], [
+    
+                    'slug'  => $currentCategorySlug['slug'] . $currentSlug['slug']
+                ]);
+            }
+        }
+
+        redirect('/admin/posts/'. $pageId . '/edit');
+    }
+
+    public function removeJs($request) {
 
         $id = $request['id'];
         $linkedJsIds = $request['linkedJsFiles'];
@@ -291,7 +303,7 @@ class PostController extends Controller {
         redirect("/admin/posts/$id/edit");
     }
 
-    private function includeJs($request) {
+    public function includeJs($request) {
 
         $id = $request['id'];
         $jsIds = $request['jsFiles'];
@@ -312,7 +324,7 @@ class PostController extends Controller {
         redirect("/admin/posts/$id/edit");
     }
 
-    private function linkCss($request) {
+    public function linkCss($request) {
 
         $id = $request['id'];
         $cssIds = $request['cssFiles'];
@@ -332,7 +344,7 @@ class PostController extends Controller {
         redirect("/admin/posts/$id/edit");
     }
 
-    private function removeCss($request) {
+    public function unLinkCss($request) {
 
         $id = $request['id'];
         $linkedCssIds = $request['linkedCssFiles'];
@@ -348,7 +360,7 @@ class PostController extends Controller {
         redirect("/admin/posts/$id/edit");
     }
 
-    private function updateSlug($request) {
+    public function updateSlug($request) {
 
         $id = $request['id'];
         
@@ -403,7 +415,7 @@ class PostController extends Controller {
         redirect("/admin/posts/$id/edit");
     }
 
-    private function updateMetaData($request) {
+    public function updateMetadata($request) {
 
         $id = $request['id'];
 
@@ -456,53 +468,7 @@ class PostController extends Controller {
         redirect("/admin/posts/$id/edit");
     }
 
-    private function updateCategory($request) {
-
-        $categoryId = $request['categories'];
-        $pageId = $request['id'];
-
-        CategoryPage::insert([
-
-            'category_id' => $categoryId,
-            'page_id'    => $pageId
-        ]);
-
-        $currentCategorySlug = DB::try()->select('categories.slug')->from('categories')->join('category_page')->on('category_page.category_id', '=', 'categories.id')->where('categories.id', '=', $categoryId)->first();
-        $currentSlugs = DB::try()->select('slug')->from('pages')->where('id', '=', $pageId)->fetch();
-
-        foreach($currentSlugs as $currentSlug) {
-
-            $subCategories = DB::try()->select('categories.slug')->from('categories')->join('category_sub')->on('categories.id', '=', 'category_sub.sub_id')->where('category_sub.category_id', '=', $categoryId)->fetch();
-
-            if(!empty($subCategories) ) {
-    
-                $subCategoriesArray = [];
-    
-                foreach($subCategories as $subCategory) {
-    
-                    array_push($subCategoriesArray, $subCategory['slug']);
-                }
-    
-                $subCategoriesSlug = implode('', $subCategoriesArray);
-    
-                Post::update(['id' => $pageId], [
-    
-                    'slug'  => $currentCategorySlug['slug'] . $subCategoriesSlug . $currentSlug['slug']
-                ]);
-    
-            } else {
-    
-                Post::update(['id' => $pageId], [
-    
-                    'slug'  => $currentCategorySlug['slug'] . $currentSlug['slug']
-                ]);
-            }
-        }
-
-        redirect('/admin/posts/'. $pageId . '/edit');
-    }
-
-    private function removeCategory($request) {
+    public function detachCategory($request) {
 
         $pageId = $request['id'];
 

@@ -46,6 +46,14 @@ Route::middleware('login')->run(function() {
     Route::get('/logout')->add('LogoutController', 'logout');
 
     Route::crud('/admin/posts', '[id]')->add('admin\PostController', 'crud');
+    Route::post('/admin/posts/[id]/assign-category')->add('admin\PostController', 'assignCategory');
+    Route::post('/admin/posts/[id]/detach-category')->add('admin\PostController', 'detachCategory');
+    Route::post('/admin/posts/[id]/update-slug')->add('admin\PostController', 'updateSlug');
+    Route::post('/admin/posts/[id]/update-metadata')->add('admin\PostController', 'updateMetadata');
+    Route::post('/admin/posts/[id]/link-css')->add('admin\PostController', 'linkCss');
+    Route::post('/admin/posts/[id]/unlink-css')->add('admin\PostController', 'unLinkCss');
+    Route::post('/admin/posts/[id]/include-js')->add('admin\PostController', 'includeJs');
+    Route::post('/admin/posts/[id]/remove-js')->add('admin\PostController', 'removeJs');
     
     Route::crud('/admin/users', '[username]')->add('admin\UserController', 'crud');
     Route::post('/admin/users/[username]/update-role')->add('admin\UserController', 'updateRole');
