@@ -54,7 +54,7 @@
                     <span class="data"><?php echo $menu['position']; ?></span>
                     <span class="text">Ordering: </span>
                     <span class="data"><?php if(!empty($menu['ordering']) && $menu['ordering'] !== null) { echo $menu['ordering']; } else { echo 'Unset'; } ?></span>
-                    <form action="update" method="POST" class="updatePositionForm">
+                    <form action="/admin/menus/<?php echo $menu['id']; ?>/update-position" method="POST" class="updatePositionForm">
                         <label>Position:</label>
                         <select name="position" multiple>
                             <option value="top">Top</option>
@@ -62,7 +62,7 @@
                         </select>
                         <input type="submit" name="submitPosition" value="update"/>
                     </form>
-                    <form action="update" method="POST" class="updateNumberForm">
+                    <form action="/admin/menus/<?php echo $menu['id']; ?>/update-ordering" method="POST" class="updateNumberForm">
                         <input dir="rtl" type="number" name="ordering" min="1" max="99" value="1">
                         <input type="submit" name="submitOrdering" value="update"/>
                     </form>

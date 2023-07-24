@@ -93,20 +93,6 @@ class MenuController extends Controller {
 
     public function update($request) {
 
-        if(submitted('submit') ) {
-
-            return $this->updateTitleAndContent($request);
-        } else if (submitted('submitPosition') ) {
-
-            return $this->updatePosition($request);
-        } else if (submitted('submitOrdering')) {
-
-            return $this->updateOrdering($request);
-        }
-    }
-
-    private function updateTitleAndContent($request) {
-
         $rules = new Rules();
 
         $unique = DB::try()->select('title')->from('menus')->where('title', '=', $request['title'])->and('id', '!=', $request['id'])->fetch();
@@ -134,7 +120,7 @@ class MenuController extends Controller {
         }
     }
 
-    private function updatePosition($request) {
+    public function updatePosition($request) {
 
         $id = $request['id'];
 
@@ -145,7 +131,7 @@ class MenuController extends Controller {
         redirect("/admin/menus/$id/edit");
     }
 
-    private function updateOrdering($request) {
+    public function updateOrdering($request) {
 
         $id = $request['id'];
 

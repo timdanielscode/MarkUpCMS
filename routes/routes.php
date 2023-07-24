@@ -62,6 +62,8 @@ Route::middleware('login')->run(function() {
     Route::crud('/admin/js', '[id]')->add('admin\JsController', 'crud');
 
     Route::crud('/admin/menus', '[id]')->add('admin\MenuController', 'crud');
+    Route::post('/admin/menus/[id]/update-position')->add('admin\MenuController', 'updatePosition');
+    Route::post('/admin/menus/[id]/update-ordering')->add('admin\MenuController', 'updateOrdering');
 
     Route::get('/admin/media')->add('admin\MediaController', 'index');
     Route::get('/admin/media/')->add('admin\MediaController', 'TABLE');
