@@ -11,6 +11,11 @@ class Css extends Model {
         self::table('css');
     }
 
+    public function ifRowExists($id) {
+
+        return DB::try()->select('id')->from('css')->where('id', '=', $id)->first();
+    }
+
     public function allCssButOrderedOnDate() {
 
         return DB::try()->all('css')->order('date_created_at')->fetch();

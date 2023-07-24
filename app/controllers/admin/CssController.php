@@ -11,11 +11,22 @@ use core\Csrf;
 use validation\Rules;
 use core\Session;
 use extensions\Pagination;
+use core\http\Response;
 
 class CssController extends Controller {
 
     private $_fileExtension = ".css";
     private $_folderLocation = "website/assets/css/";
+
+    private function ifExists($id) {
+
+        $css = new Css();
+
+        if(empty($css->ifRowExists($id)) ) {
+
+            return Response::statusCode(404)->view("/404/404") . exit();
+        }
+    }
 
     public function index() {
 
@@ -107,6 +118,8 @@ class CssController extends Controller {
 
     public function read($request) {
 
+        $this->ifExists($request['id']);
+
         $file = Css::get($request['id']);
         $code = $this->getFileContent($file['file_name']);
 
@@ -117,6 +130,8 @@ class CssController extends Controller {
     }
 
     public function edit($request) {
+
+        $this->ifExists($request['id']);
 
         $cssFile = Css::where('id', '=', $request['id'])[0];
         $code = $this->getFileContent($cssFile['file_name']);
@@ -155,6 +170,8 @@ class CssController extends Controller {
     }
 
     public function update($request) {
+
+        $this->ifExists($request['id']);
 
         if(submitted('submit') && Csrf::validate(Csrf::token('get'), post('token'))) {
                 
@@ -202,6 +219,8 @@ class CssController extends Controller {
 
     public function linkAll($request) {
 
+        $this->ifExists($request['id']);
+
         if(submitted("submit") === true && Csrf::validate(Csrf::token('get'), post('token')) === true ) {
 
             $id = $request['id'];
@@ -228,6 +247,8 @@ class CssController extends Controller {
 
     public function unlinkAll($request) {
 
+        $this->ifExists($request['id']);
+
         if(submitted("submit") === true && Csrf::validate(Csrf::token('get'), post('token')) === true ) {
 
             $id = $request['id'];
@@ -238,6 +259,8 @@ class CssController extends Controller {
     }
 
     public function unlinkPages($request) {
+
+        $this->ifExists($request['id']);
 
         if(submitted("submit") === true && Csrf::validate(Csrf::token('get'), post('token')) === true ) {
 
@@ -257,6 +280,8 @@ class CssController extends Controller {
     }
 
     public function linkPages($request) {
+
+        $this->ifExists($request['id']);
 
         if(submitted("submit") === true && Csrf::validate(Csrf::token('get'), post('token')) === true ) {
 
@@ -280,6 +305,8 @@ class CssController extends Controller {
     }
 
     public function delete($request) {
+
+        $this->ifExists($request['id']);
 
         $filename = Css::where('id', '=', $request['id'])[0]['file_name'];
         $path = "website/assets/css/" . $filename . ".css";
