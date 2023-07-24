@@ -20,6 +20,9 @@
         <div class=" col2 col3-L">
         <div id="sidebar" class="width-25-L">
                 <div class="sidebarContainer">
+                    <div class="profile">
+                        <span>Hi, <?php echo Session::get('username'); ?><span>
+                    </div>
                     <nav id="navigationMenu">
                         <ul id="dropdownItems">
                             <li class="dropdownItem"></span>Pages<span class="count"><?php echo count($pages); ?></li>
@@ -59,11 +62,9 @@
                             </ul>
                             <li class="dropdownItem">Profile</a></li>
                             <ul class="dropdown display-none">
-                                <li><a href="/admin/posts">Details</a></li>
-                                <li><a href="/admin/posts">Change role</a></li>
-                                <li><a href="/admin/posts">Change password</a></li>
-                                <li><a href="/admin/posts">Remove account</a></li>
+                                <li><a href="/admin/profile/<?php echo Session::get('username'); ?>">Manage</a></li>
                             </ul>
+                            <a href="/logout" class="button">Logout</a>
                         </ul>
                     </nav>
                 </div>
