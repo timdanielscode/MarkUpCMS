@@ -11,6 +11,11 @@ class Post extends Model {
         self::table("pages");
     }
 
+    public function ifRowExists($id) {
+
+        return DB::try()->select('id')->from('pages')->where('id', '=', $id)->first();
+    }
+
     public function allPostsWithCategories($searchValue = null) {
 
         if(!empty($searchValue) && $searchValue !== null) {

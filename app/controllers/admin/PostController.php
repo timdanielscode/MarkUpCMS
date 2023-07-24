@@ -10,11 +10,20 @@ use app\models\CategoryPage;
 use app\models\Category;
 use core\Session;
 use database\DB;
-use core\Request;
 use extensions\Pagination;
-use core\Response;
+use core\http\Response;
 
 class PostController extends Controller {
+
+    private function ifExists($id) {
+
+        $post = new Post();
+
+        if(empty($post->ifRowExists($id)) ) {
+
+            return Response::statusCode(404)->view("/404/404") . exit();
+        }
+    }
 
     public function index() {
 
@@ -83,8 +92,10 @@ class PostController extends Controller {
 
     public function read($request) {
 
-        $post = Post::get($request['id']);
+        $this->ifExists($request['id']);
 
+        $post = Post::get($request['id']);
+        
         $cssFiles = DB::try()->select('file_name', 'extension')->from('css')->join('css_page')->on('css_page.css_id', '=', 'css.id')->where('css_page.page_id', '=', $request['id'])->fetch();
         $jsFiles = DB::try()->select('file_name', 'extension')->from('js')->join('js_page')->on('js_page.js_id', '=', 'js.id')->where('js_page.page_id', '=', $request['id'])->fetch();
 
@@ -102,6 +113,8 @@ class PostController extends Controller {
 
     public function edit($request) {
 
+        $this->ifExists($request['id']);
+        
         $post = Post::get($request['id']);
 
         $postSlug = explode('/', $post['slug']);
@@ -182,6 +195,8 @@ class PostController extends Controller {
 
     public function update($request) {
 
+        $this->ifExists($request['id']);
+
         if(submitted("submit") === true && Csrf::validate(Csrf::token('get'), post('token')) === true ) {
                 
             $post = new Post();
@@ -243,6 +258,8 @@ class PostController extends Controller {
 
     public function assignCategory($request) {
 
+        $this->ifExists($request['id']);
+
         if(submitted("submit") === true && Csrf::validate(Csrf::token('get'), post('token')) === true ) {
 
             $categoryId = $request['categories'];
@@ -292,6 +309,8 @@ class PostController extends Controller {
 
     public function removeJs($request) {
 
+        $this->ifExists($request['id']);
+
         if(submitted("submit") === true && Csrf::validate(Csrf::token('get'), post('token')) === true ) {
 
             $id = $request['id'];
@@ -310,6 +329,8 @@ class PostController extends Controller {
     }
 
     public function includeJs($request) {
+
+        $this->ifExists($request['id']);
 
         if(submitted("submit") === true && Csrf::validate(Csrf::token('get'), post('token')) === true ) {
 
@@ -335,6 +356,8 @@ class PostController extends Controller {
 
     public function linkCss($request) {
 
+        $this->ifExists($request['id']);
+
         if(submitted("submit") === true && Csrf::validate(Csrf::token('get'), post('token')) === true ) {
 
             $id = $request['id'];
@@ -358,6 +381,8 @@ class PostController extends Controller {
 
     public function unLinkCss($request) {
 
+        $this->ifExists($request['id']);
+
         if(submitted("submit") === true && Csrf::validate(Csrf::token('get'), post('token')) === true ) {
 
             $id = $request['id'];
@@ -376,6 +401,10 @@ class PostController extends Controller {
     }
 
     public function updateSlug($request) {
+
+        $this->ifExists($request['id']);
+
+        $this->checkIfPageExists($request['id']);
 
         if(submitted("submit") === true && Csrf::validate(Csrf::token('get'), post('token')) === true ) {
 
@@ -435,6 +464,8 @@ class PostController extends Controller {
 
     public function updateMetadata($request) {
 
+        $this->ifExists($request['id']);
+
         if(submitted("submit") === true && Csrf::validate(Csrf::token('get'), post('token')) === true ) {
 
             $id = $request['id'];
@@ -491,6 +522,8 @@ class PostController extends Controller {
 
     public function detachCategory($request) {
 
+        $this->ifExists($request['id']);
+
         if(submitted("submit") === true && Csrf::validate(Csrf::token('get'), post('token')) === true ) {
 
             $pageId = $request['id'];
@@ -513,6 +546,8 @@ class PostController extends Controller {
     }
 
     public function delete($request) {
+
+        $this->ifExists($request['id']);
 
         Post::delete("id", $request['id']);
         CategoryPage::delete('page_id', $request['id']);

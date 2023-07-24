@@ -28,7 +28,7 @@
 <div class="edit-container">
     <div class="row">
         <div class="col10 col9-L">
-            <form action="update" method="POST">
+            <form action="/admin/posts/<?php echo $data['id']; ?>/update" method="POST">
                 <div class="form-parts">
                     <input type="text" autofocus name="title" id="title" value="<?php if(!empty($data['title'] )) { echo $data['title']; } ?>">
                     <div class="error-messages">
