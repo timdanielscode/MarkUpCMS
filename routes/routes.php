@@ -59,6 +59,11 @@ Route::middleware('login')->run(function() {
     Route::post('/admin/users/[username]/update-role')->add('admin\UserController', 'updateRole');
     
     Route::crud('/admin/css', '[id]')->add('admin\CssController', 'crud');
+    Route::post('/admin/css/[id]/link-pages')->add('admin\CssController', 'linkPages');
+    Route::post('/admin/css/[id]/unlink-pages')->add('admin\CssController', 'unlinkPages');
+    Route::post('/admin/css/[id]/link-all')->add('admin\CssController', 'linkAll');
+    Route::post('/admin/css/[id]/unlink-all')->add('admin\CssController', 'unlinkAll');
+
     Route::crud('/admin/js', '[id]')->add('admin\JsController', 'crud');
 
     Route::crud('/admin/menus', '[id]')->add('admin\MenuController', 'crud');

@@ -52,16 +52,16 @@
                             <a href="#" id="codeEditorFullScreen" class="button">Full screen</a>
                         </div>
                         <div class="buttonContainer">
-                            <form action="update" method="POST">
+                            <form action="/admin/css/<?php echo $data['id']; ?>/link-all" method="POST">
                                 <input type="submit" name="linkAll" value="Link on all"/>
                             </form>
-                            <form action="update" method="POST">
+                            <form action="/admin/css/<?php echo $data['id']; ?>/unlink-all" method="POST">
                                 <input type="submit" name="removeAll" value="Unlink all"/>
                             </form>
                         </div>
                         <span class="text">File: </span>
                         <span class="data"><?php echo $data['file_name'] . $data['extension']; ?></span>
-                        <form action="update" method="POST" class="removeCssForm">
+                        <form action="/admin/css/<?php echo $data['id']; ?>/unlink-pages" method="POST" class="removeCssForm">
                             <label>Linked on: </label>
                             <select name="pages[]" multiple>
                                 <?php foreach($data['assingedPages'] as $page) { ?>
@@ -70,14 +70,14 @@
                             </select>
                             <input type="submit" name="removePage" value="Unlink"/>
                         </form>
-                        <form action="update" method="POST" class="linkCssForm">
+                        <form action="/admin/css/<?php echo $data['id']; ?>/link-pages" method="POST" class="linkCssForm">
                             <label>Other pages: </label>
                             <select name="pages[]" multiple>
                                 <?php foreach($data['pages'] as $page) { ?>
                                     <option value="<?php echo $page['id']; ?>"><?php echo $page['title']; ?></option>
                                 <?php } ?>
                             </select>
-                            <input type="submit" name="updatePage" value="Link"/>
+                            <input type="submit" name="submit" value="Link"/>
                         </form>
                     </div>
                 </div>

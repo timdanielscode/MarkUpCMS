@@ -156,28 +156,6 @@ class CssController extends Controller {
 
     public function update($request) {
 
-        if(submitted('updatePage') ) {
-
-            return $this->updatePage($request);
-        } else if(submitted('removePage') ) {
-
-            return $this->removePage($request);
-        } else if(submitted('linkAll') ) {
-
-            return $this->linkAll($request);
-        } else if(submitted('removeAll') ) {
-
-            return $this->removeAll($request);
-        } else if(submitted('submit') ) {
-
-            return $this->updateCss($request);
-        } else {
-            return;
-        }
-    }
-
-    private function updateCss($request) {
-
         if(submitted('submit') && Csrf::validate(Csrf::token('get'), post('token'))) {
                 
             $id = $request['id'];
@@ -222,7 +200,7 @@ class CssController extends Controller {
         }
     }
 
-    private function linkAll($request) {
+    public function linkAll($request) {
 
         $id = $request['id'];
 
@@ -245,7 +223,7 @@ class CssController extends Controller {
         redirect("/admin/css/$id/edit");
     }
 
-    private function removeAll($request) {
+    public function unlinkAll($request) {
 
         $id = $request['id'];
 
@@ -253,7 +231,7 @@ class CssController extends Controller {
         redirect("/admin/css/$id/edit");
     }
 
-    private function removePage($request) {
+    public function unlinkPages($request) {
 
         $id = $request['id'];
         $pageIds = $request['pages'];
@@ -269,7 +247,7 @@ class CssController extends Controller {
         redirect("/admin/css/$id/edit");
     }
 
-    private function updatePage($request) {
+    public function linkPages($request) {
 
         $id = $request['id'];
         $pageIds = $request['pages'];
