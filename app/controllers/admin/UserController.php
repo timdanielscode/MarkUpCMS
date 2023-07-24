@@ -14,6 +14,16 @@ use extensions\Pagination;
 
 class UserController extends Controller {
 
+    private function ifExists($id) {
+
+        $user = new User();
+
+        if(empty($user->ifRowExists($id)) ) {
+
+            return Response::statusCode(404)->view("/404/404") . exit();
+        }
+    }
+
     public function index() {
 
         $user = new User();
@@ -89,6 +99,8 @@ class UserController extends Controller {
 
     public function read($request) {
 
+        $this->ifExists($request['username']);
+
         $user = new User();
         $user = $user->userAndRole($request['username']);
 
@@ -101,6 +113,8 @@ class UserController extends Controller {
     }
 
     public function edit($request) {
+
+        $this->ifExists($request['username']);
 
         $userRole = DB::try()->select('roles.name')->from('roles')->join('user_role')->on('user_role.role_id', '=', 'roles.id')->join('users')->on('user_role.user_id', '=', 'users.id')->where('users.username', '=', $request['username'])->first();
 
@@ -119,6 +133,8 @@ class UserController extends Controller {
     }
 
     public function update($request) {
+
+        $this->ifExists($request['username']);
 
         $username = $request['f_username'];
         $uniqueUsername = DB::try()->select('username')->from('users')->where('username', '=', $request['f_username'])->and('username', '!=', $request['username'])->fetch();
@@ -147,6 +163,8 @@ class UserController extends Controller {
 
     public function updateRole($request) {
 
+        $this->ifExists($request['username']);
+
         UserRole::update(['user_id' => $request['id']], [
 
             'role_id'  =>  2,
@@ -157,6 +175,8 @@ class UserController extends Controller {
     }
 
     public function delete($request) {
+
+        $this->ifExists($request['username']);
         
         $userRole = DB::try()->select('roles.name')->from('roles')->join('user_role')->on('user_role.role_id', '=', 'roles.id')->join('users')->on('user_role.user_id', '=', 'users.id')->where('users.username', '=', $request['username'])->first();
 

@@ -14,6 +14,11 @@ class User extends Model {
 
         self::table("users");
     }
+
+    public function ifRowExists($username) {
+
+        return DB::try()->select('username')->from('users')->where('username', '=', $username)->first();
+    }
                 
     public function allUsersWithRoles($searchValue = null) {
 

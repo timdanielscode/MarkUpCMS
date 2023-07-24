@@ -19,7 +19,7 @@
 
             <h1>Details: </h1>
             
-                <form action="update" method="POST" class="usersEditForm">
+                <form action="/admin/users/<?php echo $user['username']; ?>/update" method="POST" class="usersEditForm">
                     <div class="form-parts">
                         <label for="username">Username:</label>
                         <input name="f_username" type="text" id="username" value="<?php echo $user['username']; ?>">
