@@ -86,9 +86,12 @@
                                             </option>
                                         <?php } ?>
                                     </select>
+                                    <div class="error-messages">
+                                        <?php echo Errors::get($rules, 'categories'); ?>
+                                    </div>  
                                     <div class="AssingCategoryContainer">
                                         <input class="assignCategoryButton" type="submit" name="submit" value="Assign"/>
-                                    </div>
+                                    </div> 
                                     <input type="hidden" name="token" value="<?php Csrf::token('add'); ?>" />
                                 </form>
                             <?php } else { ?>

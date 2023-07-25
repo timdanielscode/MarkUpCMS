@@ -265,45 +265,81 @@ class PostController extends Controller {
             $categoryId = $request['categories'];
             $pageId = $request['id'];
 
-            CategoryPage::insert([
+            $pageSlug = DB::try()->select('slug')->from('pages')->where('id', '=', $pageId)->first();
 
-                'category_id' => $categoryId,
-                'page_id'    => $pageId
-            ]);
+            $slug = explode('/', $pageSlug['slug']);
+            $lastKey = array_key_last($slug);
 
-            $currentCategorySlug = DB::try()->select('categories.slug')->from('categories')->join('category_page')->on('category_page.category_id', '=', 'categories.id')->where('categories.id', '=', $categoryId)->first();
-            $currentSlugs = DB::try()->select('slug')->from('pages')->where('id', '=', $pageId)->fetch();
+            $rules = new Rules();
 
-            foreach($currentSlugs as $currentSlug) {
+            $unique = DB::try()->select('pages.slug')->from('pages')->join('category_page')->on('category_page.page_id', '=', 'pages.id')->where('slug', 'LIKE', '%'.$slug[$lastKey])->and('id', '!=', $pageId)->and('category_id', '=', $categoryId)->first();
 
-                $subCategories = DB::try()->select('categories.slug')->from('categories')->join('category_sub')->on('categories.id', '=', 'category_sub.sub_id')->where('category_sub.category_id', '=', $categoryId)->fetch();
+            if($rules->update_post_category($unique)->validated()) {
 
-                if(!empty($subCategories) ) {
-        
-                    $subCategoriesArray = [];
-        
-                    foreach($subCategories as $subCategory) {
-        
-                        array_push($subCategoriesArray, $subCategory['slug']);
+                CategoryPage::insert([
+
+                    'category_id' => $categoryId,
+                    'page_id'    => $pageId
+                ]);
+    
+                $currentCategorySlug = DB::try()->select('categories.slug')->from('categories')->join('category_page')->on('category_page.category_id', '=', 'categories.id')->where('categories.id', '=', $categoryId)->first();
+                $currentSlugs = DB::try()->select('slug')->from('pages')->where('id', '=', $pageId)->fetch();
+    
+                foreach($currentSlugs as $currentSlug) {
+    
+                    $subCategories = DB::try()->select('categories.slug')->from('categories')->join('category_sub')->on('categories.id', '=', 'category_sub.sub_id')->where('category_sub.category_id', '=', $categoryId)->fetch();
+    
+                    if(!empty($subCategories) ) {
+            
+                        $subCategoriesArray = [];
+            
+                        foreach($subCategories as $subCategory) {
+            
+                            array_push($subCategoriesArray, $subCategory['slug']);
+                        }
+            
+                        $subCategoriesSlug = implode('', $subCategoriesArray);
+            
+                        Post::update(['id' => $pageId], [
+            
+                            'slug'  => $currentCategorySlug['slug'] . $subCategoriesSlug . $currentSlug['slug']
+                        ]);
+            
+                    } else {
+            
+                        Post::update(['id' => $pageId], [
+            
+                            'slug'  => $currentCategorySlug['slug'] . $currentSlug['slug']
+                        ]);
                     }
-        
-                    $subCategoriesSlug = implode('', $subCategoriesArray);
-        
-                    Post::update(['id' => $pageId], [
-        
-                        'slug'  => $currentCategorySlug['slug'] . $subCategoriesSlug . $currentSlug['slug']
-                    ]);
-        
-                } else {
-        
-                    Post::update(['id' => $pageId], [
-        
-                        'slug'  => $currentCategorySlug['slug'] . $currentSlug['slug']
-                    ]);
                 }
-            }
+    
+                redirect('/admin/posts/'. $pageId . '/edit');
 
-            redirect('/admin/posts/'. $pageId . '/edit');
+            } else {
+
+                $categories = DB::try()->select('id, title')->from("categories")->fetch();
+                $data['data']['categories'] = $categories;
+                $data['data']['linkedCssFiles'] = $linkedCssFiles = DB::try()->select('css.id, css.file_name, css.extension')->from('css')->join('css_page')->on('css_page.css_id', '=', 'css.id')->where('css_page.page_id', '=', $request['id'])->fetch();
+                $data['data']['notLinkedCssFiles'] = $notLinkedCssFiles = $this->notLinkedCssFiles($linkedCssFiles);
+                $data['data']['linkedJsFiles'] =  $linkedJsFiles = DB::try()->select('js.id, js.file_name, js.extension')->from('js')->join('js_page')->on('js_page.js_id', '=', 'js.id')->where('js_page.page_id', '=', $request['id'])->fetch();
+                $data['data']['notLinkedJsFiles'] =  $notLinkedJsFiles = $this->notLinkedJsFiles($linkedJsFiles);
+                $data['data']['id'] = DB::try()->select('id')->from('pages')->where('id', '=', $request['id'])->first()['id'];
+                $data['data']['title'] = DB::try()->select('title')->from('pages')->where('id', '=', $request['id'])->first()['title'];
+                $data['data']['body'] = DB::try()->select('body')->from('pages')->where('id', '=', $request['id'])->first()['body'];
+                $data['data']['slug'] = DB::try()->select('slug')->from('pages')->where('id', '=', $request['id'])->first()['slug'];
+                $data['data']['metaTitle'] = DB::try()->select('metaTitle')->from('pages')->where('id', '=', $request['id'])->first()['metaTitle'];
+                $data['data']['metaDescription'] = DB::try()->select('metaDescription')->from('pages')->where('id', '=', $request['id'])->first()['metaDescription'];
+                $data['data']['metaKeywords'] = DB::try()->select('metaKeywords')->from('pages')->where('id', '=', $request['id'])->first()['metaKeywords'];
+
+                $postSlug = explode('/', $data['data']['slug']);
+                $postSlug = "/" . $postSlug[array_key_last($postSlug)];
+                $data['data']['postSlug'] = $postSlug;
+
+                $data['rules'] = $rules->errors;
+
+                return $this->view('admin/posts/edit', $data);
+            }
         }
     }
 
@@ -404,15 +440,21 @@ class PostController extends Controller {
 
         $this->ifExists($request['id']);
 
-        $this->checkIfPageExists($request['id']);
-
         if(submitted("submit") === true && Csrf::validate(Csrf::token('get'), post('token')) === true ) {
 
             $id = $request['id'];
             
             $rules = new Rules();
 
-            if($rules->update_post_slug()->validated()) {
+            $slug = explode('/', $request['slug']);
+            $lastKey = array_key_last($slug);
+
+            $slug[$lastKey] = $request['postSlug'];
+            $fullPostSlug = implode('/', $slug);
+
+            $uniqueSlug = DB::try()->select('id, slug')->from('pages')->where('slug', '=', $fullPostSlug)->and('id', '!=', $request['id'])->fetch();
+
+            if($rules->update_post_slug($uniqueSlug)->validated()) {
 
                 $slug = explode('/', "/" . $request['slug']);
                 $slug[array_key_last($slug)] = substr("/" . $request['postSlug'], 1);

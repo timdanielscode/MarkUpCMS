@@ -4,8 +4,6 @@ $(document).on('click', '.add', function() {
     var id = $(this).data('id');
     var html = $('html');
 
-    console.log(id)
-
     $(document).ready(function() {
 
         $.ajax({

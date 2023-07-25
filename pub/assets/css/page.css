@@ -107,6 +107,9 @@
 .AddCategory select option, .cssFilesForm select option, .linkedCssFilesForm select option, .linkedJsFilesForm select option, .jsFilesForm select option {
     padding: 4px 0 4px 10px;
 }   
+.AddCategory .error-messages {
+    margin-top: 10px;
+}
 .updateSlugForm, .updateSlugForm .form-parts, .updateMetaDataForm {
     width: 100%;
     overflow: hidden;

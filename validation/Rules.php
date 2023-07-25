@@ -133,14 +133,24 @@ class Rules {
         return $this;
     }
 
-    public function update_post_slug() {
+    public function update_post_slug($unique) {
 
       $validation = new Validate();
 
-      $validation->input('postSlug')->as('Slug')->rules(['max' => 49, 'special' => true]);
+      $validation->input('postSlug')->as('Slug')->rules(['max' => 49, 'special' => true, 'unique' => $unique]);
 
       $this->errors = $validation->errors;
       return $this;
+    }
+
+    public function update_post_category($unique) {
+
+        $validation = new Validate();
+
+        $validation->input('categories')->as('Page with same slug and category')->rules(['required' => true, 'unique' => $unique]);
+  
+        $this->errors = $validation->errors;
+        return $this;
     }
 
     public function user_create($username, $email) {
