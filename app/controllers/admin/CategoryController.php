@@ -12,8 +12,19 @@ use core\Session;
 use extensions\Pagination;
 use core\Csrf;
 use validation\Rules;
+use core\http\Response;
 
 class CategoryController extends Controller {
+
+    private function ifExists($id) {
+
+        $category = new Category();
+
+        if(empty($category->ifRowExists($id)) ) {
+
+            return Response::statusCode(404)->view("/404/404") . exit();
+        }
+    }
 
     public function index() {
 
@@ -126,6 +137,8 @@ class CategoryController extends Controller {
 
     public function READ($request) {
 
+        $this->ifExists($request['id']);
+
         $category = new Category();
         
         $pages = $category->allCategoriesWithPosts($request['id']);
@@ -141,6 +154,8 @@ class CategoryController extends Controller {
 
     public function EDIT($request) {
 
+        $this->ifExists($request['id']);
+
         $category = Category::where('id', '=', $request['id'])[0];
 
         $data['id'] = $request['id'];
@@ -151,6 +166,8 @@ class CategoryController extends Controller {
     }
 
     public function UPDATE($request) {
+
+        $this->ifExists($request['id']);
 
         $rules = new Rules();
 
@@ -173,6 +190,8 @@ class CategoryController extends Controller {
     }
 
     public function SHOWADDABLE($request) {
+
+        $this->ifExists($request['id']);
 
         $slug = DB::try()->select('slug')->from('categories')->where('id', '=', $request['id'])->first();
 
@@ -244,6 +263,8 @@ class CategoryController extends Controller {
     }
 
     public function ADDPAGE($request) {
+
+        $this->ifExists($request['id']);
 
         if(!empty($request['pageid']) && $request['pageid'] !== null) {
 
@@ -331,6 +352,8 @@ class CategoryController extends Controller {
 
     public function ADDCATEGORY($request) {
 
+        $this->ifExists($request['id']);
+
         if(!empty($request['subcategoryid']) && $request['subcategoryid'] !== null) {
 
             foreach($request['subcategoryid'] as $subCategoryId) {
@@ -400,6 +423,8 @@ class CategoryController extends Controller {
     }
 
     public function SLUG($request) { 
+
+        $this->ifExists($request['id']);
 
         if(!empty($request['slug']) && $request['slug'] !== null) {
     
@@ -473,6 +498,8 @@ class CategoryController extends Controller {
     }
 
     public function delete($request) {
+
+        $this->ifExists($request['id']);
 
         $currentSlug = Category::where('id', '=', $request['id'])[0];
 

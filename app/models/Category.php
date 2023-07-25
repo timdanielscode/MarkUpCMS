@@ -11,6 +11,11 @@ class Category extends Model {
         self::table('categories');
     }
 
+    public function ifRowExists($id) {
+
+        return DB::try()->select('id')->from('categories')->where('id', '=', $id)->first();
+    }
+
     public function allCategoriesButOrdered() {
 
         $categories = DB::try()->all('categories')->order('date_created_at')->fetch();

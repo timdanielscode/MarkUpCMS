@@ -278,6 +278,8 @@ class MediaController extends Controller {
 
     public function delete($request) {
 
+        $this->ifExists($request['id']);
+
         $file = Media::where('id', '=', $request['id'])[0];
         $filename = $file['media_filename'];
 

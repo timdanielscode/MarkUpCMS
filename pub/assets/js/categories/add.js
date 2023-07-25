@@ -1,14 +1,10 @@
 $(document).on('click', '.add', function() {
 
     var modal = $('#modal');
-    modal.addClass('display-block'); 
-
-    modal.removeClass('modal-edit');
-    modal.removeClass('modal-read');
-    modal.addClass('modal-add'); 
-
     var id = $(this).data('id');
     var html = $('html');
+
+    console.log(id)
 
     $(document).ready(function() {
 
@@ -17,6 +13,12 @@ $(document).on('click', '.add', function() {
             url: "categories/showaddable?id="+id,
             dataType: "html",
             success: function (data) {
+
+                modal.addClass('display-block'); 
+
+                modal.removeClass('modal-edit');
+                modal.removeClass('modal-read');
+                modal.addClass('modal-add'); 
 
                 $('#modalForm').html(data);
                 html.addClass('dark-layer');

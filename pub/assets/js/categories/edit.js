@@ -1,12 +1,6 @@
 $(document).on('click', '.edit', function() {
 
     var modal = $('#modal');
-    modal.addClass('display-block');
-
-    modal.removeClass('modal-edit');
-    modal.removeClass('modal-add');
-    modal.addClass('modal-edit');
-
     var id = $(this).data('id');
     var html = $('html');
 
@@ -17,6 +11,12 @@ $(document).on('click', '.edit', function() {
             url: "categories/edit?id="+id,
             dataType: "html",
             success: function (data) {
+
+                modal.addClass('display-block');
+
+                modal.removeClass('modal-edit');
+                modal.removeClass('modal-add');
+                modal.addClass('modal-edit');
 
                 $('#modalForm').html(data);
                 html.addClass('dark-layer');
