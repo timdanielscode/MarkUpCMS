@@ -33,7 +33,7 @@
             </div>
             <div class="col6">
             <form action="" method="POST">
-            <label>Assigned pages: <span class="slugMessage">*Page slug must be unique</span></label>
+            <label>Assigned pages: </label>
                 <select id="ASSIGNEDPAGEID" name="pageid" multiple>
                     <?php if(!empty($assignedPages) && $assignedPages !== null) { ?>
                         <?php foreach($assignedPages as $assignedPage) { ?>

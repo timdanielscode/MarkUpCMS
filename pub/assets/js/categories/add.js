@@ -188,7 +188,7 @@ $(document).ready(function() {
 
                 },error: function(xhr, status, error) {
 
-                    message.html("<span>Page is not selected!</span>").fadeIn(10);
+                    message.html("<span>Page is not selected or page slug may not be unique!</span>").fadeIn(10);
                     message.addClass('message-failed'); 
                     message.removeClass('message-success');
                 }
