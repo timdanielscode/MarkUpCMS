@@ -275,19 +275,43 @@ class CategoryController extends Controller {
 
                 if(!empty($ifAssingedOnCategory) ) {
 
-                    $this->updatePageSlugOnCategoryDetach($pageId, $request['id']);
+                    $pageSlug = DB::try()->select('slug')->from('pages')->where('id', '=', $pageId)->first();
 
-                    DB::try()->delete('category_page')->where('page_id', '=', $pageId)->and('category_id', '=', $request['id'])->run();
+                    $slugParts = explode('/', $pageSlug['slug']);
+                    $lastPageSlugKey = array_key_last($slugParts);
+                    $lastPageSlugValue = "/" . $slugParts[$lastPageSlugKey];
+
+                    $unique = DB::try()->select('slug')->from('pages')->where('slug', '=', $lastPageSlugValue)->and('id', '!=', $request['id'])->first();
+
+                    if(empty($unique) ) {
+
+                        $this->updatePageSlugOnCategoryDetach($pageId, $request['id']);
+
+                        DB::try()->delete('category_page')->where('page_id', '=', $pageId)->and('category_id', '=', $request['id'])->run();
+
+                    } else { return; }
 
                 } else if(empty($ifAssingedOnCategory) && empty($ifAlreadyAssinged)) {
 
-                    CategoryPage::insert([
-    
-                        'page_id'   => $pageId,
-                        'category_id'   => $request['id']
-                    ]);
+                    $pageSlug = DB::try()->select('slug')->from('pages')->where('id', '=', $pageId)->first();
 
-                    $this->updatePageSlugOnCategoryAssign($pageId, $request['id']);
+                    $slug = explode('/', $pageSlug['slug']);
+                    $lastKey = array_key_last($slug);
+        
+                    $unique = DB::try()->select('pages.slug')->from('pages')->join('category_page')->on('category_page.page_id', '=', 'pages.id')->where('slug', 'LIKE', '%'.$slug[$lastKey])->and('id', '!=', $pageId)->and('category_id', '=', $request['id'])->first();
+
+                    if(empty($unique)) {
+
+                        CategoryPage::insert([
+    
+                            'page_id'   => $pageId,
+                            'category_id'   => $request['id']
+                        ]);
+    
+                        $this->updatePageSlugOnCategoryAssign($pageId, $request['id']);
+
+                    } else { return; }
+
                 } else if(!empty($ifAlreadyAssinged) ) {
                     
                     return;
