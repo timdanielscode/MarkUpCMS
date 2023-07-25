@@ -11,6 +11,11 @@ class Media extends Model {
         self::table('media');
     }
 
+    public function ifRowExists($id) {
+
+        return DB::try()->select('id')->from('media')->where('id', '=', $id)->first();
+    }
+
     public function allMediaButOrdered() {
 
         $media = DB::try()->all('media')->order('date_created_at')->fetch();

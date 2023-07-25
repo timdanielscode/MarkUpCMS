@@ -1,11 +1,7 @@
 $(document).on('click', '.mediaEdit', function() {
 
     var modal = $('#modal');
-    modal.addClass('display-block'); 
-    modal.addClass('modal-edit');
-
     var id = $(this).data('id');
-    var filename = $('.mediaEdit').val();
     var html = $('html');
 
     $(document).ready(function() {
@@ -16,6 +12,8 @@ $(document).on('click', '.mediaEdit', function() {
             dataType: "html",
             success: function (data) {
 
+                modal.addClass('display-block'); 
+                modal.addClass('modal-edit');
                 $('#mediaModelForm').html(data);
                 html.addClass('dark-layer');
                 $('#mediaModalTitle').focus();
@@ -68,7 +66,7 @@ $(document).ready(function() {
 
             $.ajax({
                 type: "POST",
-                url: "media/update",
+                url: "media/update-filename",
                 dataType: "json",
                 data: {
                     id: id,

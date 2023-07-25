@@ -10,6 +10,7 @@ $(document).on('click', '.mediaPreview', function() {
             url: "media/read?id="+id,
             dataType: "html",
             success: function (data) {
+                
                 html.addClass('dark-layer');
                 $('#mediaPreview').html(data);
                 $('#mediaPreviewFile').removeClass('display-none');

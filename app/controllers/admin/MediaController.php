@@ -9,8 +9,19 @@ use core\Session;
 use core\Csrf;
 use extensions\Pagination;
 use validation\Rules;
+use core\http\Response;
 
 class MediaController extends Controller {
+
+    private function ifExists($id) {
+
+        $media = new Media();
+
+        if(empty($media->ifRowExists($id)) ) {
+
+            return Response::statusCode(404)->view("/404/404") . exit();
+        }
+    }
 
     public function index() {
 
@@ -62,6 +73,8 @@ class MediaController extends Controller {
 
     public function EDIT($request) {
 
+        $this->ifExists($request['id']);
+
         $media = Media::where('id', '=', $request['id'])[0];
 
         $mediaTitle = $media['media_title'];
@@ -75,6 +88,8 @@ class MediaController extends Controller {
     }
 
     public function READ($request) {
+
+        $this->ifExists($request['id']);
 
         $media = Media::where('id', '=', $request['id'])[0];
 
@@ -186,16 +201,30 @@ class MediaController extends Controller {
     }
 
     public function UPDATE($request) { 
+        
+        $this->ifExists($request['id']);
 
-        if(submitted('filename') ) {
+        $data['id'] = $request['id'];
+        $data['title'] = $request['title'];
+        $data['description'] = $request['description'];
 
-            return $this->updateFilename($request);
-        } else if (submitted('title') ) {
-            return $this->updateTitleAndDescription($request);
+        $rules = new Rules();
+
+        if($rules->media_update_title_description()->validated() ) {
+
+            Media::update(['id' => $request['id']], [
+
+                'media_title'   => $request['title'],
+                'media_description' => $request['description']
+            ]);
+
+            echo json_encode($data);
         }
     }
 
-    private function updateFilename($request) {
+    public function UPDATEFILENAME($request) {
+
+        $this->ifExists($request['id']);
 
         $data['id'] = $request['id'];
         $data['filename'] = $request['filename'];
@@ -245,26 +274,6 @@ class MediaController extends Controller {
 
             echo json_encode($data);
         } 
-    }
-
-    private function updateTitleAndDescription($request) {
-
-        $data['id'] = $request['id'];
-        $data['title'] = $request['title'];
-        $data['description'] = $request['description'];
-
-        $rules = new Rules();
-
-        if($rules->media_update_title_description()->validated() ) {
-
-            Media::update(['id' => $request['id']], [
-
-                'media_title'   => $request['title'],
-                'media_description' => $request['description']
-            ]);
-
-            echo json_encode($data);
-        }
     }
 
     public function delete($request) {

@@ -78,6 +78,7 @@ Route::middleware('login')->run(function() {
     Route::get('/admin/media/')->add('admin\MediaController', 'TABLE');
     Route::get('/admin/media/edit')->add('admin\MediaController', 'EDIT');
     Route::post('/admin/media/update')->add('admin\MediaController', 'UPDATE');
+    Route::post('/admin/media/update-filename')->add('admin\MediaController', 'UPDATEFILENAME');
 
     Route::get('/admin/media/create')->add('admin\MediaController', 'create');
     Route::post('/admin/media/create')->add('admin\MediaController', 'store');
