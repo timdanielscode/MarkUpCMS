@@ -97,6 +97,9 @@
                             <?php } else { ?>
                                 <span class="categoryTitle"><?php echo $data['category']['title']; ?></span>
                                 <form action="/admin/posts/<?php echo $data['id']; ?>/detach-category" method="POST">
+                                    <div class="error-messages">
+                                        <?php echo Errors::get($rules, 'submit'); ?>
+                                    </div>   
                                     <input class="detachCategoryButton" type="submit" name="submit" value="Detach"/>
                                     <input type="hidden" name="token" value="<?php Csrf::token('add'); ?>" />
                                 </form>

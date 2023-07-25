@@ -576,14 +576,45 @@ class PostController extends Controller {
             $lastPageSlugKey = array_key_last($slugParts);
             $lastPageSlugValue = "/" . $slugParts[$lastPageSlugKey];
 
-            Post::update(['id' => $pageId], [
+            $rules = new Rules();
 
-                'slug'  => $lastPageSlugValue
-            ]);
+            $unique = DB::try()->select('slug')->from('pages')->where('slug', '=', $lastPageSlugValue)->and('id', '!=', $request['id'])->first();
+            
+            if($rules->remove_post_category($unique)->validated()) {
+            
+                Post::update(['id' => $pageId], [
 
-            CategoryPage::delete('page_id', $pageId);
+                    'slug'  => $lastPageSlugValue
+                ]);
+    
+                CategoryPage::delete('page_id', $pageId);
+    
+                redirect('/admin/posts/'. $request['id'] . '/edit');
 
-            redirect('/admin/posts/'. $request['id'] . '/edit');
+            } else {
+                
+                $category = DB::try()->select('categories.title, categories.slug')->from('categories')->join('category_page')->on('category_page.category_id', '=', 'categories.id')->where('category_page.page_id', '=', $request['id'])->first();
+                $data['data']['category'] = $category;
+                $data['data']['linkedCssFiles'] = $linkedCssFiles = DB::try()->select('css.id, css.file_name, css.extension')->from('css')->join('css_page')->on('css_page.css_id', '=', 'css.id')->where('css_page.page_id', '=', $request['id'])->fetch();
+                $data['data']['notLinkedCssFiles'] = $notLinkedCssFiles = $this->notLinkedCssFiles($linkedCssFiles);
+                $data['data']['linkedJsFiles'] =  $linkedJsFiles = DB::try()->select('js.id, js.file_name, js.extension')->from('js')->join('js_page')->on('js_page.js_id', '=', 'js.id')->where('js_page.page_id', '=', $request['id'])->fetch();
+                $data['data']['notLinkedJsFiles'] =  $notLinkedJsFiles = $this->notLinkedJsFiles($linkedJsFiles);
+                $data['data']['id'] = DB::try()->select('id')->from('pages')->where('id', '=', $request['id'])->first()['id'];
+                $data['data']['body'] = DB::try()->select('body')->from('pages')->where('id', '=', $request['id'])->first()['body'];
+                $data['data']['title'] = DB::try()->select('title')->from('pages')->where('id', '=', $request['id'])->first()['title'];
+                $data['data']['slug'] = DB::try()->select('slug')->from('pages')->where('id', '=', $request['id'])->first()['slug'];
+                $data['data']['metaTitle'] = DB::try()->select('metaTitle')->from('pages')->where('id', '=', $request['id'])->first()['metaTitle'];
+                $data['data']['metaDescription'] = DB::try()->select('metaDescription')->from('pages')->where('id', '=', $request['id'])->first()['metaDescription'];
+                $data['data']['metaKeywords'] = DB::try()->select('metaKeywords')->from('pages')->where('id', '=', $request['id'])->first()['metaKeywords'];
+
+                $postSlug = explode('/', $data['data']['slug']);
+                $postSlug = "/" . $postSlug[array_key_last($postSlug)];
+                $data['data']['postSlug'] = $postSlug;
+
+                $data['rules'] = $rules->errors;
+
+                return $this->view('admin/posts/edit', $data);
+            }
         }
     }
 

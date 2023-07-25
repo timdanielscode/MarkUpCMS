@@ -147,7 +147,17 @@ class Rules {
 
         $validation = new Validate();
 
-        $validation->input('categories')->as('Page with same slug and category')->rules(['required' => true, 'unique' => $unique]);
+        $validation->input('categories')->as('With category assigned slug')->rules(['required' => true, 'unique' => $unique]);
+  
+        $this->errors = $validation->errors;
+        return $this;
+    }
+
+    public function remove_post_category($unique) {
+
+        $validation = new Validate();
+
+        $validation->input('submit')->as('Without category assigned slug')->rules(['required' => true, 'unique' => $unique]);
   
         $this->errors = $validation->errors;
         return $this;
