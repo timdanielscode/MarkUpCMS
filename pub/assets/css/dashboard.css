@@ -77,3 +77,40 @@
     background: #83a7db;
     border-color: #83a7db;
 }
+.cardContainer {
+    width: 95%;
+    height: 150px;
+    border-radius: 3px;
+    background: #fff;
+    display: block;
+    position: relative;
+    margin: 10px;
+}
+.cardContainer .header {
+    width: 100%;
+    display: block;
+    font-size: 26px;
+    padding: 20px 0px 10px 20px;
+}
+.cardContainer .amount {
+    width: 100%;
+    display: block;
+    font-size: 22px;
+    padding-left: 20px;
+}
+.cardContainer .label {
+    position: absolute;
+    bottom: 30px;
+    left: 20px;
+    font-size: 14px;
+}
+.cardContainer .bar {
+    position: absolute;
+    bottom: 10px;
+    left: 20px;
+    background: #eaeaea;
+    height: 7px;
+    border-radius: 30px;
+    border: none;
+    width: 50%;
+}

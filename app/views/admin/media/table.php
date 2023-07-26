@@ -17,9 +17,9 @@
 
                     <?php if($media['media_filetype'] == 'image/png' || $media['media_filetype']  == 'image/webp' || $media['media_filetype']  == 'image/gif' || $media['media_filetype']  == 'image/jpeg' || $media['media_filetype']  == 'image/svg+xml') { ?>
                         <a href="#<?php echo $media['media_filename']; ?>" class="mediaPreview font-weight-300" data-id="<?php echo $media['id']; ?>"><img src="/website/assets/img/<?php echo $media['media_filename']; ?>" id="imageSmall"></a>
-                    <?php } else if ($type == 'application/pdf') { ?>  
+                    <?php } else if ($media['media_filetype'] == 'application/pdf') { ?>  
                         <a href="#<?php echo $media['media_filename']; ?>" class="mediaPreview font-weight-300" data-id="<?php echo $media['id']; ?>"><iframe src="/website/assets/application/<?php echo $media['media_filename']; ?>" id="pdfSmall"></iframe></a>
-                    <?php } else if ($type == 'video/mp4' || $type == 'video/quicktime') { ?>
+                    <?php } else if ($media['media_filetype'] == 'video/mp4' || $media['media_filetype'] == 'video/quicktime') { ?>
                         <a href="#<?php echo $media['media_filename']; ?>" class="mediaPreview font-weight-300" data-id="<?php echo $media['id']; ?>"><video src="/website/assets/video/<?php echo $media['media_filename']; ?>" id="imageSmall"></video></a>
                     <?php } ?>
             </td>
@@ -27,9 +27,9 @@
                 <span class="font-weight-400" id="mediaPath-<?php echo $media['id']; ?>">
                         <?php if($media['media_filetype'] == 'image/png' || $media['media_filetype']  == 'image/webp' || $media['media_filetype']  == 'image/gif' || $media['media_filetype']  == 'image/jpeg' || $media['media_filetype']  == 'image/svg+xml') { ?>
                             <?php echo '/website/assets/img/' . $media["media_filename"]; ?>
-                        <?php } else if($type == 'video/mp4' || $type == 'video/quicktime') { ?>
+                        <?php } else if($media['media_filetype'] == 'video/mp4' || $media['media_filetype'] == 'video/quicktime') { ?>
                             <?php echo '/website/assets/video/' . $media["media_filename"] ?>
-                        <?php } else if($type == 'application/pdf') { ?>
+                        <?php } else if($media['media_filetype'] == 'application/pdf') { ?>
                             <?php echo '/website/assets/application/' . $media["media_filename"] ?>
                         <?php } ?>
                 </span>

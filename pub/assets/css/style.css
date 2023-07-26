@@ -144,6 +144,9 @@ h3 {
 .col3 {
     flex: 25%;
 }
+.col2-4 {
+    flex: 20%;
+}
 .col2 {
     flex: 15%;
 }

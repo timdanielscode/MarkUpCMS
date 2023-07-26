@@ -10,6 +10,7 @@
     $this->stylesheet("/assets/css/dashboard.css");
 
     $this->script("/assets/js/dashboard.js", true);
+    $this->script("/assets/js/chart.js");
 
     $this->title("IndependentCMS");
     $this->include("headerClose");
@@ -18,7 +19,7 @@
 <div class="main-container">
     <div class="row">
         <div class=" col2 col3-L">
-        <div id="sidebar" class="width-25-L">
+            <div id="sidebar" class="width-25-L">
                 <div class="sidebarContainer">
                     <div class="profile">
                         <span>Hi, <?php echo Session::get('username'); ?><span>
@@ -71,7 +72,61 @@
             </div>
         </div>
         <div class="col10 col9-L">
+            <div class="chartContainer">
+                <div class="row">
+                    <div class="col6">
+                        <div class="row">
+                            <div class="col2-4">
+                                <div class="cardContainer">
+                                    <span class="header">Pages</span>
+                                    <span class="amount"><?php echo count($pages); ?></span>
+                                    <span class="label">Content applied: <?php echo count($contentAppliedPages); ?></span>
+                                    <progress class="bar" value="<?php echo count($contentAppliedPages); ?>" max="<?php echo count($pages); ?>"></progress>
+                                </div>
+                            </div>
+                            <div class="col2-4">
+                                <div class="cardContainer">
+                                    <span class="header">Menus</span>
+                                    <span class="amount"><?php echo count($menus); ?></span>
+                                    <span class="label">Content applied: <?php echo count($contentAppliedMenus); ?></span>
+                                    <progress class="bar" value="<?php echo count($contentAppliedMenus); ?>" max="<?php echo count($menus); ?>"></progress>
+                                </div>
+                            </div>
+                            <div class="col2-4">
+                                <div class="cardContainer">
+                                    <span class="header">Css</span>
+                                    <span class="amount"><?php echo count($css); ?></span>
+                                </div>
+                            </div>
+                            <div class="col2-4">
+                                <div class="cardContainer">
+                                    <span class="header">Js</span>
+                                    <span class="amount"><?php echo count($js); ?></span>
+                                </div>
+                            </div>
+                            <div class="col2-4">
+                                <div class="cardContainer">
+                                    <span class="header">Users</span>
+                                    <span class="amount"><?php echo count($users); ?></span>
+                                    <div class="chartContainerUsers">
+                                        <span id="authors" value="<?php print_r($chartUserRoles); ?>"></span>
+                                        <span id="numberOfNormalUsers" value="<?php echo $chartNumberOfNormalUsers; ?>"></span>
+                                        <span id="numberOfAdminUsers" value="<?php echo $chartNumberOfAdminUsers; ?>"></span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col6">
+    
+                    </div>
+                    <div class="col6">
 
+                    </div>
+                </div>
+            </div>
         </div>
     </div>
 </div>

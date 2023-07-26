@@ -106,7 +106,7 @@ class MediaController extends Controller {
             case 'video/mp4':
             case 'video/quicktime':
 
-                $file = '<video id="mediaPreviewFile" class="display-none" src="/website/assets/video/' . $media['media_filename'] . '"></video>';
+                $file = '<video id="mediaPreviewFile" class="display-none" src="/website/assets/video/' . $media['media_filename'] . '" controls></video>';
             break;  
             case 'application/pdf':
 
@@ -145,7 +145,7 @@ class MediaController extends Controller {
 
                 $uniqueFilename = Media::where('media_filename', '=', $filename);
 
-                if($rules->media($uniqueFilename)->validated()) {
+                if($rules->media($uniqueFilename)->validated() && strlen($filename) < 49) {
 
                     switch ($type[$key]) {
         
@@ -187,12 +187,16 @@ class MediaController extends Controller {
                         'time_updated_at'   => date("H:i")
                     ]);
                
-    
                     Session::set('create', 'You have successfully created a new post!');            
                     redirect('/admin/media');
 
                 } else {
 
+                    if(strlen($filename) > 49) {
+  
+                        $rules->errors[] = ['media_title' => 'Filename can not be more than 49 characters.'];
+                    }
+                    
                     $data['rules'] = $rules->errors;
                     return $this->view('admin/media/create', $data);
                 }

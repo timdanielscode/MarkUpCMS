@@ -182,13 +182,13 @@ $(document).ready(function() {
                         });
                     }
 
-                    message.html("<span>Updated successfulley!</span>").fadeIn(10).fadeOut(2000);
+                    message.html("<span>Updated successfully!</span>").fadeIn(10).fadeOut(2000);
                     message.addClass('message-success'); 
                     message.removeClass('message-failed');
 
                 },error: function(xhr, status, error) {
 
-                    message.html("<span>Page is not selected or page slug may not be unique!</span>").fadeIn(10);
+                    message.html("<span>Page is not selected or page slug may not be unique after applying!</span>").fadeIn(10);
                     message.addClass('message-failed'); 
                     message.removeClass('message-success');
                 }

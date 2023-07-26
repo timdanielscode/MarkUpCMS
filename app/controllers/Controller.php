@@ -92,7 +92,7 @@ class Controller {
 
         if($defer === true) {
 
-            echo '<script src='.'"'.$src.'"'.'defer></script>';
+            echo '<script src='.'"'.$src.'"'.' defer></script>';
         } else {
 
             echo '<script src='.'"'.$src.'"'.'></script>';
