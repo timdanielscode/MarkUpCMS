@@ -18,7 +18,7 @@ class DashboardController extends Controller {
         $data['users'] = DB::try()->select('id')->from('users')->fetch();
 
         $data['contentAppliedPages'] = DB::try()->select('id')->from('pages')->where('has_content', '=', 1)->fetch();
-        //$data['contentAppliedMenus'] = DB::try()->select('id')->from('menus')->where('content', '!=', NULL)->or('content', '!=', '')->fetch();
+        $data['contentAppliedMenus'] = DB::try()->select('id')->from('menus')->where('has_content', '=', 1)->fetch();
 
 
 

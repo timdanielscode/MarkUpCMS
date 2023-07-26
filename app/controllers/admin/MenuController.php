@@ -62,10 +62,13 @@ class MenuController extends Controller {
 
             if($rules->create_menu($unique)->validated()) {
                     
+                if(!empty($request['content']) ) { $hasContent = 1; } else { $hasContent = 0; }
+
                 Menu::insert([
 
                     'title' => $request['title'],
                     'content'   => $request['content'],
+                    'has_content' => $hasContent,
                     'position'  => 'unset',
                     'author'    =>  Session::get('username'),
                     'date_created_at'   =>     date("d/m/Y"),
@@ -120,10 +123,13 @@ class MenuController extends Controller {
                     
                 $id = $request['id'];
 
+                if(!empty($request['content']) ) { $hasContent = 1; } else { $hasContent = 0; }
+
                 Menu::update(['id' => $id], [
 
                     'title'     => $request['title'],
                     'content'   => $request['content'],
+                    'has_content' => $hasContent, 
                     'date_updated_at'   => date("d/m/Y"),
                     'time_updated_at'   => date("H:i")
                 ]);

@@ -132,3 +132,6 @@ CREATE TABLE js_page (
 );
 
 ALTER TABLE pages ADD has_content bit AFTER body;
+ALTER TABLE pages DROP COLUMN has_content;
+ALTER TABLE pages ADD has_content TINYINT AFTER body;
+ALTER TABLE menus ADD has_content TINYINT AFTER content;
