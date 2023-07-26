@@ -80,19 +80,20 @@ class JsController extends Controller {
 
             if($rules->js($uniqueFilename)->validated()) {
                     
-                $filename = "/".post('filename');
+                $filename = "/".$request['filename'];
                 $filename = str_replace(" ", "-", $filename);
 
-                $code = post('code');
-            
                 $file = fopen("website/assets/js/" . $filename . ".js", "w");
-                fwrite($file, $code);
+                fwrite($file, $request['code']);
                 fclose($file);
+
+                if(!empty($request['code']) ) { $hasContent = 1; } else { $hasContent = 0; }
                 
                 Js::insert([
 
                     'file_name' => $request['filename'],
                     'extension' => '.js',
+                    'has_content' => $hasContent,
                     'date_created_at'   => date('d/m/Y'),
                     'time_created_at'   => date('H:i'),
                     'date_updated_at'   => date('d/m/Y'),
@@ -182,9 +183,12 @@ class JsController extends Controller {
 
                 rename($this->_folderLocation . $currentJsFileName . $this->_fileExtension, $this->_folderLocation . $filename . $this->_fileExtension);
 
+                if(!empty($request['code']) ) { $hasContent = 1; } else { $hasContent = 0; }
+
                 Js::update(['id' => $id], [
 
                     'file_name'     => $filename,
+                    'has_content' => $hasContent,
                     'date_updated_at'   => date("d/m/Y"),
                     'time_updated_at'   => date("H:i")
                 ]);

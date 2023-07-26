@@ -103,6 +103,8 @@
                                 <div class="cardContainer">
                                     <span class="header">Js</span>
                                     <span class="amount"><?php echo count($js); ?></span>
+                                    <span class="label">Content applied: <?php echo count($contentAppliedJs); ?></span>
+                                    <progress class="bar" value="<?php echo count($contentAppliedJs); ?>" max="<?php echo count($js); ?>"></progress>
                                 </div>
                             </div>
                             <div class="col2-4">
