@@ -16,8 +16,11 @@ class DashboardController extends Controller {
         $data['js'] = DB::try()->select('id')->from('js')->fetch();
         $data['media'] = DB::try()->select('id')->from('media')->fetch();
         $data['users'] = DB::try()->select('id')->from('users')->fetch();
-        $data['contentAppliedPages'] = DB::try()->select('id')->from('pages')->where('body', '!=', NULL)->or('body', '!=', '')->fetch();
-        $data['contentAppliedMenus'] = DB::try()->select('id')->from('menus')->where('content', '!=', NULL)->or('content', '!=', '')->fetch();
+
+        $data['contentAppliedPages'] = DB::try()->select('id')->from('pages')->where('has_content', '=', 1)->fetch();
+        //$data['contentAppliedMenus'] = DB::try()->select('id')->from('menus')->where('content', '!=', NULL)->or('content', '!=', '')->fetch();
+
+
 
         $data['chartNumberOfNormalUsers'] = $this->getNumberOfNormalRoles();
         $data['chartNumberOfAdminUsers'] = $this->getNumberOfAdminRoles();
@@ -38,7 +41,7 @@ class DashboardController extends Controller {
         $data['chartNumberOfMediaFiletypeSvg'] = $this->getNumberOfMediaTypeSvg();
         $data['chartNumberOfMediaFiletypeMp4'] = $this->getNumberOfMediaTypeMp4();
         $data['chartNumberOfMediaFiletypePdf'] = $this->getNumberOfMediaTypePdf();
-        
+
         return $this->view("admin/dashboard/index", $data);     
     }
 

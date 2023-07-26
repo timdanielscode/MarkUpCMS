@@ -67,12 +67,15 @@ class PostController extends Controller {
                         
                 $slug = "/".post('title');
                 $slug = str_replace(" ", "-", $slug);
-    
+
+                if(!empty($request['body']) ) { $hasContent = 1; } else { $hasContent = 0; }
+
                 Post::insert([
     
                     'title' => $request['title'],
                     'slug' => $slug,
                     'body' => $request['body'],
+                    'has_content' => $hasContent,
                     'author' => Session::get('username'),
                     'date_created_at' => date("d/m/Y"),
                     'time_created_at' => date("H:i"),
@@ -208,10 +211,13 @@ class PostController extends Controller {
                 
                 $id = $request['id'];
 
+                    if(!empty($request['body']) ) { $hasContent = 1; } else { $hasContent = 0; }
+
                     Post::update(['id' => $id], [
 
                         'title' => $request["title"],
                         'body' => $request["body"],
+                        'has_content' => $hasContent,
                         'date_updated_at' => date("d/m/Y"),
                         'time_updated_at' => date("H:i")
                     ]);

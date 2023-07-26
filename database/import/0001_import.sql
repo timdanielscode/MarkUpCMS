@@ -130,3 +130,5 @@ CREATE TABLE js_page (
     page_id int(11) NOT NULl,
     js_id int(11) NOT NULL
 );
+
+ALTER TABLE pages ADD has_content bit AFTER body;

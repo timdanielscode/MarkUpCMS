@@ -10,7 +10,6 @@
     $this->stylesheet("/assets/css/dashboard.css");
 
     $this->script("/assets/js/dashboard.js", true);
-    $this->script("/assets/js/chart.js");
 
     $this->title("IndependentCMS");
     $this->include("headerClose");
