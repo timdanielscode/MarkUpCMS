@@ -95,6 +95,8 @@
                                 <div class="cardContainer">
                                     <span class="header">Css</span>
                                     <span class="amount"><?php echo count($css); ?></span>
+                                    <span class="label">Content applied: <?php echo count($contentAppliedCss); ?></span>
+                                    <progress class="bar" value="<?php echo count($contentAppliedCss); ?>" max="<?php echo count($css); ?>"></progress>
                                 </div>
                             </div>
                             <div class="col2-4">

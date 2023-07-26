@@ -80,10 +80,13 @@ class CssController extends Controller {
                     fwrite($file, $code);
                     fclose($file);
                     
+                    if(!empty($request['code']) ) { $hasContent = 1; } else { $hasContent = 0; }
+
                     Css::insert([
 
                         'file_name' => $request['filename'],
                         'extension' => '.css',
+                        'has_content' => $hasContent,
                         'date_created_at'   => date('d/m/Y'),
                         'time_created_at'   => date('H:i'),
                         'date_updated_at'   => date('d/m/Y'),
@@ -187,9 +190,12 @@ class CssController extends Controller {
 
                 rename($this->_folderLocation . $currentCssFileName . $this->_fileExtension, $this->_folderLocation . $filename . $this->_fileExtension);
 
+                if(!empty($request['code']) ) { $hasContent = 1; } else { $hasContent = 0; }
+
                 Css::update(['id' => $id], [
 
                     'file_name'     => $filename,
+                    'has_content' => $hasContent,
                     'date_updated_at'   => date("d/m/Y"),
                     'time_updated_at'   => date("H:i")
                 ]);
