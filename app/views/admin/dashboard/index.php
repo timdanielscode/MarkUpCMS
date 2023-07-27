@@ -123,11 +123,59 @@
                     </div>
                 </div>
                 <div class="row">
-                    <div class="col6">
-    
+                    <div class="col4">
+                        <div class="progressContainer">
+                            <div class="container">
+                                <span class="header">Seo <span class="small">(applied)</span></span>
+                                <div class="grouped first">
+                                    <span class="label seo">Meta Title</span>
+                                    <progress class="bar" value="<?php echo $chartNumberOfAppliedMetaTitle; ?>" max="<?php echo $chartNumberOfPages; ?>"></progress>
+                                </div>
+                                <div class="grouped">
+                                    <span class="label seo">Meta Description</span>
+                                    <progress class="bar" value="<?php echo $chartNumberOfAppliedMetaDescription; ?>" max="<?php echo $chartNumberOfPages; ?>"></progress>
+                                </div>
+                                <div class="grouped">
+                                    <span class="label seo">Meta Keywords</span>
+                                    <progress class="bar" value="<?php echo $chartNumberOfAppliedMetaKeywords; ?>" max="<?php echo $chartNumberOfPages; ?>"></progress>
+                                </div>
+                            </div>
+                        </div>
                     </div>
-                    <div class="col6">
-
+                    <div class="col8">
+                        <div class="progressContainer float-right">
+                            <div class="container">
+                                <span class="header">Media <span class="small">(<?php echo count($media); ?>)</span></span>
+                                <div class="grouped media">
+                                    <span class="label">.jpeg</span>
+                                    <progress class="bar" value="<?php echo $chartNumberOfMediaFiletypeJpg; ?>" max="<?php echo count($media); ?>"></progress>
+                                </div>
+                                <div class="grouped media">
+                                    <span class="label">.png</span>
+                                    <progress class="bar" value="<?php echo $chartNumberOfMediaFiletypePng; ?>" max="<?php echo count($media); ?>"></progress>
+                                </div>
+                                <div class="grouped media">
+                                    <span class="label">.webp</span>
+                                    <progress class="bar" value="<?php echo $chartNumberOfMediaFiletypeWebp; ?>" max="<?php echo count($media); ?>"></progress>
+                                </div>
+                                <div class="grouped media">
+                                    <span class="label">.giff</span>
+                                    <progress class="bar" value="<?php echo $chartNumberOfMediaFiletypeGif; ?>" max="<?php echo count($media); ?>"></progress>
+                                </div>
+                                <div class="grouped media">
+                                    <span class="label">.svg</span>
+                                    <progress class="bar" value="<?php echo $chartNumberOfMediaFiletypeSvg; ?>" max="<?php echo count($media); ?>"></progress>
+                                </div>
+                                <div class="grouped media">
+                                    <span class="label">.mp4</span>
+                                    <progress class="bar" value="<?php echo $chartNumberOfMediaFiletypeMp4; ?>" max="<?php echo count($media); ?>"></progress>
+                                </div>
+                                <div class="grouped media">
+                                    <span class="label">.pdf</span>
+                                    <progress class="bar" value="<?php echo $chartNumberOfMediaFiletypePdf; ?>" max="<?php echo count($media); ?>"></progress>
+                                </div>
+                            </div>
+                        </div>  
                     </div>
                 </div>
             </div>
