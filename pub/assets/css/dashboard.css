@@ -148,7 +148,7 @@
 .cardContainer a {
     text-decoration: none;
     width: fit-content;
-display: block;
+    display: block;
 }
 .cardContainer .lastCreatedPage {
     width: fit-content;
@@ -217,7 +217,7 @@ display: block;
 .progressContainer {
     width: 97.5%;
     background: #fff;
-    height: 350px;
+    height: 500px;
     border-radius: 3px;
     margin: 10px;
     display: block;
@@ -275,6 +275,12 @@ display: block;
     font-size: 12px;
     margin-left: 10px;
 } 
+.progressContainer .container .amount {
+    width: 100%;
+    display: block;
+    font-size: 22px;
+    margin-top: 10px;
+}
 .colorAdmin, .colorNormal {
     width: 20px;
     height: 10px;
@@ -289,4 +295,16 @@ display: block;
 }
 .colorNormal {
     background: #72b7ee;
+}
+.progressContainer .container .mediaTextContainer {
+    position: absolute;
+    bottom: 20px;
+    font-size: 18px;
+    background: #1888e1;
+    right: 0;
+    padding: 5px 20px 5px 20px;
+    color: #fff;
+}
+.progressContainer .container .mediaTextContainer .mediaText {
+    display: block;
 }

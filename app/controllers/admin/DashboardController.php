@@ -48,8 +48,16 @@ class DashboardController extends Controller {
         $data['numberOfMediaFiletypeSvg'] = $this->getNumberOfMediaTypeSvg();
         $data['numberOfMediaFiletypeMp4'] = $this->getNumberOfMediaTypeMp4();
         $data['numberOfMediaFiletypePdf'] = $this->getNumberOfMediaTypePdf();
+        $data['numberOfMediaTotalUploadedSize'] = $this->getNumberOfMediaTotalUploadedSize();
+        $data['numberOfServerFreeSpace'] = $this->getNumberOfServerFreeSpace();
 
         return $this->view("admin/dashboard/index", $data);     
+    }
+
+    private function getNumberOfServerFreeSpace() {
+
+        $freespace = disk_free_space("/") / 1000000000;
+        return number_format((float)$freespace, 2, '.', '');
     }
 
     private function getPercentageOfAdminRoles() {
@@ -243,5 +251,19 @@ class DashboardController extends Controller {
             array_push($data, $number);
         }
         return count($data);
+    }
+
+    private function getNumberOfMediaTotalUploadedSize() {
+
+        $numbers = DB::try()->select('media_filesize')->from('media')->fetch();
+        $amount = 0;
+
+        foreach($numbers as $number) {
+
+            $amount = $amount + $number['media_filesize'];
+        }
+
+        $mbs = $amount / 1000000;
+        return number_format((float)$mbs, 2, '.', '');
     }
 }  

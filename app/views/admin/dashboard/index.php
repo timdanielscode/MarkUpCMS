@@ -158,7 +158,8 @@
                     <div class="col8">
                         <div class="progressContainer float-right">
                             <div class="container">
-                                <span class="header">Media <span class="small">(<?php echo count($media); ?>)</span></span>
+                                <span class="header">Media <span class="small">(total)</span></span>
+                                <span class="amount"><?php echo count($media); ?></span>
                                 <div class="grouped media">
                                     <span class="label">.jpeg</span>
                                     <progress class="bar" value="<?php echo $numberOfMediaFiletypeJpg; ?>" max="<?php echo count($media); ?>"></progress>
@@ -193,6 +194,11 @@
                                     <span class="label">.pdf</span>
                                     <progress class="bar" value="<?php echo $numberOfMediaFiletypePdf; ?>" max="<?php echo count($media); ?>"></progress>
                                     <span class="value"><?php echo $numberOfMediaFiletypePdf; ?></span>
+                                </div>
+                                <div class="mediaTextContainer"> 
+                                    <span class="mediaText">Free space server: <?php echo $numberOfServerFreeSpace . 'G'; ?></span>
+                                    <span class="mediaText">Max upload size: <?php echo ini_get('upload_max_filesize'); ?></span>
+                                    <span class="mediaText">Total uploaded: <?php echo $numberOfMediaTotalUploadedSize . "M"; ?></span>
                                 </div>
                             </div>
                         </div>  
