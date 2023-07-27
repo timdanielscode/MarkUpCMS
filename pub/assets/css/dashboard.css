@@ -1,6 +1,5 @@
 .main-container {
-    margin-top: 20px;
-    margin-left: 5%;
+    margin: 20px;
 }
 #sidebar {
     background: #1d242f;
@@ -113,4 +112,43 @@
     border-radius: 30px;
     border: none;
     width: 50%;
+}
+.circleUsers {
+    position: absolute;
+    border-radius: 50%;
+    right: 50px;
+    top: 50%;
+    transform: translateY(-50%);
+    width: 70px;
+    height: 70px;
+}
+.innerCircle {
+    border-radius: 50%;
+    height: 50px;
+    width: 50px;
+    position: absolute;
+    top: 50%;
+    transform: translate(-50%, -50%);
+    background: #fff;
+    left: 50%;
+}
+
+.labelTypeOfNormal {
+    position: absolute;
+    bottom: 10px;
+    font-size: 14px;
+    left: 20px;
+}
+.labelTypeOfAdmin {
+    position: absolute;
+    bottom: 30px;
+    left: 20px;
+    font-size: 14px;
+}
+.labelTypeOfAdmin .labelColor {
+    width: 20px;
+    height: 10px;
+    display: inline-block;
+    margin-left: 5px;
+    background: #0064B4;
 }

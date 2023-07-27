@@ -23,8 +23,10 @@ class DashboardController extends Controller {
         $data['contentAppliedJs'] = DB::try()->select('id')->from('js')->where('has_content', '=', 1)->fetch();
 
 
-        $data['chartNumberOfNormalUsers'] = $this->getNumberOfNormalRoles();
-        $data['chartNumberOfAdminUsers'] = $this->getNumberOfAdminRoles();
+        $data['percentageOfNormalUsers'] = $this->getPercentageOfNormalRoles();
+        $data['percentageOfAdminUsers'] = $this->getPercentageOfAdminRoles();
+        $data['numberOfAdminUsers'] = $this->getNumberOfAdminRoles();
+        $data['numberOfNormalUsers'] = $this->getNumberOfNormalRoles();
 
 
         $data['chartNumberOfPages'] = $this->getNumberOfPages();
@@ -46,11 +48,33 @@ class DashboardController extends Controller {
         return $this->view("admin/dashboard/index", $data);     
     }
 
+    private function getPercentageOfAdminRoles() {
+
+        $numberUsers = DB::try()->select('id')->from('users')->fetch();
+        $numberAdminRoles = DB::try()->select('users.id')->from('users')->join('user_role')->on('user_role.user_id', '=', 'users.id')->join('roles')->on('user_role.role_id', '=', 'roles.id')->where('roles.name', '=', 'admin')->fetch();
+
+        $countUsers = count($numberUsers);
+        $countAdminRoles = count($numberAdminRoles);
+        
+        return $countAdminRoles / $countUsers * 100;
+    }
+
     private function getNumberOfNormalRoles() {
 
         $numberNormalRoles = DB::try()->select('users.id')->from('users')->join('user_role')->on('user_role.user_id', '=', 'users.id')->join('roles')->on('user_role.role_id', '=', 'roles.id')->where('roles.name', '=', 'normal')->fetch();
 
         return count($numberNormalRoles);
+    }
+
+    private function getPercentageOfNormalRoles() {
+
+        $numberUsers = DB::try()->select('id')->from('users')->fetch();
+        $numberNormalRoles = DB::try()->select('users.id')->from('users')->join('user_role')->on('user_role.user_id', '=', 'users.id')->join('roles')->on('user_role.role_id', '=', 'roles.id')->where('roles.name', '=', 'normal')->fetch();
+
+        $countUsers = count($numberUsers);
+        $countNormalRoles = count($numberNormalRoles);
+        
+        return $countNormalRoles / $countUsers * 100;
     }
 
     private function getNumberOfAdminRoles() {

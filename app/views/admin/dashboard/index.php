@@ -77,6 +77,18 @@
                         <div class="row">
                             <div class="col2-4">
                                 <div class="cardContainer">
+                                    <span class="header">Users</span>
+                                    <span class="amount"><?php echo count($users); ?></span>
+                                    <div class="containerUsers">
+                                        <span id="authors" value="<?php print_r($chartUserRoles); ?>"></span>
+                                        <span class="circleUsers" style="background: repeating-conic-gradient(from 0deg, #EAEAEA 0deg calc(3.6deg * <?php echo $percentageOfNormalUsers; ?>), #0064b4 0deg calc(3.6deg * <?php echo $percentageOfAdminUsers; ?>));"><span class="innerCircle"></span></span>
+                                        <span class="labelTypeOfAdmin">Admin: <?php echo $numberOfAdminUsers; ?></span>
+                                        <span class="labelTypeOfNormal">Normal:  <?php echo $numberOfNormalUsers; ?></span>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col2-4">
+                                <div class="cardContainer">
                                     <span class="header">Pages</span>
                                     <span class="amount"><?php echo count($pages); ?></span>
                                     <span class="label">Content applied: <?php echo count($contentAppliedPages); ?></span>
@@ -105,17 +117,6 @@
                                     <span class="amount"><?php echo count($js); ?></span>
                                     <span class="label">Content applied: <?php echo count($contentAppliedJs); ?></span>
                                     <progress class="bar" value="<?php echo count($contentAppliedJs); ?>" max="<?php echo count($js); ?>"></progress>
-                                </div>
-                            </div>
-                            <div class="col2-4">
-                                <div class="cardContainer">
-                                    <span class="header">Users</span>
-                                    <span class="amount"><?php echo count($users); ?></span>
-                                    <div class="chartContainerUsers">
-                                        <span id="authors" value="<?php print_r($chartUserRoles); ?>"></span>
-                                        <span id="numberOfNormalUsers" value="<?php echo $chartNumberOfNormalUsers; ?>"></span>
-                                        <span id="numberOfAdminUsers" value="<?php echo $chartNumberOfAdminUsers; ?>"></span>
-                                    </div>
                                 </div>
                             </div>
                         </div>
