@@ -18,9 +18,14 @@ class DashboardController extends Controller {
         $data['users'] = DB::try()->select('id')->from('users')->fetch();
 
         $data['contentAppliedPages'] = DB::try()->select('id')->from('pages')->where('has_content', '=', 1)->fetch();
+        $data['titleOfLastCreatedPage'] = DB::try()->select('id, title')->from('pages')->order('date_created_at')->first();
+
         $data['contentAppliedMenus'] = DB::try()->select('id')->from('menus')->where('has_content', '=', 1)->fetch();
         $data['contentAppliedCss'] = DB::try()->select('id')->from('css')->where('has_content', '=', 1)->fetch();
         $data['contentAppliedJs'] = DB::try()->select('id')->from('js')->where('has_content', '=', 1)->fetch();
+
+        $data['positionAppliedMenus'] = DB::try()->select('id')->from('menus')->where('position', '!=', 'unset')->fetch();
+        $data['orderingAppliedMenus'] = DB::try()->select('id')->from('menus')->where('ordering', 'IS NOT', NULL)->fetch();
 
 
         $data['percentageOfNormalUsers'] = $this->getPercentageOfNormalRoles();
@@ -28,22 +33,21 @@ class DashboardController extends Controller {
         $data['numberOfAdminUsers'] = $this->getNumberOfAdminRoles();
         $data['numberOfNormalUsers'] = $this->getNumberOfNormalRoles();
 
+        $data['numberOfPages'] = $this->getNumberOfPages();
+        $data['numberOfAppliedMetaTitle'] = $this->getNumberOfNotAppliedMetaTitle();
+        $data['numberOfAppliedMetaDescription'] = $this->getNumberOfNotAppliedMetaDescription();
+        $data['numberOfAppliedMetaKeywords'] = $this->getNumberOfNotAppliedMetaKeywords();
 
-        $data['chartNumberOfPages'] = $this->getNumberOfPages();
-        $data['chartNumberOfAppliedMetaTitle'] = $this->getNumberOfNotAppliedMetaTitle();
-        $data['chartNumberOfAppliedMetaDescription'] = $this->getNumberOfNotAppliedMetaDescription();
-        $data['chartNumberOfAppliedMetaKeywords'] = $this->getNumberOfNotAppliedMetaKeywords();
+        $data['numberOfLinkedCss'] = $this->getNumberOfLinkedCss();
+        $data['numberOfIncludedJs'] = $this->getNumberOfIncludedJs();
 
-        $data['chartNumberOfUnusedCss'] = $this->getNumberOfUnusedCss();
-        $data['chartNumberOfUnusedJs'] = $this->getNumberOfUnusedJs();
-
-        $data['chartNumberOfMediaFiletypePng'] = $this->getNumberOfMediaTypePng();
-        $data['chartNumberOfMediaFiletypeJpg'] = $this->getNumberOfMediaTypeJpg();
-        $data['chartNumberOfMediaFiletypeGif'] = $this->getNumberOfMediaTypeGif();
-        $data['chartNumberOfMediaFiletypeWebp'] = $this->getNumberOfMediaTypeWebp();
-        $data['chartNumberOfMediaFiletypeSvg'] = $this->getNumberOfMediaTypeSvg();
-        $data['chartNumberOfMediaFiletypeMp4'] = $this->getNumberOfMediaTypeMp4();
-        $data['chartNumberOfMediaFiletypePdf'] = $this->getNumberOfMediaTypePdf();
+        $data['numberOfMediaFiletypePng'] = $this->getNumberOfMediaTypePng();
+        $data['numberOfMediaFiletypeJpg'] = $this->getNumberOfMediaTypeJpg();
+        $data['numberOfMediaFiletypeGif'] = $this->getNumberOfMediaTypeGif();
+        $data['numberOfMediaFiletypeWebp'] = $this->getNumberOfMediaTypeWebp();
+        $data['numberOfMediaFiletypeSvg'] = $this->getNumberOfMediaTypeSvg();
+        $data['numberOfMediaFiletypeMp4'] = $this->getNumberOfMediaTypeMp4();
+        $data['numberOfMediaFiletypePdf'] = $this->getNumberOfMediaTypePdf();
 
         return $this->view("admin/dashboard/index", $data);     
     }
@@ -133,9 +137,9 @@ class DashboardController extends Controller {
         return count($data);
     }
 
-    private function getNumberOfUnusedCss() {
+    private function getNumberOfLinkedCss() {
 
-        $numbers = DB::try()->select('id')->from('css')->joinLeft('css_page')->on("css_page.css_id", '=', 'css.id')->where('css_page.css_id', 'IS', NULL)->fetch();
+        $numbers = DB::try()->select('id')->from('css')->joinLeft('css_page')->on("css_page.css_id", '=', 'css.id')->where('css_page.css_id', 'IS NOT', NULL)->fetch();
         $data = [];
 
         foreach($numbers as $number) {
@@ -145,9 +149,9 @@ class DashboardController extends Controller {
         return count($data);
     }
 
-    private function getNumberOfUnusedJs() {
+    private function getNumberOfIncludedJs() {
 
-        $numbers = DB::try()->select('id')->from('js')->joinLeft('js_page')->on("js_page.js_id", '=', 'js.id')->where('js_page.js_id', 'IS', NULL)->fetch();
+        $numbers = DB::try()->select('id')->from('js')->joinLeft('js_page')->on("js_page.js_id", '=', 'js.id')->where('js_page.js_id', 'IS NOT', NULL)->fetch();
         $data = [];
 
         foreach($numbers as $number) {

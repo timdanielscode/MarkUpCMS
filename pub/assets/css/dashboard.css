@@ -78,7 +78,7 @@
 }
 .cardContainer {
     width: 95%;
-    height: 150px;
+    height: 280px;
     border-radius: 3px;
     background: #fff;
     display: block;
@@ -103,6 +103,38 @@
     left: 20px;
     font-size: 14px;
 }
+.cardContainer .bar2 {
+    position: absolute;
+    bottom: 60px;
+    left: 20px;
+    background: #eaeaea;
+    height: 7px;
+    border-radius: 30px;
+    border: none;
+    width: 75%;
+}
+.cardContainer .bar3 {
+    position: absolute;
+    bottom: 110px;
+    left: 20px;
+    background: #eaeaea;
+    height: 7px;
+    border-radius: 30px;
+    border: none;
+    width: 75%;
+}
+.cardContainer .label2 {
+    position: absolute;
+    bottom: 80px;
+    left: 20px;
+    font-size: 14px;
+}
+.cardContainer .label3 {
+    position: absolute;
+    bottom: 130px;
+    left: 20px;
+    font-size: 14px;
+}
 .cardContainer .bar {
     position: absolute;
     bottom: 10px;
@@ -111,28 +143,58 @@
     height: 7px;
     border-radius: 30px;
     border: none;
-    width: 50%;
+    width: 75%;
 }
+.cardContainer a {
+    text-decoration: none;
+    width: fit-content;
+display: block;
+}
+.cardContainer .lastCreatedPage {
+    width: fit-content;
+    background: #1888e1;
+    padding: 10px;
+    padding-left: 10px;
+    display: block;
+    text-align: center;
+    position: relative;
+    font-size: 14px;
+    margin-top: 10px;
+    color: #fff;
+    padding-left: 20px;
+    
+}
+.cardContainer .lastCreatedPage:hover {
+    background: #3594e2;
+}
+.cardContainer .newestText {
+    display: block;
+    margin-top: 20px;
+    font-size: 14px;
+    margin-left: 20px;
+    text-align: unset;
+}
+
 .circleUsers {
     position: absolute;
     border-radius: 50%;
     right: 50px;
     top: 50%;
-    transform: translateY(-50%);
-    width: 70px;
-    height: 70px;
+    transform: translate(-50%, -50%);
+    width: 100px;
+    height: 100px;
+    left: 50%;
 }
 .innerCircle {
     border-radius: 50%;
-    height: 50px;
-    width: 50px;
+    height: 70px;
+    width: 70px;
     position: absolute;
     top: 50%;
     transform: translate(-50%, -50%);
     background: #fff;
     left: 50%;
 }
-
 .labelTypeOfNormal {
     position: absolute;
     bottom: 10px;
@@ -177,6 +239,7 @@
 }
 .progressContainer .container .grouped {
     margin: 20px 0;
+    position: relative;
 }
 .progressContainer .container .grouped .label.seo {
     width: 160px;
@@ -185,6 +248,7 @@
 .progressContainer .container .grouped .label {
     width: 80px;
     display: inline-block;
+    font-size: 14px;
 }
 .progressContainer .container .grouped progress {
     background: #eaeaea;
@@ -204,6 +268,25 @@
     font-size: 26px;
     margin-bottom: 20px;
 }
-.progressContainer .container .header .small {
+.progressContainer .container .header .small, .cardContainer .header .small {
     font-size: 16px;
+}
+.progressContainer .container .grouped .value {
+    font-size: 12px;
+    margin-left: 10px;
+} 
+.colorAdmin, .colorNormal {
+    width: 20px;
+    height: 10px;
+    position: absolute;
+    bottom: 3px;
+    display: block;
+    
+    left: 75px;
+}
+.colorAdmin {
+    background: #1888e1
+}
+.colorNormal {
+    background: #72b7ee;
 }
