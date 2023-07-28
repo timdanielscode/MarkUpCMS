@@ -28,6 +28,15 @@ class CategoryController extends Controller {
 
     public function index() {
 
+        $assingedSubCategorySlugsPages = DB::try()->select('id, slug')->from('pages')->join('category_page')->on("category_page.page_id",'=','pages.id')->join('category_sub')->on('category_sub.category_id', '=', 'category_page.category_id')->where('category_sub.sub_id', '=', 270)->fetch();
+
+
+        print_r($assingedSubCategorySlugsPages);
+
+
+
+
+
         $category = new Category();
         $categories = $category->allCategoriesButOrdered();
 
@@ -533,15 +542,14 @@ class CategoryController extends Controller {
         if(!empty($assingedCategorySlugsPages) && $assingedCategorySlugsPages !== null) {
     
             foreach($assingedCategorySlugsPages as $page) {
-    
+
                 $slugParts = explode('/', $page['slug']);
-                $categorySlugKey = array_search(substr($currentSlug['slug'], 1), $slugParts);
-                unset($slugParts[$categorySlugKey]);
-                $slugMinusCategorySlug = implode('/', $slugParts);
+                $lastPageSlugKey = array_key_last($slugParts);
+                $lastPageSlugValue = "/" . $slugParts[$lastPageSlugKey];
 
                 Post::update(['id' => $page['id']], [
             
-                    'slug'  => $slugMinusCategorySlug
+                    'slug'  => $lastPageSlugValue
                 ]);
             } 
         }

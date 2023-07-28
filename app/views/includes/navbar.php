@@ -3,8 +3,8 @@
 <nav id="IndependentCMSMainNavbar" class="navbarSmall">
     <ul>
         <li><a href="/admin/posts">Pages</a></li>
-        <li><a href="/admin/menus">Menus</a></li>
         <li><a href="/admin/categories">Categories</a></li>
+        <li><a href="/admin/menus">Menus</a></li>
         <li><a href="/admin/css">Css</a></li>
         <li><a href="/admin/js">Js</a></li>
         <li><a href="/admin/media">Media</a></li>

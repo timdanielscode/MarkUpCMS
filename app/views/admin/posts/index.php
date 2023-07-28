@@ -16,6 +16,14 @@
     $this->include('headerClose');
     $this->include('navbar');
 ?>
+
+<?php 
+    Session::delete('updateJs');
+    Session::delete('updateMeta');
+    Session::delete('updateCategory');
+    Session::delete('updateCss');
+?>
+
 <div class="index-container">
     <div class="headerAndButtonContainer">
         <h1>Pages</h1>
