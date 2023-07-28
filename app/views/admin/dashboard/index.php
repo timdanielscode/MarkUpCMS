@@ -6,78 +6,92 @@
     $this->include('headerOpen');  
 
     $this->stylesheet("/assets/css/style.css");
+    $this->stylesheet("/assets/css/navbar.css");
     $this->stylesheet("/assets/css/sidebar.css");
     $this->stylesheet("/assets/css/dashboard.css");
+    
 
     $this->script("/assets/js/dashboard.js", true);
+    $this->script("/assets/js/navbar.js", true);
 
     $this->title("IndependentCMS");
     $this->include("headerClose");
 ?>
 
 <div class="main-container">
+<nav id="IndependentCMSMainNavbar" class="navbarSmall">
+    <ul>
+        <li><a href="/admin/posts">Logo</a></li>
+    </ul>
+            <div class="profileContainer">
+            <span id="profileIcon" class="profileIcon">t</span>
+            
+            <ul id="profileDropdown">
+            <span class="triangle"></span>
+                <span class="profileIcon">t</span>
+                <li class="text-center username">testuser</li>
+                <li><a href="/admin/profile/testuser">Profile</a></li>
+                <li><a href="/admin/dashboard">Dashboard</a></li>
+                <li><a href="#">Settings</a></li>
+                <li class="/logout"><a href="/logout">Logout</a></li>
+            </ul>
+        </div>
+    </nav>
     <div class="row">
         <div class=" col2 col3-L">
             <div id="sidebar" class="width-25-L">
                 <div class="sidebarContainer">
-                    <div class="profile">
-                        <span>Hi, <?php echo Session::get('username'); ?><span>
-                    </div>
                     <nav id="navigationMenu">
                         <ul id="dropdownItems">
-                            <li class="dropdownItem"></span>Pages<span class="count"><?php echo count($pages); ?></li>
+                            <li class="dropdownItem">Pages</li>
                             <ul class="dropdown display-none">
-                                <li><a href="/admin/posts">Table</a></li>
-                                <li><a href="/admin/posts/create">New page</a></li>
+                                <li><a href="/admin/posts/create">Add new</a></li>
+                                <li><a href="/admin/posts">Table overview</a></li>
                             </ul>
-                            <li class="dropdownItem">Menus<span class="count"><?php echo count($menus); ?></span></li>
+                            <li class="dropdownItem">Categories</li>
                             <ul class="dropdown display-none">
-                                <li><a href="/admin/menus">Table</a></li>
-                                <li><a href="/admin/menus/create">New menu</a></li>
+                                <li><a href="/admin/categories/create">Add new</a></li>
+                                <li><a href="/admin/categories">Table overview</a></li>
                             </ul>
-                            <li class="dropdownItem">Categories<span class="count"><?php echo count($categories); ?></span></li>
+                            <li class="dropdownItem">Menus</li>
                             <ul class="dropdown display-none">
-                                <li><a href="/admin/categories">Table</a></li>
-                                <li><a href="/admin/categories/create">New category</a></li>
+                                <li><a href="/admin/menus/create">Add new</a></li>
+                                <li><a href="/admin/menus">Table overview</a></li>
                             </ul>
-                            <li class="dropdownItem">Css<span class="count"><?php echo count($css); ?></span></li>
+                            <li class="dropdownItem">Css</li>
                             <ul class="dropdown display-none">
-                                <li><a href="/admin/css">Table</a></li>
-                                <li><a href="/admin/css/create">New stylesheet</a></li>
+                                <li><a href="/admin/css/create">Add new</a></li>
+                                <li><a href="/admin/css">Table overview</a></li>
                             </ul>
-                            <li class="dropdownItem">Js<span class="count"><?php echo count($js); ?></span></li>
+                            <li class="dropdownItem">Js</li>
                             <ul class="dropdown display-none">
-                                <li><a href="/admin/js">Table</a></li>
-                                <li><a href="/admin/js/create">New script</a></li>
+                                <li><a href="/admin/js/create">Add new</a></li>
+                                <li><a href="/admin/js">Table overview</a></li>
                             </ul>
-                            <li class="dropdownItem">Media<span class="count"><?php echo count($media); ?></span></a></li>
+                            <li class="dropdownItem">Media</a></li>
                             <ul class="dropdown display-none">
-                                <li><a href="/admin/media">Table</a></li>
-                                <li><a href="/admin/media/create">Upload files</a></li>
+                                <li><a href="/admin/media/create">Upload new files</a></li>
+                                <li><a href="/admin/media">Table overview</a></li>
                             </ul>
-                            <li class="dropdownItem">Users<span class="count"><?php echo count($users); ?></span></a></li>
+                            <span class="sidebarSeparation"></span>
+                            <li class="dropdownItem">Users</a></li>
                             <ul class="dropdown display-none">
-                                <li><a href="/admin/users">Table</a></li>
-                                <li><a href="/admin/users/create">New user</a></li>
+                                <li><a href="/admin/users/create">Add new</a></li>
+                                <li><a href="/admin/users">Table overview</a></li>
                             </ul>
-                            <li class="dropdownItem">Profile</a></li>
-                            <ul class="dropdown display-none">
-                                <li><a href="/admin/profile/<?php echo Session::get('username'); ?>">Manage</a></li>
-                            </ul>
-                            <a href="/logout" class="button">Logout</a>
                         </ul>
                     </nav>
                 </div>
             </div>
         </div>
         <div class="col10 col9-L">
-            <div class="chartContainer">
+            <div class="cardProgressContainer">
                 <div class="row">
                     <div class="col6">
                         <div class="row">
                             <div class="col2-4">
                                 <div class="cardContainer">
-                                    <span class="header">Users</span>
+                                    <span class="header">Users <span class="small">(total)</span></span>
                                     <span class="amount"><?php echo count($users); ?></span>
                                     <div class="containerUsers">
                                         <span id="authors" value="<?php print_r($chartUserRoles); ?>"></span>

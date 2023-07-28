@@ -13,6 +13,7 @@
         <div class="profileContainer">
             <span id="profileIcon" class="profileIcon"><?php echo substr(Session::get('username'), 0, 1); ?></span>
             <ul id="profileDropdown">
+            <span class="triangle"></span>
                 <span class="profileIcon"><?php echo substr(Session::get('username'), 0, 1); ?></span>
                 <li class="text-center username"><?php echo Session::get('username'); ?></li>
                 <li><a href="/admin/profile/<?php echo Session::get('username'); ?>">Profile</a></li>

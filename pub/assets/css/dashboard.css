@@ -1,8 +1,5 @@
-.main-container {
-    margin: 20px;
-}
 #sidebar {
-    background: #1d242f;
+    background: #0b192d;
     z-index: unset;
     left: 0 !important;
 }
@@ -10,26 +7,17 @@
     padding: 0;
     margin: 0;
     list-style: none;
-    margin-top: 70px;
+    margin-top: 60px;
 }
 .sidebarContainer {
     margin: 0 !important;
 }
 #navigationMenu #dropdownItems .dropdownItem {
-    background: #1d242f;
+    background: #0b192d;
     color: #fff;
-    border-bottom: 1px solid #1d242f;
+    border-bottom: 1px solid #0b192d;
     padding: 10px 0px 10px 25px;
     font-size: 16px;
-}
-#navigationMenu #dropdownItems .dropdownItem .count {
-    background: #dfaf42;
-    float: right;
-    margin-right: 20px;
-    color: #0c203d;
-    width: 20px;
-    text-align: center;
-    font-size: 12px;
 }
 #navigationMenu #dropdownItems .dropdownItem:hover {
     cursor: pointer;
@@ -40,7 +28,6 @@
 }
 #navigationMenu #dropdownItems .dropdown li {
     width: 100%;
-    background: #171d26;
     padding: 8px 0px 8px 35px;
     color: #fff;
     font-size: 14px;
@@ -52,13 +39,6 @@
 #navigationMenu #dropdownItems .dropdown li a:hover {
     color: #fff;
 }
-.profile {
-    margin: 20px;
-    background: #fff;
-    padding: 10px;
-    border-radius: 3px;
-}
-
 #navigationMenu .button {
     background: #4f80c8;
     border-color: #4f80c8;
@@ -70,20 +50,27 @@
     text-align: center;
     padding: 8px;
 }
-
+.sidebarSeparation {
+    border-top: 1px solid #142946;
+    display: block;
+    margin: 10px 0;
+}
 #navigationMenu .button:hover {
     cursor: pointer;
     background: #83a7db;
     border-color: #83a7db;
 }
+.cardProgressContainer {
+    margin: 10px;
+}
 .cardContainer {
-    width: 95%;
     height: 280px;
     border-radius: 3px;
     background: #fff;
     display: block;
     position: relative;
-    margin: 10px;
+    width: calc(100% - 20px);
+    margin: 10px auto;
 }
 .cardContainer .header {
     width: 100%;
@@ -153,15 +140,13 @@
 .cardContainer .lastCreatedPage {
     width: fit-content;
     background: #1888e1;
-    padding: 10px;
-    padding-left: 10px;
     display: block;
     text-align: center;
     position: relative;
     font-size: 14px;
     margin-top: 10px;
     color: #fff;
-    padding-left: 20px;
+    padding: 10px 25px 10px 25px;
     
 }
 .cardContainer .lastCreatedPage:hover {
@@ -215,25 +200,14 @@
     background: #0064B4;
 }
 .progressContainer {
-    width: 97.5%;
     background: #fff;
     height: 500px;
     border-radius: 3px;
     margin: 10px;
     display: block;
     position: relative;
+    width: calc(100% - 20px);
 }
-/*.progressContainer .container {
-    position: absolute;
-    bottom: 20px;
-}
-.progressContainer .container progress {
-    transform: rotate(270deg);
-    background: #eaeaea;
-    height: 75px;
-    border: none;
-    width: 75%;
-}*/
 .progressContainer .container {
     padding: 20px;
 }
@@ -299,7 +273,7 @@
 .progressContainer .container .mediaTextContainer {
     position: absolute;
     bottom: 20px;
-    font-size: 18px;
+    font-size: 14px;
     background: #1888e1;
     right: 0;
     padding: 5px 20px 5px 20px;
