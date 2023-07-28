@@ -195,7 +195,7 @@ class CategoryController extends Controller {
 
         $slug = DB::try()->select('slug')->from('categories')->where('id', '=', $request['id'])->first();
 
-        $assignedPages = DB::try()->select('id, title')->from('pages')->join('category_page')->on('pages.id', '=', 'category_page.page_id')->where('category_id', '=', $request['id'])->fetch();
+        $assignedPages = DB::try()->select('id, title')->from('pages')->join('category_page')->on('pages.id', '=', 'category_page.page_id')->where('category_id', '=', $request['id'])->and('pages.removed', '!=', 1)->fetch();
         $assingedSubCategories = DB::try()->select('categories.id, categories.title, categories.slug')->from('categories')->join('category_sub')->on('category_sub.sub_id', '=', 'categories.id')->where('category_id', '=', $request['id'])->fetch();
         
         $allAssingedPages = DB::try()->select('pages.id')->from('pages')->join('category_page')->on('category_page.page_id', '=', 'pages.id')->fetch();
@@ -228,9 +228,9 @@ class CategoryController extends Controller {
     
         if(!empty($listAssingedPageIds) && $listAssingedPageIds !== null) {
     
-            $notAssignedPages = DB::try()->select('id, title')->from('pages')->whereNotIn('id', $listAssingedPageIds)->fetch();
+            $notAssignedPages = DB::try()->select('id, title')->from('pages')->whereNotIn('id', $listAssingedPageIds)->and('removed', '!=', 1)->fetch();
         } else {
-            $notAssignedPages = DB::try()->select('id, title')->from('pages')->fetch();
+            $notAssignedPages = DB::try()->select('id, title')->from('pages')->where('removed', '!=', 1)->fetch();
         }
 
         return $notAssignedPages;
