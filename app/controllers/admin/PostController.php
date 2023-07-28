@@ -77,6 +77,7 @@ class PostController extends Controller {
                     'body' => $request['body'],
                     'has_content' => $hasContent,
                     'author' => Session::get('username'),
+                    'removed' => 0,
                     'date_created_at' => date("d/m/Y"),
                     'time_created_at' => date("H:i"),
                     'date_updated_at' => date("d/m/Y"),
@@ -119,6 +120,8 @@ class PostController extends Controller {
         $this->ifExists($request['id']);
         
         $post = Post::get($request['id']);
+
+        if($post['removed'] === 1) { return Response::statusCode(404)->view("/404/404") . exit(); }
 
         $postSlug = explode('/', $post['slug']);
         $postSlug = "/" . $postSlug[array_key_last($postSlug)];
@@ -663,11 +666,12 @@ class PostController extends Controller {
 
         $this->ifExists($request['id']);
 
-        $post = DB::try()->select('removed')->from('pages')->first();
+        $post = DB::try()->select('title, removed')->from('pages')->first();
 
         Post::update(['id' => $request['id']], [
 
-            'removed'  => 0
+            'removed'  => 0,
+            'slug' => '/' . $post['title']
         ]);
 
         redirect("/admin/posts");
@@ -677,18 +681,20 @@ class PostController extends Controller {
 
         $this->ifExists($request['id']);
 
-        $post = DB::try()->select('removed')->from('pages')->first();
+        $post = DB::try()->select('removed')->from('pages')->where('id', '=', $request['id'])->first();
 
-        if($post['removed'] == 1) {
-
-            Post::delete("id", $request['id']);
-            CategoryPage::delete('page_id', $request['id']);
-        } else {
+        if($post['removed'] !== 1) {
 
             Post::update(['id' => $request['id']], [
 
-                'removed'  => 1
+                'removed'  => 1,
+                'slug'  => ''
             ]);
+
+        } else if($post['removed'] === 1) {
+
+            Post::delete("id", $request['id']);
+            CategoryPage::delete('page_id', $request['id']);
         }
 
         redirect("/admin/posts");
