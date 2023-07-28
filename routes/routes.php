@@ -54,6 +54,7 @@ Route::middleware('login')->run(function() {
     Route::post('/admin/posts/[id]/unlink-css')->add('admin\PostController', 'unLinkCss');
     Route::post('/admin/posts/[id]/include-js')->add('admin\PostController', 'includeJs');
     Route::post('/admin/posts/[id]/remove-js')->add('admin\PostController', 'removeJs');
+    Route::get('/admin/posts/[id]/recover')->add('admin\PostController', 'recover');
 
     Route::crud('/admin/users', '[username]')->add('admin\UserController', 'crud');
     Route::post('/admin/users/[username]/update-role')->add('admin\UserController', 'updateRole');

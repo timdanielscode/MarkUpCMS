@@ -659,6 +659,20 @@ class PostController extends Controller {
         }
     }
 
+    public function recover($request) {
+
+        $this->ifExists($request['id']);
+
+        $post = DB::try()->select('removed')->from('pages')->first();
+
+        Post::update(['id' => $request['id']], [
+
+            'removed'  => 0
+        ]);
+
+        redirect("/admin/posts");
+    }
+
     public function delete($request) {
 
         $this->ifExists($request['id']);

@@ -56,17 +56,27 @@
                     <td>
                         <?php echo $post['id']; ?>
                     </td>
+                    <?php if($post['removed'] !== 1) { ?>
                     <td class="width-20">
                         <a href="/admin/posts/<?php echo $post['id']; ?>/edit" class="font-weight-500"><?php echo $post[1]; ?></a> |
                         <a href="/admin/posts/<?php echo $post['id']; ?>/edit" class="font-weight-300">Edit</a> |
                         <a href="/admin/posts/<?php echo $post['id']; ?>/read" class="font-weight-300">Read</a> |
                         <a href="/admin/posts/<?php echo $post['id']; ?>/delete" class="font-weight-300 color-red">Remove</a>
                     </td>
+                    <?php } else { ?>
+                    <td class="width-20">
+                        <a href="/admin/posts/<?php echo $post['id']; ?>/recover" class="font-weight-300 page-recover">Recover</a> |
+                        <a href="/admin/posts/<?php echo $post['id']; ?>/edit" class="font-weight-500 <?php echo 'page-removed'; ?>"><?php echo $post[1]; ?></a> |
+                        <a href="/admin/posts/<?php echo $post['id']; ?>/edit" class="font-weight-300 <?php echo 'page-removed'; ?>">Edit</a> |
+                        <a href="/admin/posts/<?php echo $post['id']; ?>/read" class="font-weight-300 <?php echo 'page-removed'; ?>">Read</a> |
+                        <a href="/admin/posts/<?php echo $post['id']; ?>/delete" class="font-weight-300 color-red">Delete permanently</a> 
+                    </td>
+                    <?php } ?>
                     <td class="width-30">
-                        <a href="<?php echo $_SERVER['HTTP_HOST'] . $post['slug']; ?>"><?php echo $post['slug']; ?></a>
+                        <a href="<?php echo $_SERVER['HTTP_HOST'] . $post['slug']; ?>" class="<?php if($post['removed'] == 1) { echo 'page-removed'; } ?>"><?php echo $post['slug']; ?></a>
                     </td>
                     <td class="width-15">
-                        <?php if(!empty($post[10]) ) { echo $post[10]; } else { echo '-'; } ?>
+                        <?php if(!empty($post[11]) ) { echo $post[11]; } else { echo '-'; } ?>
                     </td>
                     <td class="width-15">
                         <?php echo $post['author']; ?>

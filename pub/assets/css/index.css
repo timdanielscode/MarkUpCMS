@@ -77,3 +77,9 @@ table th {
 table thead {
     border: 1px solid #ddd; 
 }
+.page-removed {
+    color: #333 !important;
+}
+.page-recover {
+    color: #42971c;
+}
