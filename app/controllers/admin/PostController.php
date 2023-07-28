@@ -666,12 +666,12 @@ class PostController extends Controller {
 
         $this->ifExists($request['id']);
 
-        $post = DB::try()->select('title, removed')->from('pages')->first();
+        $post = DB::try()->select('title, removed')->from('pages')->where('id', '=', $request['id'])->first();
 
         Post::update(['id' => $request['id']], [
 
             'removed'  => 0,
-            'slug' => '/' . $post['title']
+            'slug' => '/' . $post['title'] . '-recoverd'
         ]);
 
         redirect("/admin/posts");
