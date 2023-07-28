@@ -28,15 +28,6 @@ class CategoryController extends Controller {
 
     public function index() {
 
-        $assingedSubCategorySlugsPages = DB::try()->select('id, slug')->from('pages')->join('category_page')->on("category_page.page_id",'=','pages.id')->join('category_sub')->on('category_sub.category_id', '=', 'category_page.category_id')->where('category_sub.sub_id', '=', 270)->fetch();
-
-
-        print_r($assingedSubCategorySlugsPages);
-
-
-
-
-
         $category = new Category();
         $categories = $category->allCategoriesButOrdered();
 
@@ -471,9 +462,10 @@ class CategoryController extends Controller {
                 $assingedCategorySlugsPages = DB::try()->select('id, slug')->from('pages')->join('category_page')->on("category_page.page_id", '=', 'pages.id')->where('category_page.category_id', '=', $request['id'])->fetch();
 
                 if(!empty($assingedCategorySlugsPages) && $assingedCategorySlugsPages !== null) {
-            
+
                     $this->updateCategoryInPostSlug($currentSlug, $request, $assingedCategorySlugsPages);
-                } else if(!empty($assingedSubCategorySlugsPages) && $assingedSubCategorySlugsPages !== null) {
+                } 
+                if(!empty($assingedSubCategorySlugsPages) && $assingedSubCategorySlugsPages !== null) {
                     $this->updateSubCategoryInPostSlug($currentSlug, $request, $assingedSubCategorySlugsPages);
                 }
 
@@ -501,6 +493,9 @@ class CategoryController extends Controller {
 
                 $slugParts[$categorySlugKey] = substr("/" . $request['slug'], 1);
                 $slug = implode('/', $slugParts);
+
+                $unique = DB::try()->select('id')->from('pages')->where('slug', '=', $slug)->and('id', '!=', $page['id'])->first();
+                if(!empty($unique)) { exit(); }
         
                 Post::update(['id' => $page['id']], [
         
@@ -512,6 +507,8 @@ class CategoryController extends Controller {
 
     private function updateCategoryInPostSlug($currentSlug, $request, $assingedCategorySlugsPages) {
 
+        $this->exitOut();
+
         foreach($assingedCategorySlugsPages as $page) {
         
             $slugParts = explode('/', $page['slug']);
@@ -521,13 +518,21 @@ class CategoryController extends Controller {
 
                 $slugParts[$categorySlugKey] = substr("/" . $request['slug'], 1);
                 $slug = implode('/', $slugParts);
-        
+
+                $unique = DB::try()->select('id')->from('pages')->where('slug', '=', $slug)->and('id', '!=', $page['id'])->first();
+                if(!empty($unique)) { exit(); }
+
                 Post::update(['id' => $page['id']], [
         
                     'slug'  => $slug
                 ]);
             }
         } 
+    }
+
+    private function exitOut() {
+
+       // exit();
     }
 
     public function delete($request) {

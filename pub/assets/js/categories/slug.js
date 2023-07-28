@@ -21,7 +21,7 @@ $(document).ready(function() {
             },
                 error: function(xhr, status, error) {
 
-                    message.html("<span>Slug can't be empty, max 49 characters, no special characters!</span>").fadeIn(10);
+                    message.html("<span>Slug can't be empty, max 49 characters, no special characters, page slug must be unique after update!</span>").fadeIn(10);
                     message.addClass('message-failed'); 
                     message.removeClass('message-success');
             }
