@@ -20,11 +20,16 @@ class Post extends Model {
 
         if(!empty($searchValue) && $searchValue !== null) {
 
+            if($searchValue == 'removed') {
+                
+                return DB::try()->select('pages.id, pages.title, pages.slug, pages.author, pages.metaTitle, pages.metaDescription, pages.date_created_at, pages.date_updated_at, pages.time_created_at, pages.time_updated_at, categories.title')->from('pages')->joinLeft('category_page')->on('category_page.page_id', '=', 'pages.id')->joinLeft('categories')->on('categories.id', '=', 'category_page.category_id')->where('pages.removed', '=', 1)->fetch();
+            }
+
             return DB::try()->select('pages.id, pages.title, pages.slug, pages.author, pages.metaTitle, pages.metaDescription, pages.date_created_at, pages.date_updated_at, pages.time_created_at, pages.time_updated_at, categories.title')->from('pages')->joinLeft('category_page')->on('category_page.page_id', '=', 'pages.id')->joinLeft('categories')->on('categories.id', '=', 'category_page.category_id')->where('pages.title', 'LIKE', '%'.$searchValue.'%')->or('pages.author', 'LIKE', '%'.$searchValue.'%')->or('pages.date_created_at', 'LIKE', '%'.$searchValue.'%')->or('pages.time_created_at', 'LIKE', '%'.$searchValue.'%')->or('pages.date_updated_at', 'LIKE', '%'.$searchValue.'%')->or('pages.time_updated_at', 'LIKE', '%'.$searchValue.'%')->fetch();
             
         } else {
 
-            return DB::try()->select('pages.id, pages.title, pages.slug, pages.author, pages.metaTitle, pages.metaDescription, pages.date_created_at, pages.date_updated_at, pages.time_created_at, pages.time_updated_at, categories.title')->from('pages')->joinLeft('category_page')->on('category_page.page_id', '=', 'pages.id')->joinLeft('categories')->on('categories.id', '=', 'category_page.category_id')->fetch();
+            return DB::try()->select('pages.id, pages.title, pages.slug, pages.author, pages.metaTitle, pages.metaDescription, pages.date_created_at, pages.date_updated_at, pages.time_created_at, pages.time_updated_at, categories.title')->from('pages')->joinLeft('category_page')->on('category_page.page_id', '=', 'pages.id')->joinLeft('categories')->on('categories.id', '=', 'category_page.category_id')->where('pages.removed', 'IS', NULL)->fetch();
         }
     }
 }

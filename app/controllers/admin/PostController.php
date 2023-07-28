@@ -313,7 +313,7 @@ class PostController extends Controller {
             
                         Post::update(['id' => $pageId], [
             
-                            'slug'  => $currentCategorySlug['slug'] . $subCategoriesSlug . $currentSlug['slug']
+                            'slug'  =>  $subCategoriesSlug . $currentCategorySlug['slug'] . $currentSlug['slug']
                         ]);
             
                     } else {
@@ -663,8 +663,19 @@ class PostController extends Controller {
 
         $this->ifExists($request['id']);
 
-        Post::delete("id", $request['id']);
-        CategoryPage::delete('page_id', $request['id']);
+        $post = DB::try()->select('removed')->from('pages')->first();
+
+        if($post['removed'] == 1) {
+
+            Post::delete("id", $request['id']);
+            CategoryPage::delete('page_id', $request['id']);
+        } else {
+
+            Post::update(['id' => $request['id']], [
+
+                'removed'  => 1
+            ]);
+        }
 
         redirect("/admin/posts");
     }

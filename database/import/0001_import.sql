@@ -137,3 +137,5 @@ ALTER TABLE pages ADD has_content TINYINT AFTER body;
 ALTER TABLE menus ADD has_content TINYINT AFTER content;
 ALTER TABLE css ADD has_content TINYINT AFTER extension;
 ALTER TABLE js ADD has_content TINYINT AFTER extension;
+
+ALTER TABLE pages ADD removed TINYINT AFTER metaKeywords;
