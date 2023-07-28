@@ -1,6 +1,6 @@
 <div class="row">
     <div class="col8">
-        <span class="categorySlugAdd">Slug: </span><div id="SUBCATEGORYSLUGCONTAINER"><div id="CATEGORYSLUG" class="listedItem"><?php echo $slug; ?></div><?php if(!empty($assingedSubCategories) && $assingedSubCategories !== null) { ?><?php foreach($assingedSubCategories as $assingedSubCategory) { ?><div id="LISTEDCATEGORY-<?php echo $assingedSubCategory['id']; ?>" class="listedItem"><?php echo $assingedSubCategory['slug']; ?></div><?php } ?><?php } ?></div>
+        <span class="categorySlugAdd">Slug: </span><div id="SUBCATEGORYSLUGCONTAINER"><?php if(!empty($assingedSubCategories) && $assingedSubCategories !== null) { ?><?php foreach($assingedSubCategories as $assingedSubCategory) { ?><div id="LISTEDCATEGORY-<?php echo $assingedSubCategory['id']; ?>" class="listedItem"><?php echo $assingedSubCategory['slug']; ?></div><?php } ?><?php } ?><div id="CATEGORYSLUG" class="listedItem"><?php echo $slug; ?></div></div>
     </div>
     <div class="col4">
         <a id="BACK" class="button">Close</a>

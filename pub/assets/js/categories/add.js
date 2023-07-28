@@ -113,11 +113,13 @@ function updateListedCategorySlug(element, id) {
 
     var listedCategoryContainer = $('#SUBCATEGORYSLUGCONTAINER');
     var listedCategory = $('#LISTEDCATEGORY-'+id);
+    var categorySlug = $('#CATEGORYSLUG');
 
     if(element.parentNode.id === 'NOTASSINGEDSUBCATEGORYID') {
 
         var div = $('<div></div>').attr("id", "LISTEDCATEGORY-"+id).addClass('listedItem').text("/" + element.innerText);
         listedCategoryContainer.append(div);
+        listedCategoryContainer.append(categorySlug);
 
     } else if(element.parentNode.id === 'ASSINGEDSUBCATEGORYID') {
 

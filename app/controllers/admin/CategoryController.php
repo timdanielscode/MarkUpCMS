@@ -361,14 +361,14 @@ class CategoryController extends Controller {
     
                 Post::update(['id' => $pageId], [
     
-                    'slug'  => $currentCategorySlug['slug'] . $subCategoriesSlug . $currentSlug['slug']
+                    'slug'  =>  $subCategoriesSlug . $currentCategorySlug['slug'] . $currentSlug['slug']
                 ]);
     
             } else {
     
                 Post::update(['id' => $pageId], [
     
-                    'slug'  => $currentCategorySlug['slug'] . $currentSlug['slug']
+                    'slug'  =>  $currentSlug['slug'] . $currentCategorySlug['slug']
                 ]);
             }
         }
@@ -507,8 +507,6 @@ class CategoryController extends Controller {
 
     private function updateCategoryInPostSlug($currentSlug, $request, $assingedCategorySlugsPages) {
 
-        $this->exitOut();
-
         foreach($assingedCategorySlugsPages as $page) {
         
             $slugParts = explode('/', $page['slug']);
@@ -529,12 +527,7 @@ class CategoryController extends Controller {
             }
         } 
     }
-
-    private function exitOut() {
-
-       // exit();
-    }
-
+    
     public function delete($request) {
 
         $this->ifExists($request['id']);
