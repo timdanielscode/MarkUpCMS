@@ -132,7 +132,7 @@ class JsController extends Controller {
         $file = Js::where('id', '=', $request['id'])[0];
         $code = $this->getFileContent($file['file_name']);
 
-        $assingedPages = DB::try()->select('id, title')->from('pages')->join('js_page')->on('pages.id', '=', 'js_page.page_id')->where('js_page.js_id', '=', $request['id'])->fetch();
+        $assingedPages = DB::try()->select('id, title')->from('pages')->join('js_page')->on('pages.id', '=', 'js_page.page_id')->where('js_page.js_id', '=', $request['id'])->and('pages.removed', '!=', 1)->fetch();
         $pages = $this->getPages($assingedPages);
 
         $data['data'] = $file;
@@ -157,9 +157,9 @@ class JsController extends Controller {
 
             $listAssingedPageIdString = implode(',', $listAssingedPageIds);
 
-            $pages = DB::try()->select('id, title')->from('pages')->whereNotIn('id', $listAssingedPageIdString)->fetch();
+            $pages = DB::try()->select('id, title')->from('pages')->whereNotIn('id', $listAssingedPageIdString)->and('pages.removed', '!=', 1)->fetch();
         } else {
-            $pages = DB::try()->select('id, title')->from('pages')->fetch();
+            $pages = DB::try()->select('id, title')->from('pages')->where('pages.removed', '!=', 1)->fetch();
         }
 
         return $pages;

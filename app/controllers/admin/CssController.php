@@ -139,7 +139,7 @@ class CssController extends Controller {
         $cssFile = Css::where('id', '=', $request['id'])[0];
         $code = $this->getFileContent($cssFile['file_name']);
 
-        $assingedPages = DB::try()->select('id, title')->from('pages')->join('css_page')->on('pages.id', '=', 'css_page.page_id')->where('css_page.css_id', '=', $request['id'])->fetch();
+        $assingedPages = DB::try()->select('id, title')->from('pages')->join('css_page')->on('pages.id', '=', 'css_page.page_id')->where('css_page.css_id', '=', $request['id'])->and('pages.removed', '!=', 1)->fetch();
         $pages = $this->notAssingedPages($assingedPages);
 
         $data['data'] = $cssFile;
@@ -165,9 +165,9 @@ class CssController extends Controller {
 
             $listAssingedPageIdString = implode(',', $listAssingedPageIds);
 
-            $pages = DB::try()->select('id, title')->from('pages')->whereNotIn('id', $listAssingedPageIdString)->fetch();
+            $pages = DB::try()->select('id, title')->from('pages')->whereNotIn('id', $listAssingedPageIdString)->and('removed', '!=', 1)->fetch();
         } else {
-            $pages = DB::try()->select('id, title')->from('pages')->fetch();
+            $pages = DB::try()->select('id, title')->from('pages')->where('removed', '!=', 1)->fetch();
         }
         return $pages;
     }
