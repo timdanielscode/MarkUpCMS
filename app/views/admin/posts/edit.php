@@ -75,7 +75,7 @@
                         <input class="updateSlugButton" type="submit" name="submit" value="Update"/>
                         <input type="hidden" name="token" value="<?php Csrf::token('add'); ?>" />
                     </form>
-                    <div id="category" class="display-none">
+                    <div id="category" class="<?php if(Session::exists('updateCategory') === false) { echo 'display-none'; } ?>">
                         <span class="text">Category: </span>
                             <?php if(!empty($data['categories']) && $data['categories'] !== null) { ?>
                                 <form class="AddCategory" action="/admin/posts/<?php echo $data['id']; ?>/assign-category" method="POST">
@@ -105,7 +105,7 @@
                                 </form>
                         <?php } ?>
                     </div>
-                    <form id="metaForm" class="updateMetaDataForm display-none" action="/admin/posts/<?php echo $data['id']; ?>/update-metadata" method="POST">
+                    <form id="metaForm" class="updateMetaDataForm <?php if(Session::exists('updateMeta') === false) { echo 'display-none'; } ?>" action="/admin/posts/<?php echo $data['id']; ?>/update-metadata" method="POST">
                         <div class="form-parts">
                             <label for="metaTitle">Meta title: </label>
                             <input id="metaTitle" type="text" name="metaTitle" value="<?php if(!empty($data['metaTitle']) && $data['metaTitle'] !== null) { echo $data['metaTitle']; } ?>" placeholder="Title"/>
@@ -130,7 +130,7 @@
                         <input type="submit" name="submit" value="Update"/>
                         <input type="hidden" name="token" value="<?php Csrf::token('add'); ?>" />
                     </form>
-                    <form id="linkedCssFiles" class="linkedCssFilesForm display-none" action="/admin/posts/<?php echo $data['id']; ?>/unlink-css" method="POST">
+                    <form id="linkedCssFiles" class="linkedCssFilesForm <?php if(Session::exists('updateCss') === false) { echo 'display-none'; } ?>" action="/admin/posts/<?php echo $data['id']; ?>/unlink-css" method="POST">
                         <label for="linkedFiles">Linked css files:</label>
                         <select id="linkedFiles" name="linkedCssFiles[]" multiple>
                             <?php foreach($data['linkedCssFiles'] as $linkedCssFile) { ?>
@@ -142,7 +142,7 @@
                         <input type="submit" name="submit" value="Remove"/>
                         <input type="hidden" name="token" value="<?php Csrf::token('add'); ?>" />
                     </form>
-                    <form id="cssFiles" class="cssFilesForm display-none" action="/admin/posts/<?php echo $data['id']; ?>/link-css" method="POST">
+                    <form id="cssFiles" class="cssFilesForm <?php if(Session::exists('updateCss') === false) { echo 'display-none'; } ?>" action="/admin/posts/<?php echo $data['id']; ?>/link-css" method="POST">
                         <label for="cssFilesSelect">Other css files:</label>
                         <select id="cssFilesSelect" name="cssFiles[]" multiple>
                             <?php foreach($data['notLinkedCssFiles'] as $notLinkedCssFile) { ?>
@@ -154,7 +154,7 @@
                         <input type="hidden" name="token" value="<?php Csrf::token('add'); ?>" />
                         <input type="submit" name="submit" value="Link"/>
                     </form>
-                    <form id="linkedJsFiles" class="linkedJsFilesForm display-none" action="/admin/posts/<?php echo $data['id'] ?>/remove-js" method="POST">
+                    <form id="linkedJsFiles" class="linkedJsFilesForm <?php if(Session::exists('updateJs') === false) { echo 'display-none'; } ?>" action="/admin/posts/<?php echo $data['id'] ?>/remove-js" method="POST">
                         <label for="linkedJsFiles">Linked js files:</label>
                         <select id="linkedJsFiles" name="linkedJsFiles[]" multiple>
                             <?php foreach($data['linkedJsFiles'] as $linkedJsFile) { ?>
@@ -166,7 +166,7 @@
                         <input type="hidden" name="token" value="<?php Csrf::token('add'); ?>" />
                         <input type="submit" name="submit" value="Remove"/>
                     </form>
-                    <form id="jsFiles" class="jsFilesForm display-none" action="/admin/posts/<?php echo $data['id']; ?>/include-js" method="POST">
+                    <form id="jsFiles" class="jsFilesForm <?php if(Session::exists('updateJs') === false) { echo 'display-none'; } ?>" action="/admin/posts/<?php echo $data['id']; ?>/include-js" method="POST">
                         <label for="jsFilesSelect">Other js files:</label>
                             <select id="jsFilesSelect" name="jsFiles[]" multiple>
                                 <?php foreach($data['notLinkedJsFiles'] as $notLinkedJsFile) { ?>

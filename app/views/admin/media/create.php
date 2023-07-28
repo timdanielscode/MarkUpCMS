@@ -25,6 +25,7 @@
                         <input name="media_title" type="text" id="media_title" placeholder="Title" autofocus>
                         <div class="error-messages">
                             <?php echo Errors::get($rules, 'media_title'); ?>
+                            <?php echo Errors::get($rules, 'file'); ?>
                         </div>
                     </div>
                     <div class="form-parts">
@@ -35,9 +36,6 @@
                     </div>
                     <div class="form-parts">
                         <input name="file[]" type="file" multiple="true" id="file" class="display-none">
-                        <div class="error-messages">
-                            <?php echo Errors::get($rules, 'file'); ?>
-                        </div>
                     </div>
                     <div class="form-parts">
                         <button name="submit" id="submit" type="submit" class="display-none">Upload</button>

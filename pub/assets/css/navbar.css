@@ -32,6 +32,10 @@
     right: 100px;
     top: 0;
 }
+#profileIcon {
+    position: relative;
+    z-index: 2;
+}
 #IndependentCMSMainNavbar .profileContainer .profileIcon {
     background: #fff;
     width: 35px;
@@ -67,7 +71,7 @@
     position: absolute;
     border: 26px solid;
     border-bottom-color: white;
-    z-index: 999;
+    z-index: 1;
     top: -35px;
     right: 2px;
     border-right-color: transparent;
@@ -85,6 +89,7 @@
     background: #0c203d;
     color: #fff;
     font-weight: normal;
+    position: relative;
 }
 #IndependentCMSMainNavbar #profileDropdown .username {
     border: unset;
