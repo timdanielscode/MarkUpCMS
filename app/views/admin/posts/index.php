@@ -68,9 +68,10 @@
                     </td>
                     <?php } else { ?>
                     <td class="width-20">
-                        <a href="/admin/posts/<?php echo $post['id']; ?>/recover" class="font-weight-300 recover">Recover</a> |
-                        <span class="font-weight-500 <?php echo 'removed'; ?>"><?php echo $post[1]; ?></span> |
-                        <a href="/admin/posts/<?php echo $post['id']; ?>/read" class="font-weight-300 <?php echo 'removed'; ?>">Read</a> |
+                        <span class="removed font-weight-500"><?php echo $post[1]; ?></span> |
+                        <span class="removed font-weight-300">Edit</span> |
+                        <a href="/admin/posts/<?php echo $post['id']; ?>/read" class="font-weight-300">Read</a> |
+                        <a href="/admin/posts/<?php echo $post['id']; ?>/recover" class="font-weight-300">Recover</a> |
                         <a href="/admin/posts/<?php echo $post['id']; ?>/delete" class="font-weight-300 color-red">Delete permanently</a> 
                     </td>
                     <td class="width-30">

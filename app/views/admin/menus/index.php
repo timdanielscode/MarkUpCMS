@@ -55,9 +55,10 @@
                                 </td>
                             <?php } else { ?>
                                 <td class="width-30">
-                                    <a href="/admin/menus/<?php echo $menu['id']; ?>/recover" class="font-weight-300 recover">Recover</a> |
                                     <span class="removed font-weight-500"><?php echo $menu['title']; ?></span> |
-                                    <a href="/admin/menus/<?php echo $menu['id']; ?>/read" class="removed font-weight-300">Read</a> |
+                                    <span class="removed font-weight-300">Edit</span> |
+                                    <a href="/admin/menus/<?php echo $menu['id']; ?>/read" class="font-weight-300">Read</a> |
+                                    <a href="/admin/menus/<?php echo $menu['id']; ?>/recover" class="font-weight-300">Recover</a> |
                                     <a href="/admin/menus/<?php echo $menu['id']; ?>/delete" class="font-weight-300 color-red">Remove</a>
                                 </td>
                             <?php } ?>

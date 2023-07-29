@@ -187,7 +187,7 @@ class MenuController extends Controller {
 
         $this->ifExists($request['id']);
 
-        $menu = DB::try()->select('title, removed')->from('menus')->where('id', '=', $request['id'])->first();
+        $menu = DB::try()->select('removed')->from('menus')->where('id', '=', $request['id'])->first();
 
         Menu::update(['id' => $request['id']], [
 
@@ -208,7 +208,6 @@ class MenuController extends Controller {
             Menu::update(['id' => $request['id']], [
 
                 'removed'  => 1,
-                'title' => $menu['title'] . '-removed',
                 'position' => 'unset',
                 'ordering' => 0
             ]);

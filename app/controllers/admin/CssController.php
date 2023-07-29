@@ -42,7 +42,7 @@ class CssController extends Controller {
 
         $count = count($cssFiles);
 
-        $cssFiles = Pagination::get($cssFiles, 3);
+        $cssFiles = Pagination::get($cssFiles, 10);
         $numberOfPages = Pagination::getPageNumbers();
 
         $data['count'] = $count;
@@ -87,6 +87,7 @@ class CssController extends Controller {
                         'file_name' => $request['filename'],
                         'extension' => '.css',
                         'has_content' => $hasContent,
+                        'removed' => 0,
                         'date_created_at'   => date('d/m/Y'),
                         'time_created_at'   => date('H:i'),
                         'date_updated_at'   => date('d/m/Y'),
@@ -137,6 +138,8 @@ class CssController extends Controller {
         $this->ifExists($request['id']);
 
         $cssFile = Css::where('id', '=', $request['id'])[0];
+        if($cssFile['removed'] === 1) { return Response::statusCode(404)->view("/404/404") . exit(); }
+
         $code = $this->getFileContent($cssFile['file_name']);
 
         $assingedPages = DB::try()->select('id, title')->from('pages')->join('css_page')->on('pages.id', '=', 'css_page.page_id')->where('css_page.css_id', '=', $request['id'])->and('pages.removed', '!=', 1)->fetch();
@@ -310,16 +313,42 @@ class CssController extends Controller {
         }
     }
 
+    public function recover($request) {
+
+        $this->ifExists($request['id']);
+
+        $css = DB::try()->select('removed')->from('css')->where('id', '=', $request['id'])->first();
+
+        Css::update(['id' => $request['id']], [
+
+            'removed'  => 0
+        ]);
+
+        redirect("/admin/css");
+    }
+
     public function delete($request) {
 
         $this->ifExists($request['id']);
 
-        $filename = Css::where('id', '=', $request['id'])[0]['file_name'];
-        $path = "website/assets/css/" . $filename . ".css";
-        
-        unlink($path);
+        $css = DB::try()->select('removed')->from('css')->where('id', '=', $request['id'])->first();
 
-        Css::delete('id', $request['id']);
+        if($css['removed'] !== 1) {
+
+            Css::update(['id' => $request['id']], [
+
+                'removed'  => 1
+            ]);
+
+        } else if($css['removed'] === 1) {
+
+            $filename = Css::where('id', '=', $request['id'])[0]['file_name'];
+            $path = "website/assets/css/" . $filename . ".css";
+            
+            unlink($path);
+
+            Css::delete("id", $request['id']);
+        }
 
         redirect("/admin/css");
     }

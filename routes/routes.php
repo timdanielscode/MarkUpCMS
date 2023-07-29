@@ -64,6 +64,7 @@ Route::middleware('login')->run(function() {
     Route::post('/admin/css/[id]/unlink-pages')->add('admin\CssController', 'unlinkPages');
     Route::post('/admin/css/[id]/link-all')->add('admin\CssController', 'linkAll');
     Route::post('/admin/css/[id]/unlink-all')->add('admin\CssController', 'unlinkAll');
+    Route::get('/admin/css/[id]/recover')->add('admin\CssController', 'recover');
 
     Route::crud('/admin/js', '[id]')->add('admin\JsController', 'crud');
     Route::post('/admin/js/[id]/include-pages')->add('admin\JsController', 'includePages');
