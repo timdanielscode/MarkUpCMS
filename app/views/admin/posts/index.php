@@ -68,13 +68,13 @@
                     </td>
                     <?php } else { ?>
                     <td class="width-20">
-                        <a href="/admin/posts/<?php echo $post['id']; ?>/recover" class="font-weight-300 page-recover">Recover</a> |
-                        <span class="font-weight-500 <?php echo 'page-removed'; ?>"><?php echo $post[1]; ?></span> |
-                        <a href="/admin/posts/<?php echo $post['id']; ?>/read" class="font-weight-300 <?php echo 'page-removed'; ?>">Read</a> |
+                        <a href="/admin/posts/<?php echo $post['id']; ?>/recover" class="font-weight-300 recover">Recover</a> |
+                        <span class="font-weight-500 <?php echo 'removed'; ?>"><?php echo $post[1]; ?></span> |
+                        <a href="/admin/posts/<?php echo $post['id']; ?>/read" class="font-weight-300 <?php echo 'removed'; ?>">Read</a> |
                         <a href="/admin/posts/<?php echo $post['id']; ?>/delete" class="font-weight-300 color-red">Delete permanently</a> 
                     </td>
                     <td class="width-30">
-                        <span class="page-removed">TEMPORARILY UNSET</span>
+                        <span class="removed">TEMPORARILY UNSET</span>
                     </td>
                     <?php } ?>
                     <td class="width-15">

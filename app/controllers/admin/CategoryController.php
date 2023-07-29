@@ -298,7 +298,7 @@ class CategoryController extends Controller {
                     $slug = explode('/', $pageSlug['slug']);
                     $lastKey = array_key_last($slug);
         
-                    $unique = DB::try()->select('pages.slug')->from('pages')->join('category_page')->on('category_page.page_id', '=', 'pages.id')->where('slug', 'LIKE', '%'.$slug[$lastKey])->and('id', '!=', $pageId)->first();
+                    $unique = DB::try()->select('pages.slug')->from('pages')->join('category_page')->on('category_page.page_id', '=', 'pages.id')->where('category_page.category_id', '=', $request['id'])->and('slug', 'LIKE', '%'.$slug[$lastKey])->and('id', '!=', $pageId)->first();
                     
                     if(empty($unique)) {
 
@@ -368,7 +368,7 @@ class CategoryController extends Controller {
     
                 Post::update(['id' => $pageId], [
     
-                    'slug'  =>  $currentSlug['slug'] . $currentCategorySlug['slug']
+                    'slug'  =>  $currentCategorySlug['slug'] . $currentSlug['slug']
                 ]);
             }
         }

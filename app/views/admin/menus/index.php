@@ -46,12 +46,22 @@
                             <td>
                                 <?php echo $menu['id']; ?>
                             </td>
-                            <td class="width-30">
-                                <a href="/admin/menus/<?php echo $menu['id']; ?>/edit" class="font-weight-500"><?php echo $menu['title']; ?></a> |
-                                <a href="/admin/menus/<?php echo $menu['id']; ?>/edit" class="font-weight-300">Edit</a> |
-                                <a href="/admin/menus/<?php echo $menu['id']; ?>/read" class="font-weight-300">Read</a> |
-                                <a href="/admin/menus/<?php echo $menu['id']; ?>/delete" class="font-weight-300 color-red">Remove</a>
-                            </td>
+                            <?php if($menu['removed'] !== 1) { ?>
+                                <td class="width-30">
+                                    <a href="/admin/menus/<?php echo $menu['id']; ?>/edit" class="font-weight-500"><?php echo $menu['title']; ?></a> |
+                                    <a href="/admin/menus/<?php echo $menu['id']; ?>/edit" class="font-weight-300">Edit</a> |
+                                    <a href="/admin/menus/<?php echo $menu['id']; ?>/read" class="font-weight-300">Read</a> |
+                                    <a href="/admin/menus/<?php echo $menu['id']; ?>/delete" class="font-weight-300 color-red">Remove</a>
+                                </td>
+                            <?php } else { ?>
+                                <td class="width-30">
+                                    <a href="/admin/menus/<?php echo $menu['id']; ?>/recover" class="font-weight-300 recover">Recover</a> |
+                                    <span class="removed font-weight-500"><?php echo $menu['title']; ?></span> |
+                                    <a href="/admin/menus/<?php echo $menu['id']; ?>/read" class="removed font-weight-300">Read</a> |
+                                    <a href="/admin/menus/<?php echo $menu['id']; ?>/delete" class="font-weight-300 color-red">Remove</a>
+                                </td>
+                            <?php } ?>
+
                             <?php if(!empty($menu['position']) ) { ?>
                             <td class="width-20">
                                 <?php echo $menu['position']; ?>

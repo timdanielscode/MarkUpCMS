@@ -70,7 +70,9 @@ class MenuController extends Controller {
                     'content'   => $request['content'],
                     'has_content' => $hasContent,
                     'position'  => 'unset',
+                    'ordering'  => 0,
                     'author'    =>  Session::get('username'),
+                    'removed' => 0,
                     'date_created_at'   =>     date("d/m/Y"),
                     'time_created_at'   =>     date("H:i"),
                     'date_updated_at'   =>     date("d/m/Y"),
@@ -102,6 +104,9 @@ class MenuController extends Controller {
         $this->ifExists($request['id']);
 
         $menu = Menu::where('id', '=', $request['id'])[0];
+
+        if($menu['removed'] === 1) { return Response::statusCode(404)->view("/404/404") . exit(); }
+
         $data['menu'] = $menu;
         
         $data['rules'] = [];
@@ -178,11 +183,41 @@ class MenuController extends Controller {
         }
     }
 
+    public function recover($request) {
+
+        $this->ifExists($request['id']);
+
+        $menu = DB::try()->select('title, removed')->from('menus')->where('id', '=', $request['id'])->first();
+
+        Menu::update(['id' => $request['id']], [
+
+            'removed'  => 0
+        ]);
+
+        redirect("/admin/menus");
+    }
+
     public function delete($request) {
 
         $this->ifExists($request['id']);
 
-        Menu::delete('id', $request['id']);
+        $menu = DB::try()->select('title, removed')->from('menus')->where('id', '=', $request['id'])->first();
+
+        if($menu['removed'] !== 1) {
+
+            Menu::update(['id' => $request['id']], [
+
+                'removed'  => 1,
+                'title' => $menu['title'] . '-removed',
+                'position' => 'unset',
+                'ordering' => 0
+            ]);
+
+        } else if($menu['removed'] === 1) {
+
+            Menu::delete("id", $request['id']);
+        }
+
         redirect("/admin/menus");
     }
 }

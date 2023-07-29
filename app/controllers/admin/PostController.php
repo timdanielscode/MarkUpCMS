@@ -671,7 +671,7 @@ class PostController extends Controller {
         Post::update(['id' => $request['id']], [
 
             'removed'  => 0,
-            'slug' => '/' . $post['title'] . '-recoverd'
+            'slug' => "/" . $post['title']
         ]);
 
         redirect("/admin/posts");
@@ -681,13 +681,14 @@ class PostController extends Controller {
 
         $this->ifExists($request['id']);
 
-        $post = DB::try()->select('removed')->from('pages')->where('id', '=', $request['id'])->first();
+        $post = DB::try()->select('title, removed')->from('pages')->where('id', '=', $request['id'])->first();
 
         if($post['removed'] !== 1) {
 
             Post::update(['id' => $request['id']], [
 
                 'removed'  => 1,
+                'title' => $post['title'] . '-removed',
                 'slug'  => ''
             ]);
 
