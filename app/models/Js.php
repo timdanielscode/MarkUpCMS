@@ -18,12 +18,17 @@ class Js extends Model {
 
     public function allJsButOrderedOnDate() {
 
-        return DB::try()->all('js')->order('date_created_at')->fetch();
+        return DB::try()->all('js')->where('removed', 'IS', NULL)->or('removed', '=', '0')->order('date_created_at')->fetch();
     }
 
     public function cssFilesOnSearch($searchValue) {
 
         if(!empty($searchValue) && $searchValue !== null) {
+
+            if($searchValue == 'removed') {
+
+                return DB::try()->all('js')->where('removed', '=', 1)->fetch();
+            }
 
             return DB::try()->all('js')->where('file_name', 'LIKE', '%'.$searchValue.'%')->or('date_created_at', 'LIKE', '%'.$searchValue.'%')->or('time_created_at', 'LIKE', '%'.$searchValue.'%')->or('date_updated_at', 'LIKE', '%'.$searchValue.'%')->or('time_updated_at', 'LIKE', '%'.$searchValue.'%')->fetch();
         }

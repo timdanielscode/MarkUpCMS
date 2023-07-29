@@ -41,7 +41,7 @@ class JsController extends Controller {
         
         $count = count($jsFiles);
 
-        $jsFiles = Pagination::get($jsFiles, 3);
+        $jsFiles = Pagination::get($jsFiles, 10);
         $numberOfPages = Pagination::getPageNumbers();
 
         $data['jsFiles'] = $jsFiles;
@@ -130,6 +130,8 @@ class JsController extends Controller {
         $this->ifExists($request['id']);
 
         $file = Js::where('id', '=', $request['id'])[0];
+        if($file['removed'] === 1) { return Response::statusCode(404)->view("/404/404") . exit(); }
+
         $code = $this->getFileContent($file['file_name']);
 
         $assingedPages = DB::try()->select('id, title')->from('pages')->join('js_page')->on('pages.id', '=', 'js_page.page_id')->where('js_page.js_id', '=', $request['id'])->and('pages.removed', '!=', 1)->fetch();
@@ -301,17 +303,43 @@ class JsController extends Controller {
         }
     }
 
-    public function delete($request) {
+    public function recover($request) {
 
         $this->ifExists($request['id']);
 
-        $filename = Js::where('id', '=', $request['id'])[0]['file_name'];
-        $path = "website/assets/js/" . $filename . ".js";
-        unlink($path);
+        $js = DB::try()->select('removed')->from('js')->where('id', '=', $request['id'])->first();
 
-        Js::delete('id', $request['id']);
+        Js::update(['id' => $request['id']], [
+
+            'removed'  => 0
+        ]);
 
         redirect("/admin/js");
     }
 
+    public function delete($request) {
+
+        $this->ifExists($request['id']);
+
+        $js = DB::try()->select('removed')->from('js')->where('id', '=', $request['id'])->first();
+
+        if($js['removed'] !== 1) {
+
+            Js::update(['id' => $request['id']], [
+
+                'removed'  => 1
+            ]);
+
+        } else if($js['removed'] === 1) {
+
+            $filename = Js::where('id', '=', $request['id'])[0]['file_name'];
+            $path = "website/assets/js/" . $filename . ".js";
+            
+            unlink($path);
+
+            Js::delete("id", $request['id']);
+        }
+
+        redirect("/admin/js");
+    }
 }
