@@ -207,21 +207,21 @@ margin-top: 50px;
 .categorySlug:focus-visible {
     outline: none;
 }
-.modal-edit {
+.modal-edit, .modal-create {
     position: absolute !important;
     top: 50%;
     transform: translate(-50%, -50%) !important;
     width: 600px !important;
     height: 500px !important;
 }
-.modal-edit #modalForm {
+.modal-edit #modalForm, .modal-create #modalForm {
     position: absolute;
     left: 50px;
     color: #000;
     top: 50px;
     right: 50px;
 }
-.modal-edit #modalForm input {
+.modal-edit #modalForm input, .modal-create #modalForm input {
     width: 100%;
     box-sizing: border-box;
     color: #000;
@@ -230,10 +230,10 @@ margin-top: 50px;
     padding: 10px;
     border-radius: 3px;
 }
-.modal-edit #modalForm input, .modal-edit #modalForm textarea {
+.modal-edit #modalForm input, .modal-edit #modalForm textarea, .modal-create #modalForm input, .modal-create #modalForm textarea {
     outline: none;
 }
-.modal-edit #modalForm textarea {
+.modal-edit #modalForm textarea, .modal-create #modalForm textarea {
     width: 100%;
     box-sizing: border-box;
     height: 150px;
@@ -242,11 +242,11 @@ margin-top: 50px;
     padding: 10px;
     border-radius: 3px;
 }
-.modal-edit #modalForm label {
+.modal-edit #modalForm label, .modal-create #modalForm label {
     display: block;
     margin-bottom: 10px;
 }
-.modal-edit #modalForm #EDITUPDATE {
+.modal-edit #modalForm #EDITUPDATE, .modal-create #modalForm #CREATESTORE {
     background: #42971c;
     font-size: 14px;
     padding: 10px;
@@ -256,12 +256,12 @@ margin-top: 50px;
     color: #fff !important;
     margin-top: 25px;
 }
-.modal-edit #modalForm #EDITUPDATE:hover {
+.modal-edit #modalForm #EDITUPDATE:hover, .modal-create #modalForm #CREATESTORE:hover {
     background: #6ba152;
     border-color: #6ba152;
     cursor: pointer;
 }
-.modal-edit #modalForm #EDITCLOSE {
+.modal-edit #modalForm #EDITCLOSE, .modal-create #modalForm #EDITCLOSE {
     background: #4f80c8;
     color: #fff !important;
     border: 2px solid #4f80c8;
@@ -272,7 +272,7 @@ margin-top: 50px;
     font-size: 14px;
     margin-top: 25px;
 }
-.modal-edit #modalForm #EDITCLOSE:hover {
+.modal-edit #modalForm #EDITCLOSE:hover, .modal-create #modalForm #EDITCLOSE:hover {
     cursor: pointer;
     background: #83a7db;
     border-color:  #83a7db;

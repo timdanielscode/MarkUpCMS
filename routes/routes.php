@@ -93,6 +93,8 @@ Route::middleware('login')->run(function() {
     Route::get('/admin/categories')->add('admin\CategoryController', 'index');
     Route::get('/admin/categories/')->add('admin\CategoryController', 'TABLE');
     
+    Route::get('/admin/categories/create')->add('admin\CategoryController', 'CREATE');
+    Route::post('/admin/categories/store')->add('admin\CategoryController', 'STORE');
     Route::get('/admin/categories/read')->add('admin\CategoryController', 'READ');
     Route::get('/admin/categories/edit')->add('admin\CategoryController', 'EDIT');
     Route::post('/admin/categories/update')->add('admin\CategoryController', 'UPDATE');
@@ -101,7 +103,7 @@ Route::middleware('login')->run(function() {
     Route::post('/admin/categories/addcategory')->add('admin\CategoryController', 'ADDCATEGORY');
     Route::post('/admin/categories/slug')->add('admin\CategoryController', 'SLUG');
 
-    Route::get('/admin/categories/create')->add('admin\CategoryController', 'create');
-    Route::post('/admin/categories/store')->add('admin\CategoryController', 'store');
-    Route::get('/admin/categories/[id]/delete')->add('admin\CategoryController', 'delete');
+    //Route::get('/admin/categories/create')->add('admin\CategoryController', 'create');
+    //Route::post('/admin/categories/store')->add('admin\CategoryController', 'store');
+    //Route::get('/admin/categories/[id]/delete')->add('admin\CategoryController', 'delete');
 });

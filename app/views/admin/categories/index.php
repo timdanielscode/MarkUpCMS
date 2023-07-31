@@ -11,6 +11,7 @@
     $this->script('/assets/js/categories/table.js', true);
     $this->script('/assets/js/categories/modal.js', true);
     $this->script('/assets/js/categories/edit.js', true);
+    $this->script('/assets/js/categories/create.js', true);
     $this->script('/assets/js/categories/read.js', true);
     $this->script('/assets/js/categories/add.js', true);
     $this->script('/assets/js/categories/slug.js', true);
@@ -21,7 +22,7 @@
     <h1>Category</h1>
     <div class="countContainer">
         <span>All</span>
-        <span>(<?php echo $count; ?>)</span> | <a href="/admin/categories/create">Create</a>
+        <span>(<?php echo $count; ?>)</span> | <a class="create">Create</a>
     </div>
     <form action="" method="GET">
         <input type="text" name="search" placeholder="Search" id="search">
@@ -56,7 +57,7 @@
         </nav>
     <?php } ?>
 
-    <div id="categoriesPreview"></div>
+
 
     <div id="modal" class="display-none">
         <div class="container">

@@ -51,67 +51,37 @@ class CategoryController extends Controller {
         return $this->view('admin/categories/index', $data);
     }
 
-    public function create() {
+    public function CREATE() {
 
-        $data['rules'] = [];
-
-        return $this->view('admin/categories/create', $data);
+        return $this->view('admin/categories/create');
     }
 
-    public function store($request) {
-            
-        if(submitted('submit') && Csrf::validate(Csrf::token('get'), post('token') ) === true) {
+    public function STORE($request) {
 
-            $rules = new Rules();
+        $rules = new Rules();
         
-            $uniqueTitle = DB::try()->select('title')->from('categories')->where('title', '=', $request['title'])->fetch();
+        $uniqueTitle = DB::try()->select('title')->from('categories')->where('title', '=', $request['title'])->fetch();
 
-            if($rules->create_category($uniqueTitle)->validated()) {
+        if($rules->create_category($uniqueTitle)->validated()) {
 
-                $slug = post('title');
-                $slug = str_replace(" ", "-", $slug);
-                         
-                Category::insert([
+            Category::insert([
 
-                    'title' => $request['title'],
-                    'slug'  => "/" . $slug,
-                    'category_description'  => $request['description'],
-                    'date_created_at'   => date("d/m/Y"),
-                    'time_created_at'   => date("H:i"),
-                    'date_updated_at'   => date("d/m/Y"),
-                    'time_updated_at'   => date("H:i")
-                ]);
+                'title' => $request['title'],
+                'slug'  => "/" . $request['title'],
+                'category_description'  => $request['description'],
+                'date_created_at'   => date("d/m/Y"),
+                'time_created_at'   => date("H:i"),
+                'date_updated_at'   => date("d/m/Y"),
+                'time_updated_at'   => date("H:i")
+            ]);
 
-                $category = new Category();
-                $categoryId = $category->getLastRegisteredCategoryId()[0];
+            $DATA['title'] = $request['title'];
+            $DATA['description'] = $request['description'];
+        }
 
-                foreach($request['page'] as $pageId) {
-
-                    $page = Post::get($pageId)['slug'];
-
-                    CategoryPage::insert([
-
-                        'category_id'   => $categoryId,
-                        'page_id'   => $pageId
-                    ]);
-
-                    Post::update(['id' => $pageId],[
-
-                        'slug'  =>  '/' . $slug . $page
-                    ]);
-                }
-
-                Session::set('create', 'You have successfully created a new post!');            
-                redirect('/admin/categories');
-
-            } else {
-
-                $data['rules'] = $rules->errors;
-                return $this->view('admin/categories/create', $data);
-            }
-        } 
+        echo json_encode($DATA);
     }
-
+    
     public function TABLE() {
 
         $category = new Category();
