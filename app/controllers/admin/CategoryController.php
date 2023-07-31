@@ -40,7 +40,7 @@ class CategoryController extends Controller {
 
         $count = count($categories);
 
-        $categories = Pagination::get($categories, 6);
+        $categories = Pagination::get($categories, 10);
         $numberOfPages = Pagination::getPageNumbers();
 
         $data['categories'] = $categories;
@@ -124,7 +124,7 @@ class CategoryController extends Controller {
             $categories = $category->categoriesFilesOnSearch($search);
         }
 
-        $categories = Pagination::get($categories, 6);
+        $categories = Pagination::get($categories, 10);
         $numberOfPages = Pagination::getPageNumbers();
 
         $data['categories'] = $categories;

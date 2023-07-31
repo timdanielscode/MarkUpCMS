@@ -36,7 +36,7 @@ class MenuController extends Controller {
         }
         $count = count($menus);
         
-        $menus = Pagination::get($menus, 3);
+        $menus = Pagination::get($menus, 10);
         $numberOfPages = Pagination::getPageNumbers();
 
         $data["menus"] = $menus;

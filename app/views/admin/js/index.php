@@ -10,13 +10,10 @@
     $this->include('navbar');
 ?>
 <div class="index-container">
-    <div class="headerAndButtonContainer">
-        <h1>Js</h1>
-        <a class="button postsButton margin-t-20" href="/admin/js/create">Add new</a>
-    </div>
+    <h1>Js</h1>
     <div class="countContainer">
         <span>All</span>
-        <span>(<?php echo $count; ?>)</span>
+        <span>(<?php echo $count; ?>)</span> | <a href="/admin/js/create">Create</a>
     </div>
     <form action="" method="GET">
         <input type="text" name="search" placeholder="Search" id="search">
@@ -43,12 +40,11 @@
                                 <a href="/admin/js/<?php echo $jsFile['id']; ?>/edit" class="font-weight-500"><?php echo $jsFile['file_name'] . $jsFile['extension']; ?></a> |
                                 <a href="/admin/js/<?php echo $jsFile['id']; ?>/edit" class="font-weight-300">Edit</a> |
                                 <a href="/admin/js/<?php echo $jsFile['id']; ?>/read" class="font-weight-300">Read</a> |
-                                <a href="/admin/js/<?php echo $jsFile['id']; ?>/delete" class="font-weight-300 color-red">Remove</a>
+                                <a href="/admin/js/<?php echo $jsFile['id']; ?>/delete" class="font-weight-300 color-red">Delete</a>
                             </td>
                             <?php } else { ?>
                                 <td class="width-90">
                                 <span class="font-weight-500"><?php echo $jsFile['file_name'] . $jsFile['extension']; ?></span> |
-                                <span class="font-weight-300 removed">Edit</span> |
                                 <a href="/admin/js/<?php echo $jsFile['id']; ?>/read" class="font-weight-300">Read</a> |
                                 <a href="/admin/js/<?php echo $jsFile['id']; ?>/recover" class="font-weight-300">Recover</a> |
                                 <a href="/admin/js/<?php echo $jsFile['id']; ?>/delete" class="font-weight-300 color-red">Delete permanently</a>

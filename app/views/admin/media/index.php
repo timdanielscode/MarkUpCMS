@@ -21,13 +21,11 @@
     $this->include('navbar');
 ?>
 <div class="index-container">
-    <div class="headerAndButtonContainer">
-        <h1>Media</h1>
-        <a class="button" href="/admin/media/create">Add new</a>
-    </div>
+
+    <h1>Media library</h1>
     <div class="countContainer">
         <span>All</span>
-        <span>(<?php echo $count; ?>)</span>
+        <span>(<?php echo $count; ?>)</span> | <a href="/admin/media/create">Upload</a>
     </div>
     <form action="" method="GET">
         <input type="text" name="search" placeholder="Search" id="search">

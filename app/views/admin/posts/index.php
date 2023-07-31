@@ -25,13 +25,11 @@
 ?>
 
 <div class="index-container">
-    <div class="headerAndButtonContainer">
-        <h1>Pages</h1>
-        <a class="button " href="/admin/posts/create">Add new</a>
-    </div>
+
+    <h1>Pages</h1>
     <div class="countContainer">
         <span>All</span>
-        <span>(<?php echo $count; ?>)</span>
+        <span>(<?php echo $count; ?>)</span> | <a href="/admin/posts/create">Create</a>
     </div>
     <form action="" method="GET">
         <input type="text" name="search" placeholder="Search" id="search">
@@ -61,7 +59,7 @@
                         <a href="/admin/posts/<?php echo $post['id']; ?>/edit" class="font-weight-500"><?php echo $post[1]; ?></a> |
                         <a href="/admin/posts/<?php echo $post['id']; ?>/edit" class="font-weight-300">Edit</a> |
                         <a href="/admin/posts/<?php echo $post['id']; ?>/read" class="font-weight-300">Read</a> |
-                        <a href="/admin/posts/<?php echo $post['id']; ?>/delete" class="font-weight-300 color-red">Remove</a>
+                        <a href="/admin/posts/<?php echo $post['id']; ?>/delete" class="font-weight-300 color-red">Delete</a>
                     </td>
                     <td class="width-30">
                         <a href="<?php echo $_SERVER['HTTP_HOST'] . $post['slug']; ?>"><?php echo $post['slug']; ?></a>
@@ -69,7 +67,6 @@
                     <?php } else { ?>
                     <td class="width-20">
                         <span class="removed font-weight-500"><?php echo $post[1]; ?></span> |
-                        <span class="removed font-weight-300">Edit</span> |
                         <a href="/admin/posts/<?php echo $post['id']; ?>/read" class="font-weight-300">Read</a> |
                         <a href="/admin/posts/<?php echo $post['id']; ?>/recover" class="font-weight-300">Recover</a> |
                         <a href="/admin/posts/<?php echo $post['id']; ?>/delete" class="font-weight-300 color-red">Delete permanently</a> 

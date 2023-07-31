@@ -38,7 +38,7 @@ class MediaController extends Controller {
         
         $count = count($allMedia);
 
-        $allMedia = Pagination::get($allMedia, 4);
+        $allMedia = Pagination::get($allMedia, 8);
         $numberOfPages = Pagination::getPageNumbers();
 
         $data['count'] = $count;
@@ -61,7 +61,7 @@ class MediaController extends Controller {
             $allMedia = $media->mediaFilesOnSearch($search);
         }
 
-        $allMedia = Pagination::get($allMedia, 4);
+        $allMedia = Pagination::get($allMedia, 8);
         $numberOfPages = Pagination::getPageNumbers();
 
         $data['allMedia'] = $allMedia;

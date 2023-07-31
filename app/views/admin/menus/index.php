@@ -15,13 +15,10 @@
     $this->include('navbar');
 ?>
 <div class="index-container">
-    <div class="headerAndButtonContainer">
-        <h1>Menus</h1>
-        <a class="button" href="/admin/menus/create">Add new</a>
-    </div>
+    <h1>Menus</h1>
     <div class="countContainer">
         <span>All</span>
-        <span>(<?php echo $count; ?>)</span>
+        <span>(<?php echo $count; ?>)</span> | <a href="/admin/menus/create">Create</a>
     </div>
     <form action="" method="GET">
         <input type="text" name="search" placeholder="Search" id="search">
@@ -51,15 +48,14 @@
                                     <a href="/admin/menus/<?php echo $menu['id']; ?>/edit" class="font-weight-500"><?php echo $menu['title']; ?></a> |
                                     <a href="/admin/menus/<?php echo $menu['id']; ?>/edit" class="font-weight-300">Edit</a> |
                                     <a href="/admin/menus/<?php echo $menu['id']; ?>/read" class="font-weight-300">Read</a> |
-                                    <a href="/admin/menus/<?php echo $menu['id']; ?>/delete" class="font-weight-300 color-red">Remove</a>
+                                    <a href="/admin/menus/<?php echo $menu['id']; ?>/delete" class="font-weight-300 color-red">Delete</a>
                                 </td>
                             <?php } else { ?>
                                 <td class="width-30">
                                     <span class="removed font-weight-500"><?php echo $menu['title']; ?></span> |
-                                    <span class="removed font-weight-300">Edit</span> |
                                     <a href="/admin/menus/<?php echo $menu['id']; ?>/read" class="font-weight-300">Read</a> |
                                     <a href="/admin/menus/<?php echo $menu['id']; ?>/recover" class="font-weight-300">Recover</a> |
-                                    <a href="/admin/menus/<?php echo $menu['id']; ?>/delete" class="font-weight-300 color-red">Remove</a>
+                                    <a href="/admin/menus/<?php echo $menu['id']; ?>/delete" class="font-weight-300 color-red">Delete permanently</a>
                                 </td>
                             <?php } ?>
 

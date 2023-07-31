@@ -18,13 +18,10 @@
     $this->include('navbar');
 ?>
 <div class="index-container">
-    <div class="headerAndButtonContainer">
-        <h1>Category</h1>
-        <a class="button" href="/admin/categories/create">Add new</a>
-    </div>
+    <h1>Category</h1>
     <div class="countContainer">
         <span>All</span>
-        <span>(<?php echo $count; ?>)</span>
+        <span>(<?php echo $count; ?>)</span> | <a href="/admin/categories/create">Create</a>
     </div>
     <form action="" method="GET">
         <input type="text" name="search" placeholder="Search" id="search">

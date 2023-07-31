@@ -11,7 +11,7 @@
                     <a data-id="<?php echo $category['id']; ?>" class="edit font-weight-300" class="edit">Edit</a> |
                     <a href="#" data-role="add" data-id="<?php echo $category['id']; ?>" class="add font-weight-300">Add</a> |
                     <a href="#<?php echo $category['title']; ?>" class="read font-weight-300" data-id="<?php echo $category['id']; ?>">Read</a> |
-                    <a href="/admin/categories/<?php echo $category['id']; ?>/delete" class="font-weight-300 color-red">Remove</a>
+                    <a href="/admin/categories/<?php echo $category['id']; ?>/delete" class="font-weight-300 color-red">Delete</a>
                 </td>
                 <td class="width-20">
                     <form>

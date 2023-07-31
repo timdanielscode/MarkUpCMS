@@ -4,26 +4,22 @@
 .index-container {
     margin-left: 5%;
 }
-.headerAndButtonContainer {
-    margin: 20px 0 0px 0px;
-}
-.headerAndButtonContainer h1 {
+h1 {
     display: inline-block;
     font-size: 23px;
-    color: #0c203d;
-    text-decoration: underline;
+    color: #144080;
     margin-right: 20px;
-}
-.headerAndButtonContainer a {
-    display: inline-block;
-    border: 1px solid #0c203d;
-}
-.headerAndButtonContainer a:hover {
-    background: #f4f4f4;
+    margin-top: 20px;
 }
 .countContainer {
-    font-size: 13px;
+    font-size: 14px;
     font-weight: 500;
+}
+.countContainer a {
+    color: #3d6eb5;
+}
+.countContainer a:hover {
+    color: #144080;
 }
 #search {
     width: 500px;
@@ -47,11 +43,15 @@ table {
     font-size: 13px;
     width: 100%;
     float: right;
-    margin: 20px 0;
+    margin-top: 10px;
+    margin-bottom: 20px;
 }
 table td a {
     text-decoration: none;
     color: #144080;
+}
+table td a:hover {
+    color: #3b75ca;
 }
 table td, table th {
     padding-left: 20px;
@@ -80,6 +80,6 @@ table thead {
 .removed {
     color: #333 !important;
 }
-.recover {
-    color: #42971c;
+.color-red:hover {
+    color: red;
 }
