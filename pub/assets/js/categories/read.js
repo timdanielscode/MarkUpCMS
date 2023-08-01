@@ -16,6 +16,7 @@ $(document).on('click', '.read', function() {
                 modal.addClass('display-block'); 
                 modal.removeClass('modal-edit');
                 modal.removeClass('modal-add');
+                modal.removeClass('modal-create');
                 modal.addClass('modal-read');
 
                 $('#modalForm').html(data);

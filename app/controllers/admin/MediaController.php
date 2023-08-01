@@ -125,6 +125,14 @@ class MediaController extends Controller {
 
     public function create() {
 
+
+        $files = Media::all();
+
+        $files = Pagination::get($files, 32);
+        $numberOfPages = Pagination::getPageNumbers();
+
+        $data['files'] = $files;
+        $data['numberOfPages'] = $numberOfPages;
         $data["rules"] = [];
 
         return $this->view('admin/media/create', $data);
@@ -188,8 +196,7 @@ class MediaController extends Controller {
                     ]);
                
                     Session::set('create', 'You have successfully created a new post!');            
-                    redirect('/admin/media');
-
+                    redirect('/admin/media/create');
                 } else {
 
                     if(strlen($filename) > 49) {
@@ -197,6 +204,7 @@ class MediaController extends Controller {
                         $rules->errors[] = ['media_title' => 'Filename can not be more than 49 characters.'];
                     }
                     
+                    $data['files'] = DB::try()->select('id, media_filename, media_filetype, media_title')->from('media')->fetch();
                     $data['rules'] = $rules->errors;
                     return $this->view('admin/media/create', $data);
                 }

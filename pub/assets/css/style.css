@@ -114,6 +114,14 @@ h3 {
 }
 
 /*
+    Flex
+*/
+.flex-center {
+    justify-content: center;
+}
+
+
+/*
     Columns
 */
 .row {
@@ -127,7 +135,7 @@ h3 {
     flex: 95%;
 }
 .col10 {
-    flex: 85%;
+    flex: 83.34%;
 }
 .col9 {
     flex: 75%;
@@ -148,7 +156,7 @@ h3 {
     flex: 20%;
 }
 .col2 {
-    flex: 15%;
+    flex: 16.66%;
 }
 .col1 {
     flex: 5%;

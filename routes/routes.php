@@ -79,15 +79,13 @@ Route::middleware('login')->run(function() {
     Route::get('/admin/menus/[id]/recover')->add('admin\MenuController', 'recover');
 
     Route::get('/admin/media')->add('admin\MediaController', 'index');
+    Route::get('/admin/media/create')->add('admin\MediaController', 'create');
+    Route::post('/admin/media/create')->add('admin\MediaController', 'store');
+    Route::get('/admin/media/read')->add('admin\MediaController', 'READ');
     Route::get('/admin/media/')->add('admin\MediaController', 'TABLE');
     Route::get('/admin/media/edit')->add('admin\MediaController', 'EDIT');
     Route::post('/admin/media/update')->add('admin\MediaController', 'UPDATE');
     Route::post('/admin/media/update-filename')->add('admin\MediaController', 'UPDATEFILENAME');
-
-    Route::get('/admin/media/create')->add('admin\MediaController', 'create');
-    Route::post('/admin/media/create')->add('admin\MediaController', 'store');
-
-    Route::get('/admin/media/read')->add('admin\MediaController', 'READ');
     Route::get('/admin/media/[id]/delete')->add('admin\MediaController', 'delete');
     
     Route::get('/admin/categories')->add('admin\CategoryController', 'index');
@@ -102,8 +100,5 @@ Route::middleware('login')->run(function() {
     Route::post('/admin/categories/addpage')->add('admin\CategoryController', 'ADDPAGE');
     Route::post('/admin/categories/addcategory')->add('admin\CategoryController', 'ADDCATEGORY');
     Route::post('/admin/categories/slug')->add('admin\CategoryController', 'SLUG');
-
-    //Route::get('/admin/categories/create')->add('admin\CategoryController', 'create');
-    //Route::post('/admin/categories/store')->add('admin\CategoryController', 'store');
-    //Route::get('/admin/categories/[id]/delete')->add('admin\CategoryController', 'delete');
+    Route::get('/admin/categories/[id]/delete')->add('admin\CategoryController', 'delete');
 });

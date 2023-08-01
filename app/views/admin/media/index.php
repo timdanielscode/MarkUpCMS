@@ -22,7 +22,7 @@
 ?>
 <div class="index-container">
 
-    <h1>Media library</h1>
+    <h1>Media</h1>
     <div class="countContainer">
         <span>All</span>
         <span>(<?php echo $count; ?>)</span> | <a href="/admin/media/create">Upload</a>

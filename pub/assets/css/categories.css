@@ -34,11 +34,11 @@ h1 {
 }
 .containerCategoryPagesCheckbox {
     width: 44%;
-height: 200px;
-position: relative;
-overflow-x: auto;
-overflow-y: none;
-margin-top: 50px;
+    height: 200px;
+    position: relative;
+    overflow-x: auto;
+    overflow-y: none;
+    margin-top: 50px;
 }
 .containerCategoryPagesCheckbox label {
     padding: 0;
@@ -48,8 +48,11 @@ margin-top: 50px;
 
     display: none;
 }
-.edit:hover {
+.edit:hover, .create:hover {
     cursor: pointer;
+}
+.create {
+    text-decoration: underline;
 }
 
 

@@ -3,20 +3,26 @@
 */
 
 .create-container {
-    margin-top: 20px;
-    margin-left: 5%;
+    margin: 50px;
 }
 .create-container h1 {
     font-size: 22px;
     color: #004297;
 }
+.uploadFileForm {
+    margin-top: 20px;
+}
+.uploadFileForm label {
+    color: #fff;
+    display: block;
+    margin-bottom: 10px;
+}
 .uploadFileForm #media_title {
     padding: 10px;
-    font-size: 16px;
+    font-size: 13px;
     border-radius: 3px;
     background: #fff;
     width: 500px;
-    margin-bottom: 20px;
     border: 1px solid #aaa;
 }
 .uploadFileForm #media_title:focus-visible {
@@ -29,10 +35,109 @@
     padding: 10px;
     background: #fff;
     border: 1px solid #aaa;
-    margin-bottom: 20px;
-    font-size: 16px;
+    font-size: 13px;
+}
+.filesContainer {
+    height: 75vh;
+    overflow-y: auto;
+    background: #fff;
+    padding: 20px;
+    border: 1px solid #c6c6c6;
+    margin-bottom: 25px;
+    position: relative;
+}
+.fileContainer {
+    list-style: none;
+    margin: 10px;
+    position: relative;
+    overflow: hidden;
 }
 
+.fileContainer .layer {
+    height: 100%;
+    width: 100%;
+    position: absolute;
+    bottom: 3px;
+    background: rgba(0, 0, 0, 0.7);
+    display: none;
+}
+.fileContainer:hover > .layer {
+    display: block !important;
+    cursor: pointer;
+}
+.fileContainer .mediaTitle {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    border-radius: 3px;
+    font-size: 18px;
+    color: #fff;
+}
+.fileContainer .file {
+    width: 150px;
+    object-fit: cover;
+    border: 1px solid #bdbdbd;
+    height: 150px;
+}
+.fileContainer.show {
+    position: absolute;
+    right: 0;
+    top: 0;
+    width: 50%;
+    height: 100%;
+    background: rgb(230, 230, 230);
+    margin: 0;
+    box-sizing: border-box;
+}
+.fileContainer.show .file {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: auto;
+    height: auto;
+    max-width: 500px;
+    max-height: 500px;
+    border: unset;
+}
+.fileContainer.show iframe {
+    width: 75% !important;
+    height: 75% !important;
+}
+.fileInfoContainer {
+    position: absolute;
+    left: 50px;
+    top: 50px;
+}
+.fileInfoContainer span {
+    font-size: 16px;
+    font-weight: bold;
+}
+.fileInfoContainer p {
+    font-size: 14px;
+    margin-top: 5px;
+    margin-bottom: 10px;
+}
+.fileInfoContainer a {
+    background: #4f80c8;
+    color: #fff !important;
+    border: 2px solid #4f80c8;
+    width: 46px;
+    text-align: center;
+    border-radius: 3px;
+}
+.fileInfoContainer a:hover {
+    background: #83a7db;
+    border-color: #83a7db;
+}
+.fileContainer.show:hover > .layer {
+    display: none !important;
+}
+.fileContainer.show:hover {
+    cursor: pointer;
+    background: rgb(189, 189, 189);
+}
 /*
     Sidebar
 */
@@ -88,10 +193,14 @@
     margin-top: 10px;
 }
 
+.data.type {
+    padding: 5px 10px;
+}
+
 /*
     modal
 */
-.modal-edit {
+.modal-edit, .modal-create {
     position: absolute !important;
     top: 50%;
     transform: translate(-50%, -50%) !important;
@@ -99,14 +208,11 @@
     height: 500px !important;
 }
 
-#media_description:focus {
-    outline: none;
-}
 #imageSmall, #pdfSmall {
     width: 80px;
     max-height: 44px;
 }
-#title, #media_title {
+#title {
     border: 0;
     font-size: 30px;
     padding: 0;
