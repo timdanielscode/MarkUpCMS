@@ -139,6 +139,21 @@
     cursor: pointer;
     background: rgb(189, 189, 189);
 }
+.filterForm select {
+    width: 100%;
+    border-radius: 3px;
+    border: none;
+    margin-top: 10px;
+    height: 170px;
+}
+.filterForm option {
+    padding: 4px 0 4px 10px;
+}
+#ranger {
+    position: absolute;
+    right: 352px;
+    top: 65px;
+}
 /*
     Sidebar
 */
@@ -148,7 +163,10 @@
     flex-wrap: wrap;
     margin-top: 20px;
 }
-.mainButtonContainer a, .mainButtonContainer label, .buttonContainer label {
+.filterForm .button {
+    margin-top: 20px;
+}
+.mainButtonContainer a, .mainButtonContainer label, .buttonContainer label, .filterForm .button {
     width: auto;
     display: flex;
     justify-content: center;
@@ -169,16 +187,16 @@
     background: #6ba152;
     border: 1px solid #6ba152;
 }
-.mainButtonContainer a, .buttonContainer label {
+.mainButtonContainer a, .buttonContainer label, .filterForm .button {
     border: 1px solid #fff;
     background: rgba(0,0,0,0.1);
     color: #fff;
 }
-.mainButtonContainer a:hover, .buttonContainer label:hover {
+.mainButtonContainer a:hover, .buttonContainer label:hover, .filterForm .button:hover {
     background: #fff;
     color: #000;
 }
-.mainButtonContainer label:hover, .buttonContainer label:hover {
+.mainButtonContainer label:hover, .buttonContainer label:hover, .filterForm .button:hover {
     cursor: pointer;
 }
 .text {

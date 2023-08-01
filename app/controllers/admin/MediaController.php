@@ -127,6 +127,27 @@ class MediaController extends Controller {
 
         $files = Media::all();
 
+        if(!empty($_GET['type']) ) {
+
+            $filesQuery = "SELECT * FROM media";
+            $count = 0;
+
+            foreach($_GET['type'] as $value) {
+
+                $count++;
+
+                if($count === 1) {
+                    $filesQuery .= " WHERE media_filetype LIKE " . "'%" . $value . "%'";
+                } else {
+                    $filesQuery .= " OR media_filetype LIKE " . "'%" . $value . "%'";
+                }
+            }
+            
+            $files = DB::try()->raw($filesQuery)->fetch();  
+        }
+
+
+
         $data['files'] = $files;
         $data["rules"] = [];
 
@@ -203,7 +224,7 @@ class MediaController extends Controller {
 
                     $data['files'] = $files;
                     $data['rules'] = $rules->errors;
-                    
+
                     return $this->view('admin/media/create', $data);
                 }
             } 

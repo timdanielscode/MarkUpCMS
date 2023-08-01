@@ -22,7 +22,8 @@
     <div class="create-container">
         <div class="row">
             <div class="col10 col9-L">
-            <input type="range" min="125" max="350" value="150" id="ranger">
+                <input type="range" min="125" max="500" value="150" id="ranger">
+
                 <div class="filesContainer">
                     <?php if(!empty($files) && $files !== null) { ?>
                     <div class="row flex-center">
@@ -133,15 +134,19 @@
                         </div>
                         <span class="text">Max upload size:</span>
                         <span class="data"><?php echo ini_get('upload_max_filesize'); ?></span>
-                        <span class="text">Valid file types: </span>
-                        <span class="data type">.jpeg (image/jpeg)</span>
-                        <span class="data type">.png (image/png)</span>
-                        <span class="data type">.webp (image/webp)</span>
-                        <span class="data type">.giff (image/gif)</span>
-                        <span class="data type">.svg (image/svg+xml)</span>
-                        <span class="data type">.mp4 (video/mp4)</span>
-                        <span class="data type">.mov (video/quicktime)</span>
-                        <span class="data type">.pdf (application/pdf)</span>
+                        <span class="text">Filters:</span>
+                        <form action="/admin/media/create" method="GET" class="filterForm">
+                            <select name="type[]" multiple>
+                                <option value="png">Png</option>
+                                <option value="jpeg">Jpeg</option>
+                                <option value="gif">Gif</option>
+                                <option value="webp">Webp</option>
+                                <option value="svg">Svg</option>
+                                <option value="video">Video</option>
+                                <option value="pdf">Pdf</option>
+                            </select>
+                            <input type="submit" class="button" name="filter" value="Filter"/>
+                        </form>
                     </div>
                 </div>
             </div>
