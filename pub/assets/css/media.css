@@ -58,11 +58,12 @@
     width: 100%;
     position: absolute;
     bottom: 3px;
-    background: rgba(0, 0, 0, 0.7);
-    display: none;
+    background: #000;
+    opacity: 0;
+    transition: 0.3s;
 }
 .fileContainer:hover > .layer {
-    display: block !important;
+    opacity: 0.7;
     cursor: pointer;
 }
 .fileContainer .mediaTitle {

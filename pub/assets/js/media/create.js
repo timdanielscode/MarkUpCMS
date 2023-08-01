@@ -1,42 +1,58 @@
 var fileContainers = document.querySelectorAll('.fileContainer');
 
-for(var fileContainer of fileContainers) {
+if(fileContainers !== null) {
 
-    fileContainer.addEventListener("click", function(){ 
+    for(var fileContainer of fileContainers) {
+
+        fileContainer.addEventListener("click", function(){ 
+            
+            if(this.classList.contains('show') === false) {
+    
+                this.classList.add('show');
+                this.previousElementSibling.classList.remove('display-none');
+                removeItems();
+            } else {
+                this.classList.remove('show');
+                this.previousElementSibling.classList.add('display-none');
+                addItems();
+            }
+        }); 
+    }
+    
+    function addItems() {
+    
+        for(var fileContainer of fileContainers) {
+    
+            if(fileContainer.classList.contains('show') === false) {
         
-        if(this.classList.contains('show') === false) {
+                fileContainer.classList.remove('display-none')
+                
+            }
+        }
+    }
+    
+    function removeItems() {
+    
+        for(var fileContainer of fileContainers) {
+    
+            if(fileContainer.classList.contains('show') === false) {
+        
+                fileContainer.classList.add('display-none')
+            }
+        }
+    }
 
-            this.classList.add('show');
-            this.previousElementSibling.classList.remove('display-none');
-            removeItems();
-        } else {
-            this.classList.remove('show');
-            this.previousElementSibling.classList.add('display-none');
-            addItems();
+    var ranger = document.getElementById('ranger');
+
+    ranger.addEventListener("change", function(){ 
+        
+        for(var fileContainer of fileContainers) {
+
+            fileContainer.firstElementChild.style.width = this.value + "px";
+            fileContainer.firstElementChild.style.height = this.value + "px";
         }
     }); 
+
 }
 
-function addItems() {
-
-    for(var fileContainer of fileContainers) {
-
-        if(fileContainer.classList.contains('show') === false) {
-    
-            fileContainer.classList.remove('display-none')
-            
-        }
-    }
-}
-
-function removeItems() {
-
-    for(var fileContainer of fileContainers) {
-
-        if(fileContainer.classList.contains('show') === false) {
-    
-            fileContainer.classList.add('display-none')
-        }
-    }
-}
 

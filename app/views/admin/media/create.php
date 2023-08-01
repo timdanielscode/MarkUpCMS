@@ -22,8 +22,9 @@
     <div class="create-container">
         <div class="row">
             <div class="col10 col9-L">
+            <input type="range" min="125" max="350" value="150" id="ranger">
                 <div class="filesContainer">
-                    
+                    <?php if(!empty($files) && $files !== null) { ?>
                     <div class="row flex-center">
 
                         <?php foreach($files as $file) { ?>
@@ -91,18 +92,10 @@
                         <?php } ?>
 
                     </div>
+                    <?php } else { ?>
+                        <span>No files found.</span>
+                    <?php } ?>
                 </div>
-                <?php if($numberOfPages !== null && count($numberOfPages) > 1) { ?>
-                    <nav class="pagination">
-                        <ul>
-                            <?php 
-                                foreach($numberOfPages as $page) {
-                                    echo '<li class="page-item"><a href="/admin/media/create?page='.$page.'">'.$page.'</a></li>';
-                                }  
-                            ?>
-                        </ul>
-                    </nav>
-                <?php } ?>
             </div>
             <div class="col2 col3-L">
                 <div id="sidebar" class="width-25-L">
