@@ -119,13 +119,20 @@ class MediaController extends Controller {
             break;
         }
 
-        echo '<a href="#" id="mediaPreviewClose">Close</a>';
         echo $file;
     }
 
     public function create() {
 
-        $files = Media::all();
+        if(empty(get('folder')) ) {
+            $folder = 'website/assets';
+            $folders = glob('website/assets' . '/*' , GLOB_ONLYDIR);
+        } else {
+            $folder = get('folder');
+            $folders = glob(get('folder') . '/*' , GLOB_ONLYDIR);
+        }
+
+        $files = DB::try()->select('*')->from('media')->where('media_folder', '=', $folder)->fetch();
 
         if(!empty(get('search'))) {
 
@@ -151,8 +158,7 @@ class MediaController extends Controller {
             $files = DB::try()->raw($filesQuery)->fetch();  
         }
 
-
-
+        $data['folders'] = $folders;
         $data['files'] = $files;
         $data["rules"] = [];
 
@@ -174,40 +180,25 @@ class MediaController extends Controller {
 
                 $uniqueFilename = Media::where('media_filename', '=', $filename);
 
-                if($rules->media($uniqueFilename)->validated() && strlen($filename) < 49) {
+                //if($rules->media($uniqueFilename)->validated() && strlen($filename) < 49) {
+                      
+                    
+                    if(empty(get('folder'))) {
 
-                    switch ($type[$key]) {
-        
-                        case 'image/png':
-                        case 'image/webp':
-                        case 'image/gif':
-                        case 'image/jpeg':
-                        case 'image/svg+xml':
-        
-                            $fileDestination = "website/assets/img/".$filename;
-                        break;
-                        case 'video/mp4':
-                        case 'video/quicktime':
-        
-                            $fileDestination = "website/assets/video/".$filename;
-                        break;  
-                        case 'application/pdf':
-        
-                            $fileDestination = "website/assets/application/".$filename;
-                        break;
-                        default:
-        
-                            $fileDestination = '';
-                        break;
-                    }
+                        $folder = 'website/assets';
+                    } else {
                         
-                    move_uploaded_file($tmp[$key], $fileDestination);
-        
+                        $folder = get('folder');
+                    }
+
+                    move_uploaded_file($tmp[$key], $folder . "/" . $filename);
+
                     Media::insert([
         
-                        'media_title'   => $request['media_title'],
-                        'media_description' => $request['media_description'],
+                        'media_title'   => 'empty',
+                        'media_description' => 'emtpy',
                         'media_filename'    => $filename,
+                        'media_folder'      => $folder,
                         'media_filetype'    => $type[$key],
                         'media_filesize'    => $size[$key],
                         'date_created_at'   => date("d/m/Y"),
@@ -218,9 +209,9 @@ class MediaController extends Controller {
                
                     Session::set('create', 'You have successfully created a new post!');            
                     redirect('/admin/media/create');
-                } else {
+                //} else {
 
-                    if(strlen($filename) > 49) {
+                    /*if(strlen($filename) > 49) {
   
                         $rules->errors[] = ['media_title' => 'Filename can not be more than 49 characters.'];
                     }
@@ -230,10 +221,17 @@ class MediaController extends Controller {
                     $data['files'] = $files;
                     $data['rules'] = $rules->errors;
 
-                    return $this->view('admin/media/create', $data);
-                }
+                    return $this->view('admin/media/create', $data);*/
+                //}
             } 
         }
+    }
+
+    public function createFolder($request) {
+
+
+        print_r($request);
+        exit();
     }
 
     public function UPDATE($request) { 

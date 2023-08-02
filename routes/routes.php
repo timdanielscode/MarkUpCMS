@@ -81,6 +81,7 @@ Route::middleware('login')->run(function() {
     Route::get('/admin/media')->add('admin\MediaController', 'index');
     Route::get('/admin/media/create')->add('admin\MediaController', 'create');
     Route::post('/admin/media/create')->add('admin\MediaController', 'store');
+    Route::post('/admin/media/create-folder')->add('admin\MediaController', 'createFolder');
     Route::get('/admin/media/read')->add('admin\MediaController', 'READ');
     Route::get('/admin/media/')->add('admin\MediaController', 'TABLE');
     Route::get('/admin/media/edit')->add('admin\MediaController', 'EDIT');

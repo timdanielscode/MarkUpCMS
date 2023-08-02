@@ -37,6 +37,9 @@
     border: 1px solid #aaa;
     font-size: 13px;
 }
+.uploadFileForm .error-messages {
+    margin-top: 10px;
+}
 .filesContainer {
     height: 75vh;
     overflow-y: auto;
@@ -45,10 +48,11 @@
     border: 1px solid #c6c6c6;
     margin-bottom: 25px;
     position: relative;
+    margin-top: 50px;
 }
 .fileContainer {
     list-style: none;
-    margin: 10px;
+    margin: 5px;
     position: relative;
     overflow: hidden;
 }
@@ -106,6 +110,18 @@
     width: 75% !important;
     height: 75% !important;
 }
+.fileContainer.folder img {
+    object-fit: unset;
+}
+.fileContainer.folder .folderText {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    color: #333;
+    font-size: 14px;
+    text-transform: uppercase;
+}
 .fileInfoContainer {
     position: absolute;
     left: 50px;
@@ -149,10 +165,20 @@
 .filterForm option {
     padding: 4px 0 4px 10px;
 }
+.rangerContainer {
+    width: 100%;
+    position: relative;
+}
 #ranger {
     position: absolute;
-    right: 352px;
-    top: 65px;
+    left: 50%;
+    top: -33px;
+    transform: translateX(-50%);
+}
+.folderBackText {
+    position: absolute;
+    top: 70px;
+    left: 66px;
 }
 /*
     Sidebar
@@ -356,7 +382,9 @@
     max-height: 60%;
     z-index: 999;
 }
-
+#mediaPreviewFile:hover {
+    cursor: pointer;
+}
 #mediaPreview iframe {
     width: 60%;
     height: 60%;

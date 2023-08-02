@@ -142,3 +142,5 @@ ALTER TABLE pages ADD removed TINYINT AFTER metaKeywords;
 ALTER TABLE menus ADD removed TINYINT AFTER author;
 ALTER TABLE css ADD removed TINYINT AFTER has_content;
 ALTER TABLE js ADD removed TINYINT AFTER has_content;
+
+ALTER TABLE media ADD media_folder VARCHAR(50) AFTER media_filename;

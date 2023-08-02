@@ -20,7 +20,7 @@ $(document).on('click', '.mediaPreview', function() {
 
 });
 
-$(document).on('click', '#mediaPreviewClose', function() {
+$(document).on('click', '#mediaPreviewFile', function() {
     var html = $('html');
     html.removeClass('dark-layer');
     $('#mediaPreview').html("");
