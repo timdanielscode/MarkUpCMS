@@ -22,8 +22,9 @@
     <div class="create-container">
         <div class="row">
             <div class="col10 col9-L">
+                <?php if(!empty($files) && $files !== null) { ?>
                 <input type="range" min="125" max="500" value="150" id="ranger">
-
+                <?php } ?>
                 <div class="filesContainer">
                     <?php if(!empty($files) && $files !== null) { ?>
                     <div class="row flex-center">
@@ -134,7 +135,11 @@
                         </div>
                         <span class="text">Max upload size:</span>
                         <span class="data"><?php echo ini_get('upload_max_filesize'); ?></span>
-                        <span class="text">Filters:</span>
+                        <span class="text">Search: </span>
+                        <form action="/admin/media/create" method="GET" class="searchFormCreate">
+                            <input type="text" name="search" placeholder="Search"/>
+                        </form>
+                        <span class="text">Filter:</span>
                         <form action="/admin/media/create" method="GET" class="filterForm">
                             <select name="type[]" multiple>
                                 <option value="png">Png</option>

@@ -215,7 +215,19 @@
 .data.type {
     padding: 5px 10px;
 }
-
+.searchFrom {
+    width: 100%;
+}
+.searchFormCreate input {
+    width: 100%;
+    padding: 8px 0px 8px 8px;
+    border-radius: 3px;
+    border: none;
+    margin-top: 10px;
+}
+.searchFormCreate input:focus-visible {
+    outline: none;
+}
 /*
     modal
 */
