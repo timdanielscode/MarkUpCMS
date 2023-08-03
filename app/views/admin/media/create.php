@@ -20,31 +20,35 @@
  
         <div class="row">
             <div class="col10 col9-L">
-            <?php if(get('folder') !== 'website/assets') { ?>
-                <a href="?folder=<?php echo substr(get('folder'),0,strrpos(get('folder'),'/')); ?>">
-                    <span class="folderBackText">Back</span>
-                </a>
-            <?php } ?> 
+                <div class="crumPath">
+                    <?php if(!empty(get('folder'))) {
+
+                        $folderParts = explode('/', get('folder')); 
+                        unset($folderParts[0]);
+                        $link = implode('/', $folderParts);
+
+                        echo '<span>/</span>';
+                        echo '<span>website</span>';
+
+                        foreach($folderParts as $part) { 
+                            echo '<span class="separator">/</span>';
+                            echo '<a class="folderPath" href="?folder=website/' . substr(implode('/', $folderParts), 0, strpos(implode('/', $folderParts), $part)) . $part . '">' . $part . '</a>';
+                        } 
+                    } ?>
+                </div>
                 <div class="rangerContainer">
-                    <input type="range" min="125" max="500" value="150" id="ranger">
+                    <input type="range" min="50" max="500" value="100" id="ranger">
                 </div>
                 <div class="filesContainer">
-                    <div class="row">
+                    <div class="row flex-center">
                         <?php if(!empty($folders) && $folders !== null) { 
-
                             foreach($folders as $folder) { 
-
                                 if($folder !== 'website/assets/css' && $folder !== 'website/assets/js') {
-
                                     $folderParts = explode('/', $folder);
-
                                     unset($folderParts[0]);
                                     unset($folderParts[1]);
-
                                     $folderWithoutWebsiteAndAssets = implode('/', $folderParts);
-
                                     if(!empty($folderWithoutWebsiteAndAssets) && $folderWithoutWebsiteAndAssets !== null) {
-
                                         echo '<a href="?folder='.$folder.'">';
                                             echo '<div class="fileContainer folder">';
                                                 echo '<img class="file folder" src="/assets/img/folder.png"/>';
@@ -54,15 +58,10 @@
                                     } 
                                 } 
                             } 
-                        } 
-                        ?>
-
+                        } ?>
                         <?php if(!empty($files) && $files !== null) { ?>
-                            
                             <?php foreach($files as $file) { ?>
-
                                 <?php switch ($file['media_filetype']) {
-
                                         case 'image/png':
                                         case 'image/webp':
                                         case 'image/gif':
@@ -86,7 +85,6 @@
                                         break;
                                     }
                                 ?>
-                            
                                 <div class="fileInfoContainer display-none">
                                     <span class="">Title: </span>
                                     <p><?php echo $file['media_title']; ?></p>
@@ -116,15 +114,11 @@
                                     <?php } ?>
                                     <div class="layer"><span class="mediaTitle"><?php echo $file['media_filetype']; ?></span></div>
                                 </div>
-
-                            <?php } ?>
+                        <?php } ?>
+                        <?php } ?>
                     </div>
                 </div>
-                    <?php } else { ?>
-                        <span>No files found.</span>
-                    <?php } ?>
-                </div>
-           
+            </div>
             <div class="col2 col3-L">
                 <div id="sidebar" class="width-25-L">
                     <div class="sidebarContainer">

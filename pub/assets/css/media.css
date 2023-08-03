@@ -41,14 +41,13 @@
     margin-top: 10px;
 }
 .filesContainer {
-    height: 75vh;
+    height: 80vh;
     overflow-y: auto;
     background: #fff;
-    padding: 20px;
+    padding: 10px;
     border: 1px solid #c6c6c6;
-    margin-bottom: 25px;
+    margin: 50px;
     position: relative;
-    margin-top: 50px;
 }
 .fileContainer {
     list-style: none;
@@ -76,14 +75,20 @@
     left: 50%;
     transform: translate(-50%, -50%);
     border-radius: 3px;
-    font-size: 18px;
+    font-size: 14px;
     color: #fff;
+    text-transform: uppercase;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    overflow: hidden;
+    width: 100%;
+    text-align: center;
 }
 .fileContainer .file {
-    width: 150px;
+    width: 100px;
     object-fit: cover;
     border: 1px solid #bdbdbd;
-    height: 150px;
+    height: 100px;
 }
 .fileContainer.show {
     position: absolute;
@@ -110,18 +115,29 @@
     width: 75% !important;
     height: 75% !important;
 }
+.fileContainer.folder:hover .folderText {
+    color: #004297;
+}
+.fileContainer.folder .folderText:hover {
+    color: #004297;
+}
 .fileContainer.folder img {
     object-fit: unset;
+    border: none;
 }
 .fileContainer.folder .folderText {
     position: absolute;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
-    color: #333;
+    bottom: 0;
+    left: 0;
+    color: #4f80c8;
     font-size: 14px;
-    text-transform: uppercase;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    overflow: hidden;
+    width: 100%;
+    text-align: center;
 }
+
 .fileInfoContainer {
     position: absolute;
     left: 50px;
@@ -169,16 +185,25 @@
     width: 100%;
     position: relative;
 }
+.crumPath {
+    position: absolute;
+    left: 50px;
+    top: 20px;
+}
+.folderPath {
+    color: #333;
+}
+.folderPath:hover {
+    color: #3d6eb5;
+}
+.separator {
+    margin: 0 10px;
+}
 #ranger {
     position: absolute;
     left: 50%;
-    top: -33px;
+    top: 15px;
     transform: translateX(-50%);
-}
-.folderBackText {
-    position: absolute;
-    top: 70px;
-    left: 66px;
 }
 /*
     Sidebar
