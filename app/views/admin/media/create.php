@@ -11,13 +11,15 @@
     $this->stylesheet("/assets/css/sidebar.css");
     $this->stylesheet("/assets/css/pagination.css");
 
-    $this->script('/assets/js/ajax.js');
-    $this->script('/assets/js/media/create.js', true);
+    $this->script('/assets/js/media/info.js', true);
+    $this->script('/assets/js/media/ranger.js', true);
+
     $this->title("IndependentCMS");
     $this->include("headerClose");
     $this->include('navbar');
 ?>
  
+
         <div class="row">
             <div class="col10 col9-L">
                 <div class="crumPath">
@@ -85,34 +87,15 @@
                                         break;
                                     }
                                 ?>
-                                <div class="fileInfoContainer display-none">
-                                    <span class="">Title: </span>
-                                    <p><?php echo $file['media_title']; ?></p>
-                                    <?php if(!empty($file['media_description']) ) { ?>
-                                        <span class="">Description: </span>
-                                        <p><?php echo $file['media_description']; ?></p>
-                                    <?php } ?>
-                                    <span class="">Type:</span>
-                                    <p><?php echo $file['media_filetype']; ?></p>
-                                    <span class="">Size:</span>
-                                    <?php 
-                                        $filesize = $file['media_filesize'] / 1000000;
-                                        $filesize = number_format((float)$filesize, 2, '.', '');
-                                    ?>
-                                    <p class=""><?php echo $filesize . 'M'; ?></p>
-                                    <span class="filename">File: </span>
-                                    <p class="filenamePath"><?php  echo get('folder') . $file['media_filename']; ?></p>
-                                    <a href="/admin/media?search=<?php echo $file['media_filename']; ?>" class="button">Edit</a>
-                                </div>
                                 <div class="fileContainer">
                                     <?php if($type === 'img') { ?>
-                                    <img class="file" src="<?php if(!empty(get('folder')) ) { echo '/' . get('folder') . '/'; } else { echo '/website/assets/'; } echo $file['media_filename']; ?>" loading="lazy">
+                                    <img class="file mediaFile" data-id="<?php echo $file['id']; ?>" data-filename="<?php echo $file['media_filename']; ?>"  data-folder="<?php echo $file['media_folder']; ?>" data-filetype="<?php echo $file['media_filetype']; ?>" data-filesize="<?php echo $file['media_filesize']; ?>" src="<?php if(!empty(get('folder')) ) { echo '/' . get('folder') . '/'; } else { echo '/website/assets/'; } echo $file['media_filename']; ?>" loading="lazy">
                                     <?php } else if($type === 'video') { ?>
-                                        <video class="file" src="<?php if(!empty(get('folder')) ) { echo '/' . get('folder') . '/'; } else { echo '/website/assets/'; } echo $file['media_filename']; ?>" controls></video>
+                                        <video class="file mediaFile" data-id="<?php echo $file['id']; ?>" data-filename="<?php echo $file['media_filename']; ?>" data-folder="<?php echo $file['media_folder']; ?>" data-filetype="<?php echo $file['media_filetype']; ?>" data-filesize="<?php echo $file['media_filesize']; ?>" src="<?php if(!empty(get('folder')) ) { echo '/' . get('folder') . '/'; } else { echo '/website/assets/'; } echo $file['media_filename']; ?>" controls></video>
                                     <?php } else if($type === 'application') { ?>
-                                        <iframe class="file" src="<?php if(!empty(get('folder')) ) { echo '/' . get('folder') . '/'; } else { echo '/website/assets/'; } echo $file['media_filename']; ?>"></iframe>
+                                        <iframe class="file mediaFile" data-id="<?php echo $file['id']; ?>" data-filename="<?php echo $file['media_filename']; ?>" data-folder="<?php echo $file['media_folder']; ?>" data-filetype="<?php echo $file['media_filetype']; ?>" data-filesize="<?php echo $file['media_filesize']; ?>" src="<?php if(!empty(get('folder')) ) { echo '/' . get('folder') . '/'; } else { echo '/website/assets/'; } echo $file['media_filename']; ?>"></iframe>
                                     <?php } ?>
-                                    <div class="layer"><span class="mediaTitle"><?php echo $file['media_filetype']; ?></span></div>
+                                    <!--<div class="layer"><span class="mediaTitle"><?php //echo $file['media_filetype']; ?></span></div>-->
                                 </div>
                         <?php } ?>
                         <?php } ?>
@@ -182,6 +165,18 @@
                             </select>
                             <input type="submit" class="button" name="filter" value="Filter"/>
                         </form>-->
+
+                        <div class="fileInfoContainer display-none">
+                            <div id="currentImage"></div>
+                            <span class="text">File:</span>
+                            <span id="currentFile"></span>
+                            <span id="currentFilename"></span>
+                            <span class="text">Type: </span>
+                            <span id="currentFiletype"></span>
+                            <span class="text">Size: </span>
+                            <span id="currentFilesize"></span>
+                            
+                        </div>
                     </div>
                 </div>
             </div>

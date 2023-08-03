@@ -237,7 +237,7 @@ class MediaController extends Controller {
             redirect('/admin/media/create?folder=' . get('folder'));
         }
     }
-
+    
     public function UPDATE($request) { 
         
         $this->ifExists($request['id']);

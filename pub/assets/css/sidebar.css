@@ -10,8 +10,8 @@
 }
 .sidebarContainer {
     height: 100%;
-    width: 100%;
+    width: 90%;
     position: relative;
-    margin-left: 20px;
+    margin: 0 5%;
     overflow: hidden;
 }

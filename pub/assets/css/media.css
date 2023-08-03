@@ -139,9 +139,7 @@
 }
 
 .fileInfoContainer {
-    position: absolute;
-    left: 50px;
-    top: 50px;
+    color: #fff;
 }
 .fileInfoContainer span {
     font-size: 16px;
@@ -278,6 +276,23 @@
 }
 .searchFormCreate input:focus-visible {
     outline: none;
+}
+#currentImage {
+    width: 100%;
+    background: #fff;
+    margin-top: 20px;
+    height: 200px;
+    overflow: hidden;
+    position: relative;
+}
+#currentImage img {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%,-50%);
+    width: 90%;
+    padding: 5%;
+    height: 90%;
 }
 /*
     modal
