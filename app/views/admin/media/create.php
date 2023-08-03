@@ -33,8 +33,11 @@
                         echo '<span>website</span>';
 
                         foreach($folderParts as $part) { 
+
+                            $regex = "/\/". $part . "\/.*/";
+                            preg_match($regex, "/" . implode('/', $folderParts) . "/", $match);
                             echo '<span class="separator">/</span>';
-                            echo '<a class="folderPath" href="?folder=website/' . substr(implode('/', $folderParts), 0, strpos(implode('/', $folderParts), $part)) . $part . '">' . $part . '</a>';
+                            echo '<a class="folderPath" href="?folder=website' . str_replace($match, "", "/" . implode('/', $folderParts) . '/') . "/" . $part . '">' . $part . '</a>';
                         } 
                     } ?>
                 </div>
