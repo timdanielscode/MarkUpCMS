@@ -208,7 +208,7 @@ class MediaController extends Controller {
                     ]);
                
                     Session::set('create', 'You have successfully created a new post!');            
-                    redirect('/admin/media/create');
+                    redirect('/admin/media/create?folder=' . get('folder'));
                 //} else {
 
                     /*if(strlen($filename) > 49) {
@@ -224,14 +224,18 @@ class MediaController extends Controller {
                     return $this->view('admin/media/create', $data);*/
                 //}
             } 
+        } else if(submitted('submitNewFolder')) {
+
+            mkdir(get('folder') . '/' . $request['newFolder'], 0777, true); 
+
+            redirect('/admin/media/create?folder=' . get('folder'));
+        } else if(submitted('submitDeleteFolder') ) {
+
+
+            rmdir(get('folder') . '/' . $request['deleteFolder']);
+
+            redirect('/admin/media/create?folder=' . get('folder'));
         }
-    }
-
-    public function createFolder($request) {
-
-
-        print_r($request);
-        exit();
     }
 
     public function UPDATE($request) { 

@@ -123,11 +123,11 @@
 }
 .fileContainer.folder img {
     object-fit: unset;
-    border: none;
+    border: 1px solid rgb(238, 238, 238);
 }
 .fileContainer.folder .folderText {
     position: absolute;
-    bottom: 0;
+    bottom: 8px;
     left: 0;
     color: #4f80c8;
     font-size: 14px;

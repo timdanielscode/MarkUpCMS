@@ -150,17 +150,21 @@
                                 <input type="hidden" name="token" value="<?php Csrf::token('add');?>" />
                             </div>
                         </form>
-                        <form action="/admin/media/create-folder" method="POST">
-                            <input type="text" name="folder" value="/website/assets/">
-                            <input type="submit" name="submit" value="Create folder"/>
-                        </form>
                         <div class="buttonContainer">
                             <label for="file" class="button">Select files</label>
                         </div>
-                        <span class="text">Total: </span>
-                        <span class="data"><?php echo count($files); ?></span>
+                        <form action="" method="POST">
+                            <input type="text" name="newFolder">
+                            <input type="submit" name="submitNewFolder" value="Create folder"/>
+                        </form>
+                        <form action="" method="POST">
+                            <input type="text" name="deleteFolder">
+                            <input type="submit" name="submitDeleteFolder" value="Delete folder"/>
+                        </form>
+                        <!--<span class="text">Total: </span>
+                        <span class="data"><?php //cho count($files); ?></span>
                         <span class="text">Max upload size:</span>
-                        <span class="data"><?php echo ini_get('upload_max_filesize'); ?></span>
+                        <span class="data"><?php //echo ini_get('upload_max_filesize'); ?></span>
                         <span class="text">Search: </span>
                         <form action="/admin/media/create" method="GET" class="searchFormCreate">
                             <input type="text" name="search" placeholder="Search"/>
@@ -177,7 +181,7 @@
                                 <option value="pdf">Pdf</option>
                             </select>
                             <input type="submit" class="button" name="filter" value="Filter"/>
-                        </form>
+                        </form>-->
                     </div>
                 </div>
             </div>

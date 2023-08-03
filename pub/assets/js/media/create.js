@@ -50,7 +50,7 @@ if(fileContainers !== null) {
 
             if(fileContainer.classList.contains('folder') ) {
 
-                fileContainer.children[1].style.fontSize = this.value / 5 + "px";
+                fileContainer.children[1].style.fontSize = this.value / 8 + "px";
             }
 
             fileContainer.firstElementChild.style.width = this.value + "px";
