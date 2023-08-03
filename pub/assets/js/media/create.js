@@ -48,6 +48,11 @@ if(fileContainers !== null) {
         
         for(var fileContainer of fileContainers) {
 
+            if(fileContainer.classList.contains('folder') ) {
+
+                fileContainer.children[1].style.fontSize = this.value / 5 + "px";
+            }
+
             fileContainer.firstElementChild.style.width = this.value + "px";
             fileContainer.firstElementChild.style.height = this.value + "px";
         }
