@@ -11,9 +11,11 @@
     $this->stylesheet("/assets/css/sidebar.css");
     $this->stylesheet("/assets/css/pagination.css");
 
-    $this->script('/assets/js/media/info.js', true);
-    $this->script('/assets/js/media/ranger.js', true);
+    
     $this->script('/assets/js/media/selection.js', true);
+    $this->script('/assets/js/media/ranger.js', true);
+    $this->script('/assets/js/media/info.js', true);
+    
 
     $this->title("IndependentCMS");
     $this->include("headerClose");
@@ -42,9 +44,10 @@
                         } 
                     } ?>
                 </div>
-                <div class="rangerContainer">
-                    <input type="range" min="50" max="500" value="100" id="ranger">
-                </div>
+                <form action="" method="POST" class="folderForm">
+                    <input type="text" name="P_folder">
+                    <input type="submit" name="submitFolder" value="Folder"/>
+                </form>
                 <div class="filesContainer">
                     <div class="row flex-center">
                         <?php if(!empty($folders) && $folders !== null) { 
@@ -105,6 +108,9 @@
                         <?php } ?>
                     </div>
                 </div>
+                <div class="rangerContainer">
+                    <input type="range" min="50" max="500" value="100" id="ranger">
+                </div>
             </div>
             <div class="col2 col3-L">
                 <div id="sidebar" class="width-25-L">
@@ -139,19 +145,22 @@
                         </form>
                         <div class="buttonContainer">
                             <label for="file" class="button">Select files</label>
-                            <form action="" method="POST">
+                            <form action="" method="POST" class="deleteForm">
                                 <input id="selectedFiles" type="hidden" name="files" value="[]"/>
-                                <input type="submit" name="submitDelete" value="Delete"/>
+                                <input type="submit" name="submitDelete" class="button" value="Delete"/>
                             </form>
                         </div>
-                        <form action="" method="POST">
+                        <!--<form action="" method="POST" class="createFolderForm">
                             <input type="text" name="newFolder">
-                            <input type="submit" name="submitNewFolder" value="Create folder"/>
-                        </form>
-                        <form action="" method="POST">
+                            <input type="submit" name="submitNewFolder" class="button" value="Create folder"/>
+                        </form>-->
+                        <!--<form action="" method="POST" class="deleteFolderForm">
                             <input type="text" name="deleteFolder">
-                            <input type="submit" name="submitDeleteFolder" value="Delete folder"/>
-                        </form>
+                            <input type="submit" name="submitDeleteFolder" class="button" value="Delete folder"/>
+                        </form>-->
+
+
+
                         <!--<span class="text">Total: </span>
                         <span class="data"><?php //cho count($files); ?></span>
                         <span class="text">Max upload size:</span>

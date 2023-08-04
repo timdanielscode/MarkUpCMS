@@ -55,6 +55,9 @@
     position: relative;
     overflow: hidden;
 }
+.fileContainer:hover {
+    cursor: pointer;
+}
 
 .fileContainer .layer {
     height: 100%;
@@ -187,6 +190,7 @@
     position: absolute;
     left: 50px;
     top: 20px;
+    font-size: 14px;
 }
 .folderPath {
     color: #333;
@@ -200,11 +204,41 @@
 #ranger {
     position: absolute;
     left: 50%;
-    top: 15px;
-    transform: translateX(-50%);
+    bottom: 50%;
+    transform: translate(-50%, -50%);
 }
 .selected {
-    border: 2px solid #00b7ff !important;
+    border: 2px solid #2374FE !important;
+}
+.folderForm input[type="text"] {
+    position: absolute;
+    top: 3px;
+    right: 110px;
+    padding: 5px;
+    margin-top: 10px;
+    border-radius: 3px;
+    font-size: 13px;
+    border: none;
+    box-sizing: border-box;
+    margin-bottom: 10px;
+}
+.folderForm input[type="text"]:focus-visible {
+    outline: none;
+}
+.folderForm input[type="submit"] {
+    position: absolute;
+    right: 51px;
+    top: 13px;
+    border: none;
+    background: #4f80c8;
+    border-radius: 3px;
+    padding: 5px;
+    color: #fff;
+    font-size: 12px;
+}
+.folderForm input[type="submit"]:hover {
+    background: #83a7db;
+    cursor: pointer;
 }
 /*
     Sidebar
@@ -218,7 +252,7 @@
 .filterForm .button {
     margin-top: 20px;
 }
-.mainButtonContainer a, .mainButtonContainer label, .buttonContainer label, .filterForm .button {
+.mainButtonContainer a, .mainButtonContainer label, .buttonContainer label, .filterForm .button, .deleteForm .button {
     width: auto;
     display: flex;
     justify-content: center;
@@ -239,18 +273,21 @@
     background: #6ba152;
     border: 1px solid #6ba152;
 }
-.mainButtonContainer a, .buttonContainer label, .filterForm .button {
+.mainButtonContainer a, .buttonContainer label, .filterForm .button, .deleteForm .button {
     border: 1px solid #fff;
     background: rgba(0,0,0,0.1);
     color: #fff;
+    margin-right: 20px;
 }
-.mainButtonContainer a:hover, .buttonContainer label:hover, .filterForm .button:hover {
+.mainButtonContainer a:hover, .buttonContainer label:hover, .filterForm .button:hover, .deleteForm .button:hover {
     background: #fff;
     color: #000;
 }
-.mainButtonContainer label:hover, .buttonContainer label:hover, .filterForm .button:hover {
+.mainButtonContainer label:hover, .buttonContainer label:hover, .filterForm .button:hover, .deleteForm .button:hover {
     cursor: pointer;
 }
+
+
 .text {
     display: block;
     margin-top: 20px;
@@ -295,8 +332,11 @@
     transform: translate(-50%,-50%);
     width: 90%;
     padding: 5%;
-    height: 90%;
+    height: auto;
+    object-fit: cover;
+    text-align: center;
 }
+
 /*
     modal
 */

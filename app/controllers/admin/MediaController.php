@@ -224,17 +224,18 @@ class MediaController extends Controller {
                     return $this->view('admin/media/create', $data);*/
                 //}
             } 
-        } else if(submitted('submitNewFolder')) {
+        } else if(submitted('submitFolder')) {
 
-            mkdir(get('folder') . '/' . $request['newFolder'], 0777, true); 
+            if(file_exists(get('folder') . '/' . $request['P_folder']) === true) {
 
+                rmdir(get('folder') . '/' . $request['P_folder']);
+            } else {
+
+                mkdir(get('folder') . '/' . $request['P_folder'], 0777, true); 
+            }
+            
             redirect('/admin/media/create?folder=' . get('folder'));
-        } else if(submitted('submitDeleteFolder') ) {
 
-
-            rmdir(get('folder') . '/' . $request['deleteFolder']);
-
-            redirect('/admin/media/create?folder=' . get('folder'));
         } else if(submitted('submitDelete')) {
 
             $fileIds = explode(',', $request['files']);
