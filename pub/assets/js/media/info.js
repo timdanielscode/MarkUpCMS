@@ -9,12 +9,10 @@ if(fileContainers !== null) {
             var container = document.querySelector('.fileInfoContainer');
             container.classList.remove('display-none');
 
-            var file = this;
-    
-            var filename = file.dataset.filename;
-            var folder = file.dataset.folder;
-            var filetype = file.dataset.filetype;
-            var filesize = file.dataset.filesize;
+            var filename = this.dataset.filename;
+            var folder = this.dataset.folder;
+            var filetype = this.dataset.filetype;
+            var filesize = this.dataset.filesize;
     
             var currentImage = document.getElementById('currentImage');
             var fileElement = document.getElementById('currentFile');
@@ -23,6 +21,8 @@ if(fileContainers !== null) {
     
             var image = document.createElement('img');
             image.setAttribute('src', "/" + folder + '/' + filename)
+
+            currentImage.style.height = currentImage.clientWidth + 'px';
     
             if(currentImage.children.length !== 0) {
     
@@ -39,3 +39,10 @@ if(fileContainers !== null) {
         }); 
     }
 }
+
+var currentImage = document.getElementById('currentImage');
+
+window.addEventListener("resize", function() {
+
+    currentImage.style.height = currentImage.clientWidth + 'px';
+}); 
