@@ -349,7 +349,7 @@
 .searchFormCreate input:focus-visible {
     outline: none;
 }
-#currentImage {
+#currentFile {
     width: 100%;
     background: #fff;
     margin-top: 20px;
@@ -357,7 +357,7 @@
     overflow: hidden;
     position: relative;
 }
-#currentImage img {
+#currentFile img {
     position: absolute;
     top: 50%;
     left: 50%;
@@ -368,12 +368,29 @@
     object-fit: cover;
     text-align: center;
 }
+#currentFile iframe {
+    width: 90%;
+    padding: 5%;
+    height: 90%;
+    border: none;
+}
+#currentFile video {
+    padding: 5%;
+    height: 80%;
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    width: 80%;
+    background: #000;
+    margin: 5%;
+}
 .infoContainer {
     background: #f2f2f2;
     border-top: 1px solid #d5d3d3;
     height: auto;
-    padding: 5%;
-    width: 90%;
+    width: 100%;
+    border-bottom-right-radius: 5px;
+    border-bottom-left-radius: 5px;
 }
 .infoContainer .infoPart:nth-child(3) {
     margin: 0;
@@ -382,6 +399,11 @@
     margin-bottom: 10px;
     font-size: 14px;
     color: #000;
+    border-bottom: 1px solid #d9d9d9;
+    padding: 5%;
+}
+.infoContainer .infoPart:nth-child(3) {
+    border: none;
 }
 .infoContainer .infoText {
     font-weight: bold;

@@ -194,11 +194,11 @@
                         </form>-->
 
                         <div class="fileInfoContainer display-none">
-                            <div id="currentImage"></div>
+                            <div id="currentFile"></div>
                             <div class="infoContainer">
                                 <div class="infoPart">
                                     <span class="infoText">File:</span>
-                                    <span class="infoData" id="currentFile"></span>
+                                    <span class="infoData" id="currentFilename"></span>
                                 </div>
                                 <div class="infoPart">
                                     <span class="infoText">Type: </span>

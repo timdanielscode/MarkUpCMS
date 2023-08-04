@@ -21,8 +21,8 @@ if(fileContainers !== null) {
             var filetype = element.dataset.filetype;
             var filesize = element.dataset.filesize;
     
-            var currentImage = document.getElementById('currentImage');
-            var fileElement = document.getElementById('currentFile');
+            var currentFile = document.getElementById('currentFile');
+            var fileElement = document.getElementById('currentFilename');
             var currentFilesize = document.getElementById('currentFilesize');
             var currentFiletype = document.getElementById('currentFiletype');
 
@@ -63,14 +63,14 @@ if(fileContainers !== null) {
                 node.setAttribute('controls', true);
             }
 
-            currentImage.style.height = currentImage.clientWidth + 'px';
+            currentFile.style.height = currentFile.clientWidth + 'px';
     
-            if(currentImage.children.length !== 0) {
+            if(currentFile.children.length !== 0) {
     
-                currentImage.children[0].remove();
+                currentFile.children[0].remove();
             }
             
-            currentImage.append(node);
+            currentFile.append(node);
             fileElement.innerText = "";
             fileElement.append("/" + folder + '/' + filename)
             currentFiletype.innerText = "";
@@ -81,9 +81,9 @@ if(fileContainers !== null) {
     }
 }
 
-var currentImage = document.getElementById('currentImage');
+var currentFile = document.getElementById('currentFile');
 
 window.addEventListener("resize", function() {
 
-    currentImage.style.height = currentImage.clientWidth + 'px';
+    currentFile.style.height = currentFile.clientWidth + 'px';
 }); 
