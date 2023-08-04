@@ -102,6 +102,7 @@
                                     <?php } else if($type === 'application') { ?>
                                         <iframe class="file mediaFile" data-id="<?php echo $file['id']; ?>" data-filename="<?php echo $file['media_filename']; ?>" data-folder="<?php echo $file['media_folder']; ?>" data-filetype="<?php echo $file['media_filetype']; ?>" data-filesize="<?php echo $file['media_filesize']; ?>" src="<?php if(!empty(get('folder')) ) { echo '/' . get('folder') . '/'; } else { echo '/website/assets/'; } echo $file['media_filename']; ?>"></iframe>
                                     <?php } ?>
+                                    <input class="deleteSelection" type="checkbox"/> 
                                     <!--<div class="layer"><span class="mediaTitle"><?php //echo $file['media_filetype']; ?></span></div>-->
                                 </div>
                         <?php } ?>

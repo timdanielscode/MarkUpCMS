@@ -8,16 +8,18 @@ if(fileContainers !== null) {
 
         if(fileContainer.classList.contains('folder') === false) {
 
-            fileContainer.addEventListener("click", function(){ 
+            fileContainer.children[1].addEventListener("click", function(){ 
 
                 var deleteInputField = document.getElementById('selectedFiles');
-                this.children[0].classList.toggle('selected')
 
-                if(this.children[0].classList.contains('selected') === true) {
+                this.previousElementSibling.classList.toggle('selected-delete')
 
-                    fileIds.push(this.children[0].dataset.id);
+                if(this.previousElementSibling.classList.contains('selected-delete') === true) {
+
+                    fileIds.push(this.previousElementSibling.dataset.id);
+                    
                 } else {
-                    fileIds = fileIds.filter(e => e !== this.children[0].dataset.id)
+                    fileIds = fileIds.filter(e => e !== this.previousElementSibling.dataset.id)
                 }
 
                 deleteInputField.value = fileIds;

@@ -226,12 +226,18 @@ class MediaController extends Controller {
             } 
         } else if(submitted('submitFolder')) {
 
-            if(file_exists(get('folder') . '/' . $request['P_folder']) === true) {
+            if(!empty(get('folder')) && get('folder') !== null) {
+                $path = get('folder') . '/';
+            } else {
+                $path = 'website/assets/';
+            }
 
-                rmdir(get('folder') . '/' . $request['P_folder']);
+            if(file_exists($path . $request['P_folder']) === true) {
+
+                rmdir($path . $request['P_folder']);
             } else {
 
-                mkdir(get('folder') . '/' . $request['P_folder'], 0777, true); 
+                mkdir($path . $request['P_folder'], 0777, true); 
             }
             
             redirect('/admin/media/create?folder=' . get('folder'));

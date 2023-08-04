@@ -4,12 +4,12 @@ if(fileContainers !== null) {
 
     for(var fileContainer of fileContainers) {
 
-        fileContainer.addEventListener("click", function(){ 
+        fileContainer.children[0].addEventListener("click", function(){ 
         
             var container = document.querySelector('.fileInfoContainer');
             container.classList.remove('display-none');
 
-            var file = this.children[0];
+            var file = this;
     
             var filename = file.dataset.filename;
             var folder = file.dataset.folder;

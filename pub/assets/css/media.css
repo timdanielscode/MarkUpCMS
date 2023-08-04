@@ -207,6 +207,9 @@
     bottom: 50%;
     transform: translate(-50%, -50%);
 }
+.selected-delete {
+    border: 2px solid rgb(255, 11, 11) !important;
+}
 .selected {
     border: 2px solid #2374FE !important;
 }
@@ -239,6 +242,11 @@
 .folderForm input[type="submit"]:hover {
     background: #83a7db;
     cursor: pointer;
+}
+.deleteSelection {
+    position: absolute;
+    top: 5px;
+    right: 5px;
 }
 /*
     Sidebar
