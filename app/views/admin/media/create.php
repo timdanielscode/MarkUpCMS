@@ -15,7 +15,8 @@
     $this->script('/assets/js/media/selection.js', true);
     $this->script('/assets/js/media/ranger.js', true);
     $this->script('/assets/js/media/info.js', true);
-    
+    $this->script('/assets/js/ajax.js');
+    $this->script('/assets/js/media/createUpdate.js');
 
     $this->title("IndependentCMS");
     $this->include("headerClose");
@@ -198,7 +199,11 @@
                             <div class="infoContainer">
                                 <div class="infoPart">
                                     <span class="infoText">File:</span>
-                                    <span class="infoData" id="currentFilename"></span>
+                                    <span class="infoData" id="currentFolderFilename"></span>
+                                    <span id="currentFolder"></span>
+                                    <input id="currentFilename" type="text" name="filename" value=""/>
+                                    <div id="MESSAGE"></div>
+                                    <a data-role="update" id="update" class="button">Update</a>
                                 </div>
                                 <div class="infoPart">
                                     <span class="infoText">Type: </span>

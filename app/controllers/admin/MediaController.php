@@ -281,9 +281,6 @@ class MediaController extends Controller {
 
         $this->ifExists($request['id']);
 
-        $data['id'] = $request['id'];
-        $data['filename'] = $request['filename'];
-
         $rules = new Rules();
 
         $uniqueFilename = DB::try()->select('media_filename')->from('media')->where('media_filename', '=', $request['filename'])->and('id', '!=', $request['id'])->fetch();
@@ -293,42 +290,15 @@ class MediaController extends Controller {
             $currentFile = Media::where('id', '=', $request['id'])[0];
             $currentFileName = $currentFile['media_filename'];
 
-            $type = $currentFile['media_filetype'];
-            
-            switch ($type) {
-
-                case 'image/png':
-                case 'image/webp':
-                case 'image/gif':
-                case 'image/jpeg':
-                case 'image/svg+xml':
-
-                    $fileDestination = "website/assets/img/";
-                break;
-                case 'video/mp4':
-                case 'video/quicktime':
-
-                    $fileDestination = "website/assets/video/";
-                break;  
-                case 'application/pdf':
-
-                    $fileDestination = "website/assets/application/";
-                break;
-                default:
-
-                    $fileDestination = '';
-                break;
-            }
-
-            rename($fileDestination.$currentFileName, $fileDestination.$request['filename']);
+            rename($request['folder'] . '/' . $currentFileName, $request['folder'] . '/' . $request['filename']);
 
             Media::update(['id' => $request['id']], [
                     
                 'media_filename'    => $request['filename']
             ]);
-
-            echo json_encode($data);
-        } 
+            
+            echo json_encode($request);
+        }
     }
 
     public function delete($request) {

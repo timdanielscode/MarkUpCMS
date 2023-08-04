@@ -392,6 +392,22 @@
     border-bottom-right-radius: 5px;
     border-bottom-left-radius: 5px;
 }
+.infoContainer #currentFilename {
+    margin-top: 8px;
+    width: 100%;
+    box-sizing: border-box;
+    padding: 4px 0px 4px 8px;
+    border: 1px solid #cacaca;
+    border-radius: 3px;
+}
+.infoContainer .infoPart #update {
+    font-size: 12px !important;
+    margin-top: 10px !important;
+    width: 50px !important;
+}
+.infoContainer .infoPart #MESSAGE {
+    margin-top: 5px;
+}
 .infoContainer .infoPart:nth-child(3) {
     margin: 0;
 }

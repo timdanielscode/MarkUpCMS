@@ -16,15 +16,19 @@ if(fileContainers !== null) {
                 element = this;
             }
 
+            var fileId = element.dataset.id;
             var filename = element.dataset.filename;
             var folder = element.dataset.folder;
             var filetype = element.dataset.filetype;
             var filesize = element.dataset.filesize;
     
             var currentFile = document.getElementById('currentFile');
-            var fileElement = document.getElementById('currentFilename');
+            var fileElement = document.getElementById('currentFolderFilename');
             var currentFilesize = document.getElementById('currentFilesize');
             var currentFiletype = document.getElementById('currentFiletype');
+            var currentFilename = document.getElementById('currentFilename');
+            var currentFolder = document.getElementById('currentFolder');
+            var updateButton = document.getElementById('update');
 
             switch (filetype) {
                 case 'image/png':
@@ -73,6 +77,9 @@ if(fileContainers !== null) {
             currentFile.append(node);
             fileElement.innerText = "";
             fileElement.append("/" + folder + '/' + filename)
+            currentFilename.value = filename;
+            currentFolder.setAttribute('data-folder', folder);
+            updateButton.setAttribute('data-id', fileId);
             currentFiletype.innerText = "";
             currentFiletype.append(filetype)
             currentFilesize.innerText = "";
