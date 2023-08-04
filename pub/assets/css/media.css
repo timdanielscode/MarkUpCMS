@@ -87,7 +87,7 @@
 .fileContainer .file {
     width: 100px;
     object-fit: cover;
-    border: 1px solid #bdbdbd;
+    border: 2px solid #fff;
     height: 100px;
 }
 .fileContainer.show {
@@ -123,7 +123,7 @@
 }
 .fileContainer.folder img {
     object-fit: unset;
-    border: 1px solid rgb(238, 238, 238);
+    border: 2px solid #fff;
 }
 .fileContainer.folder .folderText {
     position: absolute;
@@ -202,6 +202,9 @@
     left: 50%;
     top: 15px;
     transform: translateX(-50%);
+}
+.selected {
+    border: 2px solid #00b7ff !important;
 }
 /*
     Sidebar

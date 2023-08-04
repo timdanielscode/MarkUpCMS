@@ -235,6 +235,15 @@ class MediaController extends Controller {
             rmdir(get('folder') . '/' . $request['deleteFolder']);
 
             redirect('/admin/media/create?folder=' . get('folder'));
+        } else if(submitted('submitDelete')) {
+
+            $fileIds = explode(',', $request['files']);
+
+            foreach($fileIds as $fileId) {
+
+                Media::delete('id', $fileId);
+            }
+            redirect('/admin/media/create?folder=' . get('folder'));
         }
     }
     

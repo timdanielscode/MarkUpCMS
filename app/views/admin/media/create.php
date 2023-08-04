@@ -13,6 +13,7 @@
 
     $this->script('/assets/js/media/info.js', true);
     $this->script('/assets/js/media/ranger.js', true);
+    $this->script('/assets/js/media/selection.js', true);
 
     $this->title("IndependentCMS");
     $this->include("headerClose");
@@ -138,6 +139,10 @@
                         </form>
                         <div class="buttonContainer">
                             <label for="file" class="button">Select files</label>
+                            <form action="" method="POST">
+                                <input id="selectedFiles" type="hidden" name="files" value="[]"/>
+                                <input type="submit" name="submitDelete" value="Delete"/>
+                            </form>
                         </div>
                         <form action="" method="POST">
                             <input type="text" name="newFolder">
