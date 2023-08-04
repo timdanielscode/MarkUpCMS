@@ -144,10 +144,6 @@
 .fileInfoContainer {
     color: #fff;
 }
-.fileInfoContainer span {
-    font-size: 16px;
-    font-weight: bold;
-}
 .fileInfoContainer p {
     font-size: 14px;
     margin-top: 5px;
@@ -216,12 +212,12 @@
 .folderForm input[type="text"] {
     position: absolute;
     top: 3px;
-    right: 110px;
+    right: 115px;
     padding: 5px;
     margin-top: 10px;
     border-radius: 3px;
     font-size: 13px;
-    border: none;
+    border: 1px solid #c8c8c8;
     box-sizing: border-box;
     margin-bottom: 10px;
 }
@@ -231,7 +227,7 @@
 .folderForm input[type="submit"] {
     position: absolute;
     right: 51px;
-    top: 13px;
+    top: 14px;
     border: none;
     background: #4f80c8;
     border-radius: 3px;
@@ -344,7 +340,28 @@
     object-fit: cover;
     text-align: center;
 }
-
+.infoContainer {
+    background: #f2f2f2;
+    border-top: 1px solid #d5d3d3;
+    height: auto;
+    padding: 5%;
+    width: 90%;
+}
+.infoContainer .infoPart:nth-child(3) {
+    margin: 0;
+}
+.infoContainer .infoPart {
+    margin-bottom: 10px;
+    font-size: 14px;
+    color: #000;
+}
+.infoContainer .infoText {
+    font-weight: bold;
+}
+.infoContainer .infoData {
+    display: block;
+    margin-top: 5px;
+}
 /*
     modal
 */

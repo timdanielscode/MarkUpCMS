@@ -46,7 +46,7 @@
                 </div>
                 <form action="" method="POST" class="folderForm">
                     <input type="text" name="P_folder">
-                    <input type="submit" name="submitFolder" value="Folder"/>
+                    <input type="submit" name="submitFolder" value="Folder &plusmn"/>
                 </form>
                 <div class="filesContainer">
                     <div class="row flex-center">
@@ -186,14 +186,20 @@
 
                         <div class="fileInfoContainer display-none">
                             <div id="currentImage"></div>
-                            <span class="text">File:</span>
-                            <span id="currentFile"></span>
-                            <span id="currentFilename"></span>
-                            <span class="text">Type: </span>
-                            <span id="currentFiletype"></span>
-                            <span class="text">Size: </span>
-                            <span id="currentFilesize"></span>
-                            
+                            <div class="infoContainer">
+                                <div class="infoPart">
+                                    <span class="infoText">File:</span>
+                                    <span class="infoData" id="currentFile"></span>
+                                </div>
+                                <div class="infoPart">
+                                    <span class="infoText">Type: </span>
+                                    <span class="infoData" id="currentFiletype"></span>
+                                </div>
+                                <div class="infoPart">
+                                    <span class="infoText">Size: </span>
+                                    <span class="infoData" id="currentFilesize"></span>
+                                </div>
+                            </div>
                         </div>
                     </div>
                 </div>
