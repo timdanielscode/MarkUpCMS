@@ -8,10 +8,16 @@ if(fileContainers !== null) {
 
         if(fileContainer.classList.contains('folder') === false) {
 
-            fileContainer.children[1].addEventListener("click", function(){ 
+            if(fileContainer.children[0].classList.contains('iframeLayer')) {
+
+                element = fileContainer.children[2];
+            } else {
+                element = fileContainer.children[1];
+            }
+
+            element.addEventListener("click", function(){ 
 
                 var deleteInputField = document.getElementById('selectedFiles');
-
                 this.previousElementSibling.classList.toggle('selected-delete')
 
                 if(this.previousElementSibling.classList.contains('selected-delete') === true) {
