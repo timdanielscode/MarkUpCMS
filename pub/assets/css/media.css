@@ -227,7 +227,7 @@
 .folderForm input[type="submit"] {
     position: absolute;
     right: 51px;
-    top: 14px;
+    top: 15px;
     border: none;
     background: #4f80c8;
     border-radius: 3px;
@@ -290,8 +290,6 @@
 .mainButtonContainer label:hover, .buttonContainer label:hover, .filterForm .button:hover, .deleteForm .button:hover {
     cursor: pointer;
 }
-
-
 .text {
     display: block;
     margin-top: 20px;
@@ -311,12 +309,32 @@
 .searchFrom {
     width: 100%;
 }
-.searchFormCreate input {
-    width: 100%;
-    padding: 8px 0px 8px 8px;
-    border-radius: 3px;
-    border: none;
+.searchFormCreate input[type="text"] {
+    position: absolute;
+    top: 3px;
+    left: 50px;
+    padding: 5px;
     margin-top: 10px;
+    border-radius: 3px;
+    font-size: 13px;
+    border: 1px solid #c8c8c8;
+    box-sizing: border-box;
+    margin-bottom: 10px;
+}
+.searchFormCreate input[type="submit"] {
+    position: absolute;
+    left: 220px;
+    top: 15px;
+    border: none;
+    background: #4f80c8;
+    border-radius: 3px;
+    padding: 5px;
+    color: #fff;
+    font-size: 12px;
+}
+.searchFormCreate input[type="submit"]:hover {
+    cursor: pointer;
+    background: #83a7db;
 }
 .searchFormCreate input:focus-visible {
     outline: none;

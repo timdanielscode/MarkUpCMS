@@ -25,8 +25,9 @@
 
         <div class="row">
             <div class="col10 col9-L">
-                <div class="crumPath">
-                    <?php if(!empty(get('folder'))) {
+                    <?php if(!empty(get('folder')) && get('folder') !== 'website/assets') {
+
+                        echo '<div class="crumPath">';
 
                         $folderParts = explode('/', get('folder')); 
                         unset($folderParts[0]);
@@ -42,15 +43,21 @@
                             echo '<span class="separator">/</span>';
                             echo '<a class="folderPath" href="?folder=website' . str_replace($match, "", "/" . implode('/', $folderParts) . '/') . "/" . $part . '">' . $part . '</a>';
                         } 
-                    } ?>
-                </div>
+                        echo '</div>';
+                    } else { ?>
+                        <form action="" method="GET" class="searchFormCreate">
+                            <input type="text" name="search" placeholder="Search"/>
+                            <input type="submit" name="submitFolder" value="Search"/>
+                        </form>
+                    <?php } ?>
+                
                 <form action="" method="POST" class="folderForm">
-                    <input type="text" name="P_folder">
+                    <input type="text" placeholder="Folder" name="P_folder">
                     <input type="submit" name="submitFolder" value="Folder &plusmn"/>
                 </form>
                 <div class="filesContainer">
                     <div class="row flex-center">
-                        <?php if(!empty($folders) && $folders !== null) { 
+                        <?php if(!empty($folders) && $folders !== null && empty(get('search') ) || get('search') === null) { 
                             foreach($folders as $folder) { 
                                 if($folder !== 'website/assets/css' && $folder !== 'website/assets/js') {
                                     $folderParts = explode('/', $folder);
@@ -96,11 +103,11 @@
                                 ?>
                                 <div class="fileContainer">
                                     <?php if($type === 'img') { ?>
-                                    <img class="file mediaFile" data-id="<?php echo $file['id']; ?>" data-filename="<?php echo $file['media_filename']; ?>"  data-folder="<?php echo $file['media_folder']; ?>" data-filetype="<?php echo $file['media_filetype']; ?>" data-filesize="<?php echo $file['media_filesize']; ?>" src="<?php if(!empty(get('folder')) ) { echo '/' . get('folder') . '/'; } else { echo '/website/assets/'; } echo $file['media_filename']; ?>" loading="lazy">
+                                    <img class="file mediaFile" data-id="<?php echo $file['id']; ?>" data-filename="<?php echo $file['media_filename']; ?>"  data-folder="<?php echo $file['media_folder']; ?>" data-filetype="<?php echo $file['media_filetype']; ?>" data-filesize="<?php echo $file['media_filesize']; ?>" src="<?php echo '/' . $file['media_folder'] . '/' . $file['media_filename']; ?>" loading="lazy">
                                     <?php } else if($type === 'video') { ?>
-                                        <video class="file mediaFile" data-id="<?php echo $file['id']; ?>" data-filename="<?php echo $file['media_filename']; ?>" data-folder="<?php echo $file['media_folder']; ?>" data-filetype="<?php echo $file['media_filetype']; ?>" data-filesize="<?php echo $file['media_filesize']; ?>" src="<?php if(!empty(get('folder')) ) { echo '/' . get('folder') . '/'; } else { echo '/website/assets/'; } echo $file['media_filename']; ?>" controls></video>
+                                        <video class="file mediaFile" data-id="<?php echo $file['id']; ?>" data-filename="<?php echo $file['media_filename']; ?>" data-folder="<?php echo $file['media_folder']; ?>" data-filetype="<?php echo $file['media_filetype']; ?>" data-filesize="<?php echo $file['media_filesize']; ?>" src="<?php echo '/' . $file['media_folder'] . $file['media_filename']; ?>" controls></video>
                                     <?php } else if($type === 'application') { ?>
-                                        <iframe class="file mediaFile" data-id="<?php echo $file['id']; ?>" data-filename="<?php echo $file['media_filename']; ?>" data-folder="<?php echo $file['media_folder']; ?>" data-filetype="<?php echo $file['media_filetype']; ?>" data-filesize="<?php echo $file['media_filesize']; ?>" src="<?php if(!empty(get('folder')) ) { echo '/' . get('folder') . '/'; } else { echo '/website/assets/'; } echo $file['media_filename']; ?>"></iframe>
+                                        <iframe class="file mediaFile" data-id="<?php echo $file['id']; ?>" data-filename="<?php echo $file['media_filename']; ?>" data-folder="<?php echo $file['media_folder']; ?>" data-filetype="<?php echo $file['media_filetype']; ?>" data-filesize="<?php echo $file['media_filesize']; ?>" src="<?php echo '/' . $file['media_folder'] . $file['media_filename']; ?>"></iframe>
                                     <?php } ?>
                                     <input class="deleteSelection" type="checkbox"/> 
                                     <!--<div class="layer"><span class="mediaTitle"><?php //echo $file['media_filetype']; ?></span></div>-->
@@ -151,6 +158,7 @@
                                 <input type="submit" name="submitDelete" class="button" value="Delete"/>
                             </form>
                         </div>
+
                         <!--<form action="" method="POST" class="createFolderForm">
                             <input type="text" name="newFolder">
                             <input type="submit" name="submitNewFolder" class="button" value="Create folder"/>
