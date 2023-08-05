@@ -60,6 +60,7 @@ $(document).ready(function() {
 
         var id = $(this).data('id');
         var filename = $("#filename-"+id).val();
+        var folder = $(this).data('folder');
         var message = $("#message-"+id); 
         var mediaPath = $('#mediaPath-'+id)[0];
         var mediaPathParts = mediaPath.innerText.split('/');
@@ -70,7 +71,8 @@ $(document).ready(function() {
                 dataType: "json",
                 data: {
                     id: id,
-                    filename: filename
+                    filename: filename,
+                    folder: folder
             },
 
                 success: function(data) {
