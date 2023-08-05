@@ -47,13 +47,15 @@ class FileContainer {
     setElementOnclicks() {
 
         var sidebar = this.sidebar;
+        var elements = this.elements;
 
-        for(var element of this.elements) {
+        for(var element of elements) {
 
             if(element !== null && typeof element !== 'undefined') {
-
+               
                 element.children[0].onclick = function() {
                     
+                    clearSelection(elements);
                     showFileInfo(this, sidebar);
                 };
             }
@@ -91,6 +93,8 @@ function deleteSelection(element, input) {
 
 function showFileInfo(element, sidebar) {
 
+    element.classList.add('selected');
+
     sidebar.infoContainer.classList.remove('display-none');
     
     var file = getCorrectElement(element);
@@ -113,7 +117,7 @@ function showFileInfo(element, sidebar) {
     sidebar.currentFileFolderElement.innerText = "/" + file.dataset.folder + '/' + file.dataset.filename;
     sidebar.currentFilenameElement.value = file.dataset.filename;
     sidebar.currentFolderElement.setAttribute('data-folder', file.dataset.folder);
-    sidebar.updateButtonElement.setAttribute('data-id', file.dataset.id);
+    sidebar.updateButtonElement.setAttribute('value', file.dataset.id);
 }
 
 function getCorrectElement(element) {
@@ -202,3 +206,13 @@ function setEqualFileContainerHeight(element = null) {
     element.style.height = element.clientWidth + 'px';
 }
 
+function clearSelection(elements) {
+
+    for(var element of elements) {
+
+        if(element.children[0].classList.contains('selected') === true) {
+    
+            element.children[0].classList.remove('selected');
+        }
+    }
+}

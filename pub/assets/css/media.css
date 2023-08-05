@@ -203,11 +203,12 @@
     bottom: 50%;
     transform: translate(-50%, -50%);
 }
-.selected-delete {
-    border: 2px solid rgb(255, 11, 11) !important;
-}
+
 .selected {
     border: 2px solid #2374FE !important;
+}
+.selected-delete {
+    border: 2px solid rgb(255, 11, 11) !important;
 }
 .folderForm input[type="text"] {
     position: absolute;
@@ -375,7 +376,7 @@
     object-fit: cover;
     text-align: center;
 }
-currentFile img:hover,#currentFile iframe:hover, #currentFile video:hover {
+#currentFile img:hover,#currentFile iframe:hover, #currentFile video:hover {
     cursor: pointer;
 }
 #currentFile iframe {
