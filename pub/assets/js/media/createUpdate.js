@@ -5,6 +5,7 @@ $(document).ready(function() {
         var filename = $("#currentFilename").val();
         var folder = $("#currentFolder").data('folder');
         var message = $("#MESSAGE"); 
+        var fileTextParts = document.getElementById('currentFolderFilename');
 
             $.ajax({
                 type: "POST",
@@ -17,6 +18,8 @@ $(document).ready(function() {
             },
 
                 success: function(data) {
+
+                    fileTextParts.innerText = '/' + folder + '/' + filename;
 
                     message.html("<span>Updated successfully!</span>").fadeIn(10).fadeOut(2000);
                     message.addClass('message-success'); 
