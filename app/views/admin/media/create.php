@@ -11,21 +11,11 @@
     $this->stylesheet("/assets/css/sidebar.css");
     $this->stylesheet("/assets/css/pagination.css");
 
-
-
     $this->script('/assets/js/media/create/sidebar/Sidebar.js', true);
     $this->script('/assets/js/media/create/sidebar/main.js', true);
-
     $this->script('/assets/js/media/create/filecontainer/FileContainer.js', true);
     $this->script('/assets/js/media/create/filecontainer/main.js', true);
-    
-
-
-
-
-    //$this->script('/assets/js/media/selection.js', true);
     $this->script('/assets/js/media/ranger.js', true);
-    $this->script('/assets/js/media/info.js', true);
     
     $this->script('/assets/js/ajax.js');
     $this->script('/assets/js/media/createUpdate.js');
