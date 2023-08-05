@@ -11,10 +11,22 @@
     $this->stylesheet("/assets/css/sidebar.css");
     $this->stylesheet("/assets/css/pagination.css");
 
+
+
+    $this->script('/assets/js/media/create/sidebar/Sidebar.js', true);
+    $this->script('/assets/js/media/create/sidebar/main.js', true);
+
+    $this->script('/assets/js/media/create/filecontainer/FileContainer.js', true);
+    $this->script('/assets/js/media/create/filecontainer/main.js', true);
     
-    $this->script('/assets/js/media/selection.js', true);
+
+
+
+
+    //$this->script('/assets/js/media/selection.js', true);
     $this->script('/assets/js/media/ranger.js', true);
     $this->script('/assets/js/media/info.js', true);
+    
     $this->script('/assets/js/ajax.js');
     $this->script('/assets/js/media/createUpdate.js');
 
@@ -133,6 +145,21 @@
                             <a href="/admin/media" class="button">Back</a>
                         </div>
                         <form action="" method="POST" class="uploadFileForm" enctype="multipart/form-data">
+                                                    <div class="form-parts">
+                                <label>Title *</label>
+                                <input name="media_title" type="text" id="media_title" autofocus>
+                                <div class="error-messages">
+                                <?php echo Errors::get($rules, 'media_title'); ?>
+                                    <?php echo Errors::get($rules, 'file'); ?>
+                                </div>
+                            </div>
+                            <div class="form-parts">
+                                <label>Description </label>
+                                <textarea name="media_description" type="text" id="media_description" autofocus></textarea>
+                                <div class="error-messages">
+                                    <?php echo Errors::get($rules, 'media_description'); ?>
+                                </div>
+                            </div>
                             <div class="form-parts">
                                 <input name="file[]" type="file" multiple="true" id="file" class="display-none">
                             </div>
@@ -144,7 +171,7 @@
                         <div class="buttonContainer">
                             <label for="file" class="button">Select files</label>
                             <form action="" method="POST" class="deleteForm">
-                                <input id="selectedFiles" type="hidden" name="files" value="[]"/>
+                                <input id="selectedFiles" type="hidden" name="files" value=""/>
                                 <input type="submit" name="submitDelete" class="button" value="Delete"/>
                             </form>
                         </div>  
@@ -166,7 +193,6 @@
                             </select>
                             <input type="submit" class="button" name="filter" value="Filter"/>
                         </form>-->
-
                         <div class="fileInfoContainer display-none">
                             <div id="currentFile"></div>
                             <div class="infoContainer">

@@ -1,0 +1,1 @@
+var sidebar = new Sidebar();

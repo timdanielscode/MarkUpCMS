@@ -196,8 +196,8 @@ class MediaController extends Controller {
 
                     Media::insert([
         
-                        'media_title'   => 'empty',
-                        'media_description' => 'emtpy',
+                        'media_title'   => $request['media_title'],
+                        'media_description' => $request['media_description'],
                         'media_filename'    => $filename,
                         'media_folder'      => $folder,
                         'media_filetype'    => $type[$key],

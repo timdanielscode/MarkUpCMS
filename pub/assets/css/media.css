@@ -375,6 +375,9 @@
     object-fit: cover;
     text-align: center;
 }
+currentFile img:hover,#currentFile iframe:hover, #currentFile video:hover {
+    cursor: pointer;
+}
 #currentFile iframe {
     width: 90%;
     padding: 5%;
