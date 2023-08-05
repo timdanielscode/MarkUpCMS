@@ -26,6 +26,10 @@
 
         <div class="row">
             <div class="col10 col9-L">
+
+
+            <span class="total">Total: (<?php echo count($files); ?>)</span>
+
                     <?php if(!empty(get('folder')) && get('folder') !== 'website/assets') {
 
                         echo '<div class="crumPath">';
@@ -112,7 +116,6 @@
                                         <iframe class="file mediaFile" data-id="<?php echo $file['id']; ?>" data-filename="<?php echo $file['media_filename']; ?>" data-folder="<?php echo $file['media_folder']; ?>" data-filetype="<?php echo $file['media_filetype']; ?>" data-filesize="<?php echo $file['media_filesize']; ?>" src="<?php echo '/' . $file['media_folder'] . '/' . $file['media_filename']; ?>"></iframe>
                                     <?php } ?>
                                     <input class="deleteSelection" type="checkbox"/> 
-                                    <!--<div class="layer"><span class="mediaTitle"><?php //echo $file['media_filetype']; ?></span></div>-->
                                 </div>
                         <?php } ?>
                         <?php } ?>
@@ -130,21 +133,6 @@
                             <a href="/admin/media" class="button">Back</a>
                         </div>
                         <form action="" method="POST" class="uploadFileForm" enctype="multipart/form-data">
-                            <!--<div class="form-parts">
-                                <label>Title *</label>
-                                <input name="media_title" type="text" id="media_title" autofocus>
-                                <div class="error-messages">
-                                    <?php //echo Errors::get($rules, 'media_title'); ?>
-                                    <?php //echo Errors::get($rules, 'file'); ?>
-                                </div>
-                            </div>
-                            <div class="form-parts">
-                                <label>Description </label>
-                                <textarea name="media_description" type="text" id="media_description" autofocus></textarea>
-                                <div class="error-messages">
-                                    <?php //echo Errors::get($rules, 'media_description'); ?>
-                                </div>
-                            </div>-->
                             <div class="form-parts">
                                 <input name="file[]" type="file" multiple="true" id="file" class="display-none">
                             </div>
@@ -159,23 +147,8 @@
                                 <input id="selectedFiles" type="hidden" name="files" value="[]"/>
                                 <input type="submit" name="submitDelete" class="button" value="Delete"/>
                             </form>
-                        </div>
-
-                        <!--<form action="" method="POST" class="createFolderForm">
-                            <input type="text" name="newFolder">
-                            <input type="submit" name="submitNewFolder" class="button" value="Create folder"/>
-                        </form>-->
-                        <!--<form action="" method="POST" class="deleteFolderForm">
-                            <input type="text" name="deleteFolder">
-                            <input type="submit" name="submitDeleteFolder" class="button" value="Delete folder"/>
-                        </form>-->
-
-
-
-                        <!--<span class="text">Total: </span>
-                        <span class="data"><?php //cho count($files); ?></span>
-                        <span class="text">Max upload size:</span>
-                        <span class="data"><?php //echo ini_get('upload_max_filesize'); ?></span>
+                        </div>  
+                        <!--
                         <span class="text">Search: </span>
                         <form action="/admin/media/create" method="GET" class="searchFormCreate">
                             <input type="text" name="search" placeholder="Search"/>

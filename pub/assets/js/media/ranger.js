@@ -13,11 +13,14 @@ if(fileContainers !== null) {
                 fileContainer.children[1].style.fontSize = this.value / 8 + "px";
             }
 
-            fileContainer.firstElementChild.style.width = this.value + "px";
-            fileContainer.firstElementChild.style.height = this.value + "px";
+            if(fileContainer.children[0].classList.contains('iframeLayer')) {
+                element = fileContainer.children[1];
+            } else {
+                element = fileContainer.children[0];
+            }
+
+            element.style.width = this.value + "px";
+            element.style.height = this.value + "px";
         }
     }); 
-
 }
-
-

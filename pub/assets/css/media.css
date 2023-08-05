@@ -184,7 +184,7 @@
 }
 .crumPath {
     position: absolute;
-    left: 50px;
+    left: 130px;
     top: 20px;
     font-size: 14px;
 }
@@ -254,6 +254,13 @@
     z-index: 999;
     background: rgba(0,0,0,0.0);
 }
+.total {
+    position: absolute;
+    top: 20px;
+    left: 50px;
+    color: #333;
+    font-size: 14px;
+}
 /*
     Sidebar
 */
@@ -322,7 +329,7 @@
 .searchFormCreate input[type="text"] {
     position: absolute;
     top: 3px;
-    left: 50px;
+    left: 130px;
     padding: 5px;
     margin-top: 10px;
     border-radius: 3px;
@@ -333,7 +340,7 @@
 }
 .searchFormCreate input[type="submit"] {
     position: absolute;
-    left: 220px;
+    left: 300px;
     top: 15px;
     border: none;
     background: #4f80c8;
