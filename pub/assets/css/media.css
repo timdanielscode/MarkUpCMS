@@ -207,6 +207,9 @@
 .selected {
     border: 2px solid #2374FE !important;
 }
+.deselect {
+    border: 2px solid #fff !important;
+}
 .selected-delete {
     border: 2px solid rgb(255, 11, 11) !important;
 }

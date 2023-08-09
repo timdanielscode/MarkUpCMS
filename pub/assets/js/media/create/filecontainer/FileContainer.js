@@ -55,7 +55,7 @@ class FileContainer {
                
                 element.children[0].onclick = function() {
                     
-                    clearSelection(elements);
+                    clearSelection(elements, this);
                     showFileInfo(this, sidebar);
                 };
             }
@@ -92,9 +92,8 @@ function deleteSelection(element, input) {
 }
 
 function showFileInfo(element, sidebar) {
-
-    element.classList.add('selected');
-
+    
+    element.classList.add('selected')
     sidebar.infoContainer.classList.remove('display-none');
     
     var file = getCorrectElement(element);
@@ -206,13 +205,19 @@ function setEqualFileContainerHeight(element = null) {
     element.style.height = element.clientWidth + 'px';
 }
 
-function clearSelection(elements) {
+function clearSelection(elements, currentElement) {
+
+    if(currentElement.classList.contains('deselect') === true) {
+
+        currentElement.classList.remove('deselect')
+    }
 
     for(var element of elements) {
 
         if(element.children[0].classList.contains('selected') === true) {
-    
-            element.children[0].classList.remove('selected');
+
+            element.children[0].classList.add('deselect')
+            element.children[0].classList.remove('selected')
         }
     }
 }
