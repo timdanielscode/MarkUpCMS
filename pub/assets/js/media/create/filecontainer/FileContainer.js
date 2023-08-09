@@ -55,7 +55,7 @@ class FileContainer {
                
                 element.children[0].onclick = function() {
                     
-                    clearSelection(elements, this);
+                    clearSelection(elements, sidebar);
                     showFileInfo(this, sidebar);
                 };
             }
@@ -92,10 +92,13 @@ function deleteSelection(element, input) {
 }
 
 function showFileInfo(element, sidebar) {
-    
+
     element.classList.add('selected')
-    sidebar.infoContainer.classList.remove('display-none');
-    
+    if(element.classList.contains('deselect') === false) {
+        
+        sidebar.infoContainer.classList.remove('display-none')
+    }
+
     var file = getCorrectElement(element);
 
     var nodetype = getFileNodeType(file.dataset.filetype);
@@ -205,19 +208,20 @@ function setEqualFileContainerHeight(element = null) {
     element.style.height = element.clientWidth + 'px';
 }
 
-function clearSelection(elements, currentElement) {
-
-    if(currentElement.classList.contains('deselect') === true) {
-
-        currentElement.classList.remove('deselect')
-    }
+function clearSelection(elements, sidebar) {
 
     for(var element of elements) {
 
-        if(element.children[0].classList.contains('selected') === true) {
+        if(element.children[0].classList.contains('deselect') ) {
+
+            element.children[0].classList.remove('deselect')
+            element.children[0].classList.remove('selected')
+
+        } else if(element.children[0].classList.contains('selected') === true ) {
 
             element.children[0].classList.add('deselect')
             element.children[0].classList.remove('selected')
+            sidebar.infoContainer.classList.add('display-none')
         }
     }
 }
