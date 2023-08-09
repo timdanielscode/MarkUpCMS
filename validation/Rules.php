@@ -233,7 +233,6 @@ class Rules {
         $validation = new Validate();
         
         $validation->input('media_description')->as('Description')->rules(['max' => 99, 'special' => true]);
-        $validation->input('file')->as('File')->rules(['unique' => $uniqueFilename, 'selected' => true, 'error' => true, 'mimes' => array('image/png', 'image/jpeg', 'image/gif', 'image/webp', 'image/svg+xml', 'application/pdf', 'video/mp4', 'video/quicktime')]);
         
         $this->errors = $validation->errors;
         return $this;

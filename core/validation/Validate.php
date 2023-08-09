@@ -107,13 +107,8 @@ class Validate {
                     break;
                     case 'unique':
                         if(!empty($value)) {
-
-                            if(gettype($this->_inputValue) === 'array') {
                                 
-                                $this->message($this->_inputName, "$this->_alias already exists.");
-                            } else {
-                                $this->message($this->_inputName, "$this->_alias $this->_inputValue already exists.");
-                            }
+                            $this->message($this->_inputName, "$this->_alias already exists.");
                         }
                     break;
                     case 'special':

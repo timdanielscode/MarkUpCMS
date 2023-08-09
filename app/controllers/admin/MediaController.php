@@ -171,9 +171,10 @@ class MediaController extends Controller {
         if(submitted('submit') && Csrf::validate(Csrf::token('get'), post('token') ) === true) {
 
             $filenames = $_FILES['file']['name'];
-            $tmp = $_FILES['file']['tmp_name'];
-            $size = $_FILES['file']['size'];
-            $type = $_FILES['file']['type'];
+            $tmps = $_FILES['file']['tmp_name'];
+            $sizes = $_FILES['file']['size'];
+            $types = $_FILES['file']['type'];
+            $errors = $_FILES['file']['error'];
 
             if(empty(get('folder'))) {
 
@@ -191,16 +192,16 @@ class MediaController extends Controller {
 
                 $uniqueFilename = Media::where('media_filename', '=', $filename);
 
-                if($rules->media($uniqueFilename)->validated() && strlen($filename) < 49) {
+                if($this->validation($filenames, $types, $errors, $rules) !== false) {
                       
-                    move_uploaded_file($tmp[$key], $folder . "/" . $filename);
+                    move_uploaded_file($tmps[$key], $folder . "/" . $filename);
 
                     Media::insert([
         
                         'media_filename'    => $filename,
                         'media_folder'      => $folder,
-                        'media_filetype'    => $type[$key],
-                        'media_filesize'    => $size[$key],
+                        'media_filetype'    => $types[$key],
+                        'media_filesize'    => $sizes[$key],
                         'media_description' => $request['media_description'],
                         'date_created_at'   => date("d/m/Y"),
                         'time_created_at'   => date("H:i"),
@@ -211,12 +212,7 @@ class MediaController extends Controller {
                     Session::set('create', 'You have successfully created a new post!');            
                     redirect('/admin/media/create?folder=' . get('folder'));
                 } else {
-                    
-                    if(strlen($filename) > 49) {
-  
-                        $rules->errors[] = ['media_title' => 'Filename can not be more than 49 characters.'];
-                    }
-                    
+
                     $files = DB::try()->select('*')->from('media')->where('media_folder', '=', $folder)->fetch();
 
                     $data['folders'] = $folders;
@@ -256,7 +252,44 @@ class MediaController extends Controller {
             redirect('/admin/media/create?folder=' . get('folder'));
         }
     }
+
+    private function validation($filenames, $types, $errors, $rules) {
+
+        if(!empty($filenames) && $filenames !== null) {
+
+            foreach($filenames as $key => $value) {
+
+                if(empty($value) || $value === null) {
+
+                    $rules->errors[] = ['file' => "No file selected."];
+                } else if($errors[$key] === 1) {
+                    $rules->errors[] = ["file" => "Filesize is to big."];
+                }
+
+                $unique = DB::try()->select('id')->from('media')->where('media_filename', '=', $value)->fetch();
+
+                if(!empty($unique)) {
     
+                    $rules->errors[] = ["file" => "File already exists."];
+                } else if(in_array($types[$key],['image/png', 'image/jpeg', 'image/gif', 'image/webp', 'image/svg+xml', 'application/pdf', 'video/mp4', 'video/quicktime']) === false) {
+                    
+                    $rules->errors[] = ["file" => "File mime type is not valid."];
+                } else if(preg_match('/[#$%^&*()+=\\[\]\';,\/{}|":<>?~\\\\]/', $value)) {
+                    
+                    $rules->errors[] = ["file" => "Filename cannot contains any special characters."];
+                } else if(strlen($value) > 49) {
+                    
+                    $rules->errors[] = ["file" => "Filename cannot contain more than 50 characters."];
+                }
+            }
+    
+            if(!empty($rules->errors)) {
+
+                return false;
+            }
+        } 
+    }
+
     public function UPDATE($request) { 
         
         $this->ifExists($request['id']);
