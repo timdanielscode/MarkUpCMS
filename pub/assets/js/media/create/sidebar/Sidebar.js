@@ -18,6 +18,19 @@ class Sidebar {
         this.setCurrentFolderElement();
         this.updateButtonElement;
         this.setUpdatebuttonElement();
+
+        this.deleteFormElement;
+        this.setDeleteFormElement();
+    }
+
+    setDeleteFormElement() {
+
+        var element = document.querySelector('.deleteForm');
+
+        if(element !== null && typeof element !== 'undefined') {
+
+            this.deleteFormElement = element;
+        }
     }
 
     getDeleteInputElement() {

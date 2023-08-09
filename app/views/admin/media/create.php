@@ -12,7 +12,6 @@
     $this->stylesheet("/assets/css/pagination.css");
 
     $this->script('/assets/js/media/create/sidebar/Sidebar.js', true);
-    $this->script('/assets/js/media/create/sidebar/main.js', true);
     $this->script('/assets/js/media/create/filecontainer/FileContainer.js', true);
     $this->script('/assets/js/media/create/filecontainer/main.js', true);
     $this->script('/assets/js/media/ranger.js', true);
@@ -152,7 +151,7 @@
                         </form>
                         <div class="buttonContainer">
                             <label for="file" class="button">Select files</label>
-                            <form action="" method="POST" class="deleteForm">
+                            <form action="" method="POST" class="deleteForm display-none">
                                 <input id="selectedFiles" type="hidden" name="files" value=""/>
                                 <input type="submit" name="submitDelete" class="button" value="Delete"/>
                             </form>

@@ -65,21 +65,26 @@ class FileContainer {
     setCheckboxElementOnclicks() {
         
         var deleteInputElement = this.sidebar.getDeleteInputElement();
+        var sidebar = this.sidebar;
+        var elements = this.getCheckboxElements();
 
-        for(var element of this.getCheckboxElements()) {
+        for(var element of elements) {
 
             if(element !== null && typeof element !== 'undefined') {
 
                 element.onclick = function() {
                     
-                    deleteSelection(this, deleteInputElement);
+                    deleteSelection(this, deleteInputElement, sidebar);
+                    toggleDeleteForm(elements, sidebar);
                 };
             }
         }
     }
 }
 
-function deleteSelection(element, input) {
+function deleteSelection(element, input, sidebar) {
+
+    sidebar.deleteFormElement.classList.remove('display-none')
 
     element.previousElementSibling.classList.toggle('selected-delete')
 
@@ -225,5 +230,24 @@ function clearSelection(elements, sidebar) {
             element.children[0].classList.remove('selected')
             sidebar.infoContainer.classList.add('display-none')
         }
+    }
+}
+
+function toggleDeleteForm(elements, sidebar) {
+
+    var addClass = true;
+
+    for(var element of elements) {
+
+        if(element.previousElementSibling.classList.contains('selected-delete') === true) {
+
+            addClass = false;
+            break;
+        }
+    }
+
+    if(addClass === true) {
+
+        sidebar.deleteFormElement.classList.add('display-none')
     }
 }

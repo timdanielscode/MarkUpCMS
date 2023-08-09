@@ -37,6 +37,9 @@
     border: 1px solid #aaa;
     font-size: 13px;
 }
+.uploadFileForm textarea:focus-visible {
+    outline: none;
+}
 .uploadFileForm .error-messages {
     margin-top: 10px;
 }
