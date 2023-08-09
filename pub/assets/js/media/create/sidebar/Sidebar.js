@@ -16,6 +16,8 @@ class Sidebar {
         this.setCurrentFilenameElement();
         this.currentFolderElement;
         this.setCurrentFolderElement();
+        this.currentDescriptionElement;
+        this.setCurrentDescriptionElement();
         this.updateButtonElement;
         this.setUpdatebuttonElement();
 
@@ -161,6 +163,16 @@ class Sidebar {
         if(element !== null && typeof element !== 'undefined') {
 
             this.currentFolderElement = element;
+        }
+    }
+
+    setCurrentDescriptionElement() {
+
+        var element = document.getElementById('currentDescription');
+
+        if(element !== null && typeof element !== 'undefined') {
+
+            this.currentDescriptionElement = element;
         }
     }
 
