@@ -21,6 +21,45 @@ class Sidebar {
 
         this.deleteFormElement;
         this.setDeleteFormElement();
+
+        this.mainButtonContainerElement;
+        this.setMainButtonContainerElement();
+
+        this.updateFileFormElement;
+        this.setUpdateFileFormElement();
+
+        this.buttonContainerElement;
+        this.setButtonContainerElement();
+    }
+
+    setUpdateFileFormElement() {
+
+        var element = document.querySelector('.uploadFileForm');
+
+        if(element !== null && element !== 'undefined') {
+
+            this.updateFileFormElement = element;
+        }
+    }
+
+    setButtonContainerElement() {
+        
+        var element = document.querySelector('.buttonContainer');
+
+        if(element !== null && element !== 'undefined') {
+
+            this.buttonContainerElement = element;
+        }
+    }
+
+    setMainButtonContainerElement() {
+
+        var element = document.querySelector('.mainButtonContainer');
+
+        if(element !== null && typeof element !== 'undefined') {
+
+            this.mainButtonContainerElement = element;
+        }
     }
 
     setDeleteFormElement() {

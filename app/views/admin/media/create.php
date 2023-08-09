@@ -131,6 +131,10 @@
                     <div class="sidebarContainer">
                         <div class="mainButtonContainer">
                             <label for="submit" class="button">Upload</label>
+                            <form action="" method="POST" class="deleteForm display-none">
+                                <input id="selectedFiles" type="hidden" name="files" value=""/>
+                                <input type="submit" name="submitDelete" class="button" value="Delete"/>
+                            </form>
                             <a href="/admin/media" class="button">Back</a>
                         </div>
                         <form action="" method="POST" class="uploadFileForm" enctype="multipart/form-data">
@@ -151,10 +155,6 @@
                         </form>
                         <div class="buttonContainer">
                             <label for="file" class="button">Select files</label>
-                            <form action="" method="POST" class="deleteForm display-none">
-                                <input id="selectedFiles" type="hidden" name="files" value=""/>
-                                <input type="submit" name="submitDelete" class="button" value="Delete"/>
-                            </form>
                         </div>  
                         <!--
                         <span class="text">Search: </span>

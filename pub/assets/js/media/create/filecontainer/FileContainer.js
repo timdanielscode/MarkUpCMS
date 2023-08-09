@@ -85,7 +85,9 @@ class FileContainer {
 function deleteSelection(element, input, sidebar) {
 
     sidebar.deleteFormElement.classList.remove('display-none')
-
+    sidebar.mainButtonContainerElement.children[0].classList.add('display-none-important')
+    sidebar.updateFileFormElement.classList.add('display-none')
+    sidebar.buttonContainerElement.classList.add('display-none-important')
     element.previousElementSibling.classList.toggle('selected-delete')
 
     if(element.previousElementSibling.classList.contains('selected-delete') === true) {
@@ -248,6 +250,9 @@ function toggleDeleteForm(elements, sidebar) {
 
     if(addClass === true) {
 
-        sidebar.deleteFormElement.classList.add('display-none')
+        sidebar.mainButtonContainerElement.children[0].classList.remove('display-none-important')
+        sidebar.buttonContainerElement.classList.remove('display-none-important')
+        sidebar.updateFileFormElement.classList.remove('display-none')
+        sidebar.mainButtonContainerElement.children[1].classList.add('display-none')
     }
 }

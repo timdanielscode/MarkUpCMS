@@ -307,9 +307,18 @@
     color: #fff;
     margin-right: 20px;
 }
-.mainButtonContainer a:hover, .buttonContainer label:hover, .filterForm .button:hover, .deleteForm .button:hover {
+.mainButtonContainer a:hover, .buttonContainer label:hover, .filterForm .button:hover {
     background: #fff;
     color: #000;
+}
+.deleteForm input {
+    background: rgb(199, 48, 48) !important;
+    border: 1px solid rgb(199, 48, 48) !important;
+
+}
+.deleteForm input:hover {
+    background: red !important;
+    border: 1px solid red !important;
 }
 .mainButtonContainer label:hover, .buttonContainer label:hover, .filterForm .button:hover, .deleteForm .button:hover {
     cursor: pointer;

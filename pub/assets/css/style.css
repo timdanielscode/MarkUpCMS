@@ -180,6 +180,9 @@ h3 {
 .display-none {
     display: none;
 }
+.display-none-important {
+    display: none !important;
+}
 .display-block {
     display: block;
 }
