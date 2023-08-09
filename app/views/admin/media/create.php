@@ -135,14 +135,6 @@
                             <a href="/admin/media" class="button">Back</a>
                         </div>
                         <form action="" method="POST" class="uploadFileForm" enctype="multipart/form-data">
-                                                    <div class="form-parts">
-                                <label>Title *</label>
-                                <input name="media_title" type="text" id="media_title" autofocus>
-                                <div class="error-messages">
-                                <?php echo Errors::get($rules, 'media_title'); ?>
-                                    <?php echo Errors::get($rules, 'file'); ?>
-                                </div>
-                            </div>
                             <div class="form-parts">
                                 <label>Description </label>
                                 <textarea name="media_description" type="text" id="media_description" autofocus></textarea>

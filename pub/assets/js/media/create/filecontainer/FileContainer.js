@@ -64,7 +64,7 @@ class FileContainer {
 
     setCheckboxElementOnclicks() {
         
-        var deleteInputElement = sidebar.getDeleteInputElement();
+        var deleteInputElement = this.sidebar.getDeleteInputElement();
 
         for(var element of this.getCheckboxElements()) {
 
@@ -93,7 +93,8 @@ function deleteSelection(element, input) {
 
 function showFileInfo(element, sidebar) {
 
-    element.classList.add('selected')
+    element.classList.add('selected');
+    
     if(element.classList.contains('deselect') === false) {
         
         sidebar.infoContainer.classList.remove('display-none')
@@ -216,6 +217,7 @@ function clearSelection(elements, sidebar) {
 
             element.children[0].classList.remove('deselect')
             element.children[0].classList.remove('selected')
+            
 
         } else if(element.children[0].classList.contains('selected') === true ) {
 

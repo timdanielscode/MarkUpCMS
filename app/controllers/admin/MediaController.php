@@ -196,12 +196,11 @@ class MediaController extends Controller {
 
                     Media::insert([
         
-                        'media_title'   => $request['media_title'],
-                        'media_description' => $request['media_description'],
                         'media_filename'    => $filename,
                         'media_folder'      => $folder,
                         'media_filetype'    => $type[$key],
                         'media_filesize'    => $size[$key],
+                        'media_description' => $request['media_description'],
                         'date_created_at'   => date("d/m/Y"),
                         'time_created_at'   => date("H:i"),
                         'date_updated_at'   => date("d/m/Y"),
@@ -260,7 +259,6 @@ class MediaController extends Controller {
         $this->ifExists($request['id']);
 
         $data['id'] = $request['id'];
-        $data['title'] = $request['title'];
         $data['description'] = $request['description'];
 
         $rules = new Rules();
@@ -269,7 +267,6 @@ class MediaController extends Controller {
 
             Media::update(['id' => $request['id']], [
 
-                'media_title'   => $request['title'],
                 'media_description' => $request['description']
             ]);
 

@@ -144,3 +144,6 @@ ALTER TABLE css ADD removed TINYINT AFTER has_content;
 ALTER TABLE js ADD removed TINYINT AFTER has_content;
 
 ALTER TABLE media ADD media_folder VARCHAR(50) AFTER media_filename;
+ALTER TABLE media DROP COLUMN media_title;
+ALTER TABLE media DROP COLUMN media_description;
+ALTER TABLE media ADD media_description VARCHAR(100) AFTER media_filesize; 

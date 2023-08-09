@@ -2,9 +2,6 @@ class Sidebar {
 
     constructor() {
 
-        this.deleteInputElement;
-        this.setDeleteElement();
-
         this.infoContainer;
         this.setInfoContainerElement();
         this.currentFileElement;
@@ -23,19 +20,14 @@ class Sidebar {
         this.setUpdatebuttonElement();
     }
 
-    setDeleteElement() {
+    getDeleteInputElement() {
 
         var element = document.getElementById('selectedFiles');
         
         if(element !== null && typeof element !== 'undefined') {
 
-            this.deleteInputElement = element;
+            return element;
         }
-    }
-
-    getDeleteInputElement() {
-
-        return this.deleteInputElement;
     }
 
     setInfoContainerElement() {

@@ -37,7 +37,6 @@
     <table>
         <thead>
             <th>#</th>
-            <th>Title</th>
             <th>File</th>
             <th>Filename</th>
             <th></th>
