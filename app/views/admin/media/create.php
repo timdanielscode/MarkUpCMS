@@ -142,6 +142,7 @@
                                 <label>Description </label>
                                 <textarea name="media_description" type="text" id="media_description" autofocus></textarea>
                                 <div class="error-messages">
+                                    <?php echo Errors::get($rules, 'file'); ?>
                                     <?php echo Errors::get($rules, 'media_description'); ?>
                                 </div>
                             </div>
@@ -156,6 +157,7 @@
                         <div class="buttonContainer">
                             <label for="file" class="button">Select files</label>
                         </div>  
+
                         <!--
                         <span class="text">Search: </span>
                         <form action="/admin/media/create" method="GET" class="searchFormCreate">

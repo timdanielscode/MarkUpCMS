@@ -175,23 +175,24 @@ class MediaController extends Controller {
             $size = $_FILES['file']['size'];
             $type = $_FILES['file']['type'];
 
+            if(empty(get('folder'))) {
+
+                $folder = 'website/assets';
+                $folders = glob('website/assets' . '/*' , GLOB_ONLYDIR);
+            } else {
+                
+                $folder = get('folder');
+                $folders = glob(get('folder') . '/*' , GLOB_ONLYDIR);
+            }
+
             $rules = new Rules();
 
             foreach($filenames as $key => $filename) {
 
                 $uniqueFilename = Media::where('media_filename', '=', $filename);
 
-                //if($rules->media($uniqueFilename)->validated() && strlen($filename) < 49) {
+                if($rules->media($uniqueFilename)->validated() && strlen($filename) < 49) {
                       
-                    
-                    if(empty(get('folder'))) {
-
-                        $folder = 'website/assets';
-                    } else {
-                        
-                        $folder = get('folder');
-                    }
-
                     move_uploaded_file($tmp[$key], $folder . "/" . $filename);
 
                     Media::insert([
@@ -209,21 +210,23 @@ class MediaController extends Controller {
                
                     Session::set('create', 'You have successfully created a new post!');            
                     redirect('/admin/media/create?folder=' . get('folder'));
-                //} else {
-
-                    /*if(strlen($filename) > 49) {
+                } else {
+                    
+                    if(strlen($filename) > 49) {
   
                         $rules->errors[] = ['media_title' => 'Filename can not be more than 49 characters.'];
                     }
                     
-                    $files = Media::all();
+                    $files = DB::try()->select('*')->from('media')->where('media_folder', '=', $folder)->fetch();
 
+                    $data['folders'] = $folders;
                     $data['files'] = $files;
                     $data['rules'] = $rules->errors;
 
-                    return $this->view('admin/media/create', $data);*/
-                //}
+                    return $this->view('admin/media/create', $data);
+                }
             } 
+
         } else if(submitted('submitFolder')) {
 
             if(!empty(get('folder')) && get('folder') !== null) {
