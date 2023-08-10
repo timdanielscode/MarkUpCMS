@@ -11,13 +11,13 @@
     $this->stylesheet("/assets/css/sidebar.css");
     $this->stylesheet("/assets/css/pagination.css");
 
-    $this->script('/assets/js/media/create/sidebar/Sidebar.js', true);
-    $this->script('/assets/js/media/create/filecontainer/FileContainer.js', true);
-    $this->script('/assets/js/media/create/filecontainer/main.js', true);
+    $this->script('/assets/js/media/create/Sidebar.js', true);
+    $this->script('/assets/js/media/create/FileContainer.js', true);
+    $this->script('/assets/js/media/create/main.js', true);
     $this->script('/assets/js/media/ranger.js', true);
     
     $this->script('/assets/js/ajax.js');
-    $this->script('/assets/js/media/createUpdate.js');
+    $this->script('/assets/js/media/create/updateFilename.js');
 
     $this->title("IndependentCMS");
     $this->include("headerClose");
@@ -135,6 +135,7 @@
                                 <input id="selectedFiles" type="hidden" name="files" value=""/>
                                 <input type="submit" name="submitDelete" class="button" value="Delete"/>
                             </form>
+                            <a href="" class="button display-none-important">Read</a>
                             <a href="/admin/media" class="button">Back</a>
                         </div>
                         <form action="" method="POST" class="uploadFileForm" enctype="multipart/form-data">
@@ -197,7 +198,8 @@
                                 </div>
                                 <div class="infoPart">
                                     <span class="infoText">Description: </span>
-                                    <dpan class="infoData" id="currentDescription"></span>
+                                    <textarea class="infoData" id="currentDescription"></textarea>
+                                    <a data-role="update" id="updateDescription" class="button">Update</a>
                                 </div>
                             </div>
                         </div>

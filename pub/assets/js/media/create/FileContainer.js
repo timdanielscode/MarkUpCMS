@@ -48,6 +48,7 @@ class FileContainer {
 
         var sidebar = this.sidebar;
         var elements = this.elements;
+        var checkboxElements = this.getCheckboxElements();
 
         for(var element of elements) {
 
@@ -55,8 +56,8 @@ class FileContainer {
                
                 element.children[0].onclick = function() {
                     
-                    clearSelection(elements, sidebar);
-                    showFileInfo(this, sidebar);
+                    clearSelection(elements, checkboxElements, sidebar);
+                    showFileInfo(this, checkboxElements, sidebar);
                 };
             }
         }
@@ -66,16 +67,17 @@ class FileContainer {
         
         var deleteInputElement = this.sidebar.getDeleteInputElement();
         var sidebar = this.sidebar;
-        var elements = this.getCheckboxElements();
+        var checkboxElements = this.getCheckboxElements();
+        var elements = this.elements;
 
-        for(var element of elements) {
+        for(var element of checkboxElements) {
 
             if(element !== null && typeof element !== 'undefined') {
 
                 element.onclick = function() {
                     
                     deleteSelection(this, deleteInputElement, sidebar);
-                    toggleDeleteForm(elements, sidebar);
+                    toggleDeleteForm(checkboxElements, elements, sidebar);
                 };
             }
         }
@@ -98,13 +100,21 @@ function deleteSelection(element, input, sidebar) {
     }
 }
 
-function showFileInfo(element, sidebar) {
+function showFileInfo(element, checkboxElements, sidebar) {
 
     element.classList.add('selected');
-    
+
     if(element.classList.contains('deselect') === false) {
         
         sidebar.infoContainer.classList.remove('display-none')
+        sidebar.updateFileFormElement.classList.add('display-none')
+        sidebar.buttonContainerElement.classList.add('display-none-important')
+        sidebar.mainButtonContainerElement.children[0].classList.add('display-none-important')
+
+        if(ifAnyElementHasSelectedDelete(checkboxElements) === false) {
+            
+            sidebar.mainButtonContainerElement.children[2].classList.remove('display-none-important')
+        }
     }
 
     var file = getCorrectElement(element);
@@ -217,7 +227,7 @@ function setEqualFileContainerHeight(element = null) {
     element.style.height = element.clientWidth + 'px';
 }
 
-function clearSelection(elements, sidebar) {
+function clearSelection(elements, checkboxElements, sidebar) {
 
     for(var element of elements) {
 
@@ -225,35 +235,71 @@ function clearSelection(elements, sidebar) {
 
             element.children[0].classList.remove('deselect')
             element.children[0].classList.remove('selected')
-            
 
-        } else if(element.children[0].classList.contains('selected') === true ) {
+            console.log('test2')
+
+        } else if(element.children[0].classList.contains('selected') === true) {
 
             element.children[0].classList.add('deselect')
             element.children[0].classList.remove('selected')
             sidebar.infoContainer.classList.add('display-none')
+            sidebar.mainButtonContainerElement.children[2].classList.add('display-none-important')
+            console.log('test3')
+
+            if(ifAnyElementHasSelectedDelete(checkboxElements) === false) {
+
+                sidebar.updateFileFormElement.classList.remove('display-none')
+                sidebar.buttonContainerElement.classList.remove('display-none-important')
+                sidebar.mainButtonContainerElement.children[0].classList.remove('display-none-important')
+            }
         }
     }
 }
 
-function toggleDeleteForm(elements, sidebar) {
+function toggleDeleteForm(checkboxElements, elements, sidebar) {
 
-    var addClass = true;
+    sidebar.mainButtonContainerElement.children[2].classList.add('display-none-important')
+    
+    if(ifAnyElementHasSelectedDelete(checkboxElements) === false) {
+
+        sidebar.mainButtonContainerElement.children[0].classList.remove('display-none-important')
+        sidebar.mainButtonContainerElement.children[1].classList.add('display-none')
+        
+        if(ifAnyElementHasSelected(elements) === false) {
+        
+            sidebar.updateFileFormElement.classList.remove('display-none')
+            sidebar.buttonContainerElement.classList.remove('display-none-important')
+        }
+    } 
+}
+
+function ifAnyElementHasSelectedDelete(elements) {
+
+    var hasClass = false;
 
     for(var element of elements) {
 
         if(element.previousElementSibling.classList.contains('selected-delete') === true) {
 
-            addClass = false;
-            break;
-        }
+            hasClass = true;
+        } 
     }
 
-    if(addClass === true) {
+    return hasClass;
+}
 
-        sidebar.mainButtonContainerElement.children[0].classList.remove('display-none-important')
-        sidebar.buttonContainerElement.classList.remove('display-none-important')
-        sidebar.updateFileFormElement.classList.remove('display-none')
-        sidebar.mainButtonContainerElement.children[1].classList.add('display-none')
+function ifAnyElementHasSelected(elements) {
+
+    var hasClass = false;
+
+    for(var element of elements) {
+
+        if(element.children[0].classList.contains('selected') === true && element.children[0].classList.contains('deselect') === false) {
+
+            hasClass = true;
+        } 
     }
+
+    return hasClass;
+
 }

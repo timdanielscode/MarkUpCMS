@@ -454,6 +454,19 @@
     display: block;
     margin-top: 5px;
 }
+.infoContainer #currentDescription {
+    width: 100%;
+    box-sizing: border-box;
+    min-height: 50px;
+    height: auto;
+    border: 1px solid #aaa;
+    font-size: 13px;
+    border-radius: 3px;
+    padding: 10px;
+}
+.infoContainer #currentDescription:focus-visible {
+    outline: none;
+}
 /*
     modal
 */
