@@ -334,6 +334,23 @@ class MediaController extends Controller {
         }
     }
 
+    public function UPDATEDESCRIPTION($request) {
+
+        $this->ifExists($request['id']);
+
+        $rules = new Rules();
+
+        if($rules->update_media_description()->validated()) {
+
+            Media::update(['id' => $request['id']], [
+                    
+                'media_description'    => $request['description']
+            ]);
+            
+            echo json_encode($request);
+        }
+    }
+
     public function delete($request) {
 
         $this->ifExists($request['id']);

@@ -134,11 +134,11 @@ function showFileInfo(element, checkboxElements, sidebar) {
     sidebar.currentFiletypeElement.innerText = file.dataset.filetype;
     sidebar.currentFilesizeElement.innerText = parseFloat(file.dataset.filesize / 1000000).toFixed(2) + 'MB';
     sidebar.currentDescriptionElement.innerText = file.dataset.description;
-
     sidebar.currentFileFolderElement.innerText = "/" + file.dataset.folder + '/' + file.dataset.filename;
     sidebar.currentFilenameElement.value = file.dataset.filename;
     sidebar.currentFolderElement.setAttribute('data-folder', file.dataset.folder);
-    sidebar.updateButtonElement.setAttribute('value', file.dataset.id);
+    sidebar.updateFilenameButtonElement.setAttribute('value', file.dataset.id);
+    sidebar.updateDescriptionButtonElement.setAttribute('value', file.dataset.id);
 }
 
 function getCorrectElement(element) {

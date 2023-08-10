@@ -18,8 +18,8 @@ class Sidebar {
         this.setCurrentFolderElement();
         this.currentDescriptionElement;
         this.setCurrentDescriptionElement();
-        this.updateButtonElement;
-        this.setUpdatebuttonElement();
+        this.updateFilenameButtonElement;
+        this.setUpdateFilenameButtonElement();
 
         this.deleteFormElement;
         this.setDeleteFormElement();
@@ -32,6 +32,9 @@ class Sidebar {
 
         this.buttonContainerElement;
         this.setButtonContainerElement();
+
+        this.updateDescriptionButtonElement;
+        this.setUpdateDescriptionButtonElement();
     }
 
     setUpdateFileFormElement() {
@@ -176,13 +179,24 @@ class Sidebar {
         }
     }
 
-    setUpdatebuttonElement() {
+    setUpdateFilenameButtonElement() {
 
         var element = document.getElementById('update');
 
         if(element !== null && typeof element !== 'undefined') {
 
-            this.updateButtonElement = element;
+            this.updateFilenameButtonElement = element;
         }
+    }
+
+    setUpdateDescriptionButtonElement() {
+
+        var element = document.getElementById('updateDescription');
+
+        if(element !== null && typeof element !== 'undefined') {
+
+            this.updateDescriptionButtonElement = element;
+        }
+
     }
 }

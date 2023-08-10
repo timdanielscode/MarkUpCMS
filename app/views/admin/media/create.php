@@ -18,6 +18,7 @@
     
     $this->script('/assets/js/ajax.js');
     $this->script('/assets/js/media/create/updateFilename.js');
+    $this->script('/assets/js/media/create/updateDescription.js');
 
     $this->title("IndependentCMS");
     $this->include("headerClose");
@@ -198,8 +199,9 @@
                                 </div>
                                 <div class="infoPart">
                                     <span class="infoText">Description: </span>
-                                    <textarea class="infoData" id="currentDescription"></textarea>
-                                    <a data-role="update" id="updateDescription" class="button">Update</a>
+                                    <textarea type="text" name="description" class="infoData" id="currentDescription"></textarea>
+                                    <div id="MESSAGE-DESCRIPTION"></div>
+                                    <a data-role="update-description" id="updateDescription" class="button">Update</a>
                                 </div>
                             </div>
                         </div>

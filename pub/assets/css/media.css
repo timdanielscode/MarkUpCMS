@@ -153,16 +153,19 @@
     margin-bottom: 10px;
 }
 .fileInfoContainer a {
-    background: #4f80c8;
+    background: #42971c;
     color: #fff !important;
-    border: 2px solid #4f80c8;
+    border: 2px solid #42971c;
     width: 46px;
     text-align: center;
     border-radius: 3px;
+    font-size: 13px;
+    margin-top: 10px;
 }
 .fileInfoContainer a:hover {
-    background: #83a7db;
-    border-color: #83a7db;
+    background: #6ba152;
+    border-color: #6ba152;
+    cursor: pointer;
 }
 .fileContainer.show:hover > .layer {
     display: none !important;
@@ -463,7 +466,7 @@
     display: block;
     margin-top: 5px;
 }
-.infoContainer #currentDescription {
+.infoContainer .infoPart textarea {
     width: 100%;
     box-sizing: border-box;
     min-height: 50px;
@@ -473,7 +476,7 @@
     border-radius: 3px;
     padding: 10px;
 }
-.infoContainer #currentDescription:focus-visible {
+.infoContainer .infoPart textarea:focus-visible {
     outline: none;
 }
 /*
@@ -656,5 +659,8 @@
 }
 .message-failed-media-description {
     display: block;
+    margin-top: 10px;
+}
+#MESSAGE-DESCRIPTION {
     margin-top: 10px;
 }

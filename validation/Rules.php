@@ -259,6 +259,16 @@ class Rules {
         return $this;
     }
 
+    public function update_media_description() {
+
+        $validation = new Validate();
+        
+        $validation->input('description')->as('Description')->rules(['required' => true, 'special' => true, 'max' => 99]);
+        
+        $this->errors = $validation->errors;
+        return $this;
+    }
+
     public function create_category($unique) {
         
         $validation = new Validate();

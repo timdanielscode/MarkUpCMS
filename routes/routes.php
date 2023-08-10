@@ -81,6 +81,7 @@ Route::middleware('login')->run(function() {
     Route::get('/admin/media')->add('admin\MediaController', 'index');
     Route::get('/admin/media/create')->add('admin\MediaController', 'create');
     Route::post('/admin/media/create/update-filename')->add('admin\MediaController', 'UPDATEFILENAME');
+    Route::post('/admin/media/create/update-description')->add('admin\MediaController', 'UPDATEDESCRIPTION');
     Route::post('/admin/media/create')->add('admin\MediaController', 'store');
     Route::get('/admin/media/read')->add('admin\MediaController', 'READ');
     Route::get('/admin/media/')->add('admin\MediaController', 'TABLE');
