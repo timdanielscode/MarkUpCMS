@@ -135,7 +135,7 @@
                                 <input id="selectedFiles" type="hidden" name="files" value=""/>
                                 <input type="submit" name="submitDelete" class="button" value="Delete"/>
                             </form>
-                            <a href="" class="button display-none-important">Read</a>
+                            <a href="" class="button read display-none-important">Read</a>
                             <a href="/admin/media" class="button">Back</a>
                         </div>
                         <form action="" method="POST" class="uploadFileForm" enctype="multipart/form-data">

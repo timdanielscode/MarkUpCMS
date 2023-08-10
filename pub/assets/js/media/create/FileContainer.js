@@ -236,15 +236,12 @@ function clearSelection(elements, checkboxElements, sidebar) {
             element.children[0].classList.remove('deselect')
             element.children[0].classList.remove('selected')
 
-            console.log('test2')
-
         } else if(element.children[0].classList.contains('selected') === true) {
 
             element.children[0].classList.add('deselect')
             element.children[0].classList.remove('selected')
             sidebar.infoContainer.classList.add('display-none')
             sidebar.mainButtonContainerElement.children[2].classList.add('display-none-important')
-            console.log('test3')
 
             if(ifAnyElementHasSelectedDelete(checkboxElements) === false) {
 
@@ -262,13 +259,17 @@ function toggleDeleteForm(checkboxElements, elements, sidebar) {
     
     if(ifAnyElementHasSelectedDelete(checkboxElements) === false) {
 
-        sidebar.mainButtonContainerElement.children[0].classList.remove('display-none-important')
         sidebar.mainButtonContainerElement.children[1].classList.add('display-none')
         
         if(ifAnyElementHasSelected(elements) === false) {
-        
+
+            sidebar.mainButtonContainerElement.children[0].classList.remove('display-none-important')
             sidebar.updateFileFormElement.classList.remove('display-none')
             sidebar.buttonContainerElement.classList.remove('display-none-important')
+            
+        } else {
+
+            sidebar.mainButtonContainerElement.children[2].classList.remove('display-none-important')
         }
     } 
 }

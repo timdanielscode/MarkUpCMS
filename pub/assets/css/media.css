@@ -280,6 +280,15 @@
 .filterForm .button {
     margin-top: 20px;
 }
+.mainButtonContainer .read {
+    background: #4f80c8;
+    border-color: #4f80c8;
+}
+.mainButtonContainer .read:hover {
+    color: #fff;
+    background: #83a7db;
+    border-color: #83a7db;
+}
 .mainButtonContainer a, .mainButtonContainer label, .buttonContainer label, .filterForm .button, .deleteForm .button {
     width: auto;
     display: flex;
