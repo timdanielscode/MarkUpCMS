@@ -13,6 +13,8 @@
 
     $this->script('/assets/js/media/create/Sidebar.js', true);
     $this->script('/assets/js/media/create/FileContainer.js', true);
+    $this->script('/assets/js/media/create/ReadImageContainer.js', true);
+    $this->script('/assets/js/media/create/Ranger.js', true);
     $this->script('/assets/js/media/create/main.js', true);
     $this->script('/assets/js/media/ranger.js', true);
     
@@ -62,6 +64,7 @@
                     <input type="text" placeholder="Folder" name="P_folder">
                     <input type="submit" name="submitFolder" value="Folder &plusmn"/>
                 </form>
+                <div class="readImageContainer display-none"></div>
                 <div class="filesContainer">
                     <div class="row flex-center">
                         <?php if(!empty($folders) && $folders !== null && empty(get('search') ) || get('search') === null) { 
@@ -136,7 +139,8 @@
                                 <input id="selectedFiles" type="hidden" name="files" value=""/>
                                 <input type="submit" name="submitDelete" class="button" value="Delete"/>
                             </form>
-                            <a href="" class="button read display-none-important">Read</a>
+                            <a href="#" class="button read display-none-important">Read</a>
+                            <a href="#" class="button close display-none-important">Close</a>
                             <a href="/admin/media" class="button">Back</a>
                         </div>
                         <form action="" method="POST" class="uploadFileForm" enctype="multipart/form-data">

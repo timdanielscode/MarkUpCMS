@@ -283,11 +283,11 @@
 .filterForm .button {
     margin-top: 20px;
 }
-.mainButtonContainer .read {
+.mainButtonContainer .read, .mainButtonContainer .close {
     background: #4f80c8;
     border-color: #4f80c8;
 }
-.mainButtonContainer .read:hover {
+.mainButtonContainer .read:hover, .mainButtonContainer .close:hover {
     color: #fff;
     background: #83a7db;
     border-color: #83a7db;
@@ -478,6 +478,27 @@
 }
 .infoContainer .infoPart textarea:focus-visible {
     outline: none;
+}
+.read-image {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate;
+    transform: translate(-50%, -50%);
+    border: none !important;
+    width: auto !important;
+    height: auto !important;
+    max-width: 75%;
+    max-height: 75%;
+}
+.readImageContainer {
+    height: 80vh;
+    overflow-y: auto;
+    background: #fff;
+    padding: 10px;
+    border: 1px solid #c6c6c6;
+    margin: 50px;
+    position: relative;
 }
 /*
     modal

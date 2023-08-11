@@ -20,21 +20,23 @@ class Sidebar {
         this.setCurrentDescriptionElement();
         this.updateFilenameButtonElement;
         this.setUpdateFilenameButtonElement();
-
         this.deleteFormElement;
         this.setDeleteFormElement();
-
         this.mainButtonContainerElement;
         this.setMainButtonContainerElement();
-
         this.updateFileFormElement;
         this.setUpdateFileFormElement();
-
         this.buttonContainerElement;
         this.setButtonContainerElement();
-
         this.updateDescriptionButtonElement;
         this.setUpdateDescriptionButtonElement();
+        this.readButtonElement;
+        this.setReadButtonElement();
+        this.closeButtonElement;
+        this.setCloseButtonElement();
+        this.setOnclickCloseButton();
+
+        this.setOnclickReadButton();
     }
 
     setUpdateFileFormElement() {
@@ -199,4 +201,83 @@ class Sidebar {
         }
 
     }
+
+    setReadButtonElement() {
+
+        var element = document.querySelector('.read');
+
+        if(element !== null && typeof element !== 'undefined') {
+
+            this.readButtonElement = element;
+        }
+    }
+
+    setOnclickReadButton() {
+
+        var closeButton = this.closeButtonElement;
+
+        this.readButtonElement.onclick = function() {
+                    
+            displayReadImageContainer(this, closeButton);
+        };
+    }
+
+    setCloseButtonElement() {
+
+        var element = document.querySelector('.close');
+
+        if(element !== null && typeof element !== 'undefined') {
+
+            this.closeButtonElement = element;
+        }
+    }
+
+    setOnclickCloseButton() {
+
+        var readButton = this.readButtonElement;
+
+        this.closeButtonElement.onclick = function() {
+
+            closeReadImageContainer(this, readButton);
+        }
+    }
+}
+
+
+function closeReadImageContainer(element, readButtonElement) {
+
+    element.classList.add('display-none-important')
+    readButtonElement.classList.remove('display-none-important')
+
+    var readImageContainer = new ReadImageContainer();
+    readImageContainer.getElement().classList.add('display-none');
+    readImageContainer.getFileElement().classList.remove('read-image')
+
+    var ranger = new Ranger();
+    ranger.getElement().classList.remove('display-none');
+
+    var fileContainer = new FileContainer();
+    fileContainer.filesContainerElement.classList.remove('display-none')
+
+    fileContainer.getReadFileContainerElement().append(readImageContainer.getFileElement())
+    fileContainer.getReadFileContainerElement().append(fileContainer.getReadFileContainerElement().children[0])
+}
+
+
+function displayReadImageContainer(element, closeButtonElement) {
+
+    element.classList.add('display-none-important')
+    closeButtonElement.classList.remove('display-none-important')
+
+    var readImageContainer = new ReadImageContainer();
+    readImageContainer.getElement().classList.remove('display-none');
+
+    var ranger = new Ranger();
+    ranger.getElement().classList.add('display-none');
+
+    var fileContainer = new FileContainer();
+    fileContainer.filesContainerElement.classList.add('display-none')
+
+    readImageContainer.getElement().append(fileContainer.currentSelectedFileElement)
+    fileContainer.currentSelectedFileElement.classList.add('read-image')
 }

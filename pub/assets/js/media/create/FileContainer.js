@@ -1,11 +1,35 @@
 class FileContainer {
 
-    constructor(sidebar) {
+    constructor(sidebar = null) {
 
         this.sidebar = sidebar;
         this.elements = [];
         this.checkboxes = [];
         this.setElements();
+        this.fileContainerElement;
+        this.setFilesContainerElement();
+        this.currentSelectedFileElement;
+        this.setCurrentSelectedFileElement();
+    }
+
+    setFilesContainerElement() {
+
+        var element = document.querySelector('.filesContainer');
+
+        if(element !== null && typeof element !== 'undefined') {
+
+            this.filesContainerElement = element;
+        }
+    }
+
+    setCurrentSelectedFileElement() {
+
+        var element = document.querySelector('.selected');
+
+        if(element !== null && typeof element !== 'undefined') {
+
+            this.currentSelectedFileElement = element;
+        }
     }
 
     setElements() {
@@ -79,6 +103,19 @@ class FileContainer {
                     deleteSelection(this, deleteInputElement, sidebar);
                     toggleDeleteForm(checkboxElements, elements, sidebar);
                 };
+            }
+        }
+    }
+
+    getReadFileContainerElement() {
+
+        var elements = document.querySelectorAll('.fileContainer')
+
+        for(var element of elements) {
+
+            if(element.children.length === 1 || element.children[0].classList.contains('deleteSelection') && element.children.length === 2) {
+
+                return element;
             }
         }
     }
