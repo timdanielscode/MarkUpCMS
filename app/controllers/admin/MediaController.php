@@ -13,6 +13,18 @@ use core\http\Response;
 
 class MediaController extends Controller {
 
+    private $_folderPath = '';
+
+    public function __construct() {
+
+        if(empty(get('folder')) ) {
+
+            $this->_folderPath = 'website/assets';
+        } else {
+            $this->_folderPath = get('folder');
+        }
+    }
+
     private function ifExists($id) {
 
         $media = new Media();
@@ -28,7 +40,6 @@ class MediaController extends Controller {
         $media = new Media();
         $allMedia = $media->allMediaButOrdered();
         
-
         $search = get('search');
 
         if(!empty($search) ) {
@@ -124,15 +135,8 @@ class MediaController extends Controller {
 
     public function create() {
 
-        if(empty(get('folder')) ) {
-            $folder = 'website/assets';
-            $folders = glob('website/assets' . '/*' , GLOB_ONLYDIR);
-        } else {
-            $folder = get('folder');
-            $folders = glob(get('folder') . '/*' , GLOB_ONLYDIR);
-        }
-
-        $files = DB::try()->select('*')->from('media')->where('media_folder', '=', $folder)->fetch();
+        $folders = glob($this->_folderPath . '/*', GLOB_ONLYDIR);
+        $files = DB::try()->select('*')->from('media')->where('media_folder', '=', $this->_folderPath)->fetch();
 
         if(!empty(get('search'))) {
 
@@ -176,28 +180,18 @@ class MediaController extends Controller {
             $types = $_FILES['file']['type'];
             $errors = $_FILES['file']['error'];
 
-            if(empty(get('folder'))) {
-
-                $folder = 'website/assets';
-                $folders = glob('website/assets' . '/*' , GLOB_ONLYDIR);
-            } else {
-                
-                $folder = get('folder');
-                $folders = glob(get('folder') . '/*' , GLOB_ONLYDIR);
-            }
-
             $rules = new Rules();
 
             if($this->validation($filenames, $types, $errors, $rules) !== false) {
                       
                 foreach($filenames as $key => $filename) {
                    
-                    move_uploaded_file($tmps[$key], $folder . "/" . $filename);
+                    move_uploaded_file($tmps[$key], $this->_folderPath . '/' . $filename);
 
                     Media::insert([
             
                         'media_filename'    => $filename,
-                        'media_folder'      => $folder,
+                        'media_folder'      => $this->_folderPath,
                         'media_filetype'    => $types[$key],
                         'media_filesize'    => $sizes[$key],
                         'media_description' => $request['media_description'],
@@ -212,43 +206,48 @@ class MediaController extends Controller {
                 redirect('/admin/media/create?folder=' . get('folder'));
             } else {
 
-                $files = DB::try()->select('*')->from('media')->where('media_folder', '=', $folder)->fetch();
+                $folders = glob($this->_folderPath . '/*', GLOB_ONLYDIR);
+                $files = DB::try()->select('*')->from('media')->where('media_folder', '=', $this->_folderPath)->fetch();
 
                 $data['folders'] = $folders;
                 $data['files'] = $files;
                 $data['rules'] = $rules->errors;
 
                 return $this->view('admin/media/create', $data);
-            } 
+            }
 
         } else if(submitted('submitFolder')) {
 
-            if(!empty(get('folder')) && get('folder') !== null) {
-                $path = get('folder') . '/';
-            } else {
-                $path = 'website/assets/';
-            }
-
-            if(file_exists($path . $request['P_folder']) === true) {
-
-                rmdir($path . $request['P_folder']);
-            } else {
-
-                mkdir($path . $request['P_folder'], 0777, true); 
-            }
-            
-            redirect('/admin/media/create?folder=' . get('folder'));
-
+            $this->folder($request);
         } else if(submitted('submitDelete')) {
-
-            $fileIds = explode(',', $request['files']);
-
-            foreach($fileIds as $fileId) {
-
-                Media::delete('id', $fileId);
-            }
-            redirect('/admin/media/create?folder=' . get('folder'));
+            $this->deleteFiles($request);
         }
+    }
+
+    private function deleteFiles($request) {
+
+        $fileIds = explode(',', $request['files']);
+
+        foreach($fileIds as $fileId) {
+
+            $filename = Media::where('id', '=', $fileId)[0]['media_filename'];
+            Media::delete('id', $fileId);
+            unlink($this->_folderPath . '/' . $filename);
+        }
+
+        redirect('/admin/media/create?folder=' . get('folder'));
+    }
+
+    private function folder($request) {
+
+        if(file_exists($this->_folderPath . '/' . $request['P_folder']) === true) {
+
+            rmdir($this->_folderPath . '/' . $request['P_folder']);
+        } else {
+            mkdir($this->_folderPath . '/' . $request['P_folder'], 0777, true); 
+        }
+        
+        redirect('/admin/media/create?folder=' . get('folder'));
     }
 
     private function validation($filenames, $types, $errors, $rules) {
@@ -354,37 +353,7 @@ class MediaController extends Controller {
         $this->ifExists($request['id']);
 
         $file = Media::where('id', '=', $request['id'])[0];
-        $filename = $file['media_filename'];
-
-        $type = $file['media_filetype'];
-         
-        switch ($type) {
-
-            case 'image/png':
-            case 'image/webp':
-            case 'image/gif':
-            case 'image/jpeg':
-            case 'image/svg+xml':
-
-                $filePath = "website/assets/img/";
-            break;
-            case 'video/mp4':
-            case 'video/quicktime':
-
-                $filePath = "website/assets/video/";
-            break;  
-            case 'application/pdf':
-
-                $filePath = "website/assets/application/";
-            break;
-            default:
-
-                $filePath = '';
-            break;
-        }
-
-        unlink($filePath . $filename);
-
+        unlink($this->_folderPath . $file['media_filename']);
         Media::delete('id', $request['id']);
         
         redirect("/admin/media");
