@@ -188,16 +188,14 @@ class MediaController extends Controller {
 
             $rules = new Rules();
 
-            foreach($filenames as $key => $filename) {
-
-                $uniqueFilename = Media::where('media_filename', '=', $filename);
-
-                if($this->validation($filenames, $types, $errors, $rules) !== false) {
+            if($this->validation($filenames, $types, $errors, $rules) !== false) {
                       
+                foreach($filenames as $key => $filename) {
+                   
                     move_uploaded_file($tmps[$key], $folder . "/" . $filename);
 
                     Media::insert([
-        
+            
                         'media_filename'    => $filename,
                         'media_folder'      => $folder,
                         'media_filetype'    => $types[$key],
@@ -208,19 +206,19 @@ class MediaController extends Controller {
                         'date_updated_at'   => date("d/m/Y"),
                         'time_updated_at'   => date("H:i")
                     ]);
-               
-                    Session::set('create', 'You have successfully created a new post!');            
-                    redirect('/admin/media/create?folder=' . get('folder'));
-                } else {
-
-                    $files = DB::try()->select('*')->from('media')->where('media_folder', '=', $folder)->fetch();
-
-                    $data['folders'] = $folders;
-                    $data['files'] = $files;
-                    $data['rules'] = $rules->errors;
-
-                    return $this->view('admin/media/create', $data);
                 }
+               
+                Session::set('create', 'You have successfully created a new post!');            
+                redirect('/admin/media/create?folder=' . get('folder'));
+            } else {
+
+                $files = DB::try()->select('*')->from('media')->where('media_folder', '=', $folder)->fetch();
+
+                $data['folders'] = $folders;
+                $data['files'] = $files;
+                $data['rules'] = $rules->errors;
+
+                return $this->view('admin/media/create', $data);
             } 
 
         } else if(submitted('submitFolder')) {

@@ -19,8 +19,8 @@
     $this->script('/assets/js/media/ranger.js', true);
     
     $this->script('/assets/js/ajax.js');
-    $this->script('/assets/js/media/create/updateFilename.js');
-    $this->script('/assets/js/media/create/updateDescription.js');
+    $this->script('/assets/js/media/create/update/filename.js');
+    $this->script('/assets/js/media/create/update/description.js');
 
     $this->title("IndependentCMS");
     $this->include("headerClose");
