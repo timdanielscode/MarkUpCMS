@@ -81,7 +81,7 @@ h3 {
     color: #FFBF00 !important;
 }
 .color-red {
-    color: rgb(199, 48, 48);
+    color: rgb(199, 48, 48) !important;
 }
 .color-white {
     color: #fff;

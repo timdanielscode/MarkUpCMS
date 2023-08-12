@@ -5,14 +5,8 @@
         <tr id="<?php echo $media["id"]; ?>">
 
             <td>
-                <?php echo $media["id"]; ?>
+                <input class="deleteCheckbox" type="checkbox" name="delete" value="<?php echo $media['id']; ?>"/>
             </td>
-                <td class="width-25">
-                    <a href="#<?php echo $media['media_filename']; ?>" data-role="edit" data-id="<?php echo $media['id']; ?>" id="mediaTitle-<?php echo $media['id']; ?>" class="mediaEdit font-weight-500"><?php echo $media['media_filename']; ?></a> |
-                    <a href="#<?php echo $media['media_filename']; ?>" data-role="edit" data-id="<?php echo $media['id']; ?>" class="mediaEdit font-weight-300">Edit</a> |
-                    <a href="#<?php echo $media['media_filename']; ?>" class="mediaPreview font-weight-300" data-id="<?php echo $media['id']; ?>">Read</a> |
-                    <a href="/admin/media/<?php echo $media["id"]; ?>/delete" class="font-weight-300 color-red">Delete</a>
-                </td>
             <td class="width-10">
 
                     <?php if($media['media_filetype'] == 'image/png' || $media['media_filetype']  == 'image/webp' || $media['media_filetype']  == 'image/gif' || $media['media_filetype']  == 'image/jpeg' || $media['media_filetype']  == 'image/svg+xml') { ?>
@@ -44,6 +38,9 @@
             </td>
             <td class="width-10">
                 <a data-role="update" id="update" class="button" data-id="<?php echo $media['id']; ?>" data-folder="<?php echo $media['media_folder']; ?>">Update</a>
+            </td>
+            <td>
+                <?php echo $media['media_description']; ?>
             </td>
             <td class="width-10">
                 <span class="font-weight-500"><?php echo $media['media_filetype']; ?></span>

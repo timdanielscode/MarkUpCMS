@@ -469,7 +469,7 @@
 .infoContainer .infoPart textarea {
     width: 100%;
     box-sizing: border-box;
-    min-height: 50px;
+    min-height: 70px;
     height: auto;
     border: 1px solid #aaa;
     font-size: 13px;

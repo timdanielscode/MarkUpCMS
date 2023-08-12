@@ -17,6 +17,9 @@
     $this->script('/assets/js/media/edit.js');
     $this->script('/assets/js/media/read.js');
 
+    $this->script('/assets/js/media/index/delete.js', true);
+
+
     $this->include('headerClose');
     $this->include('navbar');
 ?>
@@ -25,7 +28,7 @@
     <h1>Media</h1>
     <div class="countContainer">
         <span>All</span>
-        <span>(<?php echo $count; ?>)</span> | <a href="/admin/media/create">Upload</a>
+        <span>(<?php echo $count; ?>)</span> | <a href="/admin/media/create">Upload</a> | <form action="/admin/media/delete" method="POST"><input type="submit" name="test" value="Delete"/><input type="hidden" name="deleteIds" id="deleteIds" value=""/></form>
     </div>
     <form action="" method="GET">
         <input type="text" name="search" placeholder="Search" id="search">
@@ -37,9 +40,11 @@
     <table>
         <thead>
             <th>#</th>
+
             <th>File</th>
-            <th>Filename</th>
             <th></th>
+            <th></th>
+            <th>Description</th>
             <th>Type</th>
             <th>Size</th>
             <th>Date</th>

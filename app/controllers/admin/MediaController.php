@@ -82,22 +82,6 @@ class MediaController extends Controller {
         return $this->view('admin/media/table', $data);
     }
 
-    public function EDIT($request) {
-
-        $this->ifExists($request['id']);
-
-        $media = Media::where('id', '=', $request['id'])[0];
-
-        $mediaTitle = $media['media_title'];
-        $mediaDescription = $media['media_description'];
-
-        $data['mediaTitle'] = $mediaTitle;
-        $data['mediaDescription'] = $mediaDescription;
-        $data['id'] = $request['id'];
-
-        return $this->view('admin/media/modal', $data);
-    }
-
     public function READ($request) {
 
         $this->ifExists($request['id']);
@@ -350,12 +334,21 @@ class MediaController extends Controller {
 
     public function delete($request) {
 
-        $this->ifExists($request['id']);
+        if(!empty($request['deleteIds']) && $request['deleteIds'] !== null) {
 
-        $file = Media::where('id', '=', $request['id'])[0];
-        unlink($this->_folderPath . $file['media_filename']);
-        Media::delete('id', $request['id']);
-        
-        redirect("/admin/media");
+            $ids = explode(',', $request['deleteIds']);
+
+            foreach($ids as $id) {
+
+                $this->ifExists($id);
+
+                $file = Media::where('id', '=', $id)[0];
+                unlink($this->_folderPath . $file['media_filename']);
+                Media::delete('id', $id);
+                
+            }
+
+            redirect("/admin/media");
+        }
     }
 }
