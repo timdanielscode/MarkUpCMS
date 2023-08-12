@@ -81,5 +81,21 @@ table thead {
     color: #333 !important;
 }
 .color-red:hover {
-    color: red;
+    color: red !important;
+}
+
+.indexDeleteForm {
+    display: inline-block;
+}
+.indexDeleteForm input {
+    border: none;
+    background: none;
+    color: rgb(199, 48, 48) !important;
+    padding: 0;
+    font-size: 13px;
+    text-decoration: underline;
+}
+.indexDeleteForm input:hover {
+    color: red !important;
+    cursor: pointer;
 }

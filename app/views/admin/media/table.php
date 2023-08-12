@@ -37,10 +37,19 @@
                 <?php } ?>
             </td>
             <td class="width-10">
-                <a data-role="update" id="update" class="button" data-id="<?php echo $media['id']; ?>" data-folder="<?php echo $media['media_folder']; ?>">Update</a>
+                <a data-role="update" id="update" class="button" value="<?php echo $media['id']; ?>" data-folder="<?php echo $media['media_folder']; ?>">Update</a>
             </td>
             <td>
-                <?php echo $media['media_description']; ?>
+                <?php if(!empty($media['media_description']) && $media['media_description'] !== null) { ?>
+
+                    <textarea id="description-<?php echo $media['id']; ?>" value="<?php echo $media['media_description']; ?>"><?php echo $media['media_description']; ?></textarea>
+                <?php } else { ?>
+                    <textarea id="description-<?php echo $media['id']; ?>" value="<?php echo $media['media_description']; ?>"><?php echo '-'; ?></textarea>
+                <?php } ?>
+                <span id="MESSAGE-DESCRIPTION-<?php echo $media['id']; ?>"></span>
+            </td>
+            <td>
+                <a data-role="update-description" id="update-description" class="button" value="<?php echo $media['id']; ?>">Update</a>
             </td>
             <td class="width-10">
                 <span class="font-weight-500"><?php echo $media['media_filetype']; ?></span>

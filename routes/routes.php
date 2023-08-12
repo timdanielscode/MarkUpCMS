@@ -87,6 +87,7 @@ Route::middleware('login')->run(function() {
     Route::get('/admin/media/')->add('admin\MediaController', 'TABLE');
     Route::post('/admin/media/update')->add('admin\MediaController', 'UPDATE');
     Route::post('/admin/media/update-filename')->add('admin\MediaController', 'UPDATEFILENAME');
+    Route::post('/admin/media/update-description')->add('admin\MediaController', 'UDPATEDESCRIPTION');
     Route::post('/admin/media/delete')->add('admin\MediaController', 'delete');
     
     Route::get('/admin/categories')->add('admin\CategoryController', 'index');

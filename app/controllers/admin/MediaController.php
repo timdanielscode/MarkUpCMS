@@ -343,7 +343,7 @@ class MediaController extends Controller {
                 $this->ifExists($id);
 
                 $file = Media::where('id', '=', $id)[0];
-                unlink($this->_folderPath . $file['media_filename']);
+                unlink($this->_folderPath . '/' . $file['media_filename']);
                 Media::delete('id', $id);
                 
             }

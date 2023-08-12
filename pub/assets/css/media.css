@@ -654,14 +654,14 @@
     background: #83a7db;
     border-color: #83a7db;
 }
-#update {
+#update, #update-description {
     background: #42971c;
     border-radius: 3px;
     border-color: #42971c;
     color: #fff;
     width: 36px;
 }
-#update:hover {
+#update:hover, #update-description:hover {
     background: #6ba152;
     border-color: #6ba152;
     cursor: pointer;
