@@ -143,13 +143,23 @@ function deleteSelection(element, input, sidebar) {
     sidebar.mainButtonContainerElement.children[0].classList.add('display-none-important')
     sidebar.updateFileFormElement.classList.add('display-none')
     sidebar.buttonContainerElement.classList.add('display-none-important')
-    element.previousElementSibling.classList.toggle('selected-delete')
 
-    if(element.previousElementSibling.classList.contains('selected-delete') === true) {
+    toggleSelectedDeleteClass(element);
+    
+    if(element.previousElementSibling.classList.contains('selected-delete') === true || element.previousElementSibling.previousElementSibling !== null && element.previousElementSibling.previousElementSibling.classList.contains('selected-delete') === true) {
 
         input.value += element.previousElementSibling.dataset.id + ",";
     } else {
         input.value = input.value.replace(element.previousElementSibling.dataset.id + ",", "");
+    }
+}
+
+function toggleSelectedDeleteClass(element) {
+
+    if(element.previousElementSibling.previousElementSibling !== null) {
+        element.previousElementSibling.previousElementSibling.classList.toggle('selected-delete')
+    } else {
+        element.previousElementSibling.classList.toggle('selected-delete')
     }
 }
 
@@ -333,7 +343,7 @@ function ifAnyElementHasSelectedDelete(elements) {
 
     for(var element of elements) {
 
-        if(element.previousElementSibling.classList.contains('selected-delete') === true) {
+        if(element.previousElementSibling.classList.contains('selected-delete') === true || element.previousElementSibling.previousElementSibling !== null && element.previousElementSibling.previousElementSibling.classList.contains('selected-delete')) {
 
             hasClass = true;
         } 

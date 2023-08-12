@@ -3,7 +3,7 @@ $(document).ready(function() {
 
         var id = this.getAttribute('value');
         var description = $("#currentDescription").val();
-        var selectedFileContainer= document.querySelector('.selected');
+        var selectedFile = document.querySelector('.selected');
         var message = $("#MESSAGE-DESCRIPTION"); 
 
             $.ajax({
@@ -17,7 +17,15 @@ $(document).ready(function() {
 
                 success: function(data) {
 
-                    selectedFileContainer.setAttribute('data-description', description);
+                    if(selectedFile.classList.contains('iframeLayer') ) {
+
+                        selectedFile.nextElementSibling.setAttribute('data-description', description);
+                    } else {
+
+                        selectedFile.setAttribute('data-description', description);
+                    }
+
+                    
 
                     message.html("<span>Updated successfully!</span>").fadeIn(10).fadeOut(2000);
                     message.addClass('message-success'); 
