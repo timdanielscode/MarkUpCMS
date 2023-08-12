@@ -39,10 +39,9 @@
 
     <table>
         <thead>
-            <th>#</th>
-
-            <th>File</th>
             <th></th>
+            <th>File</th>
+            <th>Filename</th>
             <th></th>
             <th>Description</th>
             <th></th>

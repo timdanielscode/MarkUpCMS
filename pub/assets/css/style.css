@@ -90,6 +90,9 @@ h3 {
 /*
     Margin
 */
+.margin-t-10 {
+    margin-top: 10px;
+}
 .margin-t-50 {
     margin-top: 50px;
 }

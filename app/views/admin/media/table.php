@@ -17,7 +17,7 @@
                         <a href="#<?php echo $media['media_filename']; ?>" class="mediaPreview font-weight-300" data-id="<?php echo $media['id']; ?>"><video src="<?php echo "/" . $media['media_folder'] . '/' . $media['media_filename']; ?>" id="imageSmall"></video></a>
                     <?php } ?>
             </td>
-            <td class="width-25">
+            <td class="width-20">
                 <span class="font-weight-400" id="mediaPath-<?php echo $media['id']; ?>">
                         <?php if($media['media_filetype'] == 'image/png' || $media['media_filetype']  == 'image/webp' || $media['media_filetype']  == 'image/gif' || $media['media_filetype']  == 'image/jpeg' || $media['media_filetype']  == 'image/svg+xml') { ?>
                             <?php echo "/" . $media['media_folder'] . '/' . $media["media_filename"]; ?>
@@ -39,16 +39,16 @@
             <td class="width-10">
                 <a data-role="update" id="update" class="button" value="<?php echo $media['id']; ?>" data-folder="<?php echo $media['media_folder']; ?>">Update</a>
             </td>
-            <td>
+            <td class="width-20">
                 <?php if(!empty($media['media_description']) && $media['media_description'] !== null) { ?>
 
-                    <textarea id="description-<?php echo $media['id']; ?>" value="<?php echo $media['media_description']; ?>"><?php echo $media['media_description']; ?></textarea>
+                    <textarea id="description-<?php echo $media['id']; ?>" class="updateDescription" value="<?php echo $media['media_description']; ?>"><?php echo $media['media_description']; ?></textarea>
                 <?php } else { ?>
-                    <textarea id="description-<?php echo $media['id']; ?>" value="<?php echo $media['media_description']; ?>"><?php echo '-'; ?></textarea>
+                    <textarea id="description-<?php echo $media['id']; ?>" class="updateDescription" value="<?php echo $media['media_description']; ?>"><?php echo '-'; ?></textarea>
                 <?php } ?>
-                <span id="MESSAGE-DESCRIPTION-<?php echo $media['id']; ?>"></span>
+                <div class="margin-t-10" id="MESSAGE-DESCRIPTION-<?php echo $media['id']; ?>"></div>
             </td>
-            <td>
+            <td class="width-10 text-center">
                 <a data-role="update-description" id="update-description" class="button" value="<?php echo $media['id']; ?>">Update</a>
             </td>
             <td class="width-10">

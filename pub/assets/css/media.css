@@ -534,11 +534,18 @@
 }
 .mediaFilename {
     border: 1px solid #aaa;
-    width: 75%;
+    width: 100%;
     font-size: 11px;
     padding: 5px 0px 5px 10px;
     border-radius: 3px;
     margin-top: 5px;
+}
+.updateDescription {
+    border: 1px solid #aaa;
+    width: 100%;
+    font-size: 11px;
+    padding: 5px 0px 5px 10px;
+    border-radius: 3px;
 }
 .mediaFilename:focus {
     outline: none;
@@ -659,12 +666,16 @@
     border-radius: 3px;
     border-color: #42971c;
     color: #fff;
-    width: 36px;
+    width: 40px;
+    margin: 0 auto;
 }
 #update:hover, #update-description:hover {
     background: #6ba152;
     border-color: #6ba152;
     cursor: pointer;
+}
+.updateDescription:focus-visible {
+    outline: none;
 }
 .modalUpdateMessage {
     margin-top: 10px;
