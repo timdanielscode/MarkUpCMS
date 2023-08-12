@@ -14,10 +14,10 @@
 
     $this->script('/assets/js/ajax.js');
     $this->script('/assets/js/media/table.js');
-    $this->script('/assets/js/media/edit.js');
     $this->script('/assets/js/media/read.js');
 
     $this->script('/assets/js/media/index/delete.js', true);
+    $this->script('/assets/js/media/index/update/filename.js');
     $this->script('/assets/js/media/index/update/description.js');
 
     $this->include('headerClose');

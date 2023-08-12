@@ -30,14 +30,14 @@
                 <?php if($media["media_filename"] !== "-") { ?>
                 <form>
                     <input class="mediaFilename" name="filename" id="filename-<?php echo $media['id']; ?>" type="text" value="<?php echo $media["media_filename"]; ?>"/>
-                    <div id="message-<?php echo $media['id'] ?>"></div>
+                    <div class="margin-t-10" id="MESSAGE-<?php echo $media['id'] ?>"></div>
                 </form>
                 <?php } else { ?>
                     <span class="font-weight-500"><?php echo $media["media_filename"]; ?></span>
                 <?php } ?>
             </td>
             <td class="width-10">
-                <a data-role="update" id="update" class="button" value="<?php echo $media['id']; ?>" data-folder="<?php echo $media['media_folder']; ?>">Update</a>
+                <a data-role="update" data-folder="<?php echo $media['media_folder']; ?>" id="update" class="button" value="<?php echo $media['id']; ?>" data-folder="<?php echo $media['media_folder']; ?>">Update</a>
             </td>
             <td class="width-20">
                 <?php if(!empty($media['media_description']) && $media['media_description'] !== null) { ?>
