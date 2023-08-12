@@ -45,6 +45,22 @@ class FileContainer {
         }
     }
 
+    getAllElements() {
+
+        var elements = document.querySelector('.filesContainer');
+        var collection = [];
+
+        for(var element of elements.children[0].children) {
+
+            if(element !== null && typeof element !== 'undefined') {
+
+                collection.push(element);
+            }
+        }
+
+        return collection;
+    }
+
     setCheckboxElements() {
 
         for(var element of this.elements) {

@@ -243,7 +243,6 @@ class Sidebar {
     }
 }
 
-
 function closeReadImageContainer(element, readButtonElement) {
 
     element.classList.add('display-none-important')

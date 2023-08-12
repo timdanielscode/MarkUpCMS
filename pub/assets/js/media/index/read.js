@@ -9,9 +9,6 @@ $(document).ready(function() {
         readImageContainer.append(image)
         $("html").addClass('dark-layer')
     });
-});
-
-$(document).ready(function() {
 
     $(document).on('click', '#mediaReadImage', function() {
 

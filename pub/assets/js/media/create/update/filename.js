@@ -2,6 +2,10 @@ $(document).ready(function() {
     $(document).on('click', 'a[data-role=update]', function() {
 
         var id = this.getAttribute('value');
+
+        console.log(id)
+
+
         var filename = $("#currentFilename").val();
         var folder = $("#currentFolder").data('folder');
         var message = $("#MESSAGE"); 

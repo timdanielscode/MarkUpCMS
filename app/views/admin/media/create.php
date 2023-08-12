@@ -16,7 +16,6 @@
     $this->script('/assets/js/media/create/ReadImageContainer.js', true);
     $this->script('/assets/js/media/create/Ranger.js', true);
     $this->script('/assets/js/media/create/main.js', true);
-    $this->script('/assets/js/media/ranger.js', true);
     
     $this->script('/assets/js/ajax.js');
     $this->script('/assets/js/media/create/update/filename.js');
@@ -115,10 +114,10 @@
                                     <?php if($type === 'img') { ?>
                                     <img class="file mediaFile" data-id="<?php echo $file['id']; ?>" data-filename="<?php echo $file['media_filename']; ?>"  data-folder="<?php echo $file['media_folder']; ?>" data-filetype="<?php echo $file['media_filetype']; ?>" data-filesize="<?php echo $file['media_filesize']; ?>" src="<?php echo '/' . $file['media_folder'] . '/' . $file['media_filename']; ?>" data-description="<?php if(!empty($file['media_description']) && $file['media_description'] !== null) { echo $file['media_description']; } else { echo '-'; } ?>" loading="lazy">
                                     <?php } else if($type === 'video') { ?>
-                                        <video class="file mediaFile" data-id="<?php echo $file['id']; ?>" data-filename="<?php echo $file['media_filename']; ?>" data-folder="<?php echo $file['media_folder']; ?>" data-filetype="<?php echo $file['media_filetype']; ?>" data-filesize="<?php echo $file['media_filesize']; ?>" src="<?php echo '/' . $file['media_folder'] . '/' . $file['media_filename']; ?>" description="<?php if(!empty($file['media_description']) && $file['media_description'] !== null) { echo $file['media_description']; } else { echo '-'; } ?>" loading="lazy"></video>
+                                        <video class="file mediaFile" data-id="<?php echo $file['id']; ?>" data-filename="<?php echo $file['media_filename']; ?>" data-folder="<?php echo $file['media_folder']; ?>" data-filetype="<?php echo $file['media_filetype']; ?>" data-filesize="<?php echo $file['media_filesize']; ?>" src="<?php echo '/' . $file['media_folder'] . '/' . $file['media_filename']; ?>" data-description="<?php if(!empty($file['media_description']) && $file['media_description'] !== null) { echo $file['media_description']; } else { echo '-'; } ?>" loading="lazy"></video>
                                     <?php } else if($type === 'application') { ?>
                                         <div class="iframeLayer"></div>
-                                        <iframe class="file mediaFile" data-id="<?php echo $file['id']; ?>" data-filename="<?php echo $file['media_filename']; ?>" data-folder="<?php echo $file['media_folder']; ?>" data-filetype="<?php echo $file['media_filetype']; ?>" data-filesize="<?php echo $file['media_filesize']; ?>" src="<?php echo '/' . $file['media_folder'] . '/' . $file['media_filename']; ?>" description="<?php if(!empty($file['media_description']) && $file['media_description'] !== null) { echo $file['media_description']; } else { echo '-'; } ?>" loading="lazy"></iframe>
+                                        <iframe class="file mediaFile" data-id="<?php echo $file['id']; ?>" data-filename="<?php echo $file['media_filename']; ?>" data-folder="<?php echo $file['media_folder']; ?>" data-filetype="<?php echo $file['media_filetype']; ?>" data-filesize="<?php echo $file['media_filesize']; ?>" src="<?php echo '/' . $file['media_folder'] . '/' . $file['media_filename']; ?>" data-description="<?php if(!empty($file['media_description']) && $file['media_description'] !== null) { echo $file['media_description']; } else { echo '-'; } ?>" loading="lazy"></iframe>
                                     <?php } ?>
                                     <input class="deleteSelection" type="checkbox"/> 
                                 </div>
