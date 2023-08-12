@@ -6,7 +6,7 @@ $(document).ready(function() {
         var folder = $("#currentFolder").data('folder');
         var message = $("#MESSAGE"); 
         var fileTextParts = document.getElementById('currentFolderFilename');
-        var selectedFileContainer = document.querySelector('.selected');
+        var selectedFile = document.querySelector('.selected');
 
             $.ajax({
                 type: "POST",
@@ -21,8 +21,16 @@ $(document).ready(function() {
                 success: function(data) {
 
                     fileTextParts.innerText = '/' + folder + '/' + filename;
-                    selectedFileContainer.setAttribute('src', '/' + folder + '/' + filename);
-                    selectedFileContainer.setAttribute('data-filename', filename);
+
+                    if(selectedFile.classList.contains('iframeLayer') ) {
+
+                        selectedFile.nextElementSibling.setAttribute('src', '/' + folder + '/' + filename);
+                        selectedFile.nextElementSibling.setAttribute('data-filename', filename);
+                    } else {
+
+                        selectedFile.setAttribute('src', '/' + folder + '/' + filename);
+                        selectedFile.setAttribute('data-filename', filename);
+                    }
 
                     message.html("<span>Updated successfully!</span>").fadeIn(10).fadeOut(2000);
                     message.addClass('message-success'); 
