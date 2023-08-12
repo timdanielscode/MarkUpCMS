@@ -147,3 +147,8 @@ ALTER TABLE media ADD media_folder VARCHAR(50) AFTER media_filename;
 ALTER TABLE media DROP COLUMN media_title;
 ALTER TABLE media DROP COLUMN media_description;
 ALTER TABLE media ADD media_description VARCHAR(100) AFTER media_filesize; 
+
+CREATE TABLE mediaFolders (
+    id int(11) AUTO_INCREMENT PRIMARY KEY,
+    folder_name varchar(49) NOT NULL
+);

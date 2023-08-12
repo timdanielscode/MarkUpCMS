@@ -238,6 +238,16 @@ class Rules {
         return $this;
     }
 
+    public function insert_media_folder() {
+
+        $validation = new Validate();
+        
+        $validation->input('P_folder')->as('Folder')->rules(['required' => true, 'max' => 49, 'special' => true]);
+        
+        $this->errors = $validation->errors;
+        return $this;
+    }
+
     public function media_update_title_description() {
 
         $validation = new Validate();

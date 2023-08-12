@@ -2,15 +2,11 @@ $(document).ready(function() {
     $(document).on('click', 'a[data-role=update]', function() {
 
         var id = this.getAttribute('value');
-
-        console.log(id)
-
-
         var filename = $("#currentFilename").val();
         var folder = $("#currentFolder").data('folder');
         var message = $("#MESSAGE"); 
         var fileTextParts = document.getElementById('currentFolderFilename');
-        var selectedFileContainer= document.querySelector('.selected');
+        var selectedFileContainer = document.querySelector('.selected');
 
             $.ajax({
                 type: "POST",
@@ -34,7 +30,7 @@ $(document).ready(function() {
             },
                 error: function(xhr, status, error) {
 
-                    message.html("<span>Title can't be empty, must be unique, max 49 characters, no special characters!</span>").fadeIn(10);
+                    message.html("<span>Filename can't be empty, must be unique, max 49 characters, no special characters!</span>").fadeIn(10);
                     message.addClass('message-failed'); 
                     message.removeClass('message-success');
             }

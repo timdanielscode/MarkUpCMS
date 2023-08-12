@@ -716,3 +716,8 @@
 #MESSAGE-DESCRIPTION {
     margin-top: 10px;
 }
+.error-messages.folder {
+    position: absolute;
+    top: 18px;
+    right: 290px;
+}

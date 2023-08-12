@@ -62,6 +62,9 @@
                 <form action="" method="POST" class="folderForm">
                     <input type="text" placeholder="Folder" name="P_folder">
                     <input type="submit" name="submitFolder" value="Folder &plusmn"/>
+                    <div class="error-messages folder">
+                        <?php echo Errors::get($rules, 'P_folder'); ?>
+                    </div>
                 </form>
                 <div class="readImageContainer display-none"></div>
                 <div class="filesContainer">

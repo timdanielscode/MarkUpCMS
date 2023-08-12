@@ -82,41 +82,6 @@ class MediaController extends Controller {
         return $this->view('admin/media/table', $data);
     }
 
-    public function READ($request) {
-
-        $this->ifExists($request['id']);
-
-        $media = Media::where('id', '=', $request['id'])[0];
-
-        switch ($media['media_filetype']) {
-
-            case 'image/png':
-            case 'image/webp':
-            case 'image/gif':
-            case 'image/jpeg':
-            case 'image/svg+xml':
-
-                $file = '<img id="mediaPreviewFile" class="display-none" src="/website/assets/img/' . $media['media_filename'] . '">';
-            break;
-            case 'video/mp4':
-            case 'video/quicktime':
-
-                $file = '<video id="mediaPreviewFile" class="display-none" src="/website/assets/video/' . $media['media_filename'] . '" controls></video>';
-            break;  
-            case 'application/pdf':
-
-                $fileDestination = "website/assets/application/".$media['media_filename'];
-                $file = '<iframe id="mediaPreviewFile" class="display-none" src="/website/assets/application/' . $media['media_filename'] . '"></iframe>';
-            break;
-            default:
-
-                $fileDestination = '';
-            break;
-        }
-
-        echo $file;
-    }
-
     public function create() {
 
         $folders = glob($this->_folderPath . '/*', GLOB_ONLYDIR);
@@ -228,8 +193,35 @@ class MediaController extends Controller {
 
             rmdir($this->_folderPath . '/' . $request['P_folder']);
         } else {
-            mkdir($this->_folderPath . '/' . $request['P_folder'], 0777, true); 
-        }
+
+            $rules = new Rules();
+
+            if($rules->insert_media_folder()->validated() ) {
+
+                $unique = DB::try()->select('id')->from('mediaFolders')->where('folder_name', '=', $request['P_folder'])->fetch();
+
+                if(empty($unique) ) {
+
+                    DB::try()->insert("mediaFolders", [
+        
+                        "folder_name" => $request['P_folder']
+                    ]); 
+                }
+
+                mkdir($this->_folderPath . '/' . $request['P_folder'], 0777, true); 
+
+            } else {
+
+                $folders = glob($this->_folderPath . '/*', GLOB_ONLYDIR);
+                $files = DB::try()->select('*')->from('media')->where('media_folder', '=', $this->_folderPath)->fetch();
+
+                $data['folders'] = $folders;
+                $data['files'] = $files;
+                $data['rules'] = $rules->errors;
+
+                return $this->view('admin/media/create', $data);
+            }
+        }   
         
         redirect('/admin/media/create?folder=' . get('folder'));
     }
@@ -294,24 +286,38 @@ class MediaController extends Controller {
     public function UPDATEFILENAME($request) {
 
         $this->ifExists($request['id']);
+        $this->checkIfFilenameIsFolderName($request['filename']);
 
         $rules = new Rules();
 
         $uniqueFilename = DB::try()->select('media_filename')->from('media')->where('media_filename', '=', $request['filename'])->and('id', '!=', $request['id'])->fetch();
 
         if($rules->update_media_filename($uniqueFilename)->validated()) {
-
+        
             $currentFile = Media::where('id', '=', $request['id'])[0];
             $currentFileName = $currentFile['media_filename'];
-
+        
             rename($request['folder'] . '/' . $currentFileName, $request['folder'] . '/' . $request['filename']);
-
+        
             Media::update(['id' => $request['id']], [
-                    
+                            
                 'media_filename'    => $request['filename']
             ]);
-            
+                    
             echo json_encode($request);
+        }
+    }
+
+    private function checkIfFilenameIsFolderName($filename) {
+
+        $appliedFolders = DB::try()->select('folder_name')->from('mediaFolders')->fetch();
+
+        foreach($appliedFolders as $folder) { 
+
+            if($folder['folder_name'] === $filename) {
+
+                exit();
+            }
         }
     }
 
