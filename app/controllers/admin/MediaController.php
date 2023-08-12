@@ -191,39 +191,49 @@ class MediaController extends Controller {
 
         if(file_exists($this->_folderPath . '/' . $request['P_folder']) === true) {
 
-            rmdir($this->_folderPath . '/' . $request['P_folder']);
+            $this->deleteFolder($request);
         } else {
-
-            $rules = new Rules();
-
-            if($rules->insert_media_folder()->validated() ) {
-
-                $unique = DB::try()->select('id')->from('mediaFolders')->where('folder_name', '=', $request['P_folder'])->fetch();
-
-                if(empty($unique) ) {
-
-                    DB::try()->insert("mediaFolders", [
-        
-                        "folder_name" => $request['P_folder']
-                    ]); 
-                }
-
-                mkdir($this->_folderPath . '/' . $request['P_folder'], 0777, true); 
-
-            } else {
-
-                $folders = glob($this->_folderPath . '/*', GLOB_ONLYDIR);
-                $files = DB::try()->select('*')->from('media')->where('media_folder', '=', $this->_folderPath)->fetch();
-
-                $data['folders'] = $folders;
-                $data['files'] = $files;
-                $data['rules'] = $rules->errors;
-
-                return $this->view('admin/media/create', $data);
-            }
+            $this->addFolder($request);
         }   
         
         redirect('/admin/media/create?folder=' . get('folder'));
+    }
+
+    private function deleteFolder($request) {
+
+        rmdir($this->_folderPath . '/' . $request['P_folder']);
+        DB::try()->delete('mediaFolders')->where('folder_name', '=', $request['P_folder'])->run();
+    }
+
+    private function addFolder($request) {
+
+        $rules = new Rules();
+
+        if($rules->insert_media_folder()->validated() ) {
+
+            $unique = DB::try()->select('id')->from('mediaFolders')->where('folder_name', '=', $request['P_folder'])->fetch();
+
+            if(empty($unique) ) {
+
+                DB::try()->insert("mediaFolders", [
+    
+                    "folder_name" => $request['P_folder']
+                ]); 
+            }
+
+            mkdir($this->_folderPath . '/' . $request['P_folder'], 0777, true); 
+
+        } else {
+
+            $folders = glob($this->_folderPath . '/*', GLOB_ONLYDIR);
+            $files = DB::try()->select('*')->from('media')->where('media_folder', '=', $this->_folderPath)->fetch();
+
+            $data['folders'] = $folders;
+            $data['files'] = $files;
+            $data['rules'] = $rules->errors;
+
+            return $this->view('admin/media/create', $data);
+        }
     }
 
     private function validation($filenames, $types, $errors, $rules) {
