@@ -14,7 +14,7 @@
 
     $this->script('/assets/js/ajax.js');
     $this->script('/assets/js/media/table.js');
-    $this->script('/assets/js/media/read.js');
+    $this->script('/assets/js/media/index/read.js');
 
     $this->script('/assets/js/media/index/delete.js', true);
     $this->script('/assets/js/media/index/update/filename.js');
@@ -35,7 +35,7 @@
         <input id="searchValue" type="hidden" name="submit" value="<?php if(!empty($search) && $search !== null) { echo $search; } ?>">
     </form>
 
-    <div id="mediaPreview"></div>
+    <div id="MEDIAREAD"></div>
 
     <table>
         <thead>

@@ -10,14 +10,14 @@
             <td class="width-10">
 
                     <?php if($media['media_filetype'] == 'image/png' || $media['media_filetype']  == 'image/webp' || $media['media_filetype']  == 'image/gif' || $media['media_filetype']  == 'image/jpeg' || $media['media_filetype']  == 'image/svg+xml') { ?>
-                        <a href="#<?php echo $media['media_filename']; ?>" class="mediaPreview font-weight-300" data-id="<?php echo $media['id']; ?>"><img src="<?php echo "/" . $media['media_folder'] . '/' . $media['media_filename']; ?>" id="imageSmall"></a>
+                        <a href="#<?php echo $media['media_filename']; ?>" class="mediaRead font-weight-300" data-id="<?php echo $media['id']; ?>"><img src="<?php echo "/" . $media['media_folder'] . '/' . $media['media_filename']; ?>" id="imageSmall"></a>
                     <?php } else if ($media['media_filetype'] == 'application/pdf') { ?>  
-                        <a href="#<?php echo $media['media_filename']; ?>" class="mediaPreview font-weight-300" data-id="<?php echo $media['id']; ?>"><iframe src="<?php echo "/" . $media['media_folder'] . '/' . $media['media_filename']; ?>" id="pdfSmall"></iframe></a>
+                        <a href="#<?php echo $media['media_filename']; ?>" class="mediaRead font-weight-300" data-id="<?php echo $media['id']; ?>"><iframe src="<?php echo "/" . $media['media_folder'] . '/' . $media['media_filename']; ?>" id="pdfSmall"></iframe></a>
                     <?php } else if ($media['media_filetype'] == 'video/mp4' || $media['media_filetype'] == 'video/quicktime') { ?>
-                        <a href="#<?php echo $media['media_filename']; ?>" class="mediaPreview font-weight-300" data-id="<?php echo $media['id']; ?>"><video src="<?php echo "/" . $media['media_folder'] . '/' . $media['media_filename']; ?>" id="imageSmall"></video></a>
+                        <a href="#<?php echo $media['media_filename']; ?>" class="mediaRead font-weight-300" data-id="<?php echo $media['id']; ?>"><video src="<?php echo "/" . $media['media_folder'] . '/' . $media['media_filename']; ?>" id="imageSmall"></video></a>
                     <?php } ?>
             </td>
-            <td class="width-20">
+            <td class="width-25">
                 <span class="font-weight-400" id="mediaPath-<?php echo $media['id']; ?>">
                         <?php if($media['media_filetype'] == 'image/png' || $media['media_filetype']  == 'image/webp' || $media['media_filetype']  == 'image/gif' || $media['media_filetype']  == 'image/jpeg' || $media['media_filetype']  == 'image/svg+xml') { ?>
                             <?php echo "/" . $media['media_folder'] . '/' . $media["media_filename"]; ?>
@@ -39,7 +39,7 @@
             <td class="width-10">
                 <a data-role="update" data-folder="<?php echo $media['media_folder']; ?>" id="update" class="button" value="<?php echo $media['id']; ?>" data-folder="<?php echo $media['media_folder']; ?>">Update</a>
             </td>
-            <td class="width-20">
+            <td class="width-15">
                 <?php if(!empty($media['media_description']) && $media['media_description'] !== null) { ?>
 
                     <textarea id="description-<?php echo $media['id']; ?>" class="updateDescription" value="<?php echo $media['media_description']; ?>"><?php echo $media['media_description']; ?></textarea>

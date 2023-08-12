@@ -7,8 +7,6 @@ $(document).ready(function() {
         var message = $("#MESSAGE-"+id); 
         var mediaPath = $("#mediaPath-"+id)[0];
 
-        console.log(mediaPath)
-
             $.ajax({
                 type: "POST",
                 url: "/admin/media/create/update-filename",
