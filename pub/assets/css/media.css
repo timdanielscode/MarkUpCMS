@@ -259,7 +259,7 @@
     position: absolute;
     top: 0;
     left: 0;
-    height: 97%;
+    height: calc(100% - 4px);
     width: 100%;
     z-index: 999;
     background: rgba(0,0,0,0.0);
