@@ -740,3 +740,24 @@
     top: 18px;
     right: 290px;
 }
+.pdfImage {
+    width: 38px;
+    margin-left: 21px;
+}
+#mediaReadPdf {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    z-index: 999;
+    height: 75%;
+    width: 50%;
+}
+#mediaReadVideo {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    height: 50%;
+    z-index: 999;
+}
