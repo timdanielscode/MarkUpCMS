@@ -174,6 +174,9 @@
     cursor: pointer;
     background: rgb(189, 189, 189);
 }
+.filterForm label {
+    color: #fff;
+}
 .filterForm select {
     width: 100%;
     border-radius: 3px;
@@ -190,7 +193,7 @@
 }
 .crumPath {
     position: absolute;
-    left: 130px;
+    left: 50px;
     top: 20px;
     font-size: 14px;
 }
@@ -255,13 +258,7 @@
     right: 5px;
     z-index: 999999;
 }
-.total {
-    position: absolute;
-    top: 20px;
-    left: 50px;
-    color: #333;
-    font-size: 14px;
-}
+
 /*
     Sidebar
 */
@@ -273,6 +270,9 @@
 }
 .filterForm .button {
     margin-top: 20px;
+}
+.filterForm .button {
+    display: inline-block !important;
 }
 .mainButtonContainer .read, .mainButtonContainer .close {
     background: #4f80c8;
@@ -345,32 +345,20 @@
 .searchFrom {
     width: 100%;
 }
-.searchFormCreate input[type="text"] {
-    position: absolute;
-    top: 3px;
-    left: 130px;
-    padding: 5px;
+.searchFormCreate {
+    margin: 20px 0;
+}
+.searchFormCreate label {
+    color: #fff;
+}
+.searchFormCreate input {
+    padding: 10px;
     margin-top: 10px;
     border-radius: 3px;
     font-size: 13px;
-    border: 1px solid #c8c8c8;
-    box-sizing: border-box;
-    margin-bottom: 10px;
-}
-.searchFormCreate input[type="submit"] {
-    position: absolute;
-    left: 300px;
-    top: 15px;
     border: none;
-    background: #4f80c8;
-    border-radius: 3px;
-    padding: 5px;
-    color: #fff;
-    font-size: 12px;
-}
-.searchFormCreate input[type="submit"]:hover {
-    cursor: pointer;
-    background: #83a7db;
+    width: 100%;
+    box-sizing: border-box;
 }
 .searchFormCreate input:focus-visible {
     outline: none;

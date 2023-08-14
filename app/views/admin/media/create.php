@@ -30,9 +30,6 @@
         <div class="row">
             <div class="col10 col9-L">
 
-
-            <span class="total">Total: (<?php echo count($files); ?>)</span>
-
                     <?php if(!empty(get('folder')) && get('folder') !== 'website/assets') {
 
                         echo '<div class="crumPath">';
@@ -53,10 +50,9 @@
                         } 
                         echo '</div>';
                     } else { ?>
-                        <form action="" method="GET" class="searchFormCreate">
-                            <input type="text" name="search" placeholder="Search"/>
-                            <input type="submit" name="submitFolder" value="Search"/>
-                        </form>
+      
+                        <div class="crumPath"><span>/website</span><span class="separator">/</span><a class="folderPath" href="?folder=website/assets">assets</a></div>
+
                     <?php } ?>
                 
                 <form action="" method="POST" class="folderForm">
@@ -69,7 +65,7 @@
                 <div class="readImageContainer display-none"></div>
                 <div class="filesContainer">
                     <div class="row flex-center">
-                        <?php if(!empty($folders) && $folders !== null && empty(get('search') ) || get('search') === null) { 
+                        <?php if(!empty($folders) && $folders !== null && empty(get('search') ) && empty(get('filter') )) { 
                             foreach($folders as $folder) { 
                                 if($folder !== 'website/assets/css' && $folder !== 'website/assets/js') {
                                     $folderParts = explode('/', $folder);
@@ -164,14 +160,16 @@
                         <div class="buttonContainer">
                             <label for="file" class="button">Select files</label>
                         </div>  
-
-                        <!--
-                        <span class="text">Search: </span>
-                        <form action="/admin/media/create" method="GET" class="searchFormCreate">
-                            <input type="text" name="search" placeholder="Search"/>
+                        <div class="totalContainer">
+                            <span class="text">Total: </span>
+                            <span class="data"><?php echo count($files); ?></span>
+                        </div>
+                        <form action="" method="GET" class="searchFormCreate">
+                            <label for="#search">Search: </label>
+                            <input type="text" name="search" placeholder="File"/>
                         </form>
-                        <span class="text">Filter:</span>
                         <form action="/admin/media/create" method="GET" class="filterForm">
+                            <label>Filter: </label>
                             <select name="type[]" multiple>
                                 <option value="png">Png</option>
                                 <option value="jpeg">Jpeg</option>
@@ -181,8 +179,9 @@
                                 <option value="video">Video</option>
                                 <option value="pdf">Pdf</option>
                             </select>
-                            <input type="submit" class="button" name="filter" value="Filter"/>
-                        </form>-->
+                            <input type="submit" class="button" name="filter" value="Apply"/>
+                            <input type="submit" class="button" name="applied-filter" value="Remove"/>
+                        </form>
                         <div class="fileInfoContainer display-none">
                             <div id="currentFile"></div>
                             <div class="infoContainer">

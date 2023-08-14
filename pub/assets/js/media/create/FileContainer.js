@@ -148,6 +148,9 @@ function deleteSelection(element, input, sidebar) {
     sidebar.deleteFormElement.classList.remove('display-none')
     sidebar.mainButtonContainerElement.children[0].classList.add('display-none-important')
     sidebar.updateFileFormElement.classList.add('display-none')
+    sidebar.searchElement.classList.add('display-none')
+    sidebar.totalElement.classList.add('display-none')
+    sidebar.filterElement.classList.add('display-none')
     sidebar.buttonContainerElement.classList.add('display-none-important')
 
     toggleSelectedDeleteClass(element);
@@ -177,6 +180,9 @@ function showFileInfo(element, checkboxElements, sidebar) {
         
         sidebar.infoContainer.classList.remove('display-none')
         sidebar.updateFileFormElement.classList.add('display-none')
+        sidebar.searchElement.classList.add('display-none')
+        sidebar.totalElement.classList.add('display-none')
+        sidebar.filterElement.classList.add('display-none')
         sidebar.buttonContainerElement.classList.add('display-none-important')
         sidebar.mainButtonContainerElement.children[0].classList.add('display-none-important')
 
@@ -301,6 +307,9 @@ function clearSelection(elements, checkboxElements, sidebar) {
             if(ifAnyElementHasSelectedDelete(checkboxElements) === false) {
 
                 sidebar.updateFileFormElement.classList.remove('display-none')
+                sidebar.searchElement.classList.remove('display-none')
+                sidebar.totalElement.classList.remove('display-none')
+                sidebar.filterElement.classList.remove('display-none')
                 sidebar.buttonContainerElement.classList.remove('display-none-important')
                 sidebar.mainButtonContainerElement.children[0].classList.remove('display-none-important')
             }
@@ -320,6 +329,9 @@ function toggleDeleteForm(checkboxElements, elements, sidebar) {
 
             sidebar.mainButtonContainerElement.children[0].classList.remove('display-none-important')
             sidebar.updateFileFormElement.classList.remove('display-none')
+            sidebar.searchElement.classList.remove('display-none')
+            sidebar.totalElement.classList.remove('display-none')
+            sidebar.filterElement.classList.remove('display-none')
             sidebar.buttonContainerElement.classList.remove('display-none-important')
             
         } else {

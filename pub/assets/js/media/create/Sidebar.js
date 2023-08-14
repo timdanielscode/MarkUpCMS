@@ -35,8 +35,13 @@ class Sidebar {
         this.closeButtonElement;
         this.setCloseButtonElement();
         this.setOnclickCloseButton();
-
         this.setOnclickReadButton();
+        this.searchElement;
+        this.setSearchElement();
+        this.totalElement;
+        this.setTotalElement();
+        this.filterElement;
+        this.setFilterElement();
     }
 
     setUpdateFileFormElement() {
@@ -260,6 +265,34 @@ class Sidebar {
         this.closeButtonElement.onclick = function() {
 
             closeReadImageContainer(this, readButton);
+        }
+    }
+
+    setSearchElement() {
+
+        var element = document.querySelector('.searchFormCreate');
+
+        if(element !== null && typeof element !== 'undefined') {
+
+            this.searchElement = element;
+        }
+    }
+    setTotalElement() {
+
+        var element = document.querySelector('.totalContainer');
+
+        if(element !== null && typeof element !== 'undefined') {
+
+            this.totalElement = element;
+        }
+    }
+    setFilterElement() {
+
+        var element = document.querySelector('.filterForm');
+
+        if(element !== null && typeof element !== 'undefined') {
+
+            this.filterElement = element;
         }
     }
 }

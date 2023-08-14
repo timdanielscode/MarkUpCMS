@@ -91,9 +91,7 @@ class MediaController extends Controller {
 
             $searchValue = get('search');
             $files = DB::try()->select('*')->from('media')->where('media_filename', 'LIKE', '%'.$searchValue.'%')->or('media_filetype', 'LIKE', '%'.$searchValue.'%')->or('date_created_at', 'LIKE', '%'.$searchValue.'%')->or('date_updated_at', 'LIKE', '%'.$searchValue.'%')->or('time_created_at', 'LIKE', '%'.$searchValue.'%')->or('time_updated_at', 'LIKE', '%'.$searchValue.'%')->fetch();    
-        }
-        
-        /*else if(!empty($_GET['type']) ) {
+        } else if(!empty($_GET['type']) ) {
 
             $filesQuery = "SELECT * FROM media";
             $count = 0;
@@ -110,7 +108,7 @@ class MediaController extends Controller {
             }
             
             $files = DB::try()->raw($filesQuery)->fetch();  
-        }*/
+        }
         
         $data['folders'] = $folders;
         $data['files'] = $files;
