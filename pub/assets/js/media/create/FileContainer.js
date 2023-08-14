@@ -65,12 +65,7 @@ class FileContainer {
 
         for(var element of this.elements) {
 
-            if(element.children[0].classList.contains('iframeLayer')) {
-
-                this.checkboxes.push(element.children[2]);
-            } else {
-                this.checkboxes.push(element.children[1]);
-            }
+            this.checkboxes.push(element.children[1]);
         }
     }
 
@@ -131,12 +126,20 @@ class FileContainer {
 
         for(var element of elements) {
 
-            if(element.children.length === 1 || element.children[0].classList.contains('deleteSelection') && element.children.length === 2 || element.children.length === 2 && element.children[0].classList.contains('iframeLayer') || element.children.length === 3 && element.children[0].classList.contains('iframeLayer')) {
-
+            if(element.children.length === 1 || element.children[0].classList.contains('deleteSelection') && element.children.length === 2 && element.children[1].classList.contains('selected') === true || element.children.length === 2 && element.children[0].classList.contains('pdfFile')) {
 
                 return element;
             }
         }
+    }
+
+    createIframeElement(imgElement) {
+
+        var element = document.createElement("iframe");
+        element.setAttribute("src", "/" + imgElement.dataset.folder + "/" + imgElement.dataset.filename);
+        element.classList.add('read-iframe')
+
+        return element;
     }
 }
 
@@ -183,10 +186,8 @@ function showFileInfo(element, checkboxElements, sidebar) {
         }
     }
 
-    var file = getCorrectElement(element);
-
-    var nodetype = getFileNodeType(file.dataset.filetype);
-    var fileNode = createNode(nodetype, file.dataset.folder, file.dataset.filename);
+    var nodetype = getFileNodeType(element.dataset.filetype);
+    var fileNode = createNode(nodetype, element.dataset.folder, element.dataset.filename);
 
     clearCurrentFile(sidebar.currentFileElement);
     sidebar.currentFileElement.append(fileNode);
@@ -197,26 +198,14 @@ function showFileInfo(element, checkboxElements, sidebar) {
         setEqualFileContainerHeight(sidebar.currentFileElement);
     }); 
 
-    sidebar.currentFiletypeElement.innerText = file.dataset.filetype;
-    sidebar.currentFilesizeElement.innerText = parseFloat(file.dataset.filesize / 1000000).toFixed(2) + 'MB';
-    sidebar.currentDescriptionElement.value = file.dataset.description;
-    sidebar.currentFileFolderElement.innerText = "/" + file.dataset.folder + '/' + file.dataset.filename;
-    sidebar.currentFilenameElement.value = file.dataset.filename;
-    sidebar.currentFolderElement.setAttribute('data-folder', file.dataset.folder);
-    sidebar.updateFilenameButtonElement.setAttribute('value', file.dataset.id);
-    sidebar.updateDescriptionButtonElement.setAttribute('value', file.dataset.id);
-}
-
-function getCorrectElement(element) {
-
-    if(element.classList.contains('iframeLayer')) {
-                
-        file = element.nextElementSibling;
-    } else {
-        file = element;
-    }
-
-    return file;
+    sidebar.currentFiletypeElement.innerText = element.dataset.filetype;
+    sidebar.currentFilesizeElement.innerText = parseFloat(element.dataset.filesize / 1000000).toFixed(2) + 'MB';
+    sidebar.currentDescriptionElement.value = element.dataset.description;
+    sidebar.currentFileFolderElement.innerText = "/" + element.dataset.folder + '/' + element.dataset.filename;
+    sidebar.currentFilenameElement.value = element.dataset.filename;
+    sidebar.currentFolderElement.setAttribute('data-folder', element.dataset.folder);
+    sidebar.updateFilenameButtonElement.setAttribute('value', element.dataset.id);
+    sidebar.updateDescriptionButtonElement.setAttribute('value', element.dataset.id);
 }
 
 function getFileNodeType(elementType) {

@@ -271,24 +271,30 @@ function closeReadImageContainer(element, readButtonElement) {
 
     var readImageContainer = new ReadImageContainer();
     readImageContainer.getElement().classList.add('display-none');
-    readImageContainer.getFileElement().classList.remove('read-image')
-    readImageContainer.getFileElement().classList.remove('read-iframe')
-
-    var ranger = new Ranger();
-    ranger.getElement().classList.remove('display-none');
-
+    
+    
     var fileContainer = new FileContainer();
     fileContainer.filesContainerElement.classList.remove('display-none')
 
+    if(readImageContainer.getFileElement().classList.contains('read-iframe') === true) {
 
-    fileContainer.getReadFileContainerElement().append(readImageContainer.getFileElement())
+        readImageContainer.getFileElement().classList.remove('read-iframe')
+        readImageContainer.getFileElement().remove();
+    } else if(readImageContainer.getFileElement().classList.contains('read-image') === true) {
 
-    if(fileContainer.getReadFileContainerElement().children[1].classList.contains('mediaFile') === true) {
-
+        readImageContainer.getFileElement().classList.remove('read-image')
+        fileContainer.getReadFileContainerElement().append(readImageContainer.getFileElement())
         fileContainer.getReadFileContainerElement().append(fileContainer.getReadFileContainerElement().children[0])
-    } else if(fileContainer.getReadFileContainerElement().children[0].classList.contains('iframeLayer') === true) {
-        fileContainer.getReadFileContainerElement().append(fileContainer.getReadFileContainerElement().children[1])
+    } else if(readImageContainer.getFileElement().classList.contains('read-video') === true) {
+
+        readImageContainer.getFileElement().classList.remove('read-video')
+        readImageContainer.getFileElement().removeAttribute('controls')
+        fileContainer.getReadFileContainerElement().append(readImageContainer.getFileElement())
+        fileContainer.getReadFileContainerElement().append(fileContainer.getReadFileContainerElement().children[0])
     }
+
+    var ranger = new Ranger();
+    ranger.getElement().classList.remove('display-none');
 }
 
 
@@ -306,13 +312,18 @@ function displayReadImageContainer(element, closeButtonElement) {
     var fileContainer = new FileContainer();
     fileContainer.filesContainerElement.classList.add('display-none')
 
-    if(fileContainer.currentSelectedFileElement.classList.contains('iframeLayer') === true) {
-
-        fileContainer.currentSelectedFileElement.nextElementSibling.classList.add('read-iframe')
-        readImageContainer.getElement().append(fileContainer.currentSelectedFileElement.nextElementSibling)
+    if(fileContainer.currentSelectedFileElement.classList.contains('imgFile') === true) {
         
-    } else {
         fileContainer.currentSelectedFileElement.classList.add('read-image')
         readImageContainer.getElement().append(fileContainer.currentSelectedFileElement)
+    } else if(fileContainer.currentSelectedFileElement.classList.contains('videoFile') === true) {
+
+        fileContainer.currentSelectedFileElement.classList.add('read-video')
+        fileContainer.currentSelectedFileElement.setAttribute('controls', "true")
+        readImageContainer.getElement().append(fileContainer.currentSelectedFileElement)
+
+    } else if(fileContainer.currentSelectedFileElement.classList.contains('pdfFile') === true) {
+
+        readImageContainer.getElement().append(fileContainer.createIframeElement(fileContainer.currentSelectedFileElement))
     }
 }
