@@ -419,7 +419,7 @@
 }
 #currentFile iframe {
     width: 90%;
-    padding: 5%;
+    margin: 5%;
     height: 90%;
     border: none;
 }
@@ -502,6 +502,14 @@
     height: auto !important;
     max-width: 75%;
     max-height: 75%;
+}
+.read-iframe {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 50%;
+    height: 90%;
 }
 .readImageContainer {
     height: 80vh;

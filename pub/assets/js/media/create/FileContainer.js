@@ -131,7 +131,8 @@ class FileContainer {
 
         for(var element of elements) {
 
-            if(element.children.length === 1 || element.children[0].classList.contains('deleteSelection') && element.children.length === 2) {
+            if(element.children.length === 1 || element.children[0].classList.contains('deleteSelection') && element.children.length === 2 || element.children.length === 2 && element.children[0].classList.contains('iframeLayer') || element.children.length === 3 && element.children[0].classList.contains('iframeLayer')) {
+
 
                 return element;
             }
