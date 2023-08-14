@@ -98,6 +98,8 @@ class FileContainer {
                     
                     clearSelection(elements, checkboxElements, sidebar);
                     showFileInfo(this, checkboxElements, sidebar);
+            
+                    sidebar.setCurrentSelectedFileElementOnclick(sidebar.getCurrentSelectedFileElement());
                 };
             }
         }

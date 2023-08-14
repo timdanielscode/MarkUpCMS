@@ -202,6 +202,27 @@ class Sidebar {
 
     }
 
+    getCurrentSelectedFileElement() {
+
+        var element = document.getElementById('currentFile')
+
+        if(element !== null && typeof element !== 'undefined') {
+
+            return element.children[0];
+        }
+    }
+
+    setCurrentSelectedFileElementOnclick(element) {
+
+        var closeButton = this.closeButtonElement;
+        var readButton = this.readButtonElement;
+
+        element.onclick = function() {
+                        
+            displayReadImageContainer(readButton, closeButton);
+        };
+    }
+
     setReadButtonElement() {
 
         var element = document.querySelector('.read');
