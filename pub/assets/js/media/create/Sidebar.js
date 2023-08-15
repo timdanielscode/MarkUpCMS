@@ -322,6 +322,9 @@ function closeReadImageContainer(element, readButtonElement) {
 
         readImageContainer.getFileElement().classList.remove('read-video')
         readImageContainer.getFileElement().removeAttribute('controls')
+
+        console.log(fileContainer.getReadFileContainerElement())
+
         fileContainer.getReadFileContainerElement().append(readImageContainer.getFileElement())
         fileContainer.getReadFileContainerElement().append(fileContainer.getReadFileContainerElement().children[0])
     }

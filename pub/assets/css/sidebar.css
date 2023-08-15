@@ -3,7 +3,10 @@
     top: -50px;
     bottom: -150px;
     right: 0;
-    background: #0b192d;
+    /*background: #223f68;*/
+    /*background:#d5d5d5;*/
+    /*background: #495059;*/
+    background: #b6c0cc;
     width: 100%;
     z-index: 9999;
     overflow: hidden;
@@ -14,4 +17,39 @@
     position: relative;
     margin: 0 5%;
     overflow: hidden;
+}
+#navbar .navbarItems {
+    left: calc(50% - 8.33%) !important;
+}
+#navbar #logo {
+    margin-left: 50px !important;
+}
+.mainButtonContainer .back {
+    background: #4f80c8;
+    border-color: #4f80c8;
+    border: 1px solid #4f80c8;
+}
+.mainButtonContainer .back:hover {
+    background: #5e91d9;
+    border-color: #5e91d9;
+    color: #fff;
+}
+.greenButton {
+    color: #fff;
+    background: #42971c;
+    border: 1px solid #42971c;
+}
+.greenButton:hover {
+    background: #6ba152;
+    border: 1px solid #6ba152;
+    cursor: pointer;
+}
+.blueButton {
+    background: #4f80c8;
+    border-color: #4f80c8;
+    color: #fff;
+}
+.blueButton:hover {
+    background: #5e91d9;
+    border-color: #5e91d9;
 }

@@ -96,16 +96,28 @@ h3 {
 .margin-t-50 {
     margin-top: 50px;
 }
-
 .margin-t-20 {
     margin-top: 20px;
 }
-
 .margin-y-20 {
     margin-top: 20px;
     margin-bottom: 20px;
 }
-
+.margin-r-10 {
+    margin-right: 10px;
+}
+.margin-b-10 {
+    margin-bottom: 10px;
+}
+.margin-b-20 {
+    margin-bottom: 20px;
+}
+.margin-r-20 {
+    margin-right: 20px;
+}
+.margin-r-15 {
+    margin-right: 15px;
+}
 /*
     Padding
 */
@@ -250,14 +262,14 @@ h3 {
     Button
 */
 .button {
-    background: #eaeaea;;
+    background: #eaeaea;
     padding-left: 8px;
     padding-right: 8px;
     padding-top: 5px;
     padding-bottom: 5px;
-    color: #0c203d;
+    color: #fff;
     text-decoration: none;
-    border: 2px solid #0c203d;
+    border: 2px solid #fff;
     display: block;
 }
 

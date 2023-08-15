@@ -126,7 +126,7 @@ class FileContainer {
 
         for(var element of elements) {
 
-            if(element.children.length === 1 || element.children[0].classList.contains('deleteSelection') && element.children.length === 2 && element.children[1].classList.contains('selected') === true || element.children.length === 2 && element.children[0].classList.contains('pdfFile')) {
+            if(element.children.length === 1 || element.children[0].classList.contains('deleteSelection') && element.children.length === 2 && element.children[1].classList.contains('selected') === true) {
 
                 return element;
             }

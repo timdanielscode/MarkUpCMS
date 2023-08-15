@@ -134,16 +134,16 @@
                             <label for="submit" class="button">Upload</label>
                             <form action="" method="POST" class="deleteForm display-none">
                                 <input id="selectedFiles" type="hidden" name="files" value=""/>
-                                <input type="submit" name="submitDelete" class="button" value="Delete"/>
+                                <input type="submit" name="submitDelete" class="button margin-r-10" value="Delete"/>
                             </form>
                             <a href="#" class="button read display-none-important">Read</a>
-                            <a href="#" class="button close display-none-important">Close</a>
-                            <a href="/admin/media" class="button">Back</a>
+                            <a href="#" class="button close greenButton display-none-important">Close</a>
+                            <a href="/admin/media" class="button back">Back</a>
                         </div>
                         <form action="" method="POST" class="uploadFileForm" enctype="multipart/form-data">
                             <div class="form-parts">
-                                <label>Description </label>
-                                <textarea name="media_description" type="text" id="media_description" autofocus></textarea>
+                                <label>Description: </label>
+                                <textarea name="media_description" type="text" id="media_description" autofocus placeholder="Optional"></textarea>
                                 <div class="error-messages">
                                     <?php echo Errors::get($rules, 'file'); ?>
                                     <?php echo Errors::get($rules, 'media_description'); ?>
@@ -158,15 +158,16 @@
                             </div>
                         </form>
                         <div class="buttonContainer">
-                            <label for="file" class="button">Select files</label>
-                        </div>  
+                        <label for="file" class="button blueButton">Select files</label>
+                        </div>
+                        
                         <div class="totalContainer">
                             <span class="text">Total: </span>
                             <span class="data"><?php echo count($files); ?></span>
                         </div>
                         <form action="" method="GET" class="searchFormCreate">
                             <label for="#search">Search: </label>
-                            <input type="text" name="search" placeholder="File"/>
+                            <input type="text" name="search" placeholder="Search"/>
                         </form>
                         <form action="/admin/media/create" method="GET" class="filterForm">
                             <label>Filter: </label>
@@ -179,8 +180,7 @@
                                 <option value="video">Video</option>
                                 <option value="pdf">Pdf</option>
                             </select>
-                            <input type="submit" class="button" name="filter" value="Apply"/>
-                            <input type="submit" class="button" name="applied-filter" value="Remove"/>
+                            <input type="submit" class="button greenButton margin-r-10" name="filter" value="Apply"/><input type="submit" class="button blueButton" name="applied-filter" value="Remove"/>
                         </form>
                         <div class="fileInfoContainer display-none">
                             <div id="currentFile"></div>
