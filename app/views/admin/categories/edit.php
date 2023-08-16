@@ -5,5 +5,5 @@
 <input type="hidden" id="ID" value="<?php echo $id; ?>">
 <div class="MESSAGE"></div>
 
-<button id="EDITUPDATE">Update</button>
+<button id="EDITUPDATE" class="margin-r-10">Update</button>
 <button id="EDITCLOSE">Close</button>

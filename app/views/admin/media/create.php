@@ -131,14 +131,14 @@
                 <div id="sidebar" class="width-25-L">
                     <div class="sidebarContainer">
                         <div class="mainButtonContainer">
-                            <label for="submit" class="button">Upload</label>
+                            <label for="submit" class="button greenButton margin-r-10">Upload</label>
                             <form action="" method="POST" class="deleteForm display-none">
                                 <input id="selectedFiles" type="hidden" name="files" value=""/>
-                                <input type="submit" name="submitDelete" class="button margin-r-10" value="Delete"/>
+                                <input type="submit" name="submitDelete" class="button redButton margin-r-10" value="Delete"/>
                             </form>
-                            <a href="#" class="button read display-none-important">Read</a>
+                            <a href="#" class="button read greenButton display-none-important">Read</a>
                             <a href="#" class="button close greenButton display-none-important">Close</a>
-                            <a href="/admin/media" class="button back">Back</a>
+                            <a href="/admin/media" class="button back blueButton">Back</a>
                         </div>
                         <form action="" method="POST" class="uploadFileForm" enctype="multipart/form-data">
                             <div class="form-parts">
@@ -158,7 +158,7 @@
                             </div>
                         </form>
                         <div class="buttonContainer">
-                        <label for="file" class="button blueButton">Select files</label>
+                        <label for="file" class="button lightButton margin-t-10">Select files</label>
                         </div>
                         
                         <div class="totalContainer">
@@ -180,7 +180,7 @@
                                 <option value="video">Video</option>
                                 <option value="pdf">Pdf</option>
                             </select>
-                            <input type="submit" class="button greenButton margin-r-10" name="filter" value="Apply"/><input type="submit" class="button blueButton" name="applied-filter" value="Remove"/>
+                            <input type="submit" class="button greenButton margin-t-10 margin-r-10" name="filter" value="Apply"/><input type="submit" class="button blueButton margin-t-10" name="applied-filter" value="Remove"/>
                         </form>
                         <div class="fileInfoContainer display-none">
                             <div id="currentFile"></div>
@@ -191,7 +191,7 @@
                                     <span id="currentFolder"></span>
                                     <input id="currentFilename" type="text" name="filename" value=""/>
                                     <div id="MESSAGE"></div>
-                                    <a data-role="update" id="update" class="button">Update</a>
+                                    <a data-role="update" id="update" class="button greenButton margin-t-10 width-50-px">Update</a>
                                 </div>
                                 <div class="infoPart">
                                     <span class="infoText">Type: </span>
@@ -205,7 +205,7 @@
                                     <span class="infoText">Description: </span>
                                     <textarea type="text" name="description" class="infoData" id="currentDescription"></textarea>
                                     <div id="MESSAGE-DESCRIPTION"></div>
-                                    <a data-role="update-description" id="updateDescription" class="button">Update</a>
+                                    <a data-role="update-description" id="updateDescription" class="button greenButton margin-t-10 width-50-px">Update</a>
                                 </div>
                             </div>
                         </div>

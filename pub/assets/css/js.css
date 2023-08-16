@@ -16,53 +16,15 @@
 /*
     Sidebar
 */
-.mainButtonContainer, .buttonContainer {
-    width: 100%;
-    display: flex;
-    flex-wrap: wrap;
-    margin-top: 20px;
-}
-.buttonContainer form input:nth-child(1) {
-    margin-right: 20px;
-}
-.mainButtonContainer a, .mainButtonContainer label, .buttonContainer form input, .removeJsForm input[type="submit"], .includeJsForm input[type="submit"], .buttonContainer a {
-    width: auto;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    height: 36px;
-    border-radius: 4px;
-    padding: 0 20px;
-    transition: 0.3s;
-    font-size: 14px;
-}
-.mainButtonContainer label {
-    margin-right: 20px;
-    color: #fff;
-    background: #42971c;
-    border: 1px solid #42971c;
-}
-.mainButtonContainer label:hover {
-    background: #6ba152;
-    border: 1px solid #6ba152;
-}
-.mainButtonContainer a, .buttonContainer form input, .removeJsForm input[type="submit"], .includeJsForm input[type="submit"], .buttonContainer a {
-    border: 1px solid #fff;
-    background: rgba(0,0,0,0.1);
-    color: #fff;
-}
-.mainButtonContainer a:hover, .buttonContainer form input:hover, .removeJsForm input[type="submit"]:hover, .includeJsForm input[type="submit"]:hover, .buttonContainer a:hover {
-    background: #fff;
-    color: #000;
-}
-.mainButtonContainer label:hover, .buttonContainer form input:hover, .removeJsForm input[type="submit"]:hover, .includeJsForm input[type="submit"]:hover, .buttonContainer a:hover {
-    cursor: pointer;
+.buttonContainer {
+    margin-bottom: 20px;
 }
 .removeJsForm, .includeJsForm {
     margin-top: 20px;
 }
 .removeJsForm label, .includeJsForm label {
-    color: #fff;
+    color: #333;
+    font-size: 14px;
 }
 .removeJsForm select, .includeJsForm select {
     margin-top: 10px;
@@ -77,14 +39,15 @@
 }
 .text {
     margin-top: 20px;
-    color: #fff;
+    color: #333;
     display: block;
     margin-bottom: 10px;
+    font-size: 14px;
 }
 .data {
     width: 100%;
-    border-radius: 3px;
     background: #fff;
     display: block;
     padding: 10px;
+    font-size: 14px;
 }

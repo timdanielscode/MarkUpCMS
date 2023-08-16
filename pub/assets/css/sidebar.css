@@ -24,32 +24,63 @@
 #navbar #logo {
     margin-left: 50px !important;
 }
-.mainButtonContainer .back {
-    background: #4f80c8;
-    border-color: #4f80c8;
-    border: 1px solid #4f80c8;
+.mainButtonContainer {
+    width: 100%;
+    display: flex;
+    flex-wrap: wrap;
+    margin-top: 11px;
+    margin-bottom: 20px;
 }
-.mainButtonContainer .back:hover {
-    background: #5e91d9;
-    border-color: #5e91d9;
-    color: #fff;
+.buttonContainer {
+    width: 100%;
+    display: flex;
+    flex-wrap: wrap;
+    margin-top: 10px;
 }
 .greenButton {
-    color: #fff;
     background: #42971c;
-    border: 1px solid #42971c;
+    border: 1px solid #2e7d0b;
 }
 .greenButton:hover {
-    background: #6ba152;
-    border: 1px solid #6ba152;
+    background: #2e7d0b;
     cursor: pointer;
 }
 .blueButton {
     background: #4f80c8;
-    border-color: #4f80c8;
-    color: #fff;
+    border: 1px solid #2e60aa;
+}
+.darkBlueButton {
+    background: #2e6ac1;
+    border: 1px solid #003582;
+}
+.darkBlueButton:hover {
+    background: #003582;
+    cursor: pointer;
 }
 .blueButton:hover {
-    background: #5e91d9;
-    border-color: #5e91d9;
+    background: #2e60aa;
+    cursor: pointer;
+}
+.redButton {
+    background: #ce3333;
+    border: 1px solid rgb(174, 35, 35);
+}
+.redButton:hover {
+    background: rgb(174, 35, 35);
+}
+.lightButton {
+    background: #8ca2bd;
+    border: 1px solid #657d99;
+}
+.lightButton:hover {
+    background: #657d99;
+    cursor: pointer;
+}
+.darkButton {
+    background: #657d99;
+    border: 1px solid #4d688a;
+}
+.darkButton:hover {
+    background: #4d688a;
+    cursor: pointer;
 }

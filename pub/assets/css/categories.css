@@ -144,11 +144,11 @@ h1 {
     width: 75px;
     background: #42971c;
     border-color: #42971c;
-    border-radius: 3px;
     margin-top: 20px;
     color: #fff;
-    padding: 8px;
+    padding: 2px;
     text-align: center;
+    font-size: 14px;
 }
 #ASSIGNCATEGORY:hover, #ASSIGNPAGES:hover, #update:hover {
     background: #6ba152;
@@ -168,14 +168,16 @@ h1 {
 #BACK {
     background: #4f80c8;
     border-color: #4f80c8;
-    border-radius: 3px;
     color: #fff;
     margin-top: 20px;
     margin-right: 20px;
     width: 65px;
     float: right;
     text-align: center;
-    padding: 8px;
+    padding: 10px;
+    font-size: 14px;
+    width: auto;
+    height: auto;
 }
 #update {
     float: unset;
@@ -252,10 +254,9 @@ h1 {
 .modal-edit #modalForm #EDITUPDATE, .modal-create #modalForm #CREATESTORE {
     background: #42971c;
     font-size: 14px;
-    padding: 10px;
+    padding: 8px;
     border: 2px solid #42971c;
     bottom: 20px;
-    border-radius: 3px;
     color: #fff !important;
     margin-top: 25px;
 }
@@ -268,9 +269,8 @@ h1 {
     background: #4f80c8;
     color: #fff !important;
     border: 2px solid #4f80c8;
-    padding: 10px;
+    padding: 8px;
     margin-left: 20px;
-    border-radius: 3px;
     bottom: 20px;
     font-size: 14px;
     margin-top: 25px;
@@ -323,9 +323,8 @@ h1 {
     background: #4f80c8;
     color: #fff !important;
     border: 2px solid #4f80c8;
-    padding: 10px;
+    padding: 8px;
     margin-left: 0px;
-    border-radius: 3px;
     font-size: 14px;
     margin-top: 15px;
 }

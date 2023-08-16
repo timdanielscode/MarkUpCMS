@@ -25,39 +25,40 @@
     $this->include('navbar');
     
 ?>
-<div class="edit-container">
     <div class="row">
         <div class="col10 col9-L">
-            <form action="/admin/posts/<?php echo $data['id']; ?>/update" method="POST">
-                <div class="form-parts">
-                    <input type="text" autofocus name="title" id="title" value="<?php if(!empty($data['title'] )) { echo $data['title']; } ?>">
-                    <div class="error-messages">
-                        <?php echo Errors::get($rules, 'title'); ?>
-                    </div>    
-                </div>
-                <textarea name="body" id="code"><?php if(!empty($data['body'] )) { echo $data['body']; } ?></textarea>
-                <button name="submit" id="submit" type="submit" class="hiddenButton" value="submit">Update</button>
-                <input type="hidden" name="token" value="<?php Csrf::token('add'); ?>" />
-            </form>
+            <div class="edit-container">
+                <form id="editorForm" action="/admin/posts/<?php echo $data['id']; ?>/update" method="POST">
+                    <div class="form-parts">
+                        <input type="text" autofocus name="title" id="title" value="<?php if(!empty($data['title'] )) { echo $data['title']; } ?>">
+                        <div class="error-messages">
+                            <?php echo Errors::get($rules, 'title'); ?>
+                        </div>    
+                    </div>
+                    <textarea name="body" id="code"><?php if(!empty($data['body'] )) { echo $data['body']; } ?></textarea>
+                    <button name="submit" id="submit" type="submit" class="hiddenButton" value="submit">Update</button>
+                    <input type="hidden" name="token" value="<?php Csrf::token('add'); ?>" />
+                </form>
+            </div>
         </div>
         <div class="col2 col3-L">
             <div id="sidebar" class="width-25-L">
                 <div class="sidebarContainer">
                     <div class="mainButtonContainer">
-                        <label for="submit" class="button">Update</label>
-                        <a href="/admin/posts" class="button">Back</a>
+                        <label for="submit" class="button greenButton margin-r-10">Update</label>
+                        <a href="/admin/posts/<?php if(!empty($data['id']) ) { echo $data['id']; } ?>/read" target="_blank" class="button blueButton margin-r-10">Read</a>
+                        <a href="/admin/posts" class="button darkBlueButton">Back</a>
                     </div>
                     <div class="buttonContainer">
-                        <a href="/admin/posts/<?php if(!empty($data['id']) ) { echo $data['id']; } ?>/read" class="button">Read</a>
-                        <a href="#" id="codeEditorFullScreen" class="button">Full screen</a>
+                        <a href="#" id="codeEditorFullScreen" class="button darkButton margin-r-10">Full screen</a>
                     </div>
                     <div class="buttonContainer">
-                        <a id="metaButton" class="button">Meta data</a>
-                        <a id="categoryButton" class="button">Categories</a>
+                        <a id="metaButton" class="button lightButton margin-r-10">Meta data</a>
+                        <a id="categoryButton" class="button lightButton">Categories</a>
                     </div>
                     <div class="buttonContainer">
-                        <a id="cssButton" class="button">Css</a>
-                        <a id="jsButton" class="button">Js</a>
+                        <a id="cssButton" class="button lightButton margin-r-10">Css</a>
+                        <a id="jsButton" class="button lightButton">Js</a>
                     </div>
                     <span class="text">Slug:</span>
                     <span class="fullSlug"><?php if(!empty($data['slug']) ) { echo $data['slug']; } ?></span>
@@ -72,7 +73,7 @@
                         <div class="error-messages">
                             <?php echo Errors::get($rules, 'slug'); ?>
                         </div>
-                        <input class="updateSlugButton" type="submit" name="submit" value="Update"/>
+                        <input class="button greenButton margin-t-10" type="submit" name="submit" value="Update"/>
                         <input type="hidden" name="token" value="<?php Csrf::token('add'); ?>" />
                     </form>
                     <div id="category" class="<?php if(Session::exists('updateCategory') === false) { echo 'display-none'; } ?>">
@@ -90,7 +91,7 @@
                                         <?php echo Errors::get($rules, 'categories'); ?>
                                     </div>  
                                     <div class="AssingCategoryContainer">
-                                        <input class="assignCategoryButton" type="submit" name="submit" value="Assign"/>
+                                        <input class="button greenButton margin-t-20" type="submit" name="submit" value="Assign"/>
                                     </div> 
                                     <input type="hidden" name="token" value="<?php Csrf::token('add'); ?>" />
                                 </form>
@@ -100,7 +101,7 @@
                                     <div class="error-messages">
                                         <?php echo Errors::get($rules, 'submit'); ?>
                                     </div>   
-                                    <input class="detachCategoryButton" type="submit" name="submit" value="Detach"/>
+                                    <input class="button redButton margin-t-10" type="submit" name="submit" value="Detach"/>
                                     <input type="hidden" name="token" value="<?php Csrf::token('add'); ?>" />
                                 </form>
                         <?php } ?>
@@ -127,7 +128,7 @@
                                 <?php echo Errors::get($rules, 'metaKeywords'); ?>
                             </div>   
                         </div>
-                        <input type="submit" name="submit" value="Update"/>
+                        <input type="submit" name="submit" class="button greenButton margin-t-10" value="Update"/>
                         <input type="hidden" name="token" value="<?php Csrf::token('add'); ?>" />
                     </form>
                     <form id="linkedCssFiles" class="linkedCssFilesForm <?php if(Session::exists('updateCss') === false) { echo 'display-none'; } ?>" action="/admin/posts/<?php echo $data['id']; ?>/unlink-css" method="POST">
@@ -139,7 +140,7 @@
                                 </option>
                             <?php } ?>
                         </select>
-                        <input type="submit" name="submit" value="Remove"/>
+                        <input type="submit" name="submit" class="button redButton margin-y-20" value="Unlink"/>
                         <input type="hidden" name="token" value="<?php Csrf::token('add'); ?>" />
                     </form>
                     <form id="cssFiles" class="cssFilesForm <?php if(Session::exists('updateCss') === false) { echo 'display-none'; } ?>" action="/admin/posts/<?php echo $data['id']; ?>/link-css" method="POST">
@@ -152,9 +153,9 @@
                             <?php } ?>
                         </select>
                         <input type="hidden" name="token" value="<?php Csrf::token('add'); ?>" />
-                        <input type="submit" name="submit" value="Link"/>
+                        <input type="submit" class="button greenButton margin-t-20" name="submit" value="Link"/>
                     </form>
-                    <form id="linkedJsFiles" class="linkedJsFilesForm <?php if(Session::exists('updateJs') === false) { echo 'display-none'; } ?>" action="/admin/posts/<?php echo $data['id'] ?>/remove-js" method="POST">
+                    <form id="linkedJsFiles" class="linkedJsFilesForm margin-t-50 <?php if(Session::exists('updateJs') === false) { echo 'display-none'; } ?>" action="/admin/posts/<?php echo $data['id'] ?>/remove-js" method="POST">
                         <label for="linkedJsFiles">Linked js files:</label>
                         <select id="linkedJsFiles" name="linkedJsFiles[]" multiple>
                             <?php foreach($data['linkedJsFiles'] as $linkedJsFile) { ?>
@@ -164,9 +165,9 @@
                             <?php } ?>
                         </select>
                         <input type="hidden" name="token" value="<?php Csrf::token('add'); ?>" />
-                        <input type="submit" name="submit" value="Remove"/>
+                        <input type="submit" name="submit" class="button redButton margin-t-20" value="Exclude"/>
                     </form>
-                    <form id="jsFiles" class="jsFilesForm <?php if(Session::exists('updateJs') === false) { echo 'display-none'; } ?>" action="/admin/posts/<?php echo $data['id']; ?>/include-js" method="POST">
+                    <form id="jsFiles" class="jsFilesForm margin-t-20 <?php if(Session::exists('updateJs') === false) { echo 'display-none'; } ?>" action="/admin/posts/<?php echo $data['id']; ?>/include-js" method="POST">
                         <label for="jsFilesSelect">Other js files:</label>
                             <select id="jsFilesSelect" name="jsFiles[]" multiple>
                                 <?php foreach($data['notLinkedJsFiles'] as $notLinkedJsFile) { ?>
@@ -176,7 +177,7 @@
                                 <?php } ?>
                             </select>
                         <input type="hidden" name="token" value="<?php Csrf::token('add'); ?>" />
-                        <input type="submit" name="submit" value="Include"/>
+                        <input type="submit" name="submit" class="button greenButton margin-t-20" value="Include"/>
                     </form>
                 </div>
             </div>

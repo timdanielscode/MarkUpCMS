@@ -24,43 +24,42 @@
 ?>
 
 
-    <div class="create-container">
+    
         <div class="row">
             <div class="col10 col9-L">
-                <form action="store" method="POST" class="form-code">
-                    <div class="form-parts">
-                        <input type="text" autofocus name="title" type="title" id="title" placeholder="Title" autofocus>
-                        <div class="error-messages">
-                            <?php echo Errors::get($rules, 'title'); ?>
+                <div class="create-container">
+                    <form action="store" method="POST" class="form-code">
+                        <div class="form-parts">
+                            <input type="text" autofocus name="title" type="title" id="title" placeholder="Title" autofocus>
+                            <div class="error-messages">
+                                <?php echo Errors::get($rules, 'title'); ?>
+                            </div>
                         </div>
-                    </div>
-                    <div class="form-parts">
-                        <textarea type="text" name="content" type="content" id="code"></textarea>
-                        <div class="error-messages">
-                            <?php echo Errors::get($rules, 'content'); ?>
+                        <div class="form-parts">
+                            <textarea type="text" name="content" type="content" id="code"></textarea>
+                            <div class="error-messages">
+                                <?php echo Errors::get($rules, 'content'); ?>
+                            </div>
                         </div>
-                    </div>
-                    <div class="form-parts">
-                        <button name="submit" id="submit" type="submit" class="display-none">Create</button>
-                        <input type="hidden" name="token" value="<?php Csrf::token('add');?>" />
-                    </div>
-                </form>
+                        <div class="form-parts">
+                            <button name="submit" id="submit" type="submit" class="display-none">Create</button>
+                            <input type="hidden" name="token" value="<?php Csrf::token('add');?>" />
+                        </div>
+                    </form>
+                </div>
             </div>
             <div class="col2 col3-L">
                 <div id="sidebar" class="width-25-L">
                     <div class="sidebarContainer">
                         <div class="mainButtonContainer">
-                            <label for="submit" class="button">Create</label>
-                            <a href="/admin/menus" class="button">Back</a>
-                        </div>
-                        <div class="buttonContainer">
-                            <a href="#" id="codeEditorFullScreen" class="button">Full screen</a>
+                            <label for="submit" class="button greenButton margin-r-10">Create</label>
+                            <a href="/admin/menus" class="button blueButton">Back</a>
                         </div>
                     </div>
                 </div>
             </div>
         </div>
-    </div>
+
     <script>
         var editor = CodeMirror.fromTextArea(document.getElementById("code"), {
             theme: "monokai",

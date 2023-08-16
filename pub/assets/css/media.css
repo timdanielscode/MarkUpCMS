@@ -13,7 +13,7 @@
     margin-top: 20px;
 }
 .uploadFileForm label {
-    color: #333;
+    color: #000;
     display: block;
     margin-bottom: 10px;
     font-size: 14px;
@@ -153,21 +153,6 @@
     margin-top: 5px;
     margin-bottom: 10px;
 }
-.fileInfoContainer a {
-    background: #42971c;
-    color: #fff !important;
-    border: 2px solid #42971c;
-    width: 46px;
-    text-align: center;
-    border-radius: 3px;
-    font-size: 13px;
-    margin-top: 10px;
-}
-.fileInfoContainer a:hover {
-    background: #6ba152;
-    border-color: #6ba152;
-    cursor: pointer;
-}
 .fileContainer.show:hover > .layer {
     display: none !important;
 }
@@ -176,7 +161,7 @@
     background: rgb(189, 189, 189);
 }
 .filterForm label {
-    color: #333;
+    color: #000;
     font-size: 14px;
 }
 .filterForm select {
@@ -199,7 +184,7 @@
     font-size: 14px;
 }
 .folderPath {
-    color: #333;
+    color: #000;
 }
 .folderPath:hover {
     color: #3d6eb5;
@@ -265,60 +250,17 @@
 /*
     Sidebar
 */
-.mainButtonContainer {
-    width: 100%;
-    display: flex;
-    flex-wrap: wrap;
-    margin-top: 25px;
-}
-.buttonContainer {
-    width: 100%;
-    display: flex;
-    flex-wrap: wrap;
-    margin-top: 15px;
-}
+
 .filterForm .button {
-    margin-top: 15px;
+    margin-top: 20px;
 }
 .filterForm .button {
     display: inline-block !important;
 }
-.mainButtonContainer .read {
-    background: #42971c;
-    border: 1px solid #42971c;
-}
-.mainButtonContainer .read:hover {
-    background: #6ba152;
-    border: 1px solid #6ba152;
-}
-.mainButtonContainer a, .mainButtonContainer label, .buttonContainer label, .filterForm .button, .deleteForm .button {
-    width: auto;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    height: 30px;
-    padding: 0px 10px;
-    transition: 0.3s;
-    font-size: 13px;
-}
-.mainButtonContainer label {
-    margin-right: 10px;
-    color: #fff;
-    background: #42971c;
-    border: 1px solid #42971c;
-}
-.mainButtonContainer label:hover {
-    background: #6ba152;
-    border: 1px solid #6ba152;
-}
-
-.mainButtonContainer label:hover, .buttonContainer label:hover, .filterForm .button:hover, .deleteForm .button:hover {
-    cursor: pointer;
-}
 .text {
     display: block;
-    margin-top: 20px;
-    color: #333;
+    margin-top: 50px;
+    color: #000;
     font-size: 14px;
 }
 .data {
@@ -331,16 +273,6 @@
 .mainButtonContainer a, .buttonContainer label .deleteForm .button {
     margin-right: 10px;
 }
-.deleteForm input {
-    background: rgb(199, 48, 48) !important;
-    border: 1px solid rgb(199, 48, 48) !important;
-    height: 32px !important;
-
-}
-.deleteForm input:hover {
-    background: red !important;
-    border: 1px solid red !important;
-}
 .data.type {
     padding: 5px 10px;
 }
@@ -351,7 +283,7 @@
     margin: 20px 0;
 }
 .searchFormCreate label {
-    color: #333;
+    color: #000;
     font-size: 14px;
 }
 .searchFormCreate input {
@@ -404,7 +336,7 @@
     margin: 5%;
 }
 .infoContainer {
-    background: #f2f2f2;
+    background: #fff;
     border-top: 1px solid #d5d3d3;
     height: auto;
     width: 100%;
@@ -418,12 +350,6 @@
     padding: 4px 0px 4px 8px;
     border: 1px solid #cacaca;
 }
-.infoContainer .infoPart #update {
-    font-size: 12px !important;
-    margin-top: 10px !important;
-    width: 50px !important;
-    margin: 10px 0 0 0 !important;
-}
 .infoContainer .infoPart #MESSAGE {
     margin-top: 5px;
 }
@@ -431,11 +357,10 @@
     margin: 0;
 }
 .infoContainer .infoPart {
-    margin-bottom: 10px;
     font-size: 14px;
     color: #000;
     border-bottom: 1px solid #d9d9d9;
-    padding: 5%;
+    padding: 15px;
 }
 .infoContainer .infoPart:nth-child(4) {
     border: none;
@@ -445,7 +370,7 @@
 }
 .infoContainer .infoData {
     display: block;
-    margin-top: 5px;
+    margin-top: 10px;
 }
 .infoContainer .infoPart textarea {
     width: 100%;
@@ -690,19 +615,7 @@
 #mediaReadImage:hover {
     cursor: pointer;
 }
-#update, #update-description {
-    background: #42971c;
-    border-radius: 3px;
-    border-color: #42971c;
-    color: #fff;
-    width: 40px;
-    margin: 0 auto;
-}
-#update:hover, #update-description:hover {
-    background: #6ba152;
-    border-color: #6ba152;
-    cursor: pointer;
-}
+
 .updateDescription:focus-visible {
     outline: none;
 }

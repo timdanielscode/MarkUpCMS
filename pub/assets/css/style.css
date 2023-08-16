@@ -94,7 +94,7 @@ h3 {
     margin-top: 10px;
 }
 .margin-t-50 {
-    margin-top: 50px;
+    margin-top: 50px !important;
 }
 .margin-t-20 {
     margin-top: 20px;
@@ -118,6 +118,15 @@ h3 {
 .margin-r-15 {
     margin-right: 15px;
 }
+.margin-y-10 {
+    margin: 10px 0;
+}
+.margin-y-20 {
+    margin: 20px 0;
+}
+.margin-b-50 {
+    margin-bottom: 50px;
+}
 /*
     Padding
 */
@@ -127,6 +136,9 @@ h3 {
 }
 .padding-b-2 {
     padding-bottom: 2px;
+}
+.padding-6 {
+    padding: 6px !important;
 }
 
 /*
@@ -251,7 +263,9 @@ h3 {
 .width-5 {
     width: 5%;
 }
-
+.width-50-px {
+    width: 50px !important;
+}
 /*
     Float
 */
@@ -262,17 +276,22 @@ h3 {
     Button
 */
 .button {
-    background: #eaeaea;
-    padding-left: 8px;
-    padding-right: 8px;
-    padding-top: 5px;
-    padding-bottom: 5px;
-    color: #fff;
+    width: auto;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 30px;
+    padding: 0px 10px;
+    transition: 0.3s;
+    font-size: 13px;
     text-decoration: none;
-    border: 2px solid #fff;
-    display: block;
+    font-size: 13px;
+    color: #fff;
+    border: none;
 }
-
+.button:hover {
+    cursor: pointer;
+}
 /*
     Modal
 */
@@ -320,7 +339,6 @@ h3 {
     Validation rules
 */
 .error-messages {
-    margin-bottom: 10px;
     color: rgb(199, 48, 48);
 }
 
