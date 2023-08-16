@@ -15,6 +15,7 @@
     $this->script('/assets/js/categories/read.js', true);
     $this->script('/assets/js/categories/add.js', true);
     $this->script('/assets/js/categories/slug.js', true);
+    $this->script('/assets/js/categories/index/delete.js', true);
     $this->include('headerClose');
     $this->include('navbar');
 ?>
@@ -22,7 +23,7 @@
     <h1>Category</h1>
     <div class="countContainer">
         <span>All</span>
-        <span>(<?php echo $count; ?>)</span> | <a class="create">Create</a>
+        <span>(<?php echo $count; ?>)</span> | <a class="create">Create</a> <span class="deleteSeparator display-none">|</span> <form action="/admin/categories/delete" method="POST" class="indexDeleteForm display-none-important"><input type="submit" value="Delete"/><input type="hidden" name="deleteIds" id="deleteIds" value=""/></form>
     </div>
     <form action="" method="GET">
         <input type="text" name="search" placeholder="Search" id="search">
@@ -32,7 +33,7 @@
         
         <thead>
             <tr>
-                <th>#</th>
+                <th></th>
                 <th>Title</th>
                 <th>Slug</th>
                 <th></th>

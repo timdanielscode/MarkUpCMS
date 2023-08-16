@@ -15,9 +15,9 @@
     $this->script('/assets/js/ajax.js');
     $this->script('/assets/js/media/index/table.js');
     $this->script('/assets/js/media/index/read.js');
+    $this->script('/assets/js/media/index/delete.js', true);
     $this->script('/assets/js/media/index/update/filename.js');
     $this->script('/assets/js/media/index/update/description.js');
-    $this->script('/assets/js/delete.js', true);
 
     $this->include('headerClose');
     $this->include('navbar');

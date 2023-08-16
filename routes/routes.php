@@ -101,5 +101,5 @@ Route::middleware('login')->run(function() {
     Route::post('/admin/categories/addpage')->add('admin\CategoryController', 'ADDPAGE');
     Route::post('/admin/categories/addcategory')->add('admin\CategoryController', 'ADDCATEGORY');
     Route::post('/admin/categories/slug')->add('admin\CategoryController', 'SLUG');
-    Route::get('/admin/categories/[id]/delete')->add('admin\CategoryController', 'delete');
+    Route::post('/admin/categories/delete')->add('admin\CategoryController', 'delete');
 });

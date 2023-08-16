@@ -4,14 +4,13 @@
         <tr>
 
                 <td>
-                    <?php echo $category['id']; ?>
+                    <input class="deleteCheckbox" type="checkbox" name="delete" value="<?php echo $category['id']; ?>"/>
                 </td>
                 <td class="width-20">
                     <a data-id="<?php echo $category['id']; ?>" data-id="<?php echo $category['id']; ?>" class="edit font-weight-300" id="TABLE-TITLE-<?php echo $category['id']; ?>"><?php echo $category["title"]; ?></a> |
                     <a data-id="<?php echo $category['id']; ?>" class="edit font-weight-300" class="edit">Edit</a> |
-                    <a href="#" data-role="add" data-id="<?php echo $category['id']; ?>" class="add font-weight-300">Add</a> |
-                    <a href="#<?php echo $category['title']; ?>" class="read font-weight-300" data-id="<?php echo $category['id']; ?>">Read</a> |
-                    <a href="/admin/categories/<?php echo $category['id']; ?>/delete" class="font-weight-300 color-red">Delete</a>
+                    <a href="#" data-role="add" data-id="<?php echo $category['id']; ?>" class="add font-weight-300">Apply</a> |
+                    <a href="#<?php echo $category['title']; ?>" class="read font-weight-300" data-id="<?php echo $category['id']; ?>">Read</a>
                 </td>
                 <td class="width-20">
                     <form>
