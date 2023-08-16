@@ -52,7 +52,7 @@
                         <a href="/admin/menus" class="button darkBlueButton">Back</a>
                     </div>
                     <div class="buttonContainer margin-b-50">
-                        <a href="#" id="codeEditorFullScreen" class="button lightButton">Full screen</a>
+                        <a href="#" id="codeEditorFullScreen" class="button darkButton">Full screen</a>
                     </div>
                     <span class="text">Current position: </span>
                     <span class="data"><?php echo $menu['position']; ?></span>

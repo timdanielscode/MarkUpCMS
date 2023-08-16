@@ -86,13 +86,6 @@ table td a {
     text-decoration: none;
     color: #144080;
 }
-table td .button {
-    background: #42971c !important;
-    border: 1px solid #2e7d0b !important;
-    width: 50px !important;
-    margin: 0 auto !important;
-    font-size: 14px !important;
-}
 table td .button:hover {
     cursor: pointer;
     background: #2e7d0b !important;

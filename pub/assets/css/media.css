@@ -420,6 +420,9 @@
     margin: 50px;
     position: relative;
 }
+.mainButtonContainer .redButton {
+    height: 32px;
+}
 /*
     modal
 */
@@ -649,4 +652,12 @@
     transform: translate(-50%, -50%);
     height: 50%;
     z-index: 999;
+}
+table td .button {
+    background: #42971c;
+    border: 1px solid #2e7d0b;
+    width: 30px;
+    margin: 0 auto;
+    height: 26px;
+    font-size: 12px;
 }

@@ -19,7 +19,7 @@
                     </form>
                 </td>
                 <td class="width-50">
-                    <a data-role="update" id="update" data-id="<?php echo $category['id']; ?>" class="padding-6">Update</a>
+                    <a data-role="update" id="update" data-id="<?php echo $category['id']; ?>" class="button">Update</a>
                 </td>
                 <td class="width-10">
                     <span class="padding-b-2">Created:</span> <span class="font-weight-300"><?php echo $category["date_created_at"] . " " . $category["time_created_at"]; ?></span><br>

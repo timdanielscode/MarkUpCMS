@@ -54,6 +54,20 @@ h1 {
 .create {
     text-decoration: underline;
 }
+/* 
+    Index 
+*/
+table td .button {
+    width: 30px;
+    margin: 0 auto;
+    height: 26px;
+    float: left !important;
+    font-size: 12px;
+    background: #42971c;
+    border-color: #42971c;
+}
+
+
 
 
 /*
@@ -140,7 +154,7 @@ h1 {
 #ASSIGNCATEGORY {
     margin-left: 20px;
 }
-#ASSIGNCATEGORY, #ASSIGNPAGES, #update {
+#modal #ASSIGNCATEGORY, #modal #ASSIGNPAGES, #modal #update {
     width: 75px;
     background: #42971c;
     border-color: #42971c;

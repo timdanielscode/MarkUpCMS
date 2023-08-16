@@ -53,7 +53,7 @@
                             <a href="/admin/js" class="button blueButton">Back</a>
                         </div>
                         <div class="buttonContainer">
-                            <a href="#" id="codeEditorFullScreen" class="button lightButton">Full screen</a>
+                            <a href="#" id="codeEditorFullScreen" class="button darkButton">Full screen</a>
                         </div>
                         <div class="buttonContainer">
                             <form action="/admin/js/<?php echo $data['id']; ?>/include-all" method="POST">
