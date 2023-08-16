@@ -31,9 +31,11 @@
                 <form id="editorForm" action="/admin/menus/<?php echo $menu['id']; ?>/update" method="POST" class="form-code">
                     <div class="form-parts">
                         <input type="text" autofocus name="title" id="title" value="<?php echo $menu['title']; ?>">
-                        <div class="error-messages">
-                            <?php echo Errors::get($rules, 'title'); ?>
-                        </div>    
+                        <?php if(!empty(Errors::get($rules, 'title')) && Errors::get($rules, 'title') !== null) { ?>
+                            <div class="error-messages margin-b-10 margin-tm-10 font-size-14">
+                                <span><?php echo Errors::get($rules, 'title'); ?></span>
+                            </div>    
+                        <?php } ?>  
                     </div>
                     <textarea name="content" type="content" id="code"><?php echo $menu['content']; ?></textarea>
                     <button name="submit" id="submit" type="submit" class="display-none">Create</button>

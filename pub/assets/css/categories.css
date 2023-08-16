@@ -338,10 +338,12 @@ h1 {
 .message-success {
     color: #42971c;
     margin-top: 10px;
+    font-size: 12px;
 }
 .message-failed {
     color: rgb(199, 48, 48);
     margin-top: 10px;
+    font-size: 12px;
 }
 .categorySlugAdd {
     margin-top: 20px;

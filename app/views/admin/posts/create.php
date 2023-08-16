@@ -30,13 +30,13 @@
                     <form action="store" method="POST" class="form-code" id="editorForm">
                         <div class="form-parts">
                             <input type="text" name="title" type="title" id="title" value="<?php echo post('title'); ?>" placeholder="Title" autofocus>
-                            <div class="error-messages">
-                                <?php echo Errors::get($rules, 'title'); ?>
-                            </div>
+                            <?php if(!empty(Errors::get($rules, 'title')) && Errors::get($rules, 'title') !== null) { ?>
+                                <div class="error-messages margin-b-10 margin-tm-10 font-size-14">
+                                    <span><?php echo Errors::get($rules, 'title'); ?></span>
+                                </div>    
+                            <?php } ?>
                         </div>
-
-                            <textarea type="text" name="body" type="body" id="code"></textarea>
-                   
+                        <textarea type="text" name="body" type="body" id="code"></textarea>
                         <div class="form-parts">
                             <button name="submit" id="submit" type="submit" class="display-none">Create</button>
                             <input type="hidden" name="token" value="<?php Csrf::token('add');?>" />

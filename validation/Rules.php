@@ -218,7 +218,7 @@ class Rules {
         return $this;
     }
 
-    public function menu_update() {
+    public function menu_update($unique) {
 
         $validation = new Validate();
         

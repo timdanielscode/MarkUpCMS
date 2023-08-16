@@ -31,9 +31,11 @@
                     <form id="editorForm" action="/admin/js/<?php echo $data['id']; ?>/update" method="POST" class="form-code">
                         <div class="form-parts">
                             <input name="filename" type="text" id="filename" placeholder="Filename" value="<?php echo $data['file_name']; ?>">
-                            <div class="error-messages">
-                                <?php echo Errors::get($rules, 'filename'); ?>
-                            </div>
+                            <?php if(!empty(Errors::get($rules, 'filename')) && Errors::get($rules, 'filename') !== null) { ?>
+                                <div class="error-messages margin-b-10 margin-tm-10 font-size-14">
+                                    <span><?php echo Errors::get($rules, 'filename'); ?></span>
+                                </div>    
+                            <?php } ?> 
                             <textarea name="code" id="code"><?php echo $data['code']; ?></textarea>
                         </div>
                         <div class="form-parts">

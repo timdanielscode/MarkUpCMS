@@ -58,9 +58,11 @@
                 <form action="" method="POST" class="folderForm">
                     <input type="text" placeholder="Folder" name="P_folder">
                     <input type="submit" name="submitFolder" value="Folder &plusmn"/>
-                    <div class="error-messages folder">
-                        <?php echo Errors::get($rules, 'P_folder'); ?>
-                    </div>
+                    <?php if(!empty(Errors::get($rules, 'P_folder')) && Errors::get($rules, 'P_folder') !== null) { ?>
+                        <div class="error-messages font-size-14 folder">
+                            <span><?php echo Errors::get($rules, 'P_folder'); ?></span>
+                        </div>    
+                    <?php } ?> 
                 </form>
                 <div class="readImageContainer display-none"></div>
                 <div class="filesContainer">
@@ -144,10 +146,16 @@
                             <div class="form-parts">
                                 <label>Description: </label>
                                 <textarea name="media_description" type="text" id="media_description" autofocus placeholder="Optional"></textarea>
-                                <div class="error-messages">
-                                    <?php echo Errors::get($rules, 'file'); ?>
-                                    <?php echo Errors::get($rules, 'media_description'); ?>
-                                </div>
+                                <?php if(!empty(Errors::get($rules, 'file')) && Errors::get($rules, 'file') !== null) { ?>
+                                    <div class="error-messages margin-tm-10 font-size-14">
+                                        <span><?php echo Errors::get($rules, 'file'); ?></span>
+                                    </div>    
+                                <?php } ?> 
+                                <?php if(!empty(Errors::get($rules, 'media_description')) && Errors::get($rules, 'media_description') !== null) { ?>
+                                    <div class="error-messages margin-tm-10 font-size-14">
+                                        <span><?php echo Errors::get($rules, 'media_description'); ?></span>
+                                    </div>    
+                                <?php } ?> 
                             </div>
                             <div class="form-parts">
                                 <input name="file[]" type="file" multiple="true" id="file" class="display-none">
