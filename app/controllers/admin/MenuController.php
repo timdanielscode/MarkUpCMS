@@ -199,22 +199,30 @@ class MenuController extends Controller {
 
     public function delete($request) {
 
-        $this->ifExists($request['id']);
+        $deleteIds = explode(',', $request['deleteIds']);
 
-        $menu = DB::try()->select('title, removed')->from('menus')->where('id', '=', $request['id'])->first();
+        if(!empty($deleteIds) && !empty($deleteIds[0])) {
 
-        if($menu['removed'] !== 1) {
+            foreach($deleteIds as $request['id']) {
 
-            Menu::update(['id' => $request['id']], [
+                $this->ifExists($request['id']);
 
-                'removed'  => 1,
-                'position' => 'unset',
-                'ordering' => 0
-            ]);
+                $menu = DB::try()->select('title, removed')->from('menus')->where('id', '=', $request['id'])->first();
 
-        } else if($menu['removed'] === 1) {
+                if($menu['removed'] !== 1) {
 
-            Menu::delete("id", $request['id']);
+                    Menu::update(['id' => $request['id']], [
+
+                        'removed'  => 1,
+                        'position' => 'unset',
+                        'ordering' => 0
+                    ]);
+
+                } else if($menu['removed'] === 1) {
+
+                    Menu::delete("id", $request['id']);
+                }
+            }
         }
 
         redirect("/admin/menus");

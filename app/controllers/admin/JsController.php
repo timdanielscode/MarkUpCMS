@@ -319,25 +319,33 @@ class JsController extends Controller {
 
     public function delete($request) {
 
-        $this->ifExists($request['id']);
+        $deleteIds = explode(',', $request['deleteIds']);
 
-        $js = DB::try()->select('removed')->from('js')->where('id', '=', $request['id'])->first();
+        if(!empty($deleteIds) && !empty($deleteIds[0])) {
 
-        if($js['removed'] !== 1) {
+            foreach($deleteIds as $request['id']) {
 
-            Js::update(['id' => $request['id']], [
+                $this->ifExists($request['id']);
 
-                'removed'  => 1
-            ]);
+                $js = DB::try()->select('removed')->from('js')->where('id', '=', $request['id'])->first();
 
-        } else if($js['removed'] === 1) {
+                if($js['removed'] !== 1) {
 
-            $filename = Js::where('id', '=', $request['id'])[0]['file_name'];
-            $path = "website/assets/js/" . $filename . ".js";
-            
-            unlink($path);
+                    Js::update(['id' => $request['id']], [
 
-            Js::delete("id", $request['id']);
+                        'removed'  => 1
+                    ]);
+
+                } else if($js['removed'] === 1) {
+
+                    $filename = Js::where('id', '=', $request['id'])[0]['file_name'];
+                    $path = "website/assets/js/" . $filename . ".js";
+                    
+                    unlink($path);
+
+                    Js::delete("id", $request['id']);
+                }
+            }
         }
 
         redirect("/admin/js");

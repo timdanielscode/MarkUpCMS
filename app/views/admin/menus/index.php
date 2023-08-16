@@ -11,6 +11,8 @@
     $this->stylesheet("/assets/css/index.css");
     $this->stylesheet("/assets/css/pagination.css");
 
+    $this->script("/assets/js/delete.js", true);
+
     $this->include('headerClose');
     $this->include('navbar');
 ?>
@@ -18,7 +20,7 @@
     <h1>Menus</h1>
     <div class="countContainer">
         <span>All</span>
-        <span>(<?php echo $count; ?>)</span> | <a href="/admin/menus/create">Create</a>
+        <span>(<?php echo $count; ?>)</span> | <a href="/admin/menus/create">Create</a> <span class="deleteSeparator">|</span> <form action="/admin/menus/delete" method="POST" class="indexDeleteForm"><input type="submit" value="Delete"/><input type="hidden" name="deleteIds" id="deleteIds"/></form>
     </div>
     <form action="" method="GET">
         <input type="text" name="search" placeholder="Search" id="search">
@@ -28,7 +30,7 @@
         
             <thead>
                 <tr>
-                    <th>#</th>
+                    <th></th>
                     <th>Title</th>
                     <th>Position</th>
                     <th>Ordering</th>
@@ -41,14 +43,13 @@
                     <?php foreach($menus as $menu) { ?>
                         <tr>
                             <td>
-                                <?php echo $menu['id']; ?>
+                                <input class="deleteCheckbox" type="checkbox" name="delete" value="<?php echo $menu['id']; ?>"/>
                             </td>
                             <?php if($menu['removed'] !== 1) { ?>
                                 <td class="width-30">
                                     <a href="/admin/menus/<?php echo $menu['id']; ?>/edit" class="font-weight-500"><?php echo $menu['title']; ?></a> |
                                     <a href="/admin/menus/<?php echo $menu['id']; ?>/edit" class="font-weight-300">Edit</a> |
-                                    <a href="/admin/menus/<?php echo $menu['id']; ?>/read" class="font-weight-300">Read</a> |
-                                    <a href="/admin/menus/<?php echo $menu['id']; ?>/delete" class="font-weight-300 color-red">Delete</a>
+                                    <a href="/admin/menus/<?php echo $menu['id']; ?>/read" class="font-weight-300">Read</a>
                                 </td>
                             <?php } else { ?>
                                 <td class="width-30">

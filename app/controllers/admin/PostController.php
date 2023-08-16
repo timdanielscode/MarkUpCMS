@@ -679,22 +679,30 @@ class PostController extends Controller {
 
     public function delete($request) {
 
-        $this->ifExists($request['id']);
+        $deleteIds = explode(',', $request['deleteIds']);
 
-        $post = DB::try()->select('removed')->from('pages')->where('id', '=', $request['id'])->first();
+        if(!empty($deleteIds) && !empty($deleteIds[0])) {
 
-        if($post['removed'] !== 1) {
+            foreach($deleteIds as $request['id']) {
 
-            Post::update(['id' => $request['id']], [
-
-                'removed'  => 1,
-                'slug'  => ''
-            ]);
-
-        } else if($post['removed'] === 1) {
-
-            Post::delete("id", $request['id']);
-            CategoryPage::delete('page_id', $request['id']);
+                $this->ifExists($request['id']);
+    
+                $post = DB::try()->select('removed')->from('pages')->where('id', '=', $request['id'])->first();
+        
+                if($post['removed'] !== 1) {
+        
+                    Post::update(['id' => $request['id']], [
+        
+                        'removed'  => 1,
+                        'slug'  => ''
+                    ]);
+        
+                } else if($post['removed'] === 1) {
+        
+                    Post::delete("id", $request['id']);
+                    CategoryPage::delete('page_id', $request['id']);
+                }
+            }
         }
 
         redirect("/admin/posts");

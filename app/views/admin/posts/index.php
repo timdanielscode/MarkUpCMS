@@ -12,6 +12,7 @@
     $this->stylesheet("/assets/css/pagination.css");
 
     $this->script("/assets/js/navbar.js", true);
+    $this->script("/assets/js/delete.js", true);
 
     $this->include('headerClose');
     $this->include('navbar');
@@ -29,7 +30,7 @@
     <h1>Pages</h1>
     <div class="countContainer">
         <span>All</span>
-        <span>(<?php echo $count; ?>)</span> | <a href="/admin/posts/create">Create</a>
+        <span>(<?php echo $count; ?>)</span> | <a href="/admin/posts/create">Create</a> <span class="deleteSeparator">|</span> <form action="/admin/posts/delete" method="POST" class="indexDeleteForm"><input type="submit" value="Delete"/><input type="hidden" name="deleteIds" id="deleteIds" value=""/></form>
     </div>
     <form action="" method="GET">
         <input type="text" name="search" placeholder="Search" id="search">
@@ -52,14 +53,13 @@
                 <?php foreach($posts as $post) { ?>
                     <tr>
                     <td>
-                        <?php echo $post['id']; ?>
+                        <input class="deleteCheckbox" type="checkbox" name="delete" value="<?php echo $post['id']; ?>"/>
                     </td>
                     <?php if($post['removed'] !== 1) { ?>
                     <td class="width-20">
                         <a href="/admin/posts/<?php echo $post['id']; ?>/edit" class="font-weight-500"><?php echo $post[1]; ?></a> |
                         <a href="/admin/posts/<?php echo $post['id']; ?>/edit" class="font-weight-300">Edit</a> |
-                        <a href="/admin/posts/<?php echo $post['id']; ?>/read" class="font-weight-300">Read</a> |
-                        <a href="/admin/posts/<?php echo $post['id']; ?>/delete" class="font-weight-300 color-red">Delete</a>
+                        <a href="/admin/posts/<?php echo $post['id']; ?>/read" class="font-weight-300">Read</a>
                     </td>
                     <td class="width-30">
                         <a href="<?php echo $_SERVER['HTTP_HOST'] . $post['slug']; ?>"><?php echo $post['slug']; ?></a>

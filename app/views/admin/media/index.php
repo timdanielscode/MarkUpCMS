@@ -27,7 +27,7 @@
     <h1>Media</h1>
     <div class="countContainer">
         <span>All</span>
-        <span>(<?php echo $count; ?>)</span> | <a href="/admin/media/create">Upload</a> <span class="deleteSeparator display-none">|</span> <form action="/admin/media/delete" method="POST" class="indexDeleteForm display-none-important"><input type="submit" value="Delete"/><input type="hidden" name="deleteIds" id="deleteIds" value=""/></form>
+        <span>(<?php echo $count; ?>)</span> | <a href="/admin/media/create">Upload</a> <span class="deleteSeparator">|</span> <form action="/admin/media/delete" method="POST" class="indexDeleteForm"><input type="submit" value="Delete"/><input type="hidden" name="deleteIds" id="deleteIds" value=""/></form>
     </div>
     <form action="" method="GET">
         <input type="text" name="search" placeholder="Search" id="search">

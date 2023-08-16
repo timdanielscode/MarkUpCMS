@@ -329,25 +329,33 @@ class CssController extends Controller {
 
     public function delete($request) {
 
-        $this->ifExists($request['id']);
+        $deleteIds = explode(',', $request['deleteIds']);
 
-        $css = DB::try()->select('removed')->from('css')->where('id', '=', $request['id'])->first();
+        if(!empty($deleteIds) && !empty($deleteIds[0])) {
 
-        if($css['removed'] !== 1) {
+            foreach($deleteIds as $request['id']) {
 
-            Css::update(['id' => $request['id']], [
+                $this->ifExists($request['id']);
 
-                'removed'  => 1
-            ]);
+                $css = DB::try()->select('removed')->from('css')->where('id', '=', $request['id'])->first();
 
-        } else if($css['removed'] === 1) {
+                if($css['removed'] !== 1) {
 
-            $filename = Css::where('id', '=', $request['id'])[0]['file_name'];
-            $path = "website/assets/css/" . $filename . ".css";
-            
-            unlink($path);
+                    Css::update(['id' => $request['id']], [
 
-            Css::delete("id", $request['id']);
+                        'removed'  => 1
+                    ]);
+
+                } else if($css['removed'] === 1) {
+
+                    $filename = Css::where('id', '=', $request['id'])[0]['file_name'];
+                    $path = "website/assets/css/" . $filename . ".css";
+                    
+                    unlink($path);
+
+                    Css::delete("id", $request['id']);
+                }
+            }
         }
 
         redirect("/admin/css");

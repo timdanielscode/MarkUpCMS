@@ -6,6 +6,8 @@
     $this->stylesheet("/assets/css/index.css");
     $this->stylesheet("/assets/css/pagination.css");
 
+    $this->script("/assets/js/delete.js", true);
+
     $this->include('headerClose');
     $this->include('navbar');
 ?>
@@ -13,7 +15,7 @@
     <h1>Css</h1>
     <div class="countContainer">
         <span>All</span>
-        <span>(<?php echo $count; ?>)</span> | <a href="/admin/css/create">Create</a>
+        <span>(<?php echo $count; ?>)</span> | <a href="/admin/css/create">Create</a> <span class="deleteSeparator">|</span> <form action="/admin/css/delete" method="POST" class="indexDeleteForm"><input type="submit" value="Delete"/><input type="hidden" name="deleteIds" id="deleteIds"/></form>
     </div>
     <form action="" method="GET">
         <input type="text" name="search" placeholder="Search" id="search">
@@ -23,7 +25,7 @@
         
             <thead>
                 <tr>
-                    <th>#</th>
+                    <th></th>
                     <th>Filename</th>
                     <th>Date</th>
                 </tr>
@@ -33,14 +35,13 @@
                     <?php foreach($cssFiles as $cssFile) { ?>
                         <tr>
                             <td>
-                                <?php echo $cssFile['id']; ?>
+                            <input class="deleteCheckbox" type="checkbox" name="delete" value="<?php echo $cssFile['id']; ?>"/>
                             </td>
                             <?php if($cssFile['removed'] !== 1) { ?>
                             <td class="width-90">
                                 <a href="/admin/css/<?php echo $cssFile['id']; ?>/edit" class="font-weight-500"><?php echo $cssFile['file_name'] . $cssFile['extension']; ?></a> |
                                 <a href="/admin/css/<?php echo $cssFile['id']; ?>/edit" class="font-weight-300">Edit</a> |
-                                <a href="/admin/css/<?php echo $cssFile['id']; ?>/read" class="font-weight-300">Read</a> |
-                                <a href="/admin/css/<?php echo $cssFile['id']; ?>/delete" class="font-weight-300 color-red">Delete</a>
+                                <a href="/admin/css/<?php echo $cssFile['id']; ?>/read" class="font-weight-300">Read</a>
                             </td>
                             <?php } else { ?>
                                 <td class="width-90">

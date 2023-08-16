@@ -23,7 +23,7 @@
     <h1>Category</h1>
     <div class="countContainer">
         <span>All</span>
-        <span>(<?php echo $count; ?>)</span> | <a class="create">Create</a> <span class="deleteSeparator display-none">|</span> <form action="/admin/categories/delete" method="POST" class="indexDeleteForm display-none-important"><input type="submit" value="Delete"/><input type="hidden" name="deleteIds" id="deleteIds" value=""/></form>
+        <span>(<?php echo $count; ?>)</span> | <a class="create">Create</a> <span class="deleteSeparator">|</span> <form action="/admin/categories/delete" method="POST" class="indexDeleteForm"><input type="submit" value="Delete"/><input type="hidden" name="deleteIds" id="deleteIds" value=""/></form>
     </div>
     <form action="" method="GET">
         <input type="text" name="search" placeholder="Search" id="search">

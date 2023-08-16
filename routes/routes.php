@@ -55,6 +55,7 @@ Route::middleware('login')->run(function() {
     Route::post('/admin/posts/[id]/include-js')->add('admin\PostController', 'includeJs');
     Route::post('/admin/posts/[id]/remove-js')->add('admin\PostController', 'removeJs');
     Route::get('/admin/posts/[id]/recover')->add('admin\PostController', 'recover');
+    Route::post('/admin/posts/delete')->add('admin\PostController', 'delete');
 
     Route::crud('/admin/users', '[username]')->add('admin\UserController', 'crud');
     Route::post('/admin/users/[username]/update-role')->add('admin\UserController', 'updateRole');
@@ -65,6 +66,7 @@ Route::middleware('login')->run(function() {
     Route::post('/admin/css/[id]/link-all')->add('admin\CssController', 'linkAll');
     Route::post('/admin/css/[id]/unlink-all')->add('admin\CssController', 'unlinkAll');
     Route::get('/admin/css/[id]/recover')->add('admin\CssController', 'recover');
+    Route::post('/admin/css/delete')->add('admin\CssController', 'delete');
 
     Route::crud('/admin/js', '[id]')->add('admin\JsController', 'crud');
     Route::post('/admin/js/[id]/include-pages')->add('admin\JsController', 'includePages');
@@ -72,11 +74,13 @@ Route::middleware('login')->run(function() {
     Route::post('/admin/js/[id]/include-all')->add('admin\JsController', 'includeAll');
     Route::post('/admin/js/[id]/remove-all')->add('admin\JsController', 'removeAll');
     Route::get('/admin/js/[id]/recover')->add('admin\JsController', 'recover');
+    Route::post('/admin/js/delete')->add('admin\JsController', 'delete');
 
     Route::crud('/admin/menus', '[id]')->add('admin\MenuController', 'crud');
     Route::post('/admin/menus/[id]/update-position')->add('admin\MenuController', 'updatePosition');
     Route::post('/admin/menus/[id]/update-ordering')->add('admin\MenuController', 'updateOrdering');
     Route::get('/admin/menus/[id]/recover')->add('admin\MenuController', 'recover');
+    Route::post('/admin/menus/delete')->add('admin\MenuController', 'delete');
 
     Route::get('/admin/media')->add('admin\MediaController', 'index');
     Route::get('/admin/media/create')->add('admin\MediaController', 'create');
