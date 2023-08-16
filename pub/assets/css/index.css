@@ -4,21 +4,57 @@
 .index-container {
     margin-left: 5%;
 }
-h1 {
+.headerContainer {
+    margin-bottom: 10px;
+    position: relative;
+}
+.headerContainer h1 {
     display: inline-block;
     font-size: 23px;
     color: #144080;
-    margin-right: 20px;
+    margin-right: 10px;
     margin-top: 20px;
+    margin-bottom: 0;
 }
-.countContainer {
+.headerContainer .badge {
+    font-size: 11px;
+    border-radius: 50px;
+    width: 20px;
+    height: 20px;
+    background: #144080;
+    color: #fff;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    position: absolute;
+    bottom: 0;
+}
+.headerContainer .badge.pages {
+    left: 77px;
+}
+.headerContainer .badge.categories {
+    left: 127px;
+}
+.headerContainer .badge.menus {
+    left: 82px;
+}
+.headerContainer .badge.css {
+    left: 51px;
+}
+.headerContainer .badge.js {
+    left: 28px;
+}
+.headerContainer .badge.media {
+    left: 73px;
+}
+.index-container .create, .index-container .delete {
     font-size: 14px;
     font-weight: 500;
 }
-.countContainer a {
+.index-container .create {
     color: #3d6eb5;
 }
-.countContainer a:hover {
+.index-container .create:hover {
     color: #144080;
 }
 #search {

@@ -17,11 +17,10 @@
     $this->include('navbar');
 ?>
 <div class="index-container">
-    <h1>Menus</h1>
-    <div class="countContainer">
-        <span>All</span>
-        <span>(<?php echo $count; ?>)</span> | <a href="/admin/menus/create">Create</a> <span class="deleteSeparator">|</span> <form action="/admin/menus/delete" method="POST" class="indexDeleteForm"><input type="submit" value="Delete"/><input type="hidden" name="deleteIds" id="deleteIds"/></form>
+    <div class="headerContainer">
+        <h1>Menus</h1><span class="badge menus"><?php echo $count; ?></span>
     </div>
+    <a href="/admin/menus/create" class="create">Create</a> <span class="deleteSeparator">|</span> <form action="/admin/menus/delete" method="POST" class="indexDeleteForm"><input type="submit" class="delete" value="Delete"/><input type="hidden" name="deleteIds" id="deleteIds"/></form>
     <form action="" method="GET">
         <input type="text" name="search" placeholder="Search" id="search">
         <input type="hidden" name="submit" value="search">
