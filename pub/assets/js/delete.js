@@ -14,6 +14,16 @@ $(document).ready(function() {
             collection.push(this.value)
         }
 
+        removeDeleteLink(collection);
         $("#deleteIds").val(collection)
     });
+
+    function removeDeleteLink(collection) {
+
+        if(collection.length === 0) {
+
+            document.querySelector('.indexDeleteForm').classList.add('display-none-important')
+            document.querySelector('.deleteSeparator').classList.add('display-none')
+        }
+    }
 });
