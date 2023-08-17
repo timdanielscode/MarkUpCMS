@@ -18,8 +18,10 @@ class DashboardController extends Controller {
         $data['users'] = DB::try()->select('id')->from('users')->fetch();
 
         $data['contentAppliedPages'] = DB::try()->select('id')->from('pages')->where('has_content', '=', 1)->fetch();
-        $data['titleOfLastCreatedPage'] = DB::try()->select('id, title')->from('pages')->order('date_created_at')->first();
+        $data['titleOfLastCreatedPage'] = DB::try()->select('id, title')->from('pages')->where('removed', '!=', '1')->order('id')->desc()->first();
         $data['removedPages'] = DB::try()->select('id')->from('pages')->where('removed', '=', 1)->fetch();
+
+        $data['titleOfLastCreatedCategory'] = DB::try()->select('id, title')->from('categories')->order('id')->desc()->first();
 
         $data['contentAppliedMenus'] = DB::try()->select('id')->from('menus')->where('has_content', '=', 1)->fetch();
         $data['contentAppliedCss'] = DB::try()->select('id')->from('css')->where('has_content', '=', 1)->fetch();
@@ -27,6 +29,8 @@ class DashboardController extends Controller {
 
         $data['positionAppliedMenus'] = DB::try()->select('id')->from('menus')->where('position', '!=', 'unset')->fetch();
         $data['orderingAppliedMenus'] = DB::try()->select('id')->from('menus')->where('ordering', 'IS NOT', NULL)->fetch();
+        $data['titleOfLastCreatedMenu'] = DB::try()->select('id, title')->from('menus')->where('removed', '!=', '1')->order('id')->desc()->first();
+        $data['removedMenus'] = DB::try()->select('id')->from('menus')->where('removed', '=', 1)->fetch();
 
         $data['percentageOfNormalUsers'] = $this->getPercentageOfNormalRoles();
         $data['percentageOfAdminUsers'] = $this->getPercentageOfAdminRoles();
@@ -39,7 +43,16 @@ class DashboardController extends Controller {
         $data['numberOfAppliedMetaKeywords'] = $this->getNumberOfNotAppliedMetaKeywords();
 
         $data['numberOfLinkedCss'] = $this->getNumberOfLinkedCss();
+        $data['idOfLastCreatedCss'] = DB::try()->select('id')->from('css')->where('removed', '!=', '1')->order('id')->desc()->first();
+        $data['removedCss'] = DB::try()->select('id')->from('css')->where('removed', '=', 1)->fetch();
+
         $data['numberOfIncludedJs'] = $this->getNumberOfIncludedJs();
+        $data['idOfLastCreatedJs'] = DB::try()->select('id')->from('js')->where('removed', '!=', '1')->order('id')->desc()->first();
+        $data['removedJs'] = DB::try()->select('id')->from('js')->where('removed', '=', 1)->fetch();
+
+        //print_r($data['idOfLastCreatedJs']);
+       // exit();
+
 
         $data['numberOfMediaFiletypePng'] = $this->getNumberOfMediaTypePng();
         $data['numberOfMediaFiletypeJpg'] = $this->getNumberOfMediaTypeJpg();

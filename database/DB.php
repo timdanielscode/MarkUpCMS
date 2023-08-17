@@ -367,9 +367,34 @@ class DB {
      * 
      * @return object DB
      */     
-    public function desc() {
+    public function desc($colunn = null) {
 
-        $this->query .= " DESC";
+        if(!empty($column) && $column !== null) {
+
+            $this->query .= " $column DESC";
+           
+        } else {
+            $this->query .= " DESC";
+        }
+        return $this;
+    }
+
+    /** 
+     * Fetching rows descending
+     * Adding DESC to query
+     * 
+     * @return object DB
+     */     
+    public function asc($colunn = null) {
+
+        if(!empty($column) && $column !== null) {
+
+            $this->query .= " $column ASC";
+           
+        } else {
+            $this->query .= " ASC";
+        }
+
         return $this;
     }
 

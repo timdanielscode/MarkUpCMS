@@ -1,13 +1,17 @@
 #sidebar {
-    background: #cecece;
-    z-index: unset;
+    background: #fff;
+    z-index: 99999;
     left: 0 !important;
     box-shadow: 2px 0px 2px -2px rgba(0,0,0,.2);
-    top: 0 !important;
+    top: -1px !important;
     border-right: 1px solid #bdbdbd;
 }
 #navbar #logo {
     margin-left: 40px !important;
+}
+#navbar {
+    border-bottom: 1px solid #bdbdbd;
+    box-shadow: unset !important;
 }
 .dropdownItem img {
     width: 8px;
@@ -25,7 +29,7 @@
     width: 100% !important;
 }
 #navigationMenu #dropdownItems .dropdownItem {
-    background: #cecece;
+    background: #fff;
     color: #333;
     padding: 10px 0px 10px 20px;
     font-size: 16px;
@@ -55,6 +59,12 @@
 #navigationMenu #dropdownItems .dropdown li:hover {
     cursor: pointer;
     background: #f0f0f0;
+}
+.nestedDropdownItem {
+    padding-left: 33px !important;
+}
+.nestedItem {
+    padding-left: 60px !important;
 }
 #navigationMenu .button {
     background: #4f80c8;
@@ -95,22 +105,24 @@
     display: block;
     font-size: 26px;
     padding: 20px 0px 10px 20px;
+    color: #333;
 }
 .cardContainer .amount {
     width: 100%;
     display: block;
     font-size: 22px;
     padding-left: 20px;
+    color: #333;
 }
 .cardContainer .label {
     position: absolute;
-    bottom: 30px;
+    bottom: 25px;
     left: 20px;
     font-size: 14px;
 }
 .cardContainer .bar2 {
     position: absolute;
-    bottom: 60px;
+    bottom: 55px;
     left: 20px;
     background: #eaeaea;
     height: 7px;
@@ -120,7 +132,17 @@
 }
 .cardContainer .bar3 {
     position: absolute;
-    bottom: 110px;
+    bottom: 100px;
+    left: 20px;
+    background: #eaeaea;
+    height: 7px;
+    border-radius: 30px;
+    border: none;
+    width: 75%;
+}
+.cardContainer .bar4 {
+    position: absolute;
+    bottom: 145px;
     left: 20px;
     background: #eaeaea;
     height: 7px;
@@ -130,13 +152,19 @@
 }
 .cardContainer .label2 {
     position: absolute;
-    bottom: 80px;
+    bottom: 70px;
     left: 20px;
     font-size: 14px;
 }
 .cardContainer .label3 {
     position: absolute;
-    bottom: 130px;
+    bottom: 115px;
+    left: 20px;
+    font-size: 14px;
+}
+.cardContainer .label4 {
+    position: absolute;
+    bottom: 160px;
     left: 20px;
     font-size: 14px;
 }
@@ -150,6 +178,19 @@
     border: none;
     width: 75%;
 }
+progress.red::-moz-progress-bar, progress.red::-webkit-progress-value, progress.red::-webkit-progress-bar {
+    background: #7D858A;
+}
+progress.darkBlue::-moz-progress-bar, progress.blue::-webkit-progress-value, progress.blue::-webkit-progress-bar {
+    background: #1888E1; 
+}
+progress.blue::-moz-progress-bar, progress.blue::-webkit-progress-value, progress.blue::-webkit-progress-bar {
+    background: #FFC53B; 
+}
+progress.lightBlue::-moz-progress-bar, progress.blue::-webkit-progress-value, progress.blue::-webkit-progress-bar {
+    background: #72B7EE; 
+}
+
 .cardContainer a {
     text-decoration: none;
     width: fit-content;
@@ -260,9 +301,11 @@
 .progressContainer .container .header {
     font-size: 26px;
     margin-bottom: 20px;
+    color: #333;
 }
 .progressContainer .container .header .small, .cardContainer .header .small {
     font-size: 16px;
+    color: #333;
 }
 .progressContainer .container .grouped .value {
     font-size: 12px;
@@ -273,6 +316,7 @@
     display: block;
     font-size: 22px;
     margin-top: 10px;
+    color: #333;
 }
 .colorAdmin, .colorNormal {
     width: 20px;

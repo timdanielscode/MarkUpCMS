@@ -41,33 +41,61 @@
                         <ul id="dropdownItems">
                             <li class="dropdownItem"><img src="/assets/img/right-arrow.png"/>Pages</li>
                             <ul class="dropdown display-none">
-                            <a href="/admin/posts/create"><li>Add new</li></a>
-                            <a href="/admin/posts"><li>Table overview</li></a>
-                                <li class="dropdownItem">Last created</li>
-                                <ul class="dropdown display-none">
-                                    <a href="/admin/posts/<?php echo $titleOfLastCreatedPage['id']; ?>/read"><li>(read)</li></a>
-                                    <a href="/admin/posts/<?php echo $titleOfLastCreatedPage['id']; ?>/edit"><li>(edit)</li></a>
-                                </ul>
+                                <a href="/admin/posts/create"><li>Add new</li></a>
+                                <a href="/admin/posts"><li>Table overview</li></a>
+                                <?php if(!empty($titleOfLastCreatedPage) && $titleOfLastCreatedPage !== null) { ?>
+                                    <li class="dropdownItem nestedDropdownItem"><img src="/assets/img/right-arrow.png"/>Last created</li>
+                                    <ul class="dropdown display-none">
+                                        <a href="/admin/posts/<?php echo $titleOfLastCreatedPage['id']; ?>/read"><li class="nestedItem">Read</li></a>
+                                        <a href="/admin/posts/<?php echo $titleOfLastCreatedPage['id']; ?>/edit"><li class="nestedItem">Edit</li></a>
+                                    </ul>
+                                <?php } ?>
                             </ul>
                             <li class="dropdownItem"><img src="/assets/img/right-arrow.png"/>Categories</li>
                             <ul class="dropdown display-none">
-                                <li><a href="/admin/categories/create">Add new</a></li>
-                                <li><a href="/admin/categories">Table overview</a></li>
+                                <a href="/admin/categories"><li>Table overview</li></a>
+                                <?php if(!empty($titleOfLastCreatedCategory) && $titleOfLastCreatedCategory !== null) { ?>
+                                    <li class="dropdownItem nestedDropdownItem"><img src="/assets/img/right-arrow.png"/>Last created</li>
+                                    <ul class="dropdown display-none">
+                                        <a href="/admin/categories?search=<?php echo $titleOfLastCreatedCategory['title']; ?>"><li class="nestedItem">Category row</li></a>
+                                    </ul>
+                                <?php } ?>
                             </ul>
                             <li class="dropdownItem"><img src="/assets/img/right-arrow.png"/>Menus</li>
                             <ul class="dropdown display-none">
-                                <li><a href="/admin/menus/create">Add new</a></li>
-                                <li><a href="/admin/menus">Table overview</a></li>
+                                <a href="/admin/menus/create"><li>Add new</li></a>
+                                <a href="/admin/menus"><li>Table overview</li></a>
+                                <?php if(!empty($titleOfLastCreatedMenu) && $titleOfLastCreatedMenu !== null) { ?>
+                                    <li class="dropdownItem nestedDropdownItem"><img src="/assets/img/right-arrow.png"/>Last created</li>
+                                    <ul class="dropdown display-none">
+                                        <a href="/admin/menus/<?php echo $titleOfLastCreatedMenu['id']; ?>/read"><li class="nestedItem">Read</li></a>
+                                        <a href="/admin/menus/<?php echo $titleOfLastCreatedMenu['id']; ?>/edit"><li class="nestedItem">Edit</li></a>
+                                    </ul>
+                                <?php } ?>
                             </ul>
                             <li class="dropdownItem"><img src="/assets/img/right-arrow.png"/>Css</li>
                             <ul class="dropdown display-none">
                                 <li><a href="/admin/css/create">Add new</a></li>
                                 <li><a href="/admin/css">Table overview</a></li>
+                                <?php if(!empty($idOfLastCreatedCss) && $idOfLastCreatedCss !== null) { ?>
+                                    <li class="dropdownItem nestedDropdownItem"><img src="/assets/img/right-arrow.png"/>Last created</li>
+                                    <ul class="dropdown display-none">
+                                        <a href="/admin/css/<?php echo $idOfLastCreatedCss['id']; ?>/read"><li class="nestedItem">Read</li></a>
+                                        <a href="/admin/css/<?php echo $idOfLastCreatedCss['id']; ?>/edit"><li class="nestedItem">Edit</li></a>
+                                    </ul>
+                                <?php } ?>
                             </ul>
                             <li class="dropdownItem"><img src="/assets/img/right-arrow.png"/>Js</li>
                             <ul class="dropdown display-none">
                                 <li><a href="/admin/js/create">Add new</a></li>
                                 <li><a href="/admin/js">Table overview</a></li>
+                                <?php if(!empty($idOfLastCreatedJs) && $idOfLastCreatedJs !== null) { ?>
+                                    <li class="dropdownItem nestedDropdownItem"><img src="/assets/img/right-arrow.png"/>Last created</li>
+                                    <ul class="dropdown display-none">
+                                        <a href="/admin/js/<?php echo $idOfLastCreatedJs['id']; ?>/read"><li class="nestedItem">Read</li></a>
+                                        <a href="/admin/js/<?php echo $idOfLastCreatedJs['id']; ?>/edit"><li class="nestedItem">Edit</li></a>
+                                    </ul>
+                                <?php } ?>
                             </ul>
                             <li class="dropdownItem"><img src="/assets/img/right-arrow.png"/>Media</a></li>
                             <ul class="dropdown display-none">
@@ -105,42 +133,49 @@
                                 <div class="cardContainer">
                                     <span class="header">Pages <span class="small">(total)</span></span>
                                     <span class="amount"><?php echo count($pages); ?></span>
-                                    <span class="label2">Deleted: <?php echo count($removedPages); ?></span>
-                                    <progress class="bar2" value="<?php echo count($removedPages); ?>" max="<?php echo count($pages); ?>"></progress>
-                                    <span class="label">Content: <?php echo count($contentAppliedPages); ?></span>
-                                    <progress class="bar" value="<?php echo count($contentAppliedPages); ?>" max="<?php echo count($pages); ?>"></progress>
+                                    <span class="label2">Content: <?php echo count($contentAppliedPages); ?></span>
+                                    <progress class="bar2 darkBlue" value="<?php echo count($contentAppliedPages); ?>" max="<?php echo count($pages); ?>"></progress>
+                                    <span class="label">Trashcan: <?php echo count($removedPages); ?></span>
+                                    <progress class="bar red" value="<?php echo count($removedPages); ?>" max="<?php echo count($pages); ?>"></progress>
+
                                 </div>
                             </div>
                             <div class="col2-4">
                                 <div class="cardContainer">
                                     <span class="header">Menus <span class="small">(total)</span></span>
                                     <span class="amount"><?php echo count($menus); ?></span>
+                                    <span class="label4">Ordering: <?php echo count($orderingAppliedMenus); ?></span>
+                                    <progress class="bar4 darkBlue" value="<?php echo count($orderingAppliedMenus); ?>" max="<?php echo count($menus); ?>"></progress>
                                     <span class="label3">Position: <?php echo count($positionAppliedMenus); ?></span>
-                                    <progress class="bar3" value="<?php echo count($positionAppliedMenus); ?>" max="<?php echo count($menus); ?>"></progress>
-                                    <span class="label2">Ordering: <?php echo count($orderingAppliedMenus); ?></span>
-                                    <progress class="bar2" value="<?php echo count($orderingAppliedMenus); ?>" max="<?php echo count($menus); ?>"></progress>
-                                    <span class="label">Content: <?php echo count($contentAppliedMenus); ?></span>
-                                    <progress class="bar" value="<?php echo count($contentAppliedMenus); ?>" max="<?php echo count($menus); ?>"></progress>
+                                    <progress class="bar3 darkBlue" value="<?php echo count($positionAppliedMenus); ?>" max="<?php echo count($menus); ?>"></progress>
+                                    <span class="label2">Content: <?php echo count($contentAppliedMenus); ?></span>
+                                    <progress class="bar2 darkBlue" value="<?php echo count($contentAppliedMenus); ?>" max="<?php echo count($menus); ?>"></progress>
+                                    <span class="label">Trashcan: <?php echo count($removedMenus); ?></span>
+                                    <progress class="bar red" value="<?php echo count($removedMenus); ?>" max="<?php echo count($menus); ?>"></progress>
                                 </div>
                             </div>
                             <div class="col2-4">
                                 <div class="cardContainer">
                                     <span class="header">Css <span class="small">(total)</span></span>
                                     <span class="amount"><?php echo count($css); ?></span>
-                                    <span class="label2">Linked: <?php echo $numberOfLinkedCss; ?></span>
-                                    <progress class="bar2" value="<?php echo $numberOfLinkedCss; ?>" max="<?php echo count($css); ?>"></progress>
-                                    <span class="label">Content: <?php echo count($contentAppliedCss); ?></span>
-                                    <progress class="bar" value="<?php echo count($contentAppliedCss); ?>" max="<?php echo count($css); ?>"></progress>
+                                    <span class="label3">Linked: <?php echo $numberOfLinkedCss; ?></span>
+                                    <progress class="bar3 darkBlue" value="<?php echo $numberOfLinkedCss; ?>" max="<?php echo count($css); ?>"></progress>
+                                    <span class="label2">Content: <?php echo count($contentAppliedCss); ?></span>
+                                    <progress class="bar2 darkBlue" value="<?php echo count($contentAppliedCss); ?>" max="<?php echo count($css); ?>"></progress>
+                                    <span class="label">Trashcan: <?php echo count($removedCss); ?></span>
+                                    <progress class="bar red" value="<?php echo count($removedCss); ?>" max="<?php echo count($css); ?>"></progress>
                                 </div>
                             </div>
                             <div class="col2-4">
                                 <div class="cardContainer">
                                     <span class="header">Js <span class="small">(total)</span></span>
                                     <span class="amount"><?php echo count($js); ?></span>
-                                    <span class="label2">Included: <?php echo $numberOfIncludedJs; ?></span>
-                                    <progress class="bar2" value="<?php echo $numberOfIncludedJs; ?>" max="<?php echo count($menus); ?>"></progress>
-                                    <span class="label">Content: <?php echo count($contentAppliedJs); ?></span>
-                                    <progress class="bar" value="<?php echo count($contentAppliedJs); ?>" max="<?php echo count($js); ?>"></progress>
+                                    <span class="label3">Included: <?php echo $numberOfIncludedJs; ?></span>
+                                    <progress class="bar3 darkBlue" value="<?php echo $numberOfIncludedJs; ?>" max="<?php echo count($menus); ?>"></progress>
+                                    <span class="label2">Content: <?php echo count($contentAppliedJs); ?></span>
+                                    <progress class="bar2 darkBlue" value="<?php echo count($contentAppliedJs); ?>" max="<?php echo count($js); ?>"></progress>
+                                    <span class="label">Trashcan: <?php echo count($removedJs); ?></span>
+                                    <progress class="bar red" value="<?php echo count($removedJs); ?>" max="<?php echo count($js); ?>"></progress>
                                 </div>
                             </div>
                         </div>
@@ -153,17 +188,17 @@
                                 <span class="header">Seo <span class="small">(applied on pages)</span></span>
                                 <div class="grouped first">
                                     <span class="label seo">Meta Title</span>
-                                    <progress class="bar" value="<?php echo $numberOfAppliedMetaTitle; ?>" max="<?php echo $numberOfPages; ?>"></progress>
+                                    <progress class="bar lightBlue" value="<?php echo $numberOfAppliedMetaTitle; ?>" max="<?php echo $numberOfPages; ?>"></progress>
                                     <span class="value"><?php echo $numberOfAppliedMetaTitle; ?></span>
                                 </div>
                                 <div class="grouped">
                                     <span class="label seo">Meta Description</span>
-                                    <progress class="bar" value="<?php echo $numberOfAppliedMetaDescription; ?>" max="<?php echo $numberOfPages; ?>"></progress>
+                                    <progress class="bar lightBlue" value="<?php echo $numberOfAppliedMetaDescription; ?>" max="<?php echo $numberOfPages; ?>"></progress>
                                     <span class="value"><?php echo $numberOfAppliedMetaDescription; ?></span>
                                 </div>
                                 <div class="grouped">
                                     <span class="label seo">Meta Keywords</span>
-                                    <progress class="bar" value="<?php echo $numberOfAppliedMetaKeywords; ?>" max="<?php echo $numberOfPages; ?>"></progress>
+                                    <progress class="bar lightBlue" value="<?php echo $numberOfAppliedMetaKeywords; ?>" max="<?php echo $numberOfPages; ?>"></progress>
                                     <span class="value"><?php echo $numberOfAppliedMetaKeywords; ?></span>
                                 </div>
                             </div>
@@ -176,43 +211,38 @@
                                 <span class="amount"><?php echo count($media); ?></span>
                                 <div class="grouped media">
                                     <span class="label">.jpeg</span>
-                                    <progress class="bar" value="<?php echo $numberOfMediaFiletypeJpg; ?>" max="<?php echo count($media); ?>"></progress>
+                                    <progress class="bar blue" value="<?php echo $numberOfMediaFiletypeJpg; ?>" max="<?php echo count($media); ?>"></progress>
                                     <span class="value"><?php echo $numberOfMediaFiletypeJpg; ?></span>
                                 </div>
                                 <div class="grouped media">
                                     <span class="label">.png</span>
-                                    <progress class="bar" value="<?php echo $numberOfMediaFiletypePng; ?>" max="<?php echo count($media); ?>"></progress>
+                                    <progress class="bar blue" value="<?php echo $numberOfMediaFiletypePng; ?>" max="<?php echo count($media); ?>"></progress>
                                     <span class="value"><?php echo $numberOfMediaFiletypePng; ?></span>
                                 </div>
                                 <div class="grouped media">
                                     <span class="label">.webp</span>
-                                    <progress class="bar" value="<?php echo $numberOfMediaFiletypeWebp; ?>" max="<?php echo count($media); ?>"></progress>
+                                    <progress class="bar blue" value="<?php echo $numberOfMediaFiletypeWebp; ?>" max="<?php echo count($media); ?>"></progress>
                                     <span class="value"><?php echo $numberOfMediaFiletypeWebp; ?></span>
                                 </div>
                                 <div class="grouped media">
                                     <span class="label">.gif</span>
-                                    <progress class="bar" value="<?php echo $numberOfMediaFiletypeGif; ?>" max="<?php echo count($media); ?>"></progress>
+                                    <progress class="bar blue" value="<?php echo $numberOfMediaFiletypeGif; ?>" max="<?php echo count($media); ?>"></progress>
                                     <span class="value"><?php echo $numberOfMediaFiletypeGif; ?></span>
                                 </div>
                                 <div class="grouped media">
                                     <span class="label">.svg</span>
-                                    <progress class="bar" value="<?php echo $numberOfMediaFiletypeSvg; ?>" max="<?php echo count($media); ?>"></progress>
+                                    <progress class="bar blue" value="<?php echo $numberOfMediaFiletypeSvg; ?>" max="<?php echo count($media); ?>"></progress>
                                     <span class="value"><?php echo $numberOfMediaFiletypeSvg; ?></span>
                                 </div>
                                 <div class="grouped media">
                                     <span class="label">.mp4</span>
-                                    <progress class="bar" value="<?php echo $numberOfMediaFiletypeMp4; ?>" max="<?php echo count($media); ?>"></progress>
+                                    <progress class="bar blue" value="<?php echo $numberOfMediaFiletypeMp4; ?>" max="<?php echo count($media); ?>"></progress>
                                     <span class="value"><?php echo $numberOfMediaFiletypeMp4; ?></span>
                                 </div>
                                 <div class="grouped media">
                                     <span class="label">.pdf</span>
-                                    <progress class="bar" value="<?php echo $numberOfMediaFiletypePdf; ?>" max="<?php echo count($media); ?>"></progress>
+                                    <progress class="bar blue" value="<?php echo $numberOfMediaFiletypePdf; ?>" max="<?php echo count($media); ?>"></progress>
                                     <span class="value"><?php echo $numberOfMediaFiletypePdf; ?></span>
-                                </div>
-                                <div class="mediaTextContainer"> 
-                                    <span class="mediaText">Free space server: <?php echo $numberOfServerFreeSpace . 'G'; ?></span>
-                                    <span class="mediaText">Max upload size: <?php echo ini_get('upload_max_filesize'); ?></span>
-                                    <span class="mediaText">Total uploaded: <?php echo $numberOfMediaTotalUploadedSize . "M"; ?></span>
                                 </div>
                             </div>
                         </div>  

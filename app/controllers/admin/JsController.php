@@ -94,6 +94,7 @@ class JsController extends Controller {
                     'file_name' => $request['filename'],
                     'extension' => '.js',
                     'has_content' => $hasContent,
+                    'removed'   => 0,
                     'date_created_at'   => date('d/m/Y'),
                     'time_created_at'   => date('H:i'),
                     'date_updated_at'   => date('d/m/Y'),
