@@ -496,7 +496,9 @@ class PostController extends Controller {
 
                 Post::update(['id' => $id], [
 
-                    'slug' => "/" . $slug
+                    'slug' => "/" . $slug,
+                    'date_updated_at' => date("d/m/Y"),
+                    'time_updated_at' => date("H:i")
                 ]);
 
             } else {
@@ -559,7 +561,9 @@ class PostController extends Controller {
 
                     'metaTitle' => $request['metaTitle'],
                     'metaDescription' => $request['metaDescription'],
-                    'metaKeywords' => $request['metaKeywords']
+                    'metaKeywords' => $request['metaKeywords'],
+                    'date_updated_at' => date("d/m/Y"),
+                    'time_updated_at' => date("H:i")
                 ]);
 
             } else {

@@ -160,7 +160,10 @@ class MenuController extends Controller {
             $id = $request['id'];
 
             Menu::update(['id' => $id], [
-                'position' => $request['position']
+
+                'position' => $request['position'],
+                'date_updated_at'   =>     date("d/m/Y"),
+                'time_updated_at'   =>     date("H:i")  
             ]); 
 
             redirect("/admin/menus/$id/edit");
@@ -176,7 +179,10 @@ class MenuController extends Controller {
             $id = $request['id'];
 
             Menu::update(['id' => $id], [
-                'ordering'  => $request['ordering']
+
+                'ordering'  => $request['ordering'],
+                'date_updated_at'   =>     date("d/m/Y"),
+                'time_updated_at'   =>     date("H:i")  
             ]);
             
             redirect("/admin/menus/$id/edit");
@@ -191,7 +197,9 @@ class MenuController extends Controller {
 
         Menu::update(['id' => $request['id']], [
 
-            'removed'  => 0
+            'removed'  => 0,
+            'date_updated_at'   =>     date("d/m/Y"),
+            'time_updated_at'   =>     date("H:i")  
         ]);
 
         redirect("/admin/menus");

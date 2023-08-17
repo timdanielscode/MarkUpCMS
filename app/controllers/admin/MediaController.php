@@ -284,7 +284,9 @@ class MediaController extends Controller {
 
             Media::update(['id' => $request['id']], [
 
-                'media_description' => $request['description']
+                'media_description' => $request['description'],
+                'date_updated_at'   => date("d/m/Y"),
+                'time_updated_at'   => date("H:i")  
             ]);
 
             echo json_encode($data);
@@ -309,7 +311,9 @@ class MediaController extends Controller {
         
             Media::update(['id' => $request['id']], [
                             
-                'media_filename'    => $request['filename']
+                'media_filename'    => $request['filename'],
+                'date_updated_at'   =>     date("d/m/Y"),
+                'time_updated_at'   =>     date("H:i")  
             ]);
                     
             echo json_encode($request);
@@ -339,7 +343,9 @@ class MediaController extends Controller {
 
             Media::update(['id' => $request['id']], [
                     
-                'media_description'    => $request['description']
+                'media_description'    => $request['description'],
+                'date_updated_at'   =>     date("d/m/Y"),
+                'time_updated_at'   =>     date("H:i")  
             ]);
             
             echo json_encode($request);
