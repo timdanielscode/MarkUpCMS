@@ -19,6 +19,7 @@ class DashboardController extends Controller {
 
         $data['contentAppliedPages'] = DB::try()->select('id')->from('pages')->where('has_content', '=', 1)->fetch();
         $data['titleOfLastCreatedPage'] = DB::try()->select('id, title')->from('pages')->order('date_created_at')->first();
+        $data['removedPages'] = DB::try()->select('id')->from('pages')->where('removed', '=', 1)->fetch();
 
         $data['contentAppliedMenus'] = DB::try()->select('id')->from('menus')->where('has_content', '=', 1)->fetch();
         $data['contentAppliedCss'] = DB::try()->select('id')->from('css')->where('has_content', '=', 1)->fetch();
@@ -26,7 +27,6 @@ class DashboardController extends Controller {
 
         $data['positionAppliedMenus'] = DB::try()->select('id')->from('menus')->where('position', '!=', 'unset')->fetch();
         $data['orderingAppliedMenus'] = DB::try()->select('id')->from('menus')->where('ordering', 'IS NOT', NULL)->fetch();
-
 
         $data['percentageOfNormalUsers'] = $this->getPercentageOfNormalRoles();
         $data['percentageOfAdminUsers'] = $this->getPercentageOfAdminRoles();

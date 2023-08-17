@@ -21,9 +21,6 @@
 #navbar .navbarItems {
     left: calc(50% - 8.33%) !important;
 }
-#navbar #logo {
-    margin-left: 50px !important;
-}
 .mainButtonContainer {
     width: 100%;
     display: flex;

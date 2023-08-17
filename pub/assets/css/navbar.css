@@ -33,10 +33,10 @@
     padding-left: 20px;
     text-decoration: none;
     font-weight: 300;
-    color: #0e6da6;
+    color: #626262;
 }
 #navbar .navbarItems li a:hover {
-    color: #3bacf0;
+    color: #3d6eb5;
 }
 #navbar .navbarItems li a span {
 	padding-left: 20px;

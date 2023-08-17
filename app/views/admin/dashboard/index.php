@@ -17,25 +17,21 @@
     $this->title("IndependentCMS");
     $this->include("headerClose");
 ?>
+    <nav id="navbar">
+        <a href="/admin/dashboard"><img id="logo" src="/assets/img/logo.png"></a>
 
-<div class="main-container">
-<nav id="IndependentCMSMainNavbar" class="navbarSmall">
-    <ul>
-        <li><a href="/admin/posts">Logo</a></li>
-    </ul>
-            <div class="profileContainer">
-            <span id="profileIcon" class="profileIcon">t</span>
-            
+        <?php if(Session::exists('username') === true) { ?>
+        <div class="profileContainer">
+            <span id="profileIcon" class="profileIcon"><?php echo substr(Session::get('username'), 0, 1); ?></span>
             <ul id="profileDropdown">
             <span class="triangle"></span>
-                <span class="profileIcon">t</span>
-                <li class="text-center username">testuser</li>
-                <li><a href="/admin/profile/testuser">Profile</a></li>
-                <li><a href="/admin/dashboard">Dashboard</a></li>
-                <li><a href="#">Settings</a></li>
-                <li class="/logout"><a href="/logout">Logout</a></li>
+                <span class="profileIcon"><?php echo substr(Session::get('username'), 0, 1); ?></span>
+                <li class="text-center username"><?php echo Session::get('username'); ?> <span>(<?php echo Session::get('user_role'); ?></span>)</li>
+                <li><a href="/admin/profile/<?php echo Session::get('username'); ?>">Profile</a></li>
+                <li class="/logout"><a href="/logout">Sign out</a></li>
             </ul>
         </div>
+    <?php } ?>
     </nav>
     <div class="row">
         <div class=" col2 col3-L">
@@ -43,38 +39,42 @@
                 <div class="sidebarContainer">
                     <nav id="navigationMenu">
                         <ul id="dropdownItems">
-                            <li class="dropdownItem">Pages</li>
+                            <li class="dropdownItem"><img src="/assets/img/right-arrow.png"/>Pages</li>
                             <ul class="dropdown display-none">
-                                <li><a href="/admin/posts/create">Add new</a></li>
-                                <li><a href="/admin/posts">Table overview</a></li>
+                            <a href="/admin/posts/create"><li>Add new</li></a>
+                            <a href="/admin/posts"><li>Table overview</li></a>
+                                <li class="dropdownItem">Last created</li>
+                                <ul class="dropdown display-none">
+                                    <a href="/admin/posts/<?php echo $titleOfLastCreatedPage['id']; ?>/read"><li>(read)</li></a>
+                                    <a href="/admin/posts/<?php echo $titleOfLastCreatedPage['id']; ?>/edit"><li>(edit)</li></a>
+                                </ul>
                             </ul>
-                            <li class="dropdownItem">Categories</li>
+                            <li class="dropdownItem"><img src="/assets/img/right-arrow.png"/>Categories</li>
                             <ul class="dropdown display-none">
                                 <li><a href="/admin/categories/create">Add new</a></li>
                                 <li><a href="/admin/categories">Table overview</a></li>
                             </ul>
-                            <li class="dropdownItem">Menus</li>
+                            <li class="dropdownItem"><img src="/assets/img/right-arrow.png"/>Menus</li>
                             <ul class="dropdown display-none">
                                 <li><a href="/admin/menus/create">Add new</a></li>
                                 <li><a href="/admin/menus">Table overview</a></li>
                             </ul>
-                            <li class="dropdownItem">Css</li>
+                            <li class="dropdownItem"><img src="/assets/img/right-arrow.png"/>Css</li>
                             <ul class="dropdown display-none">
                                 <li><a href="/admin/css/create">Add new</a></li>
                                 <li><a href="/admin/css">Table overview</a></li>
                             </ul>
-                            <li class="dropdownItem">Js</li>
+                            <li class="dropdownItem"><img src="/assets/img/right-arrow.png"/>Js</li>
                             <ul class="dropdown display-none">
                                 <li><a href="/admin/js/create">Add new</a></li>
                                 <li><a href="/admin/js">Table overview</a></li>
                             </ul>
-                            <li class="dropdownItem">Media</a></li>
+                            <li class="dropdownItem"><img src="/assets/img/right-arrow.png"/>Media</a></li>
                             <ul class="dropdown display-none">
                                 <li><a href="/admin/media/create">Upload new files</a></li>
                                 <li><a href="/admin/media">Table overview</a></li>
                             </ul>
-                            <span class="sidebarSeparation"></span>
-                            <li class="dropdownItem">Users</a></li>
+                            <li class="dropdownItem"><img src="/assets/img/right-arrow.png"/>Users</a></li>
                             <ul class="dropdown display-none">
                                 <li><a href="/admin/users/create">Add new</a></li>
                                 <li><a href="/admin/users">Table overview</a></li>
@@ -105,8 +105,8 @@
                                 <div class="cardContainer">
                                     <span class="header">Pages <span class="small">(total)</span></span>
                                     <span class="amount"><?php echo count($pages); ?></span>
-                                    <span class="newestText">Last created: </span>
-                                    <a href="/admin/posts/<?php echo $titleOfLastCreatedPage['id']; ?>/read"><span class="lastCreatedPage"><?php echo $titleOfLastCreatedPage['title']; ?></span></a>
+                                    <span class="label2">Deleted: <?php echo count($removedPages); ?></span>
+                                    <progress class="bar2" value="<?php echo count($removedPages); ?>" max="<?php echo count($pages); ?>"></progress>
                                     <span class="label">Content: <?php echo count($contentAppliedPages); ?></span>
                                     <progress class="bar" value="<?php echo count($contentAppliedPages); ?>" max="<?php echo count($pages); ?>"></progress>
                                 </div>
@@ -221,7 +221,6 @@
             </div>
         </div>
     </div>
-</div>
 
 <?php 
     $this->include('footer');
