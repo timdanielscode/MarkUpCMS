@@ -15,7 +15,7 @@
     <div class="headerContainer">
         <h1>js</h1><span class="badge js"><?php echo $count; ?></span>
     </div>
-    <a href="/admin/js/create" class="create">Create</a> <span class="deleteSeparator">|</span> <form action="/admin/js/delete" method="POST" class="indexDeleteForm"><input type="submit" class="delete" value="Delete"/><input type="hidden" name="deleteIds" id="deleteIds" value=""/></form>
+    <a href="/admin/js/create" class="create">Create</a> <span class="deleteSeparator">|</span> <form action="/admin/js/delete" method="POST" class="indexDeleteForm"><input type="submit" class="delete" value="Delete"/><input type="hidden" name="deleteIds" id="deleteIds" value=""/></form> | <form action="" method="GET" class="thrashcanForm"><input type="submit" name="search" value="Thrashcan"/></form>
     <form action="" method="GET">
         <input type="text" name="search" placeholder="Search" id="search">
         <input type="hidden" name="submit" value="search">

@@ -20,7 +20,7 @@ class Post extends Model {
 
         if(!empty($searchValue) && $searchValue !== null) {
 
-            if($searchValue == 'removed') {
+            if($searchValue == 'Thrashcan') {
                 
                 return DB::try()->select('pages.id, pages.title, pages.slug, pages.author, pages.metaTitle, pages.metaDescription, pages.removed, pages.created_at, pages.updated_at, categories.title')->from('pages')->joinLeft('category_page')->on('category_page.page_id', '=', 'pages.id')->joinLeft('categories')->on('categories.id', '=', 'category_page.category_id')->where('pages.removed', '=', 1)->order('updated_at')->desc()->fetch();
             }

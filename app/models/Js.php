@@ -25,7 +25,7 @@ class Js extends Model {
 
         if(!empty($searchValue) && $searchValue !== null) {
 
-            if($searchValue == 'removed') {
+            if($searchValue == 'Thrashcan') {
 
                 return DB::try()->all('js')->where('removed', '=', 1)->order('updated_at')->desc()->fetch();
             }

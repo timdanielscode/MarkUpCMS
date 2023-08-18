@@ -25,7 +25,7 @@ class Css extends Model {
 
         if(!empty($searchValue) && $searchValue !== null) {
 
-            if($searchValue == 'removed') {
+            if($searchValue == 'Thrashcan') {
 
                 return DB::try()->all('css')->where('removed', '=', 1)->fetch();
             }

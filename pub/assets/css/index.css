@@ -139,3 +139,18 @@ table thead {
     color: red !important;
     cursor: pointer;
 }
+.thrashcanForm {
+    display: inline-block;
+}
+.thrashcanForm input[type="submit"] {
+    border: none;
+    color: #585858;
+    font-size: 14px;
+    padding: 0;
+    text-decoration: underline;
+}
+.thrashcanForm input[type="submit"]:hover {
+    cursor: pointer;
+    background: none;
+    color: #333;
+}

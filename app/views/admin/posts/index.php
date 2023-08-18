@@ -31,7 +31,7 @@
         <h1>Pages</h1><span class="badge pages"><?php echo $count; ?></span>
     </div>
 
-    <a href="/admin/posts/create" class="create">Create</a> <span class="deleteSeparator">|</span> <form action="/admin/posts/delete" method="POST" class="indexDeleteForm"><input type="submit" class="delete" value="Delete"/><input type="hidden" name="deleteIds" id="deleteIds" value=""/></form>
+    <a href="/admin/posts/create" class="create">Create</a> <span class="deleteSeparator">|</span> <form action="/admin/posts/delete" method="POST" class="indexDeleteForm"><input type="submit" class="delete" value="Delete"/><input type="hidden" name="deleteIds" id="deleteIds" value=""/></form> | <form action="" method="GET" class="thrashcanForm"><input type="submit" name="search" value="Thrashcan"/></form>
     <form action="" method="GET">
         <input type="text" name="search" placeholder="Search" id="search">
         <input type="hidden" name="submit" value="search">
@@ -56,22 +56,22 @@
                         <input class="deleteCheckbox" type="checkbox" name="delete" value="<?php echo $post['id']; ?>"/>
                     </td>
                     <?php if($post['removed'] !== 1) { ?>
-                    <td class="width-20">
+                    <td class="width-25">
                         <a href="/admin/posts/<?php echo $post['id']; ?>/edit" class="font-weight-500"><?php echo $post[1]; ?></a> |
                         <a href="/admin/posts/<?php echo $post['id']; ?>/edit" class="font-weight-300">Edit</a> |
                         <a href="/admin/posts/<?php echo $post['id']; ?>/read" class="font-weight-300">Read</a>
                     </td>
-                    <td class="width-25">
+                    <td class="width-20">
                         <a href="<?php echo $_SERVER['HTTP_HOST'] . $post['slug']; ?>"><?php echo $post['slug']; ?></a>
                     </td>
                     <?php } else { ?>
-                    <td class="width-20">
+                    <td class="width-25">
                         <span class="removed font-weight-500"><?php echo $post[1]; ?></span> |
                         <a href="/admin/posts/<?php echo $post['id']; ?>/read" class="font-weight-300">Read</a> |
                         <a href="/admin/posts/<?php echo $post['id']; ?>/recover" class="font-weight-300">Recover</a> |
                         <a href="/admin/posts/<?php echo $post['id']; ?>/delete" class="font-weight-300 color-red">Delete permanently</a> 
                     </td>
-                    <td class="width-30">
+                    <td class="width-20">
                         <span class="removed">TEMPORARILY UNSET</span>
                     </td>
                     <?php } ?>
