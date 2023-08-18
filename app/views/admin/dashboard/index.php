@@ -50,7 +50,15 @@
                                         <a href="/admin/posts/<?php echo $titleOfLastCreatedPage['id']; ?>/edit"><li class="nestedItem">Edit</li></a>
                                     </ul>
                                 <?php } ?>
+                                <?php if(!empty($idOfLastUpdatedPage) && $idOfLastUpdatedPage !== null) { ?>
+                                    <li class="dropdownItem nestedDropdownItem"><img src="/assets/img/right-arrow.png"/>Last updated</li>
+                                    <ul class="dropdown display-none">
+                                        <a href="/admin/posts/<?php echo $idOfLastUpdatedPage['id']; ?>/read"><li class="nestedItem">Read</li></a>
+                                        <a href="/admin/posts/<?php echo $idOfLastUpdatedPage['id']; ?>/edit"><li class="nestedItem">Edit</li></a>
+                                    </ul>
+                                <?php } ?>
                             </ul>
+                            
                             <li class="dropdownItem"><img src="/assets/img/right-arrow.png"/>Categories</li>
                             <ul class="dropdown display-none">
                                 <a href="/admin/categories"><li>Table overview</li></a>
@@ -65,11 +73,18 @@
                             <ul class="dropdown display-none">
                                 <a href="/admin/menus/create"><li>Add new</li></a>
                                 <a href="/admin/menus"><li>Table overview</li></a>
-                                <?php if(!empty($titleOfLastCreatedMenu) && $titleOfLastCreatedMenu !== null) { ?>
+                                <?php if(!empty($idOfLastCreatedMenu) && $idOfLastCreatedMenu !== null) { ?>
                                     <li class="dropdownItem nestedDropdownItem"><img src="/assets/img/right-arrow.png"/>Last created</li>
                                     <ul class="dropdown display-none">
-                                        <a href="/admin/menus/<?php echo $titleOfLastCreatedMenu['id']; ?>/read"><li class="nestedItem">Read</li></a>
-                                        <a href="/admin/menus/<?php echo $titleOfLastCreatedMenu['id']; ?>/edit"><li class="nestedItem">Edit</li></a>
+                                        <a href="/admin/menus/<?php echo $idOfLastCreatedMenu['id']; ?>/read"><li class="nestedItem">Read</li></a>
+                                        <a href="/admin/menus/<?php echo $idOfLastCreatedMenu['id']; ?>/edit"><li class="nestedItem">Edit</li></a>
+                                    </ul>
+                                <?php } ?>
+                                <?php if(!empty($idOfLastUpdatedMenu) && $idOfLastUpdatedMenu !== null) { ?>
+                                    <li class="dropdownItem nestedDropdownItem"><img src="/assets/img/right-arrow.png"/>Last updated</li>
+                                    <ul class="dropdown display-none">
+                                        <a href="/admin/menus/<?php echo $idOfLastUpdatedMenu['id']; ?>/read"><li class="nestedItem">Read</li></a>
+                                        <a href="/admin/menus/<?php echo $idOfLastUpdatedMenu['id']; ?>/edit"><li class="nestedItem">Edit</li></a>
                                     </ul>
                                 <?php } ?>
                             </ul>
@@ -84,6 +99,13 @@
                                         <a href="/admin/css/<?php echo $idOfLastCreatedCss['id']; ?>/edit"><li class="nestedItem">Edit</li></a>
                                     </ul>
                                 <?php } ?>
+                                <?php if(!empty($idOfLastUpdatedCss) && $idOfLastUpdatedCss !== null) { ?>
+                                    <li class="dropdownItem nestedDropdownItem"><img src="/assets/img/right-arrow.png"/>Last updated</li>
+                                    <ul class="dropdown display-none">
+                                        <a href="/admin/css/<?php echo $idOfLastUpdatedCss['id']; ?>/read"><li class="nestedItem">Read</li></a>
+                                        <a href="/admin/css/<?php echo $idOfLastUpdatedCss['id']; ?>/edit"><li class="nestedItem">Edit</li></a>
+                                    </ul>
+                                <?php } ?>
                             </ul>
                             <li class="dropdownItem"><img src="/assets/img/right-arrow.png"/>Js</li>
                             <ul class="dropdown display-none">
@@ -94,6 +116,13 @@
                                     <ul class="dropdown display-none">
                                         <a href="/admin/js/<?php echo $idOfLastCreatedJs['id']; ?>/read"><li class="nestedItem">Read</li></a>
                                         <a href="/admin/js/<?php echo $idOfLastCreatedJs['id']; ?>/edit"><li class="nestedItem">Edit</li></a>
+                                    </ul>
+                                <?php } ?>
+                                <?php if(!empty($idOfLastUpdatedJs) && $idOfLastUpdatedJs !== null) { ?>
+                                    <li class="dropdownItem nestedDropdownItem"><img src="/assets/img/right-arrow.png"/>Last updated</li>
+                                    <ul class="dropdown display-none">
+                                        <a href="/admin/js/<?php echo $idOfLastUpdatedJs['id']; ?>/read"><li class="nestedItem">Read</li></a>
+                                        <a href="/admin/js/<?php echo $idOfLastUpdatedJs['id']; ?>/edit"><li class="nestedItem">Edit</li></a>
                                     </ul>
                                 <?php } ?>
                             </ul>
