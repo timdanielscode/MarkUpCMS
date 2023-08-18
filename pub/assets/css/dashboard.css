@@ -18,6 +18,18 @@
     margin-right: 10px;
     margin-bottom: 2px;
 }
+.dropdown .add {
+    width: 10px;
+    position: absolute;
+    top: 8px;
+    left: 111px;
+}
+.arrowUp {
+    width: 10px;
+    position: absolute;
+    top: 12px;
+    left: 160px;
+}
 #navigationMenu #dropdownItems {
     padding: 0;
     margin: 0;
@@ -51,9 +63,10 @@
     margin-right: 20px;
     border-radius: 5px;
     list-style: none;
+    position: relative;
+    color: #797979;
 }
 #navigationMenu #dropdownItems .dropdown a {
-    color: #333;
     text-decoration: none;
 }
 #navigationMenu #dropdownItems .dropdown li:hover {
@@ -62,6 +75,7 @@
 }
 .nestedDropdownItem {
     padding-left: 33px !important;
+    color: #333 !important;
 }
 .nestedItem {
     padding-left: 60px !important;
@@ -185,10 +199,10 @@ progress.darkBlue::-moz-progress-bar, progress.blue::-webkit-progress-value, pro
     background: #1888E1; 
 }
 progress.blue::-moz-progress-bar, progress.blue::-webkit-progress-value, progress.blue::-webkit-progress-bar {
-    background: #FFC53B; 
+    background: #1888E1; 
 }
 progress.lightBlue::-moz-progress-bar, progress.blue::-webkit-progress-value, progress.blue::-webkit-progress-bar {
-    background: #72B7EE; 
+    background: #1888E1; 
 }
 
 .cardContainer a {
