@@ -24,7 +24,7 @@ class Media extends Model {
     
     public function mediaFilesOnSearch($searchValue) {
 
-        $media = DB::try()->all('media')->where('updated_at', 'LIKE', '%'.$searchValue.'%')->order('updated_at')->desc()->fetch();
+        $media = DB::try()->all('media')->where('updated_at', 'LIKE', '%'.$searchValue.'%')->or('media_filetype', 'LIKE', '%'.$searchValue.'%')->or('media_filename', 'LIKE', '%'.$searchValue.'%')->or('media_description', 'LIKE', '%'.$searchValue.'%')->or('media_filesize', 'LIKE', '%'.$searchValue.'%')->order('updated_at')->desc()->fetch();
         return $media;
     }
 }

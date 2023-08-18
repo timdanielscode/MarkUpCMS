@@ -70,7 +70,13 @@
         <ul>
             <?php 
                 foreach($numberOfPages as $page) {
-                    echo '<li class="page-item"><a href="/admin/js?page='.$page.'">'.$page.'</a></li>';
+
+                    if(!empty(get('search')) ) {
+
+                        echo '<li class="page-item"><a href="/admin/js?search=' . get('search') . '&page='.$page.'">'.$page.'</a></li>';
+                    } else {
+                        echo '<li class="page-item"><a href="/admin/js?page='.$page.'">'.$page.'</a></li>';
+                    }
                 }  
             ?>
         </ul>

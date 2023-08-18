@@ -104,9 +104,13 @@
             <nav class="pagination">
                 <ul>
                     <?php 
-                        foreach($numberOfPages as $page) {
+
+                        if(!empty(get('search')) ) {
+
+                            echo '<li class="page-item"><a href="/admin/menus?search=' . get('search') . '&page='.$page.'">'.$page.'</a></li>';
+                        } else {
                             echo '<li class="page-item"><a href="/admin/menus?page='.$page.'">'.$page.'</a></li>';
-                        }  
+                        }
                     ?>
                 </ul>
             </nav>
