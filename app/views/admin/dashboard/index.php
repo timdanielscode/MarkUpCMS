@@ -19,10 +19,14 @@
 ?>
     <nav id="navbar">
         <a href="/admin/dashboard"><img id="logo" src="/assets/img/logo.png"></a>
-
+        <form target="_blank" action="/admin/posts/" method="GET">
+            <img id="searchIcon" src="/assets/img/search.png"/>
+                <input type="text" name="search" placeholder="Pages" id="search">
+                <input type="hidden" name="submit" value="search">
+            </form>
         <?php if(Session::exists('username') === true) { ?>
         <div class="profileContainer">
-            <span id="profileIcon" class="profileIcon"><?php echo substr(Session::get('username'), 0, 1); ?></span>
+            <span id="profileIcon" class="profileIcon <?php if(Session::get('user_role') === 'admin') { echo 'admin'; } else { echo 'normal';} ?>"><?php echo substr(Session::get('username'), 0, 1); ?></span>
             <ul id="profileDropdown">
             <span class="triangle"></span>
                 <span class="profileIcon"><?php echo substr(Session::get('username'), 0, 1); ?></span>
@@ -39,7 +43,7 @@
                 <div class="sidebarContainer">
                     <nav id="navigationMenu">
                         <ul id="dropdownItems">
-                            <li class="dropdownItem"><img src="/assets/img/right-arrow.png"/>Pages</li>
+                            <li class="dropdownItem"><img src="/assets/img/file.png"/>Pages</li>
                             <ul class="dropdown display-none">
                                 <a href="/admin/posts/create"><li>Add new <img class="add" src="/assets/img/add.png"/></li></a>
                                 <a href="/admin/posts"><li>Table overview</li></a>
@@ -59,7 +63,7 @@
                                     </ul>
                                 <?php } ?>
                             </ul>
-                            <li class="dropdownItem"><img src="/assets/img/right-arrow.png"/>Menus</li>
+                            <li class="dropdownItem"><img src="/assets/img/footer.png"/>Menus</li>
                             <ul class="dropdown display-none">
                                 <a href="/admin/menus/create"><li>Add new <img class="add" src="/assets/img/add.png"/></li></a>
                                 <a href="/admin/menus"><li>Table overview</li></a>
@@ -78,7 +82,7 @@
                                     </ul>
                                 <?php } ?>
                             </ul>
-                            <li class="dropdownItem"><img src="/assets/img/right-arrow.png"/>Css</li>
+                            <li class="dropdownItem"><img src="/assets/img/css.png"/>Css</li>
                             <ul class="dropdown display-none">
                                 <a href="/admin/css/create"><li>Add new <img class="add" src="/assets/img/add.png"/></li></a>
                                 <a href="/admin/css"><li>Table overview</li></a>
@@ -97,7 +101,7 @@
                                     </ul>
                                 <?php } ?>
                             </ul>
-                            <li class="dropdownItem"><img src="/assets/img/right-arrow.png"/>Js</li>
+                            <li class="dropdownItem"><img src="/assets/img/technology.png"/>Js</li>
                             <ul class="dropdown display-none">
                                 <a href="/admin/js/create"><li>Add new <img class="add" src="/assets/img/add.png"/></li></a>
                                 <a href="/admin/js"><li>Table overview</li></a>
@@ -116,12 +120,12 @@
                                     </ul>
                                 <?php } ?>
                             </ul>
-                            <li class="dropdownItem"><img src="/assets/img/right-arrow.png"/>Media</a></li>
+                            <li class="dropdownItem"><img src="/assets/img/image.png"/>Media</a></li>
                             <ul class="dropdown display-none">
                                 <a href="/admin/media/create"><li>Upload new files <img class="arrowUp" src="/assets/img/up-arrow.png"/></li></a>
                                 <a href="/admin/media"><li>Table overview</li></a>
                             </ul>
-                            <li class="dropdownItem"><img src="/assets/img/right-arrow.png"/>Users</a></li>
+                            <li class="dropdownItem"><img src="/assets/img/multiple-users-silhouette.png"/>Users</a></li>
                             <ul class="dropdown display-none">
                                 <a href="/admin/users/create"><li>Add new <img class="add" src="/assets/img/add.png"/></li></a>
                                 <a href="/admin/users"><li>Table overview</li></a>
