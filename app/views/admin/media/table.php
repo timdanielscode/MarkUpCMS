@@ -17,7 +17,7 @@
                         <a href="#<?php echo $media['media_filename']; ?>" class="mediaRead font-weight-300" data-id="<?php echo $media['id']; ?>"><video src="<?php echo "/" . $media['media_folder'] . '/' . $media['media_filename']; ?>" id="imageSmall" class="video"></video></a>
                     <?php } ?>
             </td>
-            <td class="width-25">
+            <td class="width-20">
                 <span class="font-weight-400" id="mediaPath-<?php echo $media['id']; ?>">
                         <?php if($media['media_filetype'] == 'image/png' || $media['media_filetype']  == 'image/webp' || $media['media_filetype']  == 'image/gif' || $media['media_filetype']  == 'image/jpeg' || $media['media_filetype']  == 'image/svg+xml') { ?>
                             <?php echo "/" . $media['media_folder'] . '/' . $media["media_filename"]; ?>
@@ -66,10 +66,10 @@
                     mb
                 </span> 
             </td>
-            <td class="width-10">
-                <span class="padding-b-2">Created:</span> <span class="font-weight-300"><?php echo $media["date_created_at"] . " " . $media["time_created_at"]; ?></span><br>
-                <span>Updated:</span> <span class="font-weight-300"><?php echo $media["date_updated_at"] . " " . $media["time_updated_at"]; ?></span>
-            </td>
+            <td class="width-15">
+                <span class="padding-b-2 bold">Created:</span> <span class="font-weight-300"><?php echo date("d/m/Y", strtotime($media["created_at"]) ); ?> <?php echo date("H:i:s", strtotime($media["created_at"]) ); ?></span><br>
+                <span class="bold">Updated:</span> <span class="font-weight-300"><?php echo date("d/m/Y", strtotime($media["updated_at"]) ); ?> <?php echo date("H:i:s", strtotime($media["updated_at"]) ); ?></span>
+            </td> 
         </tr>
     <?php } ?>
 <?php } else { ?>

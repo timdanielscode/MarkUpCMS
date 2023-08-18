@@ -152,3 +152,54 @@ CREATE TABLE mediaFolders (
     id int(11) AUTO_INCREMENT PRIMARY KEY,
     folder_name varchar(49) NOT NULL
 );
+
+ALTER TABLE pages ADD date_time DATETIME AFTER removed;
+
+ALTER TABLE pages ADD created_at DATETIME AFTER removed;
+ALTER TABLE pages ADD updated_at DATETIME AFTER removed;
+
+ALTER TABLE pages DROP COLUMN date_created_at;
+ALTER TABLE pages DROP COLUMN time_created_at;
+ALTER TABLE pages DROP COLUMN date_updated_at;
+ALTER TABLE pages DROP COLUMN time_updated_at;
+ALTER TABLE pages DROP COLUMN date_time;
+
+ALTER TABLE menus DROP COLUMN date_created_at;
+ALTER TABLE menus DROP COLUMN time_created_at;
+ALTER TABLE menus DROP COLUMN date_updated_at;
+ALTER TABLE menus DROP COLUMN time_updated_at;
+
+ALTER TABLE menus ADD created_at DATETIME AFTER removed;
+ALTER TABLE menus ADD updated_at DATETIME AFTER removed;
+
+ALTER TABLE css DROP COLUMN date_created_at;
+ALTER TABLE css DROP COLUMN time_created_at;
+ALTER TABLE css DROP COLUMN date_updated_at;
+ALTER TABLE css DROP COLUMN time_updated_at;
+
+ALTER TABLE css ADD created_at DATETIME AFTER removed;
+ALTER TABLE css ADD updated_at DATETIME AFTER removed;
+
+ALTER TABLE js DROP COLUMN date_created_at;
+ALTER TABLE js DROP COLUMN time_created_at;
+ALTER TABLE js DROP COLUMN date_updated_at;
+ALTER TABLE js DROP COLUMN time_updated_at;
+
+ALTER TABLE js ADD created_at DATETIME AFTER removed;
+ALTER TABLE js ADD updated_at DATETIME AFTER removed;
+
+ALTER TABLE media DROP COLUMN date_created_at;
+ALTER TABLE media DROP COLUMN time_created_at;
+ALTER TABLE media DROP COLUMN date_updated_at;
+ALTER TABLE media DROP COLUMN time_updated_at;
+
+ALTER TABLE media ADD created_at DATETIME AFTER media_description;
+ALTER TABLE media ADD updated_at DATETIME AFTER media_description;
+
+ALTER TABLE categories DROP COLUMN date_created_at;
+ALTER TABLE categories DROP COLUMN time_created_at;
+ALTER TABLE categories DROP COLUMN date_updated_at;
+ALTER TABLE categories DROP COLUMN time_updated_at;
+
+ALTER TABLE categories ADD created_at DATETIME AFTER category_description;
+ALTER TABLE categories ADD updated_at DATETIME AFTER category_description;

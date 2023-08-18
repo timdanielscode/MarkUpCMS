@@ -142,10 +142,8 @@ class MediaController extends Controller {
                         'media_filetype'    => $types[$key],
                         'media_filesize'    => $sizes[$key],
                         'media_description' => $request['media_description'],
-                        'date_created_at'   => date("d/m/Y"),
-                        'time_created_at'   => date("H:i"),
-                        'date_updated_at'   => date("d/m/Y"),
-                        'time_updated_at'   => date("H:i")
+                        'created_at' => date('Y-m-d H:i:s', $_SERVER['REQUEST_TIME']),
+                        'updated_at' => date('Y-m-d H:i:s', $_SERVER['REQUEST_TIME'])
                     ]);
                 }
                
@@ -271,28 +269,6 @@ class MediaController extends Controller {
         } 
     }
 
-    public function UPDATE($request) { 
-        
-        $this->ifExists($request['id']);
-
-        $data['id'] = $request['id'];
-        $data['description'] = $request['description'];
-
-        $rules = new Rules();
-
-        if($rules->media_update_title_description()->validated() ) {
-
-            Media::update(['id' => $request['id']], [
-
-                'media_description' => $request['description'],
-                'date_updated_at'   => date("d/m/Y"),
-                'time_updated_at'   => date("H:i")  
-            ]);
-
-            echo json_encode($data);
-        }
-    }
-
     public function UPDATEFILENAME($request) {
 
         $this->ifExists($request['id']);
@@ -312,8 +288,7 @@ class MediaController extends Controller {
             Media::update(['id' => $request['id']], [
                             
                 'media_filename'    => $request['filename'],
-                'date_updated_at'   =>     date("d/m/Y"),
-                'time_updated_at'   =>     date("H:i")  
+                'updated_at' => date('Y-m-d H:i:s', $_SERVER['REQUEST_TIME'])
             ]);
                     
             echo json_encode($request);
@@ -343,9 +318,8 @@ class MediaController extends Controller {
 
             Media::update(['id' => $request['id']], [
                     
-                'media_description'    => $request['description'],
-                'date_updated_at'   =>     date("d/m/Y"),
-                'time_updated_at'   =>     date("H:i")  
+                'media_description' => $request['description'],
+                'updated_at' => date('Y-m-d H:i:s', $_SERVER['REQUEST_TIME'])
             ]);
             
             echo json_encode($request);

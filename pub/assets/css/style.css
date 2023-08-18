@@ -36,7 +36,9 @@ h3 {
 .font-weight-500 {
     font-weight: 500;
 }
-
+.bold {
+    font-weight: bold;
+}
 .font-weight-300 {
     font-weight: 300;
 }
@@ -248,6 +250,9 @@ h3 {
 */
 .width-90 {
     width: 90%;
+}
+.width-85 {
+    width: 85%;
 }
 .width-80 {
     width: 80%;

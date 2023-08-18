@@ -21,7 +21,12 @@ class DashboardController extends Controller {
         $data['titleOfLastCreatedPage'] = DB::try()->select('id, title')->from('pages')->where('removed', '!=', '1')->order('id')->desc()->first();
         $data['removedPages'] = DB::try()->select('id')->from('pages')->where('removed', '=', 1)->fetch();
 
-        $data['titleOfLastCreatedCategory'] = DB::try()->select('id, title')->from('categories')->order('id')->desc()->first();
+        //$data['titleOfLastCreatedCategory'] = DB::try()->select('id, title')->from('categories')->order('id')->desc()->first();
+
+        $test = DB::try()->select('id')->from('pages')->order('updated_at')->desc()->first();
+
+        print_r($test);
+        exit();
 
         $data['contentAppliedMenus'] = DB::try()->select('id')->from('menus')->where('has_content', '=', 1)->fetch();
         $data['contentAppliedCss'] = DB::try()->select('id')->from('css')->where('has_content', '=', 1)->fetch();

@@ -11,7 +11,7 @@ $(document).ready(function() {
                 dataType: "json",
                 data: {
                     id: id,
-                    description: description
+                    description: description,
             },
 
                 success: function(data) {

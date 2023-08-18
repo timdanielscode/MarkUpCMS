@@ -34,7 +34,7 @@
                     <th>Position</th>
                     <th>Ordering</th>
                     <th>Author</th>
-                    <th>Date</th>
+                    <th>Date and time</th>
                 </tr>
             </thead>
             <tbody>
@@ -45,13 +45,13 @@
                                 <input class="deleteCheckbox" type="checkbox" name="delete" value="<?php echo $menu['id']; ?>"/>
                             </td>
                             <?php if($menu['removed'] !== 1) { ?>
-                                <td class="width-30">
+                                <td class="width-25">
                                     <a href="/admin/menus/<?php echo $menu['id']; ?>/edit" class="font-weight-500"><?php echo $menu['title']; ?></a> |
                                     <a href="/admin/menus/<?php echo $menu['id']; ?>/edit" class="font-weight-300">Edit</a> |
                                     <a href="/admin/menus/<?php echo $menu['id']; ?>/read" class="font-weight-300">Read</a>
                                 </td>
                             <?php } else { ?>
-                                <td class="width-30">
+                                <td class="width-25">
                                     <span class="removed font-weight-500"><?php echo $menu['title']; ?></span> |
                                     <a href="/admin/menus/<?php echo $menu['id']; ?>/read" class="font-weight-300">Read</a> |
                                     <a href="/admin/menus/<?php echo $menu['id']; ?>/recover" class="font-weight-300">Recover</a> |
@@ -80,10 +80,10 @@
                             <td class="width-20">
                                 <?php echo $menu['author']; ?>
                             </td>
-                            <td class="width-10">
-                                <span class="padding-b-2">Created:</span> <span class="font-weight-300"><?php echo $menu["date_created_at"] . " " . $menu["time_created_at"]; ?></span><br>
-                                <span>Updated:</span> <span class="font-weight-300"><?php echo $menu["date_updated_at"] . " " . $menu["time_updated_at"]; ?></span>
-                            </td>
+                            <td class="width-15">
+                                <span class="padding-b-2 bold">Created:</span> <span class="font-weight-300"><?php echo date("d/m/Y", strtotime($menu["created_at"]) ); ?> <?php echo date("H:i:s", strtotime($menu["created_at"]) ); ?></span><br>
+                                <span class="bold">Updated:</span> <span class="font-weight-300"><?php echo date("d/m/Y", strtotime($menu["updated_at"]) ); ?> <?php echo date("H:i:s", strtotime($menu["updated_at"]) ); ?></span>
+                            </td> 
                         </tr>
                     <?php } ?>
                 <?php } else { ?>

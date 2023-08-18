@@ -45,7 +45,7 @@
             <th></th>
             <th>Type</th>
             <th>Size</th>
-            <th>Date</th>
+            <th>Date and time</th>
         </thead>
         <tbody id="mediaTableBody">
    

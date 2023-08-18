@@ -95,10 +95,8 @@ class JsController extends Controller {
                     'extension' => '.js',
                     'has_content' => $hasContent,
                     'removed'   => 0,
-                    'date_created_at'   => date('d/m/Y'),
-                    'time_created_at'   => date('H:i'),
-                    'date_updated_at'   => date('d/m/Y'),
-                    'time_updated_at'   => date('H:i')
+                    'created_at' => date('Y-m-d H:i:s', $_SERVER['REQUEST_TIME']),
+                    'updated_at' => date('Y-m-d H:i:s', $_SERVER['REQUEST_TIME'])
                 ]);
 
                 Session::set('create', 'You have successfully created a new post!');            
@@ -192,8 +190,7 @@ class JsController extends Controller {
 
                     'file_name'     => $filename,
                     'has_content' => $hasContent,
-                    'date_updated_at'   => date("d/m/Y"),
-                    'time_updated_at'   => date("H:i")
+                    'updated_at' => date('Y-m-d H:i:s', $_SERVER['REQUEST_TIME'])
                 ]);
 	
                 $file = fopen("website/assets/js/" . $filename . $this->_fileExtension, "w");

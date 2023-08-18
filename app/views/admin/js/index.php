@@ -26,7 +26,7 @@
                 <tr>
                     <th></th>
                     <th>Filename</th>
-                    <th>Date</th>
+                    <th>Date and time</th>
                 </tr>
             </thead>
             <tbody>
@@ -37,23 +37,23 @@
                             <input class="deleteCheckbox" type="checkbox" name="delete" value="<?php echo $jsFile['id']; ?>"/>
                             </td>
                             <?php if($jsFile['removed'] !== 1) { ?>
-                            <td class="width-90">
+                            <td class="width-85">
                                 <a href="/admin/js/<?php echo $jsFile['id']; ?>/edit" class="font-weight-500"><?php echo $jsFile['file_name'] . $jsFile['extension']; ?></a> |
                                 <a href="/admin/js/<?php echo $jsFile['id']; ?>/edit" class="font-weight-300">Edit</a> |
                                 <a href="/admin/js/<?php echo $jsFile['id']; ?>/read" class="font-weight-300">Read</a>
                             </td>
                             <?php } else { ?>
-                                <td class="width-90">
+                                <td class="width-85">
                                 <span class="font-weight-500"><?php echo $jsFile['file_name'] . $jsFile['extension']; ?></span> |
                                 <a href="/admin/js/<?php echo $jsFile['id']; ?>/read" class="font-weight-300">Read</a> |
                                 <a href="/admin/js/<?php echo $jsFile['id']; ?>/recover" class="font-weight-300">Recover</a> |
                                 <a href="/admin/js/<?php echo $jsFile['id']; ?>/delete" class="font-weight-300 color-red">Delete permanently</a>
                             </td>
                             <?php } ?>
-                            <td class="width-10">
-                                <span class="padding-b-2">Created:</span> <span class="font-weight-300"><?php echo $jsFile["date_created_at"] . " " . $jsFile["time_created_at"]; ?></span><br>
-                                <span>Updated:</span> <span class="font-weight-300"><?php echo $jsFile["date_updated_at"] . " " . $jsFile["time_updated_at"]; ?></span>
-                            </td>
+                            <td class="width-15">
+                                <span class="padding-b-2 bold">Created:</span> <span class="font-weight-300"><?php echo date("d/m/Y", strtotime($jsFile["created_at"]) ); ?> <?php echo date("H:i:s", strtotime($jsFile["created_at"]) ); ?></span><br>
+                                <span class="bold">Updated:</span> <span class="font-weight-300"><?php echo date("d/m/Y", strtotime($jsFile["updated_at"]) ); ?> <?php echo date("H:i:s", strtotime($jsFile["updated_at"]) ); ?></span>
+                            </td> 
                         </tr>
                     <?php } ?>
                 <?php } else { ?>

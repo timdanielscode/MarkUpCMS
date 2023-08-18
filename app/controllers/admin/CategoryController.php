@@ -69,10 +69,8 @@ class CategoryController extends Controller {
                 'title' => $request['title'],
                 'slug'  => "/" . $request['title'],
                 'category_description'  => $request['description'],
-                'date_created_at'   => date("d/m/Y"),
-                'time_created_at'   => date("H:i"),
-                'date_updated_at'   => date("d/m/Y"),
-                'time_updated_at'   => date("H:i")
+                'created_at' => date('Y-m-d H:i:s', $_SERVER['REQUEST_TIME']),
+                'updated_at' => date('Y-m-d H:i:s', $_SERVER['REQUEST_TIME'])
             ]);
 
             $DATA['title'] = $request['title'];
@@ -149,8 +147,7 @@ class CategoryController extends Controller {
 
                 'title'   => $request['title'],
                 'category_description' => $request['description'],
-                'date_updated_at' => date("d/m/Y"),
-                'time_updated_at' => date("H:i")
+                'updated_at' => date('Y-m-d H:i:s', $_SERVER['REQUEST_TIME'])
             ]);
   
             $DATA['id'] = $request['id'];
@@ -307,9 +304,7 @@ class CategoryController extends Controller {
 
         Post::update(['id' => $pageId], [
 
-            'slug'  => $lastPageSlugValue,
-            'date_updated_at' => date("d/m/Y"),
-            'time_updated_at' => date("H:i")
+            'slug'  => $lastPageSlugValue
         ]);
     }
 
@@ -335,18 +330,14 @@ class CategoryController extends Controller {
     
                 Post::update(['id' => $pageId], [
     
-                    'slug'  =>  $subCategoriesSlug . $currentCategorySlug['slug'] . $currentSlug['slug'],
-                    'date_updated_at' => date("d/m/Y"),
-                    'time_updated_at' => date("H:i")
+                    'slug'  =>  $subCategoriesSlug . $currentCategorySlug['slug'] . $currentSlug['slug']
                 ]);
     
             } else {
     
                 Post::update(['id' => $pageId], [
     
-                    'slug'  =>  $currentCategorySlug['slug'] . $currentSlug['slug'],
-                    'date_updated_at' => date("d/m/Y"),
-                    'time_updated_at' => date("H:i")
+                    'slug'  =>  $currentCategorySlug['slug'] . $currentSlug['slug']
                 ]);
             }
         }
@@ -379,9 +370,7 @@ class CategoryController extends Controller {
                     
                             Post::update(['id' => $postSlug['id']], [
                     
-                                'slug'  => $slugMinusSubCategorySlug,
-                                'date_updated_at' => date("d/m/Y"),
-                                'time_updated_at' => date("H:i")
+                                'slug'  => $slugMinusSubCategorySlug
                             ]);
                         }
                     }
@@ -408,9 +397,7 @@ class CategoryController extends Controller {
         
                                 Post::update(['id' => $postSlug['id']], [
         
-                                    'slug'  => $assingedSubCategorySlug['slug'] . $postSlug['slug'],
-                                    'date_updated_at' => date("d/m/Y"),
-                                    'time_updated_at' => date("H:i")
+                                    'slug'  => $assingedSubCategorySlug['slug'] . $postSlug['slug']
                                 ]);
                             }
                         }
@@ -454,8 +441,7 @@ class CategoryController extends Controller {
                 Category::update(['id' => $request['id']], [
 
                     'slug'  => "/" . $request['slug'],
-                    'date_updated_at' => date("d/m/Y"),
-                    'time_updated_at' => date("H:i")
+                    'updated_at' => date('Y-m-d H:i:s', $_SERVER['REQUEST_TIME'])
                 ]);
 
                 $data['id'] = $request['id'];
@@ -483,9 +469,7 @@ class CategoryController extends Controller {
         
                 Post::update(['id' => $page['id']], [
         
-                    'slug'  => $slug,
-                    'date_updated_at' => date("d/m/Y"),
-                    'time_updated_at' => date("H:i")
+                    'slug'  => $slug
                 ]);
             }
         } 
@@ -508,9 +492,7 @@ class CategoryController extends Controller {
 
                 Post::update(['id' => $page['id']], [
         
-                    'slug'  => $slug,
-                    'date_updated_at' => date("d/m/Y"),
-                    'time_updated_at' => date("H:i")
+                    'slug'  => $slug
                 ]);
             }
         } 
@@ -539,9 +521,7 @@ class CategoryController extends Controller {
     
                     Post::update(['id' => $page['id']], [
                 
-                        'slug'  => $lastPageSlugValue,
-                        'date_updated_at' => date("d/m/Y"),
-                        'time_updated_at' => date("H:i")
+                        'slug'  => $lastPageSlugValue
                     ]);
                 } 
             }
@@ -557,9 +537,7 @@ class CategoryController extends Controller {
                 
                     Post::update(['id' => $page['id']], [
                 
-                        'slug'  => $slugMinusSubCategorySlug,
-                        'date_updated_at' => date("d/m/Y"),
-                        'time_updated_at' => date("H:i")
+                        'slug'  => $slugMinusSubCategorySlug
                     ]);
                 } 
             }

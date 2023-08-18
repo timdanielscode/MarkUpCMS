@@ -18,13 +18,13 @@ class Category extends Model {
 
     public function allCategoriesButOrdered() {
 
-        $categories = DB::try()->all('categories')->order('date_created_at')->fetch();
+        $categories = DB::try()->all('categories')->order('updated_at')->desc()->fetch();
         return $categories;
     }
 
     public function categoriesFilesOnSearch($searchValue) {
 
-        $categories = DB::try()->all('categories')->where('title', 'LIKE', '%'.$searchValue.'%')->or('date_created_at', 'LIKE', '%'.$searchValue.'%')->or('time_created_at', 'LIKE', '%'.$searchValue.'%')->or('date_updated_at', 'LIKE', '%'.$searchValue.'%')->or('time_updated_at', 'LIKE', '%'.$searchValue.'%')->fetch();
+        $categories = DB::try()->all('categories')->where('title', 'LIKE', '%'.$searchValue.'%')->or('created_at', 'LIKE', '%'.$searchValue.'%')->or('updated_at', 'LIKE', '%'.$searchValue.'%')->order('updated_at')->desc()->fetch();
         return $categories;
     }
 

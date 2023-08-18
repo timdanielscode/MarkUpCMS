@@ -37,7 +37,7 @@
                 <th>Title</th>
                 <th>Slug</th>
                 <th></th>
-                <th>Date</th>
+                <th>Date and time</th>
             </tr>
         </thead>
         <tbody id="categoryTableBody">

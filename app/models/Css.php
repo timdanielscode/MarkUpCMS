@@ -18,7 +18,7 @@ class Css extends Model {
 
     public function allCssButOrderedOnDate() {
 
-        return DB::try()->all('css')->where('removed', 'IS', NULL)->or('removed', '=', '0')->order('date_created_at')->fetch();
+        return DB::try()->all('css')->where('removed', 'IS', NULL)->or('removed', '=', '0')->order('updated_at')->desc()->fetch();
     }
 
     public function cssFilesOnSearch($searchValue) {
@@ -30,7 +30,7 @@ class Css extends Model {
                 return DB::try()->all('css')->where('removed', '=', 1)->fetch();
             }
 
-            return DB::try()->all('css')->where('file_name', 'LIKE', '%'.$searchValue.'%')->or('date_created_at', 'LIKE', '%'.$searchValue.'%')->or('time_created_at', 'LIKE', '%'.$searchValue.'%')->or('date_updated_at', 'LIKE', '%'.$searchValue.'%')->or('time_updated_at', 'LIKE', '%'.$searchValue.'%')->fetch();
+            return DB::try()->all('css')->where('file_name', 'LIKE', '%'.$searchValue.'%')->or('updated_at', 'LIKE', '%'.$searchValue.'%')->order('updated_at')->desc()->fetch();
         }
     }
 }

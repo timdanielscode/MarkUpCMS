@@ -78,10 +78,8 @@ class PostController extends Controller {
                     'has_content' => $hasContent,
                     'author' => Session::get('username'),
                     'removed' => 0,
-                    'date_created_at' => date("d/m/Y"),
-                    'time_created_at' => date("H:i"),
-                    'date_updated_at' => date("d/m/Y"),
-                    'time_updated_at' => date("H:i")
+                    'created_at' => date('Y-m-d H:i:s', $_SERVER['REQUEST_TIME']),
+                    'updated_at' => date('Y-m-d H:i:s', $_SERVER['REQUEST_TIME'])
                 ]);
     
                 Session::set('create', 'You have successfully created a new post!');            
@@ -221,8 +219,7 @@ class PostController extends Controller {
                         'title' => $request["title"],
                         'body' => $request["body"],
                         'has_content' => $hasContent,
-                        'date_updated_at' => date("d/m/Y"),
-                        'time_updated_at' => date("H:i")
+                        'updated_at' => date('Y-m-d H:i:s', $_SERVER['REQUEST_TIME'])
                     ]);
 
                     Session::set('updated', 'User updated successfully!');
@@ -497,8 +494,7 @@ class PostController extends Controller {
                 Post::update(['id' => $id], [
 
                     'slug' => "/" . $slug,
-                    'date_updated_at' => date("d/m/Y"),
-                    'time_updated_at' => date("H:i")
+                    'updated_at' => date('Y-m-d H:i:s', $_SERVER['REQUEST_TIME'])
                 ]);
 
             } else {
@@ -562,8 +558,7 @@ class PostController extends Controller {
                     'metaTitle' => $request['metaTitle'],
                     'metaDescription' => $request['metaDescription'],
                     'metaKeywords' => $request['metaKeywords'],
-                    'date_updated_at' => date("d/m/Y"),
-                    'time_updated_at' => date("H:i")
+                    'updated_at' => date('Y-m-d H:i:s', $_SERVER['REQUEST_TIME'])
                 ]);
 
             } else {
@@ -632,7 +627,7 @@ class PostController extends Controller {
             
                 Post::update(['id' => $pageId], [
 
-                    'slug'  => $lastPageSlugValue
+                    'slug'  => $lastPageSlugValue,
                 ]);
     
                 CategoryPage::delete('page_id', $pageId);
