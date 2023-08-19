@@ -7,7 +7,7 @@
 
     $this->stylesheet("/assets/css/style.css");
     $this->stylesheet("/assets/css/navbar.css");
-    $this->stylesheet("/assets/css/menu.css");
+    $this->stylesheet("/assets/css/widget.css");
     $this->stylesheet("/assets/css/sidebar.css");
 
     $this->stylesheet("/assets/css/codemirror/codemirror.css");
@@ -28,7 +28,7 @@
     <div class="row">
         <div class="col10 col9-L">
             <div class="edit-container">
-                <form id="editorForm" action="/admin/widget/<?php echo $widget['id']; ?>/update" method="POST" class="form-code">
+                <form id="editorForm" action="/admin/widgets/<?php echo $widget['id']; ?>/update" method="POST" class="form-code">
                     <div class="form-parts">
                         <input type="text" autofocus name="title" id="title" value="<?php echo $widget['title']; ?>">
                         <?php if(!empty(Errors::get($rules, 'title')) && Errors::get($rules, 'title') !== null) { ?>

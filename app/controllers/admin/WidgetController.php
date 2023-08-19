@@ -77,6 +77,25 @@ class WidgetController extends Controller {
         $data['rules'] = [];
 
         return $this->view('admin/widgets/edit', $data);
+    }
 
+    public function update($request) {
+
+        if(submitted("submit") === true && Csrf::validate(Csrf::token('get'), post('token')) === true ) {
+
+            $id = $request['id'];
+
+            if(!empty($request['content']) ) { $hasContent = 1; } else { $hasContent = 0; }
+
+            Widget::update(['id' => $id], [
+
+                'title'     => $request['title'],
+                'content'   => $request['content'],
+                'has_content' => $hasContent, 
+                'updated_at' => date('Y-m-d H:i:s', $_SERVER['REQUEST_TIME'])
+            ]);
+
+            redirect("/admin/widgets/$id/edit");
+        }
     }
 }
