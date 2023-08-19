@@ -215,3 +215,8 @@ CREATE TABLE widgets (
 ALTER TABLE widgets ADD has_content TINYINT AFTER content;
 ALTER TABLE widgets ADD removed TINYINT AFTER has_content;
 ALTER TABLE widgets ADD author varchar(50) AFTER removed;
+
+CREATE TABLE page_widget (
+    page_id int(11) NOT NULl,
+    widget_id int(11) NOT NULL
+);

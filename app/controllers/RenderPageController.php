@@ -29,6 +29,18 @@ class RenderPageController extends Controller {
             $menusTop = DB::try()->all('menus')->where('position', '=', 'top')->order('ordering')->fetch();
             $menusBottom = DB::try()->all('menus')->where('position', '=', 'bottom')->order('ordering')->fetch();
     
+
+
+
+            print_r($post[0]['body']);
+
+            exit();
+
+
+
+            //@widget->id=.*;
+
+
             $data['post'] = $post;
             $data['cssFiles'] = $cssFiles;
             $data['jsFiles'] = $jsFiles;
