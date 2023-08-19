@@ -9,8 +9,19 @@ use core\Session;
 use extensions\Pagination;
 use database\DB;
 use validation\Rules;
+use core\http\Response;
 
 class WidgetController extends Controller {
+
+    private function ifExists($id) {
+
+        $widget = new Widget();
+
+        if(empty($widget->ifRowExists($id)) ) {
+
+            return Response::statusCode(404)->view("/404/404") . exit();
+        }
+    }
 
     public function index() {
 
@@ -78,14 +89,17 @@ class WidgetController extends Controller {
 
     public function read($request) {
 
-        $widget = Widget::get($request['id']);
+        $this->ifExists($request['id']);
 
+        $widget = Widget::get($request['id']);
         $data['widget'] = $widget;
 
         return $this->view('admin/widgets/read', $data);
     }
 
     public function edit($request) {
+
+        $this->ifExists($request['id']);
 
         $widget = Widget::get($request['id']);
 
@@ -101,8 +115,9 @@ class WidgetController extends Controller {
 
             $id = $request['id'];
 
-            $rules = new Rules();
+            $this->ifExists($request['id']);
 
+            $rules = new Rules();
             $uniqueTitle = DB::try()->select('title')->from('widgets')->where('title', '=', $request['title'])->and('id', '!=', $id)->fetch();
 
             if($rules->edit_widget($uniqueTitle)->validated()) {
@@ -135,6 +150,8 @@ class WidgetController extends Controller {
             
             foreach($recoverIds as $request['id'] ) {
 
+                $this->ifExists($request['id']);
+
                 $widget = DB::try()->select('removed')->from('widgets')->where('id', '=', $request['id'])->first();
 
                 Widget::update(['id' => $request['id']], [
@@ -154,6 +171,8 @@ class WidgetController extends Controller {
         if(!empty($deleteIds) && !empty($deleteIds[0])) {
 
             foreach($deleteIds as $request['id']) {
+
+                $this->ifExists($request['id']);
 
                 $widget = DB::try()->select('title, removed')->from('widgets')->where('id', '=', $request['id'])->first();
 

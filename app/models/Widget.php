@@ -11,6 +11,11 @@ class Widget extends Model {
         self::table('widgets');
     }
 
+    public function ifRowExists($id) {
+
+        return DB::try()->select('id')->from('widgets')->where('id', '=', $id)->first();
+    }
+
     public function allWidgetsButOrderedOnDate() {
 
         return DB::try()->all('widgets')->where('removed', 'IS', NULL)->or('removed', '=', '0')->order('updated_at')->desc()->fetch();
