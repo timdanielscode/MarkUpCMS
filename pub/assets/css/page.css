@@ -52,19 +52,19 @@
     padding-right: 20px;
     font-size: 14px;
 }
-#category {
+#category, #widget {
     margin-top: 50px;
 }
 .categoryTitle {
     margin-bottom: 20px;
 }
-.AddCategory select, .addWidget select {
+.AddCategory select {
     height: 250px;
 }
 #metaForm, .linkedCssFilesForm {
     margin-top: 50px;
 }
-.linkedCssFilesForm select, .cssFilesForm select, .linkedJsFilesForm select, .jsFilesForm select {
+.linkedCssFilesForm select, .cssFilesForm select, .linkedJsFilesForm select, .jsFilesForm select, .addWidget select {
     height: 80px;
 }
 .AddCategory select, .linkedCssFilesForm select, .cssFilesForm select, .linkedJsFilesForm select, .jsFilesForm select, .addWidget select {
@@ -75,8 +75,9 @@
 .AddCategory select option, .cssFilesForm select option, .linkedCssFilesForm select option, .linkedJsFilesForm select option, .jsFilesForm select option, .addWidget select option {
     padding: 4px 0 4px 10px;
 }   
-.AddCategory, .addWidget {
-    margin-top: 10px;
+.addWidget label {
+    font-size: 14px;
+    color: #333;
 }
 .updateSlugForm, .updateSlugForm .form-parts, .updateMetaDataForm {
     width: 100%;

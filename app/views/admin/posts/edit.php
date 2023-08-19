@@ -78,18 +78,20 @@
                         <input class="button greenButton margin-t-10" type="submit" name="submit" value="Update"/>
                         <input type="hidden" name="token" value="<?php Csrf::token('add'); ?>" />
                     </form>
-                    <form class="addWidget" action="/admin/posts/<?php echo $data['id']; ?>/add-widget" method="POST">
-                        <label>Widgets: </label>
-                        <select name="widgets[]" multiple>
-                            <?php foreach($data['widgets'] as $widget) { ?>
-                                <option value="<?php echo $widget['id']; ?>">    
-                                    <?php echo $widget['title']; ?>
-                                </option>
-                            <?php } ?>
-                        </select>
-                        <input class="button greenButton margin-t-20" type="submit" name="submit" value="Add"/>
-                        <input type="hidden" name="token" value="<?php Csrf::token('add'); ?>" />
-                    </form>
+                    <div id="widget" class="<?php if(Session::exists('updateWidget') === false) { echo 'display-none'; } ?>">
+                        <form class="addWidget" action="/admin/posts/<?php echo $data['id']; ?>/add-widget" method="POST">
+                            <label>Widgets: </label>
+                            <select name="widgets[]" multiple>
+                                <?php foreach($data['widgets'] as $widget) { ?>
+                                    <option value="<?php echo $widget['id']; ?>">    
+                                        <?php echo $widget['title']; ?>
+                                    </option>
+                                <?php } ?>
+                            </select>
+                            <input class="button greenButton margin-t-20" type="submit" name="submit" value="Make available"/>
+                            <input type="hidden" name="token" value="<?php Csrf::token('add'); ?>" />
+                        </form>
+                    </div>
                     <div id="category" class="<?php if(Session::exists('updateCategory') === false) { echo 'display-none'; } ?>">
                         <span class="text">Category: </span>
                             <?php if(!empty($data['categories']) && $data['categories'] !== null) { ?>
