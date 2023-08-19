@@ -7,6 +7,7 @@
         <li><a href="/admin/posts">Pages</a></li>
         <li><a href="/admin/categories">Categories</a></li>
         <li><a href="/admin/menus">Menus</a></li>
+        <li><a href="/admin/widgets">Widgets</a></li>
         <li><a href="/admin/css">Css</a></li>
         <li><a href="/admin/js">Js</a></li>
         <li><a href="/admin/media">Media</a></li>

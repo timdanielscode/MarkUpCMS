@@ -106,4 +106,6 @@ Route::middleware('login')->run(function() {
     Route::post('/admin/categories/addcategory')->add('admin\CategoryController', 'ADDCATEGORY');
     Route::post('/admin/categories/slug')->add('admin\CategoryController', 'SLUG');
     Route::post('/admin/categories/delete')->add('admin\CategoryController', 'delete');
+
+    Route::get('/admin/widgets/create')->add('admin\WidgetController', 'create');
 });

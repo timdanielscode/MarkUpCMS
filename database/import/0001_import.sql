@@ -203,3 +203,11 @@ ALTER TABLE categories DROP COLUMN time_updated_at;
 
 ALTER TABLE categories ADD created_at DATETIME AFTER category_description;
 ALTER TABLE categories ADD updated_at DATETIME AFTER category_description;
+
+CREATE TABLE widgets (
+    id int(11) AUTO_INCREMENT PRIMARY KEY,
+    title VARCHAR(50) NOT NULL,
+    content MEDIUMTEXT NOT NULL,
+    created_at DATETIME NOT NULL,
+    updated_at DATETIME NOT NULL
+);
