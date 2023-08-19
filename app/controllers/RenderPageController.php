@@ -28,18 +28,20 @@ class RenderPageController extends Controller {
 
             $menusTop = DB::try()->all('menus')->where('position', '=', 'top')->order('ordering')->fetch();
             $menusBottom = DB::try()->all('menus')->where('position', '=', 'bottom')->order('ordering')->fetch();
-    
 
+            $postWidgets = DB::try()->select('widget_id')->from('page_widget')->where('page_id', '=', $postId)->fetch();
 
+            if(!empty($postWidgets) && $postWidgets !== null) {
 
-            print_r($post[0]['body']);
+                foreach($postWidgets as $postWidget) {
 
-            exit();
+                    $widgetId = $postWidget['widget_id'];
+                    $regex = '/@widget\[' . $widgetId . '\];/';
 
-
-
-            //@widget->id=.*;
-
+                    $widgetContent = DB::try()->select('content')->from('widgets')->where('id', '=', $widgetId)->first();
+                    $post[0]['body'] = preg_replace($regex, $widgetContent[0], $post[0]['body']);
+                }
+            }
 
             $data['post'] = $post;
             $data['cssFiles'] = $cssFiles;
