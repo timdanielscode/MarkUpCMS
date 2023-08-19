@@ -110,4 +110,31 @@ class WidgetController extends Controller {
             }
         }
     }
+
+    public function delete($request) {
+
+        $deleteIds = explode(',', $request['deleteIds']);
+
+        if(!empty($deleteIds) && !empty($deleteIds[0])) {
+
+            foreach($deleteIds as $request['id']) {
+
+                $widget = DB::try()->select('title, removed')->from('widgets')->where('id', '=', $request['id'])->first();
+
+                if($widget['removed'] !== 1) {
+
+                    Widget::update(['id' => $request['id']], [
+
+                        'removed'  => 1
+                    ]);
+
+                } else if($widget['removed'] === 1) {
+
+                    Widget::delete("id", $request['id']);
+                }
+            }
+        }
+
+        redirect("/admin/widgets");
+    }
 }
