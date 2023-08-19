@@ -85,17 +85,29 @@ class WidgetController extends Controller {
 
             $id = $request['id'];
 
-            if(!empty($request['content']) ) { $hasContent = 1; } else { $hasContent = 0; }
+            $rules = new Rules();
 
-            Widget::update(['id' => $id], [
+            $uniqueTitle = DB::try()->select('title')->from('widgets')->where('title', '=', $request['title'])->and('id', '!=', $id)->fetch();
 
-                'title'     => $request['title'],
-                'content'   => $request['content'],
-                'has_content' => $hasContent, 
-                'updated_at' => date('Y-m-d H:i:s', $_SERVER['REQUEST_TIME'])
-            ]);
+            if($rules->edit_widget($uniqueTitle)->validated()) {
 
-            redirect("/admin/widgets/$id/edit");
+                if(!empty($request['content']) ) { $hasContent = 1; } else { $hasContent = 0; }
+
+                Widget::update(['id' => $id], [
+
+                    'title'     => $request['title'],
+                    'content'   => $request['content'],
+                    'has_content' => $hasContent, 
+                    'updated_at' => date('Y-m-d H:i:s', $_SERVER['REQUEST_TIME'])
+                ]);
+
+                redirect("/admin/widgets/$id/edit");
+            } else {
+
+                $data['widget'] = Widget::get($id);
+                $data['rules'] = $rules->errors;
+                return $this->view('/admin/widgets/edit', $data);
+            }
         }
     }
 }
