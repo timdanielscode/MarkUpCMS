@@ -6,8 +6,28 @@ use app\controllers\Controller;
 use core\Csrf;
 use app\models\Widget;
 use core\Session;
+use extensions\Pagination;
+use database\DB;
 
 class WidgetController extends Controller {
+
+    public function index() {
+
+        $widgets = DB::try()->all('widgets')->fetch();
+        
+        $search = get('search');
+
+        $count = count($widgets);
+        
+        $widgets = Pagination::get($widgets, 10);
+        $numberOfPages = Pagination::getPageNumbers();
+
+        $data["widgets"] = $widgets;
+        $data["count"] = $count;
+        $data['numberOfPages'] = $numberOfPages;
+
+        return $this->view('admin/widgets/index', $data);
+    }
 
     public function create() {
 
