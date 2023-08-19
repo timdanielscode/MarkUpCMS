@@ -79,8 +79,8 @@
                         <input type="hidden" name="token" value="<?php Csrf::token('add'); ?>" />
                     </form>
                     <div id="widget" class="<?php if(Session::exists('updateWidget') === false) { echo 'display-none'; } ?>">
-                        <form class="addWidget" action="/admin/posts/<?php echo $data['id']; ?>/add-widget" method="POST">
-                            <label>Widgets: </label>
+                        <form class="widgetForm" action="/admin/posts/<?php echo $data['id']; ?>/remove-widget" method="POST">
+                            <label>Applicable widgets: </label>
                             <select name="widgets[]" multiple>
                                 <?php foreach($data['widgets'] as $widget) { ?>
                                     <option value="<?php echo $widget['id']; ?>">    
@@ -88,7 +88,19 @@
                                     </option>
                                 <?php } ?>
                             </select>
-                            <input class="button greenButton margin-t-20" type="submit" name="submit" value="Make available"/>
+                            <input class="button blueButton margin-t-20" type="submit" name="submit" value="Make it inapplicable"/>
+                            <input type="hidden" name="token" value="<?php Csrf::token('add'); ?>" />
+                        </form>
+                        <form class="widgetForm margin-t-20" action="/admin/posts/<?php echo $data['id']; ?>/add-widget" method="POST">
+                            <label>Other widgets: </label>
+                            <select name="widgets[]" multiple>
+                                <?php foreach($data['widgets'] as $widget) { ?>
+                                    <option value="<?php echo $widget['id']; ?>">    
+                                        <?php echo $widget['title']; ?>
+                                    </option>
+                                <?php } ?>
+                            </select>
+                            <input class="button greenButton margin-t-20" type="submit" name="submit" value="Make it applicable"/>
                             <input type="hidden" name="token" value="<?php Csrf::token('add'); ?>" />
                         </form>
                     </div>
@@ -162,7 +174,7 @@
                                 </option>
                             <?php } ?>
                         </select>
-                        <input type="submit" name="submit" class="button redButton margin-y-20" value="Unlink"/>
+                        <input type="submit" name="submit" class="button blueButton margin-y-20" value="Unlink"/>
                         <input type="hidden" name="token" value="<?php Csrf::token('add'); ?>" />
                     </form>
                     <form id="cssFiles" class="cssFilesForm <?php if(Session::exists('updateCss') === false) { echo 'display-none'; } ?>" action="/admin/posts/<?php echo $data['id']; ?>/link-css" method="POST">
@@ -187,7 +199,7 @@
                             <?php } ?>
                         </select>
                         <input type="hidden" name="token" value="<?php Csrf::token('add'); ?>" />
-                        <input type="submit" name="submit" class="button redButton margin-t-20" value="Exclude"/>
+                        <input type="submit" name="submit" class="button blueButton margin-t-20" value="Exclude"/>
                     </form>
                     <form id="jsFiles" class="jsFilesForm margin-t-20 <?php if(Session::exists('updateJs') === false) { echo 'display-none'; } ?>" action="/admin/posts/<?php echo $data['id']; ?>/include-js" method="POST">
                         <label for="jsFilesSelect">Other js files:</label>

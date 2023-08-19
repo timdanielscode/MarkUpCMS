@@ -288,6 +288,27 @@ class PostController extends Controller {
         redirect("/admin/posts/$id/edit");
     }
 
+    public function removeWidget($request) {
+
+        $this->ifExists($request['id']);
+
+        if(submitted("submit") === true && Csrf::validate(Csrf::token('get'), post('token')) === true ) {
+
+            $id = $request['id'];
+            $widgetIds = $request['widgets'];
+
+            if(!empty($widgetIds) && $widgetIds !== null) {
+
+                foreach($widgetIds as $widgetId) {
+
+                    DB::try()->delete('page_widget')->where('widget_id', '=', $widgetId)->and('page_id', '=', $id)->run();
+                }
+            }
+        }
+
+        redirect("/admin/posts/$id/edit");
+    }
+
     public function assignCategory($request) {
 
         $this->ifExists($request['id']);

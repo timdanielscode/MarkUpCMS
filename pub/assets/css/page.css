@@ -64,18 +64,18 @@
 #metaForm, .linkedCssFilesForm {
     margin-top: 50px;
 }
-.linkedCssFilesForm select, .cssFilesForm select, .linkedJsFilesForm select, .jsFilesForm select, .addWidget select {
+.linkedCssFilesForm select, .cssFilesForm select, .linkedJsFilesForm select, .jsFilesForm select, .widgetForm select {
     height: 80px;
 }
-.AddCategory select, .linkedCssFilesForm select, .cssFilesForm select, .linkedJsFilesForm select, .jsFilesForm select, .addWidget select {
+.AddCategory select, .linkedCssFilesForm select, .cssFilesForm select, .linkedJsFilesForm select, .jsFilesForm select, .widgetForm select {
     width: 100%;
     border: none;
     margin-top: 10px;
 }
-.AddCategory select option, .cssFilesForm select option, .linkedCssFilesForm select option, .linkedJsFilesForm select option, .jsFilesForm select option, .addWidget select option {
+.AddCategory select option, .cssFilesForm select option, .linkedCssFilesForm select option, .linkedJsFilesForm select option, .jsFilesForm select option, .widgetForm select option {
     padding: 4px 0 4px 10px;
 }   
-.addWidget label {
+.widgetForm label {
     font-size: 14px;
     color: #333;
 }

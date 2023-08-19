@@ -55,6 +55,7 @@ Route::middleware('login')->run(function() {
     Route::post('/admin/posts/[id]/include-js')->add('admin\PostController', 'includeJs');
     Route::post('/admin/posts/[id]/remove-js')->add('admin\PostController', 'removeJs');
     Route::post('/admin/posts/[id]/add-widget')->add('admin\PostController', 'addWidget');
+    Route::post('/admin/posts/[id]/remove-widget')->add('admin\PostController', 'removeWidget');
     Route::post('/admin/posts/recover')->add('admin\PostController', 'recover');
     Route::post('/admin/posts/delete')->add('admin\PostController', 'delete');
 
