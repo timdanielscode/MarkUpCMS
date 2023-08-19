@@ -50,7 +50,7 @@
                     <div class="sidebarContainer">
                         <div class="mainButtonContainer">
                             <label for="submit" class="button greenButton margin-r-10">Create</label>
-                            <a href="/admin/css" class="button blueButton">Back</a>
+                            <a href="/admin/widgets" class="button blueButton">Back</a>
                         </div>
                     </div>
                 </div>

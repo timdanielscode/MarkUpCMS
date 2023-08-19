@@ -5,6 +5,7 @@ namespace app\controllers\admin;
 use app\controllers\Controller;
 use core\Csrf;
 use app\models\Widget;
+use app\models\PageWidget;
 use core\Session;
 use extensions\Pagination;
 use database\DB;
@@ -183,9 +184,12 @@ class WidgetController extends Controller {
                         'removed'  => 1
                     ]);
 
+                    PageWidget::delete('widget_id', $request['id']);
+
                 } else if($widget['removed'] === 1) {
 
                     Widget::delete("id", $request['id']);
+                    PageWidget::delete('widget_id', $request['id']);
                 }
             }
         }

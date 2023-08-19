@@ -48,8 +48,8 @@
                 <div class="sidebarContainer">
                     <div class="mainButtonContainer">
                         <label for="submit" class="button greenButton margin-r-10">Update</label>
-                        <a href="/admin/menus/<?php echo $widget['id']; ?>/read" class="button blueButton margin-r-10">Read</a>
-                        <a href="/admin/menus" class="button darkBlueButton">Back</a>
+                        <a href="/admin/widgets/<?php echo $widget['id']; ?>/read" class="button blueButton margin-r-10">Read</a>
+                        <a href="/admin/widgets" class="button darkBlueButton">Back</a>
                     </div>
                     <div class="buttonContainer margin-b-50">
                         <a href="#" id="codeEditorFullScreen" class="button darkButton">Full screen</a>
