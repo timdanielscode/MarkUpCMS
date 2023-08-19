@@ -82,7 +82,7 @@
                         <form class="widgetForm" action="/admin/posts/<?php echo $data['id']; ?>/remove-widget" method="POST">
                             <label>Applicable widgets: </label>
                             <select name="widgets[]" multiple>
-                                <?php foreach($data['widgets'] as $widget) { ?>
+                                <?php foreach($data['applicableWidgets'] as $widget) { ?>
                                     <option value="<?php echo $widget['id']; ?>">    
                                         <?php echo $widget['title']; ?>
                                     </option>
@@ -94,7 +94,7 @@
                         <form class="widgetForm margin-t-20" action="/admin/posts/<?php echo $data['id']; ?>/add-widget" method="POST">
                             <label>Other widgets: </label>
                             <select name="widgets[]" multiple>
-                                <?php foreach($data['widgets'] as $widget) { ?>
+                                <?php foreach($data['inapplicableWidgets'] as $widget) { ?>
                                     <option value="<?php echo $widget['id']; ?>">    
                                         <?php echo $widget['title']; ?>
                                     </option>

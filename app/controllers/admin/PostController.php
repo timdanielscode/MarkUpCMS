@@ -148,10 +148,39 @@ class PostController extends Controller {
         $data['data']['notLinkedCssFiles'] = $notLinkedCssFiles;
         $data['data']['linkedJsFiles'] = $linkedJsFiles;
         $data['data']['notLinkedJsFiles'] = $notLinkedJsFiles;
-        $data['data']['widgets'] = DB::try()->select('id, title')->from('widgets')->fetch();
+
+        $widgets = DB::try()->select('id, title')->from('widgets')->where('removed', '!=', 1)->fetch();
+
+        $data['data']['applicableWidgets'] = DB::try()->select('widgets.id, widgets.title')->from('widgets')->join('page_widget')->on('page_widget.widget_id', '=', 'widgets.id')->where('page_widget.page_id', '=', $request['id'])->and('widgets.removed', '!=', 1)->fetch();
+        
+        if(!empty($data['data']['applicableWidgets']) && $data['data']['applicableWidgets'] !== null) {
+
+            $data['data']['inapplicableWidgets'] = $this->getInapplicableWidgets($data['data']['applicableWidgets']);
+        } else {
+            $data['data']['inapplicableWidgets'] = $widgets;
+        }
+
         $data['rules'] = [];
 
         return $this->view('admin/posts/edit', $data);
+    }
+
+    private function getInapplicableWidgets($widgets) {
+
+        if(!empty($widgets) && $widgets !== null) {
+
+            $widgetIds = [];
+
+            foreach($widgets as $widget) {
+    
+                array_push($widgetIds, $widget['id']);
+            }
+    
+            $widgetIdsString = implode(',', $widgetIds);
+
+            $inapplicableWidgets = DB::try()->select('id, title')->from('widgets')->whereNotIn('id', $widgetIdsString)->fetch();
+            return $inapplicableWidgets;
+        }
     }
 
     private function notLinkedCssFiles($linkedCssFiles) {
