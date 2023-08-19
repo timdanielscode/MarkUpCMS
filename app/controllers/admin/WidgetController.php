@@ -14,9 +14,16 @@ class WidgetController extends Controller {
 
     public function index() {
 
-        $widgets = DB::try()->all('widgets')->fetch();
+        $widget = new Widget();
+
+        $widgets = $widget->allWidgetsButOrderedOnDate();
         
         $search = get('search');
+
+        if(!empty($search) ) {
+
+            $widgets = $widget->widgetsOnSearch($search);
+        }
 
         $count = count($widgets);
         
