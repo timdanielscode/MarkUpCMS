@@ -68,4 +68,15 @@ class WidgetController extends Controller {
             }
         }
     }
+
+    public function edit($request) {
+
+        $widget = Widget::get($request['id']);
+
+        $data['widget'] = $widget;
+        $data['rules'] = [];
+
+        return $this->view('admin/widgets/edit', $data);
+
+    }
 }
