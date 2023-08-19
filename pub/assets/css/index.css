@@ -47,6 +47,9 @@
 .headerContainer .badge.media {
     left: 73px;
 }
+.headerContainer .badge.widgets {
+    left: 98px;
+}
 .index-container .create, .index-container .delete {
     font-size: 14px;
     font-weight: 500;

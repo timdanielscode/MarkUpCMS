@@ -76,6 +76,15 @@ class WidgetController extends Controller {
         }
     }
 
+    public function read($request) {
+
+        $widget = Widget::get($request['id']);
+
+        $data['widget'] = $widget;
+
+        return $this->view('admin/widgets/read', $data);
+    }
+
     public function edit($request) {
 
         $widget = Widget::get($request['id']);

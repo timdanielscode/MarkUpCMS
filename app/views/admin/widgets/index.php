@@ -19,7 +19,7 @@
 ?>
 <div class="index-container">
     <div class="headerContainer">
-        <h1>Widgets</h1><span class="badge menus"><?php echo $count; ?></span>
+        <h1>Widgets</h1><span class="badge widgets"><?php echo $count; ?></span>
     </div>
     <a href="/admin/widgets/create" class="create">Create</a> <span class="deleteSeparator">|</span> <form action="/admin/widgets/delete" method="POST" class="indexDeleteForm"><input type="submit" class="delete" value="<?php if(get('search') === 'Thrashcan') { echo 'Delete permanently'; } else { echo 'Delete'; } ?>"/><input type="hidden" name="deleteIds" id="deleteIds"/></form> | <form action="" method="GET" class="thrashcanForm"><input type="submit" name="search" value="Thrashcan"/></form><?php if(get('search') === 'Thrashcan') { ?> | <form action="/admin/widgets/recover" method="POST" class="recoverForm"><input type="submit" class="recover" value="Recover"/><input type="hidden" name="recoverIds" id="recoverIds" value=""/></form> <?php } ?>
     <form action="" method="GET" class="searchForm">
