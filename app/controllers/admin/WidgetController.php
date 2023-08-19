@@ -118,6 +118,26 @@ class WidgetController extends Controller {
         }
     }
 
+    public function recover($request) {
+
+        if(!empty($request['recoverIds']) && $request['recoverIds'] !== null) {
+
+            $recoverIds = explode(',', $request['recoverIds']);
+            
+            foreach($recoverIds as $request['id'] ) {
+
+                $widget = DB::try()->select('removed')->from('widgets')->where('id', '=', $request['id'])->first();
+
+                Widget::update(['id' => $request['id']], [
+
+                    'removed'  => 0
+                ]);
+            }
+        }
+
+        redirect("/admin/widgets");
+    }
+
     public function delete($request) {
 
         $deleteIds = explode(',', $request['deleteIds']);
