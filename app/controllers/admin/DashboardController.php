@@ -11,6 +11,7 @@ class DashboardController extends Controller {
 
         $data['pages'] = DB::try()->select('id')->from('pages')->fetch();
         $data['menus'] = DB::try()->select('id')->from('menus')->fetch();
+        $data['widgets'] = DB::try()->select('id')->from('widgets')->fetch();
         $data['categories'] = DB::try()->select('id')->from('categories')->fetch();
         $data['css'] = DB::try()->select('id')->from('css')->fetch();
         $data['js'] = DB::try()->select('id')->from('js')->fetch();
@@ -32,6 +33,8 @@ class DashboardController extends Controller {
         $data['idOfLastUpdatedMenu'] = DB::try()->select('id')->from('menus')->where('removed', '!=', '1')->order('updated_at')->desc()->first();
         $data['removedMenus'] = DB::try()->select('id')->from('menus')->where('removed', '=', 1)->fetch();
 
+        $data['contentAppliedWidgets'] = DB::try()->select('id')->from('widgets')->where('has_content', '=', 1)->fetch();
+        $data['removedWidgets'] = DB::try()->select('id')->from('widgets')->where('removed', '=', 1)->fetch();
         $data['idOfLastCreatedWidget'] = DB::try()->select('id')->from('widgets')->where('removed', '!=', 1)->order('created_at')->desc()->first();
         $data['idOfLastUpdatedWidget'] = DB::try()->select('id')->from('widgets')->where('removed', '!=', 1)->order('updated_at')->desc()->first();
 
