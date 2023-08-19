@@ -178,7 +178,7 @@ class PostController extends Controller {
     
             $widgetIdsString = implode(',', $widgetIds);
 
-            $inapplicableWidgets = DB::try()->select('id, title')->from('widgets')->whereNotIn('id', $widgetIdsString)->fetch();
+            $inapplicableWidgets = DB::try()->select('id, title')->from('widgets')->whereNotIn('id', $widgetIdsString)->and('widgets.removed', '!=', 1)->fetch();
             return $inapplicableWidgets;
         }
     }
