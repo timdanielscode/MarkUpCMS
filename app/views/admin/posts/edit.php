@@ -60,7 +60,8 @@
                     </div>
                     <div class="buttonContainer">
                         <a id="cssButton" class="button lightButton margin-r-10">Css</a>
-                        <a id="jsButton" class="button lightButton">Js</a>
+                        <a id="jsButton" class="button lightButton margin-r-10">Js</a>
+                        <a id="widgetButton" class="button lightButton">Widgets</a>
                     </div>
                     <span class="text">Slug:</span>
                     <span class="fullSlug"><?php if(!empty($data['slug']) ) { echo $data['slug']; } ?></span>
@@ -75,6 +76,18 @@
                         </div>
                         <input type="hidden" name="slug" value="<?php if(!empty($data['slug']) ) { echo $data['slug']; } ?>">
                         <input class="button greenButton margin-t-10" type="submit" name="submit" value="Update"/>
+                        <input type="hidden" name="token" value="<?php Csrf::token('add'); ?>" />
+                    </form>
+                    <form class="addWidget" action="/admin/posts/<?php echo $data['id']; ?>/add-widget" method="POST">
+                        <label>Widgets: </label>
+                        <select name="widgets[]" multiple>
+                            <?php foreach($data['widgets'] as $widget) { ?>
+                                <option value="<?php echo $widget['id']; ?>">    
+                                    <?php echo $widget['title']; ?>
+                                </option>
+                            <?php } ?>
+                        </select>
+                        <input class="button greenButton margin-t-20" type="submit" name="submit" value="Add"/>
                         <input type="hidden" name="token" value="<?php Csrf::token('add'); ?>" />
                     </form>
                     <div id="category" class="<?php if(Session::exists('updateCategory') === false) { echo 'display-none'; } ?>">

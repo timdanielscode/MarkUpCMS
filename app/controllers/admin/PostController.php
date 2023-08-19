@@ -148,6 +148,7 @@ class PostController extends Controller {
         $data['data']['notLinkedCssFiles'] = $notLinkedCssFiles;
         $data['data']['linkedJsFiles'] = $linkedJsFiles;
         $data['data']['notLinkedJsFiles'] = $notLinkedJsFiles;
+        $data['data']['widgets'] = DB::try()->select('id, title')->from('widgets')->fetch();
         $data['rules'] = [];
 
         return $this->view('admin/posts/edit', $data);
@@ -260,6 +261,31 @@ class PostController extends Controller {
                 return $this->view('admin/posts/edit', $data);
             }
         }
+    }
+
+    public function addWidget($request) {
+
+        $this->ifExists($request['id']);
+
+        if(submitted("submit") === true && Csrf::validate(Csrf::token('get'), post('token')) === true ) {
+
+            $id = $request['id'];
+            $widgetIds = $request['widgets'];
+
+            if(!empty($widgetIds) && $widgetIds !== null) {
+
+                foreach($widgetIds as $widgetId) {
+
+                    DB::try()->insert('page_widget', [
+
+                        'page_id' => $id,
+                        'widget_id' => $widgetId
+                    ]);
+                }
+            }
+        }
+
+        redirect("/admin/posts/$id/edit");
     }
 
     public function assignCategory($request) {
