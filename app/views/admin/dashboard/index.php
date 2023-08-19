@@ -82,6 +82,25 @@
                                     </ul>
                                 <?php } ?>
                             </ul>
+                            <li class="dropdownItem"><img src="/assets/img/menu.png"/>Widgets</li>
+                            <ul class="dropdown display-none">
+                                <a href="/admin/widgets/create"><li>Add new <img class="add" src="/assets/img/add.png"/></li></a>
+                                <a href="/admin/widgets"><li>Table overview</li></a>
+                                <?php if(!empty($idOfLastCreatedWidget) && $idOfLastCreatedWidget !== null) { ?>
+                                    <li class="dropdownItem nestedDropdownItem"><img src="/assets/img/right-arrow.png"/>Last created</li>
+                                    <ul class="dropdown display-none">
+                                        <a href="/admin/widgets/<?php echo $idOfLastCreatedWidget['id']; ?>/read"><li class="nestedItem">Read menu</li></a>
+                                        <a href="/admin/widgets/<?php echo $idOfLastCreatedWidget['id']; ?>/edit"><li class="nestedItem">Edit menu</li></a>
+                                    </ul>
+                                <?php } ?>
+                                <?php if(!empty($idOfLastUpdatedWidget) && $idOfLastUpdatedWidget !== null) { ?>
+                                    <li class="dropdownItem nestedDropdownItem"><img src="/assets/img/right-arrow.png"/>Last updated</li>
+                                    <ul class="dropdown display-none">
+                                        <a href="/admin/widgets/<?php echo $idOfLastUpdatedWidget['id']; ?>/read"><li class="nestedItem">Read menu</li></a>
+                                        <a href="/admin/widgets/<?php echo $idOfLastUpdatedWidget['id']; ?>/edit"><li class="nestedItem">Edit menu</li></a>
+                                    </ul>
+                                <?php } ?>
+                            </ul>
                             <li class="dropdownItem"><img src="/assets/img/css.png"/>Css</li>
                             <ul class="dropdown display-none">
                                 <a href="/admin/css/create"><li>Add new <img class="add" src="/assets/img/add.png"/></li></a>

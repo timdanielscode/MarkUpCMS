@@ -10,7 +10,8 @@
     $this->stylesheet("/assets/css/page.css");
     $this->stylesheet("/assets/css/sidebar.css");
 
-    $this->script("/assets/js/pages.js", true);
+    $this->script("/assets/js/pages/pages.js", true);
+    $this->script("/assets/js/pages/widget.js", true);
 
     $this->stylesheet("/assets/css/codemirror/codemirror.css");
     $this->script("/assets/js/codemirror/codemirror.js");
@@ -79,9 +80,10 @@
                         <input type="hidden" name="token" value="<?php Csrf::token('add'); ?>" />
                     </form>
                     <div id="widget" class="<?php if(Session::exists('updateWidget') === false) { echo 'display-none'; } ?>">
+                        <div id="applyWidget"></div>
                         <form class="widgetForm" action="/admin/posts/<?php echo $data['id']; ?>/remove-widget" method="POST">
                             <label>Applicable widgets: </label>
-                            <select name="widgets[]" multiple>
+                            <select id="applicableWidgetSelect" name="widgets[]" multiple>
                                 <?php foreach($data['applicableWidgets'] as $widget) { ?>
                                     <option value="<?php echo $widget['id']; ?>">    
                                         <?php echo $widget['title']; ?>

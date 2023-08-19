@@ -32,6 +32,9 @@ class DashboardController extends Controller {
         $data['idOfLastUpdatedMenu'] = DB::try()->select('id')->from('menus')->where('removed', '!=', '1')->order('updated_at')->desc()->first();
         $data['removedMenus'] = DB::try()->select('id')->from('menus')->where('removed', '=', 1)->fetch();
 
+        $data['idOfLastCreatedWidget'] = DB::try()->select('id')->from('widgets')->where('removed', '!=', 1)->order('created_at')->desc()->first();
+        $data['idOfLastUpdatedWidget'] = DB::try()->select('id')->from('widgets')->where('removed', '!=', 1)->order('updated_at')->desc()->first();
+
         $data['percentageOfNormalUsers'] = $this->getPercentageOfNormalRoles();
         $data['percentageOfAdminUsers'] = $this->getPercentageOfAdminRoles();
         $data['numberOfAdminUsers'] = $this->getNumberOfAdminRoles();
