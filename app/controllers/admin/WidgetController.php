@@ -8,6 +8,7 @@ use app\models\Widget;
 use core\Session;
 use extensions\Pagination;
 use database\DB;
+use validation\Rules;
 
 class WidgetController extends Controller {
 
@@ -42,18 +43,29 @@ class WidgetController extends Controller {
 
             if(!empty($request['content']) ) { $hasContent = 1; } else { $hasContent = 0; }
 
-            Widget::insert([
+            $rules = new Rules();
 
-                'title' => $request['title'],
-                'content'   => $request['content'],
-                'has_content' => $hasContent,
-                'author'    =>  Session::get('username'),
-                'removed' => 0,
-                'created_at' => date('Y-m-d H:i:s', $_SERVER['REQUEST_TIME']),
-                'updated_at' => date('Y-m-d H:i:s', $_SERVER['REQUEST_TIME'])
-            ]);
-          
-            redirect('/admin/widgets');
+            $uniqueTitle = DB::try()->select('title')->from('widgets')->where('title', '=', $request['title'])->fetch();
+
+            if($rules->create_widget($uniqueTitle)->validated()) {
+
+                Widget::insert([
+
+                    'title' => $request['title'],
+                    'content'   => $request['content'],
+                    'has_content' => $hasContent,
+                    'author'    =>  Session::get('username'),
+                    'removed' => 0,
+                    'created_at' => date('Y-m-d H:i:s', $_SERVER['REQUEST_TIME']),
+                    'updated_at' => date('Y-m-d H:i:s', $_SERVER['REQUEST_TIME'])
+                ]);
+
+                redirect('/admin/widgets');
+            } else {
+
+                $data['rules'] = $rules->errors;
+                return $this->view('admin/widgets/create', $data);
+            }
         }
     }
 }
