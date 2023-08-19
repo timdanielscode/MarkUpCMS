@@ -12,6 +12,7 @@
     $this->stylesheet("/assets/css/pagination.css");
 
     $this->script("/assets/js/delete.js", true);
+    $this->script("/assets/js/recover.js", true);
 
     $this->include('headerClose');
     $this->include('navbar');
@@ -20,10 +21,10 @@
     <div class="headerContainer">
         <h1>Menus</h1><span class="badge menus"><?php echo $count; ?></span>
     </div>
-    <a href="/admin/menus/create" class="create">Create</a> <span class="deleteSeparator">|</span> <form action="/admin/menus/delete" method="POST" class="indexDeleteForm"><input type="submit" class="delete" value="Delete"/><input type="hidden" name="deleteIds" id="deleteIds"/></form> | <form action="" method="GET" class="thrashcanForm"><input type="submit" name="search" value="Thrashcan"/></form>
-    <form action="" method="GET">
+    <a href="/admin/menus/create" class="create">Create</a> <span class="deleteSeparator">|</span> <form action="/admin/menus/delete" method="POST" class="indexDeleteForm"><input type="submit" class="delete" value="<?php if(get('search') === 'Thrashcan') { echo 'Delete permanently'; } else { echo 'Delete'; } ?>"/><input type="hidden" name="deleteIds" id="deleteIds"/></form> | <form action="" method="GET" class="thrashcanForm"><input type="submit" name="search" value="Thrashcan"/></form><?php if(get('search') === 'Thrashcan') { ?> | <form action="/admin/menus/recover" method="POST" class="recoverForm"><input type="submit" class="recover" value="Recover"/><input type="hidden" name="recoverIds" id="recoverIds" value=""/></form> <?php } ?>
+    <form action="" method="GET" class="searchForm">
         <input type="text" name="search" placeholder="Search" id="search">
-        <input type="hidden" name="submit" value="search">
+        <input type="submit" name="submit" value="Search" class="button">
     </form>
     <table>
         
@@ -53,9 +54,7 @@
                             <?php } else { ?>
                                 <td class="width-25">
                                     <span class="removed font-weight-500"><?php echo $menu['title']; ?></span> |
-                                    <a href="/admin/menus/<?php echo $menu['id']; ?>/read" class="font-weight-300">Read</a> |
-                                    <a href="/admin/menus/<?php echo $menu['id']; ?>/recover" class="font-weight-300">Recover</a> |
-                                    <a href="/admin/menus/<?php echo $menu['id']; ?>/delete" class="font-weight-300 color-red">Delete permanently</a>
+                                    <a href="/admin/menus/<?php echo $menu['id']; ?>/read" class="font-weight-300">Read</a>
                                 </td>
                             <?php } ?>
 

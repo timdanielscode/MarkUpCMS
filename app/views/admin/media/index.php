@@ -28,9 +28,10 @@
         <h1>Media</h1><span class="badge media"><?php echo $count; ?></span>
     </div>
     <a href="/admin/media/create" class="create">Upload</a> <span class="deleteSeparator">|</span> <form action="/admin/media/delete" method="POST" class="indexDeleteForm"><input type="submit" class="delete" value="Delete"/><input type="hidden" name="deleteIds" id="deleteIds" value=""/></form>
-    <form action="" method="GET">
+    <form action="" method="GET" class="searchForm">
         <input type="text" name="search" placeholder="Search" id="search">
         <input id="searchValue" type="hidden" name="submit" value="<?php if(!empty($search) && $search !== null) { echo $search; } ?>">
+        <input type="submit" name="submit" value="Search" class="button">
     </form>
 
     <div id="MEDIAREAD"></div>

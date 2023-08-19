@@ -68,6 +68,12 @@
 #search:focus {
     outline: none;
 }
+.searchForm .button {
+    background: #4f80c8;
+border: 1px solid #2e60aa;
+display: inline;
+margin-left: 10px;
+}
 
 /*
     Table
@@ -153,4 +159,19 @@ table thead {
     cursor: pointer;
     background: none;
     color: #333;
+}
+.recoverForm {
+    display: inline-block;
+}
+.recoverForm input[type="submit"] {
+    border: none;
+    color: #42971c;
+    text-decoration: underline;
+    font-size: 14px;
+    padding: 0;
+}
+.recoverForm input[type="submit"]:hover {
+    cursor: pointer;
+    background: none;
+    color: #4bb54b;
 }

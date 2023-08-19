@@ -7,6 +7,7 @@
     $this->stylesheet("/assets/css/pagination.css");
 
     $this->script("/assets/js/delete.js", true);
+    $this->script("/assets/js/recover.js", true);
 
     $this->include('headerClose');
     $this->include('navbar');
@@ -15,10 +16,10 @@
     <div class="headerContainer">
         <h1>Css</h1><span class="badge css"><?php echo $count; ?></span>
     </div>
-    <a href="/admin/css/create" class="create">Create</a> <span class="deleteSeparator">|</span> <form action="/admin/css/delete" method="POST" class="indexDeleteForm"><input type="submit" class="delete" value="Delete"/><input type="hidden" name="deleteIds" id="deleteIds"/></form> | <form action="" method="GET" class="thrashcanForm"><input type="submit" name="search" value="Thrashcan"/></form>
-    <form action="" method="GET">
+    <a href="/admin/css/create" class="create">Create</a> <span class="deleteSeparator">|</span> <form action="/admin/css/delete" method="POST" class="indexDeleteForm"><input type="submit" class="delete" value="<?php if(get('search') === 'Thrashcan') { echo 'Delete permanently'; } else { echo 'Delete'; } ?>"/><input type="hidden" name="deleteIds" id="deleteIds"/></form> | <form action="" method="GET" class="thrashcanForm"><input type="submit" name="search" value="Thrashcan"/></form><?php if(get('search') === 'Thrashcan') { ?> | <form action="/admin/css/recover" method="POST" class="recoverForm"><input type="submit" class="recover" value="Recover"/><input type="hidden" name="recoverIds" id="recoverIds" value=""/></form> <?php } ?>
+    <form action="" method="GET" class="searchForm">
         <input type="text" name="search" placeholder="Search" id="search">
-        <input type="hidden" name="submit" value="search">
+        <input type="submit" name="submit" value="Search" class="button">
     </form>
     <table>
         
@@ -46,8 +47,7 @@
                                 <td class="width-85">
                                 <span class="font-weight-500 removed"><?php echo $cssFile['file_name'] . $cssFile['extension']; ?></span> |
                                 <a href="/admin/css/<?php echo $cssFile['id']; ?>/read" class="font-weight-300">Read</a> |
-                                <a href="/admin/css/<?php echo $cssFile['id']; ?>/recover" class="font-weight-300">Recover</a> |
-                                <a href="/admin/css/<?php echo $cssFile['id']; ?>/delete" class="font-weight-300 color-red">Delete permanently</a>
+                                <a href="/admin/css/<?php echo $cssFile['id']; ?>/recover" class="font-weight-300">Recover</a>
                             </td>
                             <?php } ?>
                             <td class="width-15">

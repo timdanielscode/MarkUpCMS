@@ -303,14 +303,22 @@ class JsController extends Controller {
 
     public function recover($request) {
 
-        $this->ifExists($request['id']);
+        if(!empty($request['recoverIds']) && $request['recoverIds'] !== null) {
 
-        $js = DB::try()->select('removed')->from('js')->where('id', '=', $request['id'])->first();
+            $recoverIds = explode(',', $request['recoverIds']);
+            
+            foreach($recoverIds as $request['id'] ) {
 
-        Js::update(['id' => $request['id']], [
+                $this->ifExists($request['id']);
 
-            'removed'  => 0
-        ]);
+                $js = DB::try()->select('removed')->from('js')->where('id', '=', $request['id'])->first();
+
+                Js::update(['id' => $request['id']], [
+
+                    'removed'  => 0
+                ]);
+            }
+        }
 
         redirect("/admin/js");
     }

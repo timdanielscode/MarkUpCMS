@@ -25,9 +25,10 @@
         <h1>Categories</h1><span class="badge categories"><?php echo $count; ?></span>
     </div>
     <a class="create">Create</a> <span class="deleteSeparator">|</span> <form action="/admin/categories/delete" method="POST" class="indexDeleteForm"><input type="submit" value="Delete" class="delete"/><input type="hidden" name="deleteIds" id="deleteIds" value=""/></form>
-    <form action="" method="GET">
+    <form action="" method="GET" class="searchForm">
         <input type="text" name="search" placeholder="Search" id="search">
         <input id="searchValue" type="hidden" name="submit" value="<?php if(!empty($search) && $search !== null) { echo $search; } ?>">
+        <input type="submit" name="submit" value="Search" class="button">
     </form>
     <table>
         

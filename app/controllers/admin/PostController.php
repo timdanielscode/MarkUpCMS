@@ -663,15 +663,23 @@ class PostController extends Controller {
 
     public function recover($request) {
 
-        $this->ifExists($request['id']);
+        if(!empty($request['recoverIds']) && $request['recoverIds'] !== null) {
 
-        $post = DB::try()->select('title, removed')->from('pages')->where('id', '=', $request['id'])->first();
+            $recoverIds = explode(',', $request['recoverIds']);
+            
+            foreach($recoverIds as $request['id'] ) {
 
-        Post::update(['id' => $request['id']], [
-
-            'removed'  => 0,
-            'slug' => "/" . $post['title']
-        ]);
+                $this->ifExists($request['id']);
+    
+                $post = DB::try()->select('title, removed')->from('pages')->where('id', '=', $request['id'])->first();
+        
+                Post::update(['id' => $request['id']], [
+        
+                    'removed'  => 0,
+                    'slug' => "/" . $post['title']
+                ]);
+            }
+        } 
 
         redirect("/admin/posts");
     }

@@ -11,8 +11,8 @@
     $this->stylesheet("/assets/css/index.css");
     $this->stylesheet("/assets/css/pagination.css");
 
-    $this->script("/assets/js/navbar.js", true);
     $this->script("/assets/js/delete.js", true);
+    $this->script("/assets/js/recover.js", true);
 
     $this->include('headerClose');
     $this->include('navbar');
@@ -31,10 +31,10 @@
         <h1>Pages</h1><span class="badge pages"><?php echo $count; ?></span>
     </div>
 
-    <a href="/admin/posts/create" class="create">Create</a> <span class="deleteSeparator">|</span> <form action="/admin/posts/delete" method="POST" class="indexDeleteForm"><input type="submit" class="delete" value="Delete"/><input type="hidden" name="deleteIds" id="deleteIds" value=""/></form> | <form action="" method="GET" class="thrashcanForm"><input type="submit" name="search" value="Thrashcan"/></form>
-    <form action="" method="GET">
+    <a href="/admin/posts/create" class="create">Create</a> <span class="deleteSeparator">|</span> <form action="/admin/posts/delete" method="POST" class="indexDeleteForm"><input type="submit" class="delete" value="<?php if(get('search') === 'Thrashcan') { echo 'Delete permanently'; } else { echo 'Delete'; } ?>"/><input type="hidden" name="deleteIds" id="deleteIds" value=""/></form> | <form action="" method="GET" class="thrashcanForm"><input type="submit" name="search" value="Thrashcan"/></form><?php if(get('search') === 'Thrashcan') { ?> | <form action="/admin/posts/recover" method="POST" class="recoverForm"><input type="submit" class="recover" value="Recover"/><input type="hidden" name="recoverIds" id="recoverIds" value=""/></form> <?php } ?>
+    <form action="" method="GET" class="searchForm">
         <input type="text" name="search" placeholder="Search" id="search">
-        <input type="hidden" name="submit" value="search">
+        <input type="submit" name="submit" value="Search" class="button">
     </form>
     <table>
         <thead>
@@ -67,9 +67,7 @@
                     <?php } else { ?>
                     <td class="width-25">
                         <span class="removed font-weight-500"><?php echo $post[1]; ?></span> |
-                        <a href="/admin/posts/<?php echo $post['id']; ?>/read" class="font-weight-300">Read</a> |
-                        <a href="/admin/posts/<?php echo $post['id']; ?>/recover" class="font-weight-300">Recover</a> |
-                        <a href="/admin/posts/<?php echo $post['id']; ?>/delete" class="font-weight-300 color-red">Delete permanently</a> 
+                        <a href="/admin/posts/<?php echo $post['id']; ?>/read" class="font-weight-300">Read</a>
                     </td>
                     <td class="width-20">
                         <span class="removed">TEMPORARILY UNSET</span>

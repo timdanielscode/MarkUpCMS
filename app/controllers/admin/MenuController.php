@@ -186,14 +186,22 @@ class MenuController extends Controller {
 
     public function recover($request) {
 
-        $this->ifExists($request['id']);
+        if(!empty($request['recoverIds']) && $request['recoverIds'] !== null) {
 
-        $menu = DB::try()->select('removed')->from('menus')->where('id', '=', $request['id'])->first();
+            $recoverIds = explode(',', $request['recoverIds']);
+            
+            foreach($recoverIds as $request['id'] ) {
 
-        Menu::update(['id' => $request['id']], [
+                $this->ifExists($request['id']);
 
-            'removed'  => 0
-        ]);
+                $menu = DB::try()->select('removed')->from('menus')->where('id', '=', $request['id'])->first();
+
+                Menu::update(['id' => $request['id']], [
+
+                    'removed'  => 0
+                ]);
+            }
+        }
 
         redirect("/admin/menus");
     }

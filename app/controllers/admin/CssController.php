@@ -312,14 +312,22 @@ class CssController extends Controller {
 
     public function recover($request) {
 
-        $this->ifExists($request['id']);
+        if(!empty($request['recoverIds']) && $request['recoverIds'] !== null) {
 
-        $css = DB::try()->select('removed')->from('css')->where('id', '=', $request['id'])->first();
+            $recoverIds = explode(',', $request['recoverIds']);
+            
+            foreach($recoverIds as $request['id'] ) {
 
-        Css::update(['id' => $request['id']], [
+                $this->ifExists($request['id']);
 
-            'removed'  => 0
-        ]);
+                $css = DB::try()->select('removed')->from('css')->where('id', '=', $request['id'])->first();
+
+                Css::update(['id' => $request['id']], [
+
+                    'removed'  => 0
+                ]);
+            }
+        }
 
         redirect("/admin/css");
     }
