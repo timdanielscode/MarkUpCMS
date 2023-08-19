@@ -211,3 +211,7 @@ CREATE TABLE widgets (
     created_at DATETIME NOT NULL,
     updated_at DATETIME NOT NULL
 );
+
+ALTER TABLE widgets ADD has_content TINYINT AFTER content;
+ALTER TABLE widgets ADD removed TINYINT AFTER has_content;
+ALTER TABLE widgets ADD author varchar(50) AFTER removed;

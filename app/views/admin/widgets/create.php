@@ -36,7 +36,7 @@
                                     <span><?php echo Errors::get($rules, 'title'); ?></span>
                                 </div>
                             <?php } ?>  
-                            <textarea name="code" id="code"></textarea>
+                            <textarea name="content" id="content"></textarea>
                         </div>
                         <div class="form-parts">
                             <button name="submit" id="submit" type="submit" class="display-none">Create</button>
@@ -58,7 +58,7 @@
         </div>
    
     <script>
-        var editor = CodeMirror.fromTextArea(document.getElementById("code"), {
+        var editor = CodeMirror.fromTextArea(document.getElementById("content"), {
             theme: "gruvbox-dark",
             lineNumbers: true,
             matchBrackets: true,

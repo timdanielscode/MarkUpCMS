@@ -108,4 +108,5 @@ Route::middleware('login')->run(function() {
     Route::post('/admin/categories/delete')->add('admin\CategoryController', 'delete');
 
     Route::get('/admin/widgets/create')->add('admin\WidgetController', 'create');
+    Route::post('/admin/widgets/store')->add('admin\WidgetController', 'store');
 });
