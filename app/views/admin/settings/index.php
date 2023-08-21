@@ -163,7 +163,12 @@
             <form action="/admin/settings/update-slug" method="POST" class="updateLoginSlugForm">
                 <div class="formParts">
                     <label>Login slug:</label>
-                    <input type="text" name="slug" value="<?php if(!empty($currentLoginSlug) && $currentLoginSlug !== null) { echo $currentLoginSlug['slug']; } else { echo 'login'; } ?>"/>
+                    <input type="text" name="slug" value="<?php if(!empty($currentLoginSlug) && $currentLoginSlug !== null) { echo substr($currentLoginSlug['slug'], 1); } else { echo 'login'; } ?>"/>
+                    <?php if(!empty(Errors::get($rules, 'slug')) && Errors::get($rules, 'slug') !== null) { ?>
+                        <div class="error-messages margin-t-10 font-size-14">
+                            <span><?php echo Errors::get($rules, 'slug'); ?></span>
+                        </div>    
+                    <?php } ?>  
                 </div>
             </form>
             </div>

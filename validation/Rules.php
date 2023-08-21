@@ -331,7 +331,7 @@ class Rules {
         return $this;
     }
 
-    public function update_website_slug() {
+    public function update_website_slug($unique) {
 
         $validation = new Validate();
         

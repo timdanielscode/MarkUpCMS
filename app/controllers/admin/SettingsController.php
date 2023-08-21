@@ -21,10 +21,9 @@ class SettingsController extends Controller {
         $currentWebsiteSlug = DB::try()->all('websiteSlug')->fetch();
 
         $rules = new Rules();
+        $unique = DB::try()->select('slug')->from('pages')->where('slug', '=', "/" . $request['slug'])->fetch();
 
-        //$unique = DB::try()->select('slug')->from('pages')->where('slug', '=', $request['slug'])->fetch();
-
-        //if($rules->update_website_slug($unique)->validated()) {
+        if($rules->update_website_slug($unique)->validated()) {
 
             if(!empty($currentWebsiteSlug) && $currentWebsiteSlug !== null) {
 
@@ -45,12 +44,11 @@ class SettingsController extends Controller {
                     'updated_at' => date('Y-m-d H:i:s', $_SERVER['REQUEST_TIME'])
                 ]);
             }
-        /*} else {
+        } else {
 
             $data['rules'] = $rules->errors;
-
-            return $this->view('/admin/dashboard/index', $data);
-        }*/
+            return $this->view('/admin/settings/index', $data);
+        }
 
         redirect('/admin/settings');
     }
