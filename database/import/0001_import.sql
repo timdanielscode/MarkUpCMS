@@ -220,3 +220,10 @@ CREATE TABLE page_widget (
     page_id int(11) NOT NULl,
     widget_id int(11) NOT NULL
 );
+
+CREATE TABLE websiteSlug (
+    id int(11) AUTO_INCREMENT PRIMARY KEY,
+    slug VARCHAR(50) NOT NULL,
+    created_at DATETIME NOT NULL,
+    updated_at DATETIME NOT NULL
+);

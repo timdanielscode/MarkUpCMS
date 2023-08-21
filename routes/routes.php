@@ -28,13 +28,14 @@ Route::middleware('notLoggedIn')->run(function() {
     Route::get("/register")->add("RegisterController", "create");
     Route::post("/register")->add("RegisterController", "store");
 
-    Route::get("/login-independentcms")->add("LoginController", "index");
-    Route::post("/login-independentcms")->add("LoginController", "authenticateUsers");
+    //Route::get("/login-independentcms")->add("LoginController", "index");
+   // Route::post("/login-independentcms")->add("LoginController", "authenticateUsers");
 });
 
 Route::middleware('login')->run(function() { 
 
     Route::get('/admin/dashboard')->add('admin\DashboardController', 'index');
+    Route::post('/admin/dashboard/update-login-slug')->add('admin\DashboardController', 'updateLoginSlug');
 
     Route::get('/admin/profile/' . Session::get('username'))->add('admin\ProfileController', 'index');
     Route::post('/admin/profile/' . Session::get('username') . '/update')->add('admin\ProfileController', 'updateDetails');

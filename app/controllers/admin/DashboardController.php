@@ -72,6 +72,13 @@ class DashboardController extends Controller {
         return $this->view("admin/dashboard/index", $data);     
     }
 
+    public function updateLoginSlug($request) {
+
+        print_r($request);
+        exit();
+
+    }
+
     private function getNumberOfServerFreeSpace() {
 
         $freespace = disk_free_space("/") / 1000000000;
