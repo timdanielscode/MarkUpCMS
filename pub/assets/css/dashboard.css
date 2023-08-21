@@ -416,4 +416,26 @@ progress.lightBlue::-moz-progress-bar, progress.blue::-webkit-progress-value, pr
 #settingsContainer {
     height: 100vh;
     position: relative;
+    margin: 50px;
+}
+#settingsContainer form {
+    width: 100%;
+    overflow: hidden;
+}
+#settingsContainer form label {
+    font-size: 16px;
+    display: block;
+}
+#settingsContainer form input {
+    margin-top: 20px;
+    width: 100%;
+    box-sizing: border-box;
+    height: 36px;
+    font-size: 14px;
+    padding-left: 10px;
+    background: #fff;
+    border: 1px solid #ccc;
+}
+#settingsContainer form input:focus-visible {
+    outline: none;
 }

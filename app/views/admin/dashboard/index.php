@@ -370,7 +370,7 @@
             <div id="settingsContainer" class="display-none">
 
 
-                <form action="/admin/dashboard/update-login-slug" method="POST">
+                <form action="/admin/dashboard/update-login-slug" method="POST" class="updateLoginSlugForm">
 
                     <div class="formParts">
                         <label>Login slug:</label>
