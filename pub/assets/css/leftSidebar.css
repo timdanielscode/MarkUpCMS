@@ -74,7 +74,6 @@
     cursor: pointer;
     background: #f0f0f0;
 }
-
 .nestedDropdownItem {
     padding-left: 33px !important;
     color: #333 !important;
@@ -102,4 +101,7 @@
     cursor: pointer;
     background: #83a7db;
     border-color: #83a7db;
+}
+#dropdownItems a {
+    text-decoration: none;
 }

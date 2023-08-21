@@ -25,7 +25,7 @@
             <input type="text" name="search" placeholder="Pages" id="search">
             <input type="hidden" name="submit" value="search">
         </form>
-        <a href="#" id="settings">Settings</a>
+        <a href="#" id="settings"><img src="/assets/img/settings.png"/></a>
         <?php if(Session::exists('username') === true) { ?>
         <div class="profileContainer">
             <span id="profileIcon" class="profileIcon <?php if(Session::get('user_role') === 'admin') { echo 'admin'; } else { echo 'normal';} ?>"><?php echo substr(Session::get('username'), 0, 1); ?></span>
@@ -152,6 +152,7 @@
                                 <a href="/admin/users/create"><li>Add new <img class="add" src="/assets/img/add.png"/></li></a>
                                 <a href="/admin/users"><li>Table overview</li></a>
                             </ul>
+                            <a href="/admin/settings"><li class="dropdownItem"><img src="/assets/img/settingsBlack.png"/>Settings</li></a>
                         </ul>
                     </nav>
                 </div>

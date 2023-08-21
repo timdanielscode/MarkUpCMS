@@ -12,6 +12,7 @@ class SettingsController extends Controller {
     public function index() {    
 
         $data['currentLoginSlug'] = DB::try()->select('slug')->from('websiteSlug')->first();
+        $data['rules'] = [];
 
         return $this->view('/admin/settings/index', $data);
     }

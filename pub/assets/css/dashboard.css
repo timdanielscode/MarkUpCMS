@@ -40,7 +40,13 @@
 }
 #settings {
     position: absolute;
-    right: 150px;
+    right: 175px;
+    top: 50%;
+    transform: translateY(-50%);
+}
+#settings img {
+    width: 23px;
+    position: absolute;
     top: 50%;
     transform: translateY(-50%);
 }
