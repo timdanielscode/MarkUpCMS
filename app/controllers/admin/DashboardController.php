@@ -4,6 +4,7 @@ namespace app\controllers\admin;
 
 use app\controllers\Controller;
 use database\DB;
+use app\models\WebsiteSlug;
                     
 class DashboardController extends Controller {
                 
@@ -74,9 +75,29 @@ class DashboardController extends Controller {
 
     public function updateLoginSlug($request) {
 
-        print_r($request);
-        exit();
+        $currentWebsiteSlug = DB::try()->all('websiteSlug')->fetch();
 
+        if(!empty($currentWebsiteSlug) && $currentWebsiteSlug !== null) {
+
+            $currentWebsiteSlugId = DB::try()->select('id')->from('websiteSlug')->first();
+
+            WebsiteSlug::update(['id' => $currentWebsiteSlugId[0]], [
+
+                'slug'     => "/" . $request['slug'],
+                'updated_at' => date('Y-m-d H:i:s', $_SERVER['REQUEST_TIME'])
+            ]);
+
+        } else {
+
+            WebsiteSlug::insert([
+
+                'slug' => "/" . $request['slug'],
+                'created_at' => date('Y-m-d H:i:s', $_SERVER['REQUEST_TIME']),
+                'updated_at' => date('Y-m-d H:i:s', $_SERVER['REQUEST_TIME'])
+            ]);
+        }
+
+        redirect('/admin/dashboard');
     }
 
     private function getNumberOfServerFreeSpace() {

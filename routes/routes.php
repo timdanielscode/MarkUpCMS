@@ -28,8 +28,16 @@ Route::middleware('notLoggedIn')->run(function() {
     Route::get("/register")->add("RegisterController", "create");
     Route::post("/register")->add("RegisterController", "store");
 
-    //Route::get("/login-independentcms")->add("LoginController", "index");
-   // Route::post("/login-independentcms")->add("LoginController", "authenticateUsers");
+    $settedWebsiteSlug = DB::try()->select('slug')->from('websiteSlug')->first();
+
+    if(!empty($settedWebsiteSlug) && $settedWebsiteSlug !== null) {
+
+        Route::get($settedWebsiteSlug[0])->add("LoginController", "index");
+        Route::post($settedWebsiteSlug[0])->add("LoginController", "authenticateUsers");
+    } else {
+        Route::get("/login")->add("LoginController", "index");
+        Route::post("/login")->add("LoginController", "authenticateUsers");
+    }
 });
 
 Route::middleware('login')->run(function() { 
