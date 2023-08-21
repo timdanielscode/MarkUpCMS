@@ -11,7 +11,8 @@
     $this->stylesheet("/assets/css/dashboard.css");
     
 
-    $this->script("/assets/js/dashboard.js", true);
+    $this->script("/assets/js/dashboard/sidebar.js", true);
+    $this->script("/assets/js/dashboard/amounts.js", true);
     $this->script("/assets/js/navbar.js", true);
 
     $this->title("IndependentCMS");
@@ -37,6 +38,7 @@
         </div>
     <?php } ?>
     </nav>
+    <div id="progressInfoItem"></div>
     <div class="row">
         <div class=" col2 col3-L">
             <div id="sidebar" class="width-25-L">
@@ -163,65 +165,140 @@
                                 <div class="cardContainer">
                                     <span class="header">Pages <span class="total">(total) </span></span>
                                     <span class="amount"><?php echo count($pages); ?></span>
-                                    <span class="label5">Meta title: <?php echo $numberOfAppliedMetaTitle; ?></span>
-                                    <progress class="bar5 lightBlue" value="<?php echo $numberOfAppliedMetaTitle; ?>" max="<?php echo $numberOfPages; ?>"></progress>
-                                    <span class="label4">Meta description: <?php echo $numberOfAppliedMetaDescription; ?></span>
-                                    <progress class="bar4 lightBlue" value="<?php echo $numberOfAppliedMetaDescription; ?>" max="<?php echo $numberOfPages; ?>"></progress>
-                                    <span class="label3">Meta keywords: <?php echo $numberOfAppliedMetaKeywords; ?></span>
-                                    <progress class="bar3 lightBlue" value="<?php echo $numberOfAppliedMetaKeywords; ?>" max="<?php echo $numberOfPages; ?>"></progress>
-                                    <span class="label2">Content: <?php echo count($contentAppliedPages); ?></span>
-                                    <progress class="bar2 darkBlue" value="<?php echo count($contentAppliedPages); ?>" max="<?php echo count($pages); ?>"></progress>
-                                    <span class="label">Trashcan: <?php echo count($removedPages); ?></span>
-                                    <progress class="bar red" value="<?php echo count($removedPages); ?>" max="<?php echo count($pages); ?>"></progress>
-                                
+                                    <div class="progressContainer">
+                                        <div class="stopMousemoveEvent"></div>
+                                        <div class="layer"></div>
+                                        <span class="label">Meta title</span>
+                                        <progress class="bar lightBlue" value="<?php echo $numberOfAppliedMetaTitle; ?>" max="<?php echo $numberOfPages; ?>"></progress>
+                                    </div>
+                                    <div class="progressContainer">
+                                        <div class="stopMousemoveEvent"></div>
+                                        <div class="layer"></div>
+                                        <span class="label">Meta description</span>
+                                        <progress class="bar lightBlue" value="<?php echo $numberOfAppliedMetaDescription; ?>" max="<?php echo $numberOfPages; ?>"></progress>
+                                    </div>
+                                    <div class="progressContainer">
+                                        <div class="stopMousemoveEvent"></div>
+                                        <div class="layer"></div>
+                                        <span class="label">Meta keywords</span>
+                                        <progress class="bar lightBlue" value="<?php echo $numberOfAppliedMetaKeywords; ?>" max="<?php echo $numberOfPages; ?>"></progress>
+                                    </div>
+                                    <div class="progressContainer">
+                                        <div class="stopMousemoveEvent"></div>
+                                        <div class="layer"></div>
+                                        <span class="label">Content</span>
+                                        <progress class="bar darkBlue" value="<?php echo count($contentAppliedPages); ?>" max="<?php echo count($pages); ?>"></progress>
+                                    </div>
+                                    <div class="progressContainer">
+                                        <div class="stopMousemoveEvent"></div>
+                                        <div class="layer"></div>
+                                        <span class="label">Trashcan</span>
+                                        <progress class="bar red" value="<?php echo count($removedPages); ?>" max="<?php echo count($pages); ?>"></progress>
+                                    </div>
                                 </div>
                             </div>
                             <div class="col2-4">
                                 <div class="cardContainer">
                                     <span class="header">Menus <span class="total">(total)</span></span>
                                     <span class="amount"><?php echo count($menus); ?></span>
-                                    <span class="label4">Ordering: <?php echo count($orderingAppliedMenus); ?></span>
-                                    <progress class="bar4 darkBlue" value="<?php echo count($orderingAppliedMenus); ?>" max="<?php echo count($menus); ?>"></progress>
-                                    <span class="label3">Position: <?php echo count($positionAppliedMenus); ?></span>
-                                    <progress class="bar3 darkBlue" value="<?php echo count($positionAppliedMenus); ?>" max="<?php echo count($menus); ?>"></progress>
-                                    <span class="label2">Content: <?php echo count($contentAppliedMenus); ?></span>
-                                    <progress class="bar2 darkBlue" value="<?php echo count($contentAppliedMenus); ?>" max="<?php echo count($menus); ?>"></progress>
-                                    <span class="label">Trashcan: <?php echo count($removedMenus); ?></span>
-                                    <progress class="bar red" value="<?php echo count($removedMenus); ?>" max="<?php echo count($menus); ?>"></progress>
+                                    <div class="progressContainer"></div>
+                                    <div class="progressContainer">
+                                        <div class="stopMousemoveEvent"></div>
+                                        <div class="layer"></div>
+                                        <span class="label">Ordering</span>
+                                        <progress class="bar darkBlue" value="<?php echo count($orderingAppliedMenus); ?>" max="<?php echo count($menus); ?>"></progress>
+                                    </div>
+                                    <div class="progressContainer">
+                                        <div class="stopMousemoveEvent"></div>
+                                        <div class="layer"></div>
+                                        <span class="label">Position</span>
+                                        <progress class="bar darkBlue" value="<?php echo count($positionAppliedMenus); ?>" max="<?php echo count($menus); ?>"></progress>
+                                    </div>
+                                    <div class="progressContainer">
+                                        <div class="stopMousemoveEvent"></div>
+                                        <div class="layer"></div>
+                                        <span class="label">Content</span>
+                                        <progress class="bar darkBlue" value="<?php echo count($contentAppliedMenus); ?>" max="<?php echo count($menus); ?>"></progress>
+                                    </div>
+                                    <div class="progressContainer">
+                                        <div class="stopMousemoveEvent"></div>
+                                        <div class="layer"></div>
+                                        <span class="label">Trashcan</span>
+                                        <progress class="bar red" value="<?php echo count($removedMenus); ?>" max="<?php echo count($menus); ?>"></progress>
+                                    </div>
                                 </div>
                             </div>
                             <div class="col2-4">
                                 <div class="cardContainer">
                                     <span class="header">Widgets <span class="total">(total)</span></span>
                                     <span class="amount"><?php echo count($widgets); ?></span>
-                                    <span class="label2">Content: <?php echo count($contentAppliedWidgets); ?></span>
-                                    <progress class="bar2 darkBlue" value="<?php echo count($contentAppliedWidgets); ?>" max="<?php echo count($widgets); ?>"></progress>
-                                    <span class="label">Trashcan: <?php echo count($removedWidgets); ?></span>
-                                    <progress class="bar red" value="<?php echo count($removedWidgets); ?>" max="<?php echo count($widgets); ?>"></progress>
+                                    <div class="progressContainer"></div>
+                                    <div class="progressContainer"></div>
+                                    <div class="progressContainer"></div>
+                                    <div class="progressContainer">
+                                        <div class="stopMousemoveEvent"></div>
+                                        <div class="layer"></div>
+                                        <span class="label">Content</span>
+                                        <progress class="bar darkBlue" value="<?php echo count($contentAppliedWidgets); ?>" max="<?php echo count($widgets); ?>"></progress>
+                                    </div>
+                                    <div class="progressContainer">
+                                        <div class="stopMousemoveEvent"></div>
+                                        <div class="layer"></div>
+                                        <span class="label">Trashcan</span>
+                                        <progress class="bar red" value="<?php echo count($removedWidgets); ?>" max="<?php echo count($widgets); ?>"></progress>
+                                    </div>
                                 </div>
                             </div>
                             <div class="col2-4">
                                 <div class="cardContainer">
                                     <span class="header">Css <span class="total">(total)</span></span>
                                     <span class="amount"><?php echo count($css); ?></span>
-                                    <span class="label3">Linked: <?php echo $numberOfLinkedCss; ?></span>
-                                    <progress class="bar3 darkBlue" value="<?php echo $numberOfLinkedCss; ?>" max="<?php echo count($css); ?>"></progress>
-                                    <span class="label2">Content: <?php echo count($contentAppliedCss); ?></span>
-                                    <progress class="bar2 darkBlue" value="<?php echo count($contentAppliedCss); ?>" max="<?php echo count($css); ?>"></progress>
-                                    <span class="label">Trashcan: <?php echo count($removedCss); ?></span>
-                                    <progress class="bar red" value="<?php echo count($removedCss); ?>" max="<?php echo count($css); ?>"></progress>
+                                    <div class="progressContainer"></div>
+                                    <div class="progressContainer"></div>
+                                    <div class="progressContainer">
+                                        <div class="stopMousemoveEvent"></div>
+                                        <div class="layer"></div>
+                                        <span class="label">Linked</span>
+                                        <progress class="bar darkBlue" value="<?php echo $numberOfLinkedCss; ?>" max="<?php echo count($css); ?>"></progress>
+                                    </div>
+                                    <div class="progressContainer">
+                                        <div class="stopMousemoveEvent"></div>
+                                        <div class="layer"></div>
+                                        <span class="label">Content</span>
+                                        <progress class="bar darkBlue" value="<?php echo count($contentAppliedCss); ?>" max="<?php echo count($css); ?>"></progress>
+                                    </div>
+                                    <div class="progressContainer">
+                                        <div class="stopMousemoveEvent"></div>
+                                        <div class="layer"></div>
+                                        <span class="label">Trashcan</span>
+                                        <progress class="bar red" value="<?php echo count($removedCss); ?>" max="<?php echo count($css); ?>"></progress>
+                                    </div>
                                 </div>
                             </div>
                             <div class="col2-4">
                                 <div class="cardContainer">
                                     <span class="header">Js <span class="total">(total)</span></span>
                                     <span class="amount"><?php echo count($js); ?></span>
-                                    <span class="label3">Included: <?php echo $numberOfIncludedJs; ?></span>
-                                    <progress class="bar3 darkBlue" value="<?php echo $numberOfIncludedJs; ?>" max="<?php echo count($menus); ?>"></progress>
-                                    <span class="label2">Content: <?php echo count($contentAppliedJs); ?></span>
-                                    <progress class="bar2 darkBlue" value="<?php echo count($contentAppliedJs); ?>" max="<?php echo count($js); ?>"></progress>
-                                    <span class="label">Trashcan: <?php echo count($removedJs); ?></span>
-                                    <progress class="bar red" value="<?php echo count($removedJs); ?>" max="<?php echo count($js); ?>"></progress>
+                                    <div class="progressContainer"></div>
+                                    <div class="progressContainer"></div>
+                                    <div class="progressContainer">
+                                        <div class="stopMousemoveEvent"></div>
+                                        <div class="layer"></div>
+                                        <span class="label">Included </span>
+                                        <progress class="bar darkBlue" value="<?php echo $numberOfIncludedJs; ?>" max="<?php echo count($menus); ?>"></progress>
+                                    </div>
+                                    <div class="progressContainer">
+                                        <div class="stopMousemoveEvent"></div>
+                                        <div class="layer"></div>
+                                        <span class="label">Content</span>
+                                        <progress class="bar darkBlue" value="<?php echo count($contentAppliedJs); ?>" max="<?php echo count($js); ?>"></progress>
+                                    </div>
+                                    <div class="progressContainer">
+                                        <div class="stopMousemoveEvent"></div>
+                                        <div class="layer"></div>
+                                        <span class="label">Trashcan</span>
+                                        <progress class="bar red" value="<?php echo count($removedJs); ?>" max="<?php echo count($js); ?>"></progress>
+                                    </div>
                                 </div>
                             </div>
                         </div>
@@ -229,7 +306,7 @@
                 </div>
                 <div class="row">
                     <div class="col4">
-                        <div class="progressContainer">
+                        <div class="cardContainerSecondRow">
                             <div class="container">
                             <span class="header">Users <span class="small">(total)</span></span>
                                     <span class="amount"><?php echo count($users); ?></span>
@@ -243,7 +320,7 @@
                         </div>
                     </div>
                     <div class="col8">
-                        <div class="progressContainer float-right">
+                        <div class="cardContainerSecondRow float-right">
                             <div class="container">
                                 <span class="header">Media <span class="small">(total)</span></span>
                                 <span class="amount"><?php echo count($media); ?></span>
