@@ -43,6 +43,12 @@
 #navbar #profileIcon.normal {
     background: #72B7EE;
 }
+#settings {
+    position: absolute;
+    right: 150px;
+    top: 50%;
+    transform: translateY(-50%);
+}
 #navigationMenu {
     margin-top: 50px;
 }
@@ -111,6 +117,7 @@
     cursor: pointer;
     background: #f0f0f0;
 }
+
 .nestedDropdownItem {
     padding-left: 33px !important;
     color: #333 !important;
@@ -252,10 +259,6 @@ progress.lightBlue::-moz-progress-bar, progress.blue::-webkit-progress-value, pr
     text-decoration: none;
     width: fit-content;
     display: block;
-}
-body {
-    position: relative;
-    z-index: 9;
 }
 .cardContainer .lastCreatedPage {
     width: fit-content;
@@ -405,4 +408,12 @@ body {
 }
 .cardContainerSecondRow .container .mediaTextContainer .mediaText {
     display: block;
+}
+
+/*
+    Settings section
+*/
+#settingsContainer {
+    height: 100vh;
+    position: relative;
 }
