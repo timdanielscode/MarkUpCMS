@@ -8,6 +8,7 @@
     $this->stylesheet("/assets/css/style.css");
     $this->stylesheet("/assets/css/navbar.css");
     $this->stylesheet("/assets/css/sidebar.css");
+    $this->stylesheet("/assets/css/leftSidebar.css");
     $this->stylesheet("/assets/css/dashboard.css");
     $this->stylesheet("/assets/css/settings.css");
 

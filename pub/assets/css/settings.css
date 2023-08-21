@@ -1,3 +1,54 @@
+/*
+    Navbar
+*/
+#navbar #logo {
+    margin-left: 40px !important;
+}
+#navbar {
+    border-bottom: 1px solid #bdbdbd;
+    box-shadow: unset !important;
+}
+#navbar form {
+    position: absolute;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    top: 50%;
+}
+#navbar form input[type="text"] {
+    width: 500px;
+    height: 28px;
+    padding-left: 30px;
+    border-radius: 20px;
+    border: 1px solid #b0b0b0;
+    font-size: 14px;
+}
+#navbar form input[type="text"]:focus-visible {
+    outline: none;
+}
+#navbar #searchIcon {
+    position: absolute;
+    width: 13px;
+    left: 10px;
+    top: 50%;
+    transform: translateY(-50%);
+}
+#navbar #profileIcon.admin {
+    background: #1888E1;
+}
+#navbar #profileIcon.normal {
+    background: #72B7EE;
+}
+#settings {
+    position: absolute;
+    right: 150px;
+    top: 50%;
+    transform: translateY(-50%);
+}
+
+/*
+    Settings
+*/
+
 .settingsContainer {
     height: 100vh;
     position: relative;
