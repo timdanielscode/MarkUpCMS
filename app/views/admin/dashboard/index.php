@@ -165,32 +165,33 @@
                                 <div class="cardContainer">
                                     <span class="header">Pages <span class="total">(total) </span></span>
                                     <span class="amount"><?php echo count($pages); ?></span>
+                                    <div class="stopMousemoveEvent"></div>
                                     <div class="progressContainer">
-                                        <div class="stopMousemoveEvent"></div>
+                                        
                                         <div class="layer"></div>
                                         <span class="label">Meta title</span>
                                         <progress class="bar lightBlue" value="<?php echo $numberOfAppliedMetaTitle; ?>" max="<?php echo $numberOfPages; ?>"></progress>
                                     </div>
                                     <div class="progressContainer">
-                                        <div class="stopMousemoveEvent"></div>
+                               
                                         <div class="layer"></div>
                                         <span class="label">Meta description</span>
                                         <progress class="bar lightBlue" value="<?php echo $numberOfAppliedMetaDescription; ?>" max="<?php echo $numberOfPages; ?>"></progress>
                                     </div>
                                     <div class="progressContainer">
-                                        <div class="stopMousemoveEvent"></div>
+                                  
                                         <div class="layer"></div>
                                         <span class="label">Meta keywords</span>
                                         <progress class="bar lightBlue" value="<?php echo $numberOfAppliedMetaKeywords; ?>" max="<?php echo $numberOfPages; ?>"></progress>
                                     </div>
                                     <div class="progressContainer">
-                                        <div class="stopMousemoveEvent"></div>
+                                   
                                         <div class="layer"></div>
                                         <span class="label">Content</span>
                                         <progress class="bar darkBlue" value="<?php echo count($contentAppliedPages); ?>" max="<?php echo count($pages); ?>"></progress>
                                     </div>
                                     <div class="progressContainer">
-                                        <div class="stopMousemoveEvent"></div>
+                                 
                                         <div class="layer"></div>
                                         <span class="label">Trashcan</span>
                                         <progress class="bar red" value="<?php echo count($removedPages); ?>" max="<?php echo count($pages); ?>"></progress>
@@ -201,27 +202,25 @@
                                 <div class="cardContainer">
                                     <span class="header">Menus <span class="total">(total)</span></span>
                                     <span class="amount"><?php echo count($menus); ?></span>
+                                    <div class="stopMousemoveEvent"></div>
                                     <div class="progressContainer"></div>
                                     <div class="progressContainer">
-                                        <div class="stopMousemoveEvent"></div>
                                         <div class="layer"></div>
                                         <span class="label">Ordering</span>
                                         <progress class="bar darkBlue" value="<?php echo count($orderingAppliedMenus); ?>" max="<?php echo count($menus); ?>"></progress>
                                     </div>
                                     <div class="progressContainer">
-                                        <div class="stopMousemoveEvent"></div>
                                         <div class="layer"></div>
                                         <span class="label">Position</span>
                                         <progress class="bar darkBlue" value="<?php echo count($positionAppliedMenus); ?>" max="<?php echo count($menus); ?>"></progress>
                                     </div>
                                     <div class="progressContainer">
-                                        <div class="stopMousemoveEvent"></div>
+
                                         <div class="layer"></div>
                                         <span class="label">Content</span>
                                         <progress class="bar darkBlue" value="<?php echo count($contentAppliedMenus); ?>" max="<?php echo count($menus); ?>"></progress>
                                     </div>
                                     <div class="progressContainer">
-                                        <div class="stopMousemoveEvent"></div>
                                         <div class="layer"></div>
                                         <span class="label">Trashcan</span>
                                         <progress class="bar red" value="<?php echo count($removedMenus); ?>" max="<?php echo count($menus); ?>"></progress>
@@ -232,17 +231,18 @@
                                 <div class="cardContainer">
                                     <span class="header">Widgets <span class="total">(total)</span></span>
                                     <span class="amount"><?php echo count($widgets); ?></span>
+                                    <div class="stopMousemoveEvent"></div>
                                     <div class="progressContainer"></div>
                                     <div class="progressContainer"></div>
                                     <div class="progressContainer"></div>
                                     <div class="progressContainer">
-                                        <div class="stopMousemoveEvent"></div>
+
                                         <div class="layer"></div>
                                         <span class="label">Content</span>
                                         <progress class="bar darkBlue" value="<?php echo count($contentAppliedWidgets); ?>" max="<?php echo count($widgets); ?>"></progress>
                                     </div>
                                     <div class="progressContainer">
-                                        <div class="stopMousemoveEvent"></div>
+       
                                         <div class="layer"></div>
                                         <span class="label">Trashcan</span>
                                         <progress class="bar red" value="<?php echo count($removedWidgets); ?>" max="<?php echo count($widgets); ?>"></progress>
@@ -253,22 +253,23 @@
                                 <div class="cardContainer">
                                     <span class="header">Css <span class="total">(total)</span></span>
                                     <span class="amount"><?php echo count($css); ?></span>
+                                    <div class="stopMousemoveEvent"></div>
                                     <div class="progressContainer"></div>
                                     <div class="progressContainer"></div>
                                     <div class="progressContainer">
-                                        <div class="stopMousemoveEvent"></div>
+                   
                                         <div class="layer"></div>
                                         <span class="label">Linked</span>
                                         <progress class="bar darkBlue" value="<?php echo $numberOfLinkedCss; ?>" max="<?php echo count($css); ?>"></progress>
                                     </div>
                                     <div class="progressContainer">
-                                        <div class="stopMousemoveEvent"></div>
+     
                                         <div class="layer"></div>
                                         <span class="label">Content</span>
                                         <progress class="bar darkBlue" value="<?php echo count($contentAppliedCss); ?>" max="<?php echo count($css); ?>"></progress>
                                     </div>
                                     <div class="progressContainer">
-                                        <div class="stopMousemoveEvent"></div>
+              
                                         <div class="layer"></div>
                                         <span class="label">Trashcan</span>
                                         <progress class="bar red" value="<?php echo count($removedCss); ?>" max="<?php echo count($css); ?>"></progress>
@@ -279,22 +280,23 @@
                                 <div class="cardContainer">
                                     <span class="header">Js <span class="total">(total)</span></span>
                                     <span class="amount"><?php echo count($js); ?></span>
+                                    <div class="stopMousemoveEvent"></div>
                                     <div class="progressContainer"></div>
                                     <div class="progressContainer"></div>
                                     <div class="progressContainer">
-                                        <div class="stopMousemoveEvent"></div>
+ 
                                         <div class="layer"></div>
                                         <span class="label">Included </span>
                                         <progress class="bar darkBlue" value="<?php echo $numberOfIncludedJs; ?>" max="<?php echo count($menus); ?>"></progress>
                                     </div>
                                     <div class="progressContainer">
-                                        <div class="stopMousemoveEvent"></div>
+
                                         <div class="layer"></div>
                                         <span class="label">Content</span>
                                         <progress class="bar darkBlue" value="<?php echo count($contentAppliedJs); ?>" max="<?php echo count($js); ?>"></progress>
                                     </div>
                                     <div class="progressContainer">
-                                        <div class="stopMousemoveEvent"></div>
+      
                                         <div class="layer"></div>
                                         <span class="label">Trashcan</span>
                                         <progress class="bar red" value="<?php echo count($removedJs); ?>" max="<?php echo count($js); ?>"></progress>
