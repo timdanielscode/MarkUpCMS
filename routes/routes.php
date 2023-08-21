@@ -43,7 +43,8 @@ Route::middleware('notLoggedIn')->run(function() {
 Route::middleware('login')->run(function() { 
 
     Route::get('/admin/dashboard')->add('admin\DashboardController', 'index');
-    Route::post('/admin/dashboard/update-login-slug')->add('admin\DashboardController', 'updateLoginSlug');
+    Route::get('/admin/settings')->add('admin\SettingsController', 'index');
+    Route::post('/admin/settings/update-slug')->add('admin\SettingsController', 'updateSlug');
 
     Route::get('/admin/profile/' . Session::get('username'))->add('admin\ProfileController', 'index');
     Route::post('/admin/profile/' . Session::get('username') . '/update')->add('admin\ProfileController', 'updateDetails');

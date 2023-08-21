@@ -331,6 +331,16 @@ class Rules {
         return $this;
     }
 
+    public function update_website_slug() {
+
+        $validation = new Validate();
+        
+        $validation->input('slug')->as('Slug')->rules(['required' => true, 'max' => 49, 'special' => true, 'unique' => $unique]);
+        
+        $this->errors = $validation->errors;
+        return $this;
+    }
+
     /**
      * Validating validation rules
      * On fail, returning view with extracted validation error rules and if exists request data

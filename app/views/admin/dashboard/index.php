@@ -10,10 +10,11 @@
     $this->stylesheet("/assets/css/sidebar.css");
     $this->stylesheet("/assets/css/dashboard.css");
     
+    $this->script("/assets/js/navbar.js", true);
     $this->script("/assets/js/dashboard/settings.js", true);
     $this->script("/assets/js/dashboard/sidebar.js", true);
     $this->script("/assets/js/dashboard/amounts.js", true);
-    $this->script("/assets/js/navbar.js", true);
+    
 
     $this->title("IndependentCMS");
     $this->include("headerClose");
@@ -25,7 +26,7 @@
             <input type="text" name="search" placeholder="Pages" id="search">
             <input type="hidden" name="submit" value="search">
         </form>
-        <a href="#" id="settings">Settings</a>
+        <a href="/admin/settings" id="settings">Settings</a>
         <?php if(Session::exists('username') === true) { ?>
         <div class="profileContainer">
             <span id="profileIcon" class="profileIcon <?php if(Session::get('user_role') === 'admin') { echo 'admin'; } else { echo 'normal';} ?>"><?php echo substr(Session::get('username'), 0, 1); ?></span>
@@ -366,18 +367,6 @@
                         </div>  
                     </div>
                 </div>
-            </div>
-            <div id="settingsContainer" class="display-none">
-
-
-                <form action="/admin/dashboard/update-login-slug" method="POST" class="updateLoginSlugForm">
-
-                    <div class="formParts">
-                        <label>Login slug:</label>
-                        <input type="text" name="slug" value=""/>
-                    </div>
-
-                </form>
             </div>
         </div>
     </div>

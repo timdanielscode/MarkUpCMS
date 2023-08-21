@@ -2,8 +2,9 @@ var progressInfoItem = document.getElementById('progressInfoItem')
 
 var progressContainers = document.querySelectorAll('.progressContainer')
 var progressContainerLayers = document.querySelectorAll(".layer");
+var profileDropdown = document.getElementById('profileDropdown');
 
-if(progressContainerLayers !== null) {
+if(progressContainerLayers !== null && profileDropdown.classList.contains('show-dropdown') === false) {
 
     for(var progressContainerLayer of progressContainerLayers) {
 
