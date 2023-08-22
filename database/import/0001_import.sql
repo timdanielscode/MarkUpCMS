@@ -227,3 +227,11 @@ CREATE TABLE websiteSlug (
     created_at DATETIME NOT NULL,
     updated_at DATETIME NOT NULL
 );
+
+CREATE TABLE forms (
+    id int(11) AUTO_INCREMENT PRIMARY KEY,
+    title VARCHAR(50) NOT NULL,
+    content MEDIUMTEXT NOT NULL,
+    created_at DATETIME NOT NULL,
+    updated_at DATETIME NOT NULL
+);

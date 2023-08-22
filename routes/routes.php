@@ -124,4 +124,5 @@ Route::middleware('login')->run(function() {
     Route::post('/admin/widgets/recover')->add('admin\WidgetController', 'recover');
 
     Route::get('/admin/forms/create')->add('admin\FormController', 'create');
+    Route::post('/admin/forms/store')->add('admin\FormController', 'store');
 });
