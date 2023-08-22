@@ -22,6 +22,10 @@
         <?php } ?>
 
         <?php echo html_entity_decode($post[0]["body"]); ?>
+
+
+        
+        <?php echo html_entity_decode($form['content']); ?>
             
         <?php if(!empty($menusBottom ) ) { ?>
 

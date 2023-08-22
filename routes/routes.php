@@ -13,6 +13,7 @@ if(!empty($postPaths) && $postPaths !== null) {
     foreach($postPaths as $postPath) {
 
         Route::get($postPath['slug'])->add('RenderPageController', 'render');
+        Route::post($postPath['slug'])->add('SendFormMailController', 'send');
     }
 } else {
     
