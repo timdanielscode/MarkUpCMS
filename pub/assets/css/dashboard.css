@@ -129,8 +129,8 @@
     left: 20px;
     z-index: 9;
 }
-.progressContainer .layer {
-    width: 98%;
+.layer {
+    width: 87%;
     z-index: 99;
     top: 50%;
     left: 50%;

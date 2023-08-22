@@ -331,40 +331,41 @@
                             <div class="container">
                                 <span class="header">Media <span class="small">(total)</span></span>
                                 <span class="amount"><?php echo count($media); ?></span>
+                                <div class="stopMousemoveEvent"></div>
                                 <div class="grouped media">
+                                    <div class="layer"></div>
                                     <span class="label">.jpeg</span>
                                     <progress class="bar blue" value="<?php echo $numberOfMediaFiletypeJpg; ?>" max="<?php echo count($media); ?>"></progress>
-                                    <span class="value"><?php echo $numberOfMediaFiletypeJpg; ?></span>
                                 </div>
                                 <div class="grouped media">
+                                    <div class="layer"></div>
                                     <span class="label">.png</span>
                                     <progress class="bar blue" value="<?php echo $numberOfMediaFiletypePng; ?>" max="<?php echo count($media); ?>"></progress>
-                                    <span class="value"><?php echo $numberOfMediaFiletypePng; ?></span>
                                 </div>
                                 <div class="grouped media">
+                                    <div class="layer"></div>
                                     <span class="label">.webp</span>
                                     <progress class="bar blue" value="<?php echo $numberOfMediaFiletypeWebp; ?>" max="<?php echo count($media); ?>"></progress>
-                                    <span class="value"><?php echo $numberOfMediaFiletypeWebp; ?></span>
                                 </div>
                                 <div class="grouped media">
+                                    <div class="layer"></div>
                                     <span class="label">.gif</span>
                                     <progress class="bar blue" value="<?php echo $numberOfMediaFiletypeGif; ?>" max="<?php echo count($media); ?>"></progress>
-                                    <span class="value"><?php echo $numberOfMediaFiletypeGif; ?></span>
                                 </div>
                                 <div class="grouped media">
+                                    <div class="layer"></div>
                                     <span class="label">.svg</span>
                                     <progress class="bar blue" value="<?php echo $numberOfMediaFiletypeSvg; ?>" max="<?php echo count($media); ?>"></progress>
-                                    <span class="value"><?php echo $numberOfMediaFiletypeSvg; ?></span>
                                 </div>
                                 <div class="grouped media">
+                                    <div class="layer"></div>
                                     <span class="label">.mp4</span>
                                     <progress class="bar blue" value="<?php echo $numberOfMediaFiletypeMp4; ?>" max="<?php echo count($media); ?>"></progress>
-                                    <span class="value"><?php echo $numberOfMediaFiletypeMp4; ?></span>
                                 </div>
                                 <div class="grouped media">
+                                    <div class="layer"></div>
                                     <span class="label">.pdf</span>
                                     <progress class="bar blue" value="<?php echo $numberOfMediaFiletypePdf; ?>" max="<?php echo count($media); ?>"></progress>
-                                    <span class="value"><?php echo $numberOfMediaFiletypePdf; ?></span>
                                 </div>
                             </div>
                         </div>  
