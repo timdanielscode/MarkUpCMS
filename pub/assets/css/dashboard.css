@@ -116,7 +116,7 @@
     position: absolute;
     top: 2px;
     left: 20px;
-    z-index: 999;
+    z-index: 9;
 }
 .cardContainer .bar {
     position: absolute;
@@ -127,11 +127,11 @@
     width: 75%;
     bottom: 8px;
     left: 20px;
-    z-index: 999;
+    z-index: 9;
 }
 .progressContainer .layer {
     width: 98%;
-    z-index: 9999;
+    z-index: 99;
     top: 50%;
     left: 50%;
     transform: translate(-50%, -50%);
@@ -141,7 +141,7 @@
 .stopMousemoveEvent {
     height: 100%;
     width: 100%;
-    z-index: 999;
+    z-index: 9;
     position: absolute;
     top: 0;
     left: -20px;

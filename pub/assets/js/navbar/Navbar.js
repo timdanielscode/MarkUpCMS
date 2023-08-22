@@ -21,11 +21,11 @@ class Navbar {
         return this.element;
     }
 
-    setOnclickEvent() {
+    setOnclickEvent(progressInfoItem) {
 
         this.getElement().onclick = function(){
             
-            showMenu();
+            showMenu(progressInfoItem);
         };
     }
 

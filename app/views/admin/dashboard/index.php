@@ -11,12 +11,12 @@
     $this->stylesheet("/assets/css/leftSidebar.css");
     $this->stylesheet("/assets/css/dashboard.css");
     
+    $this->script("/assets/js/dashboard/Progress.js", true);
+    $this->script("/assets/js/dashboard/main.js", true);
     $this->script("/assets/js/navbar/Navbar.js", true);
     $this->script("/assets/js/navbar/main.js", true);
     $this->script("/assets/js/dashboard/settings.js", true);
     $this->script("/assets/js/sidebar.js", true);
-    $this->script("/assets/js/dashboard/amounts.js", true);
-    
 
     $this->title("IndependentCMS");
     $this->include("headerClose");

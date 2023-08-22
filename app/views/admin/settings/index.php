@@ -12,7 +12,8 @@
     $this->stylesheet("/assets/css/dashboard.css");
     $this->stylesheet("/assets/css/settings.css");
 
-    $this->script("/assets/js/navbar.js", true);
+    $this->script("/assets/js/navbar/Navbar.js", true);
+    $this->script("/assets/js/navbar/main.js", true);
     $this->script("/assets/js/sidebar.js", true);
 
     $this->title("IndependentCMS");
