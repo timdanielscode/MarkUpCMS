@@ -13,7 +13,7 @@
     $this->stylesheet("/assets/css/settings.css");
 
     $this->script("/assets/js/navbar.js", true);
-    $this->script("/assets/js/dashboard/sidebar.js", true);
+    $this->script("/assets/js/sidebar.js", true);
 
     $this->title("IndependentCMS");
     $this->include("headerClose");
