@@ -123,6 +123,5 @@ Route::middleware('login')->run(function() {
     Route::post('/admin/widgets/delete')->add('admin\WidgetController', 'delete');
     Route::post('/admin/widgets/recover')->add('admin\WidgetController', 'recover');
 
-    Route::get('/admin/forms/create')->add('admin\FormController', 'create');
-    Route::post('/admin/forms/store')->add('admin\FormController', 'store');
+    Route::crud('/admin/forms', '[id]')->add('admin\FormController', 'crud');
 });
