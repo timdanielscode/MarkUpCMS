@@ -47,7 +47,29 @@ class CdnController extends Controller {
             'updated_at' => date('Y-m-d H:i:s', $_SERVER['REQUEST_TIME'])
         ]);
 
-        redirect('/admin/cdn/create');
+        redirect('/admin/cdn');
+    }
+
+    public function edit($request) {
+
+        $cdn = Cdn::get($request['id']);
+
+        $data['cdn'] = $cdn;
+
+        return $this->view('admin/cdn/edit', $data);
+    }
+
+    public function update($request) {
+
+        $id = $request['id'];
+
+        Cdn::update(['id' => $id], [
+
+            'title'     => $request['title'],
+            'content' => $request['content'],
+            'updated_at' => date('Y-m-d H:i:s', $_SERVER['REQUEST_TIME'])
+        ]);
+        redirect("/admin/cdn/$id/edit");
     }
 
 }
