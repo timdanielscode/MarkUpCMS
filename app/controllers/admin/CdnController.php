@@ -173,6 +173,30 @@ class CdnController extends Controller {
         }
     }
 
+    public function importAll($request) {
+
+        if(submitted("submit") === true && Csrf::validate(Csrf::token('get'), post('token')) === true ) {
+
+            $id = $request['id'];
+
+            if(!empty($request['id']) && $request['id'] !== null) {
+
+                $pageIds = DB::try()->select('id')->from('pages')->fetch();
+
+                foreach($pageIds as $pageId ) {
+
+                    CdnPage::insert([
+
+                        'page_id' => $pageId['id'],
+                        'cdn_id'    => $id
+                    ]);
+                }
+            }
+
+            redirect("/admin/cdn/$id/edit");
+        }
+    }
+
     public function exportPage($request) {
 
         if(submitted("submit") === true && Csrf::validate(Csrf::token('get'), post('token')) === true ) {
@@ -185,6 +209,26 @@ class CdnController extends Controller {
             }
 
             redirect("/admin/cdn/$cdnId/edit");
+        }
+    }
+
+    public function exportAll($request) {
+
+        if(submitted("submit") === true && Csrf::validate(Csrf::token('get'), post('token')) === true ) {
+
+            $id = $request['id'];
+
+            if(!empty($request['id']) && $request['id'] !== null) {
+
+                $pageIds = DB::try()->select('id')->from('pages')->fetch();
+
+                foreach($pageIds as $pageId ) {
+
+                    DB::try()->delete('cdn_page')->where('cdn_id', '=', $id)->and('page_id', '=', $pageId['id'])->run();
+                }
+            }
+
+            redirect("/admin/cdn/$id/edit");
         }
     }
 

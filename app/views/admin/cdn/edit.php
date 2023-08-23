@@ -55,8 +55,16 @@
                         <div class="buttonContainer">
                             <a href="#" id="codeEditorFullScreen" class="button darkButton">Full screen</a>
                         </div>
-                        <span class="text margin-t-50">File: </span>
-                        <span class="data"><?php echo $cdn['title']; ?></span>
+                        <div class="buttonContainer">
+                            <form action="/admin/cdn/<?php echo $cdn['id']; ?>/import-all" method="POST">
+                                <input type="submit" name="submit" value="Import all" class="button lightButton margin-t-10 margin-r-10"/>
+                                <input type="hidden" name="token" value="<?php Csrf::token('add');?>" />
+                            </form>
+                            <form action="/admin/cdn/<?php echo $cdn['id']; ?>/export-all" method="POST">
+                                <input type="submit" name="submit" value="Export all" class="button lightButton margin-t-10"/>
+                                <input type="hidden" name="token" value="<?php Csrf::token('add');?>" />
+                            </form>
+                        </div>
                         <form class="cdnForm" action="/admin/cdn/<?php echo $cdn['id']; ?>/export-pages" method="POST">
                             <select name="pages[]" multiple>
                                 <?php foreach($importedPages as $importedPage) { ?>
