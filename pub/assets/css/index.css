@@ -50,6 +50,9 @@
 .headerContainer .badge.widgets {
     left: 98px;
 }
+.headerContainer .badge.cdn {
+    left: 53px;
+}
 .index-container .create, .index-container .delete {
     font-size: 14px;
     font-weight: 500;

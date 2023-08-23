@@ -10,6 +10,7 @@
         <li><a href="/admin/widgets">Widgets</a></li>
         <li><a href="/admin/css">Css</a></li>
         <li><a href="/admin/js">Js</a></li>
+        <li><a href="/admin/cdn">Cdn</a></li>
         <li><a href="/admin/media">Media</a></li>
     </ul>
 </nav>

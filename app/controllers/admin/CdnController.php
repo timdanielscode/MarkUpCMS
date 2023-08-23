@@ -4,8 +4,33 @@ namespace app\controllers\admin;
 
 use app\controllers\Controller;
 use app\models\Cdn;
+use database\DB;
+use extensions\Pagination;
 
 class CdnController extends Controller {
+
+    public function index() {
+
+        $cdns = DB::try()->all('cdn')->fetch();
+
+        $search = get('search');
+
+        if(!empty($search) ) {
+
+            $cdns = $cdns($search);
+        }
+
+        $count = count($cdns);
+
+        $cdns = Pagination::get($cdns, 10);
+        $numberOfPages = Pagination::getPageNumbers();
+
+        $data['count'] = $count;
+        $data['cdns'] = $cdns;
+        $data['numberOfPages'] = $numberOfPages;
+
+        return $this->view('admin/cdn/index', $data);
+    }
 
     public function create() {
 
