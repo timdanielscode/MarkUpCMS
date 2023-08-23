@@ -38,7 +38,7 @@
                             </div>    
                         <?php } ?>
                     </div>
-                    <textarea name="body" id="code"><?php if(!empty($data['body'] )) { echo $data['body']; } ?></textarea>
+                    <textarea name="body" id="code"><?php if(!empty($data['body'] )) { echo htmlentities($data['body']); } ?></textarea>
                     <button name="submit" id="submit" type="submit" class="hiddenButton" value="submit">Update</button>
                     <input type="hidden" name="token" value="<?php Csrf::token('add'); ?>" />
                 </form>
@@ -228,6 +228,22 @@
         autoCloseTags: true,
         tabSize: 2
     });
+
+    /*var myCodeMirror = CodeMirror(function(elt) {
+
+        document.getElementById("code").parentNode.replaceChild(elt, document.getElementById("code"));
+        }, 
+            {
+            
+                theme: "monokai",
+        lineNumbers: true,
+        mode: 'text/html',
+        autoCloseTags: true,
+        tabSize: 2
+            
+        }
+        
+    );*/
 </script>
 <?php 
     $this->include('footer');
