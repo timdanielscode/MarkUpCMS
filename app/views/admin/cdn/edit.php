@@ -52,6 +52,14 @@
                         </div>
                         <span class="text margin-t-50">File: </span>
                         <span class="data"><?php echo $cdn['title']; ?></span>
+                        <form class="cdnForm" action="/admin/cdn/<?php echo $cdn['id']; ?>/export-pages" method="POST">
+                            <select name="pages[]" multiple>
+                                <?php foreach($importedPages as $importedPage) { ?>
+                                    <option value="<?php echo $importedPage['id']; ?>"><?php echo $importedPage['title']; ?></option>
+                                <?php } ?>
+                            </select>
+                        <input type="submit" name="export" value="Export" class="button blueButton"/>
+                        </form>
                         <form class="cdnForm" action="/admin/cdn/<?php echo $cdn['id']; ?>/import-pages" method="POST">
                             <select name="pages[]" multiple>
                                 <?php foreach($pages as $page) { ?>

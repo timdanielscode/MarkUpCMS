@@ -56,9 +56,11 @@ class CdnController extends Controller {
         $cdn = Cdn::get($request['id']);
 
         $pages = DB::try()->select('id, title')->from('pages')->where('removed', '!=', 1)->fetch();
+        $importedPages = DB::try()->select('id, title')->from('pages')->join('cdn_page')->on('cdn_page.page_id', '=', 'pages.id')->fetch();
 
         $data['cdn'] = $cdn;
         $data['pages'] = $pages;
+        $data['importedPages'] = $importedPages;
 
         return $this->view('admin/cdn/edit', $data);
     }
@@ -78,6 +80,8 @@ class CdnController extends Controller {
 
     public function importPage($request) {
 
+        $cdnId = $request['id'];
+
         foreach($request['pages'] as $pageId) {
 
             CdnPage::insert([
@@ -86,6 +90,20 @@ class CdnController extends Controller {
                 'cdn_id' => $request['id']
             ]);
         }
+
+        redirect("/admin/cdn/$cdnId/edit");
+    }
+
+    public function exportPage($request) {
+
+        $cdnId = $request['id'];
+
+        foreach($request['pages'] as $pageId) {
+
+            CdnPage::delete('page_id', $pageId);
+        }
+
+        redirect("/admin/cdn/$cdnId/edit");
     }
 
 
