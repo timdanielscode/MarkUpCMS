@@ -127,4 +127,5 @@ Route::middleware('login')->run(function() {
     Route::post('/admin/cdn/[id]/import-pages')->add('admin\CdnController', 'importPage');
     Route::post('/admin/cdn/[id]/export-pages')->add('admin\CdnController', 'exportPage');
     Route::post('/admin/cdn/delete')->add('admin\CdnController', 'delete');
+    Route::post('/admin/cdn/recover')->add('admin\CdnController', 'recover');
 });

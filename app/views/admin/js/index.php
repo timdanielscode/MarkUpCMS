@@ -46,8 +46,7 @@
                             <?php } else { ?>
                                 <td class="width-85">
                                 <span class="font-weight-500"><?php echo $jsFile['file_name'] . $jsFile['extension']; ?></span> |
-                                <a href="/admin/js/<?php echo $jsFile['id']; ?>/read" class="font-weight-300">Read</a> |
-                                <a href="/admin/js/<?php echo $jsFile['id']; ?>/recover" class="font-weight-300">Recover</a>
+                                <a href="/admin/js/<?php echo $jsFile['id']; ?>/read" class="font-weight-300">Read</a>
                             </td>
                             <?php } ?>
                             <td class="width-15">

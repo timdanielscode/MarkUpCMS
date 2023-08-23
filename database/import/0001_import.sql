@@ -240,3 +240,7 @@ CREATE TABLE cdn_page (
     page_id int(11) NOT NULl,
     cdn_id int(11) NOT NULL
 );
+
+ALTER TABLE cdn ADD has_content TINYINT AFTER content;
+ALTER TABLE cdn ADD removed TINYINT AFTER has_content;
+ALTER TABLE cdn ADD author varchar(50) AFTER removed;

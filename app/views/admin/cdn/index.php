@@ -46,8 +46,7 @@
                             <?php } else { ?>
                                 <td class="width-85">
                                 <span class="font-weight-500"><?php echo $cdn['title']; ?></span> |
-                                <a href="/admin/cdn/<?php echo $cdn['id']; ?>/read" class="font-weight-300">Read</a> |
-                                <a href="/admin/cdn/<?php echo $cdn['id']; ?>/recover" class="font-weight-300">Recover</a>
+                                <a href="/admin/cdn/<?php echo $cdn['id']; ?>/read" class="font-weight-300">Read</a>
                             </td>
                             <?php } ?>
                             <td class="width-15">

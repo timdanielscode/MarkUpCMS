@@ -179,6 +179,26 @@ class CdnController extends Controller {
         }
     }
 
+    public function recover($request) {
+
+        if(!empty($request['recoverIds']) && $request['recoverIds'] !== null) {
+
+            $recoverIds = explode(',', $request['recoverIds']);
+            
+            foreach($recoverIds as $request['id'] ) {
+
+                $cdn = DB::try()->select('removed')->from('cdn')->where('id', '=', $request['id'])->first();
+
+                Cdn::update(['id' => $request['id']], [
+
+                    'removed'  => 0
+                ]);
+            }
+        }
+
+        redirect("/admin/cdn");
+    }
+
     public function delete($request) {
 
         $deleteIds = explode(',', $request['deleteIds']);
