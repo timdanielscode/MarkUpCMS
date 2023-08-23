@@ -43,7 +43,7 @@ class RenderPageController extends Controller {
                 }
             }
 
-            $data['form'] = DB::try()->select('content')->from('forms')->first();
+            $data['cdns'] = DB::try()->select('content')->from('cdn')->fetch();
             $data['post'] = $post;
             $data['cssFiles'] = $cssFiles;
             $data['jsFiles'] = $jsFiles;
