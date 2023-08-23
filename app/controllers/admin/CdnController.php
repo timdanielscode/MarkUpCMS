@@ -10,8 +10,19 @@ use app\models\CdnPage;
 use core\Csrf;
 use validation\Rules;
 use core\Session;
+use core\http\Response;
 
 class CdnController extends Controller {
+
+    private function ifExists($id) {
+
+        $cdn = new Cdn();
+
+        if(empty($cdn->ifRowExists($id)) ) {
+
+            return Response::statusCode(404)->view("/404/404") . exit();
+        }
+    }
 
     public function index() {
 
@@ -78,6 +89,8 @@ class CdnController extends Controller {
 
     public function read($request) {
 
+        $this->ifExists($request['id']);
+
         $cdn = Cdn::get($request['id']);
 
         $data['cdn'] = $cdn;
@@ -86,6 +99,8 @@ class CdnController extends Controller {
     }
 
     public function edit($request) {
+
+        $this->ifExists($request['id']);
 
         $cdn = Cdn::get($request['id']);
 
@@ -240,6 +255,8 @@ class CdnController extends Controller {
             
             foreach($recoverIds as $request['id'] ) {
 
+                $this->ifExists($request['id']);
+
                 $cdn = DB::try()->select('removed')->from('cdn')->where('id', '=', $request['id'])->first();
 
                 Cdn::update(['id' => $request['id']], [
@@ -260,6 +277,8 @@ class CdnController extends Controller {
 
             foreach($deleteIds as $request['id']) {
 
+                $this->ifExists($request['id']);
+                
                 $cdn = DB::try()->select('removed')->from('cdn')->where('id', '=', $request['id'])->first();
 
                 if($cdn['removed'] !== 1) {

@@ -11,6 +11,11 @@ class Cdn extends Model {
         self::table('cdn');
     }
 
+    public function ifRowExists($id) {
+
+        return DB::try()->select('id')->from('cdn')->where('id', '=', $id)->first();
+    }
+
     public function orderedCdns($searchValue = null) {
 
         if(!empty($searchValue) && $searchValue !== null) {
