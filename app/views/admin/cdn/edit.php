@@ -45,11 +45,21 @@
                     <div class="sidebarContainer">
                         <div class="mainButtonContainer">
                             <label for="submit" class="button greenButton margin-r-10">Update</label>
-                            <a href="/admin/js" class="button blueButton">Back</a>
+                            <a href="/admin/cdn" class="button blueButton">Back</a>
                         </div>
                         <div class="buttonContainer">
                             <a href="#" id="codeEditorFullScreen" class="button darkButton">Full screen</a>
                         </div>
+                        <span class="text margin-t-50">File: </span>
+                        <span class="data"><?php echo $cdn['title']; ?></span>
+                        <form class="cdnForm" action="/admin/cdn/<?php echo $cdn['id']; ?>/import-pages" method="POST">
+                            <select name="pages[]" multiple>
+                                <?php foreach($pages as $page) { ?>
+                                    <option value="<?php echo $page['id']; ?>"><?php echo $page['title']; ?></option>
+                                <?php } ?>
+                            </select>
+                        <input type="submit" name="import" value="Import" class="button greenButton"/>
+                        </form>
                     </div>
                 </div>
             </div>

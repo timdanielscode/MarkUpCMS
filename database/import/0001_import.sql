@@ -235,3 +235,8 @@ CREATE TABLE cdn (
     created_at DATETIME NOT NULL,
     updated_at DATETIME NOT NULL
 );
+
+CREATE TABLE cdn_page (
+    page_id int(11) NOT NULl,
+    cdn_id int(11) NOT NULL
+);

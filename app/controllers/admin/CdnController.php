@@ -6,6 +6,7 @@ use app\controllers\Controller;
 use app\models\Cdn;
 use database\DB;
 use extensions\Pagination;
+use app\models\CdnPage;
 
 class CdnController extends Controller {
 
@@ -54,7 +55,10 @@ class CdnController extends Controller {
 
         $cdn = Cdn::get($request['id']);
 
+        $pages = DB::try()->select('id, title')->from('pages')->where('removed', '!=', 1)->fetch();
+
         $data['cdn'] = $cdn;
+        $data['pages'] = $pages;
 
         return $this->view('admin/cdn/edit', $data);
     }
@@ -71,5 +75,18 @@ class CdnController extends Controller {
         ]);
         redirect("/admin/cdn/$id/edit");
     }
+
+    public function importPage($request) {
+
+        foreach($request['pages'] as $pageId) {
+
+            CdnPage::insert([
+
+                'page_id' => $pageId,
+                'cdn_id' => $request['id']
+            ]);
+        }
+    }
+
 
 }

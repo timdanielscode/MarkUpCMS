@@ -124,4 +124,5 @@ Route::middleware('login')->run(function() {
     Route::post('/admin/widgets/recover')->add('admin\WidgetController', 'recover');
 
     Route::crud('/admin/cdn', '[id]')->add('admin\CdnController', 'crud');
+    Route::post('/admin/cdn/[id]/import-pages')->add('admin\CdnController', 'importPage');
 });
