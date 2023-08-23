@@ -13,7 +13,6 @@ if(!empty($postPaths) && $postPaths !== null) {
     foreach($postPaths as $postPath) {
 
         Route::get($postPath['slug'])->add('RenderPageController', 'render');
-        Route::post($postPath['slug'])->add('SendFormMailController', 'send');
     }
 } else {
     
@@ -123,6 +122,4 @@ Route::middleware('login')->run(function() {
     Route::crud('/admin/widgets', '[id]')->add('admin\WidgetController', 'crud');
     Route::post('/admin/widgets/delete')->add('admin\WidgetController', 'delete');
     Route::post('/admin/widgets/recover')->add('admin\WidgetController', 'recover');
-
-    Route::crud('/admin/forms', '[id]')->add('admin\FormController', 'crud');
 });
