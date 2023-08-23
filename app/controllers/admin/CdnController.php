@@ -7,6 +7,8 @@ use app\models\Cdn;
 use database\DB;
 use extensions\Pagination;
 use app\models\CdnPage;
+use core\Csrf;
+use validation\Rules;
 
 class CdnController extends Controller {
 
@@ -35,20 +37,36 @@ class CdnController extends Controller {
 
     public function create() {
 
-        return $this->view('admin/cdn/create');
+        $data['rules'] = [];
+
+        return $this->view('admin/cdn/create', $data);
     }
 
     public function store($request) {
 
-        Cdn::insert([
+        if(submitted('submit') && Csrf::validate(Csrf::token('get'), post('token') ) === true) {
 
-            'title' => $request['title'],
-            'content' => $request['code'],
-            'created_at' => date('Y-m-d H:i:s', $_SERVER['REQUEST_TIME']),
-            'updated_at' => date('Y-m-d H:i:s', $_SERVER['REQUEST_TIME'])
-        ]);
+            $rules = new Rules();
 
-        redirect('/admin/cdn');
+            $unique = DB::try()->select('id')->from('cdn')->where('title', '=', $request['title'])->fetch();
+
+            if($rules->create_cdn($unique)->validated() ) {
+
+                Cdn::insert([
+
+                    'title' => $request['title'],
+                    'content' => $request['code'],
+                    'created_at' => date('Y-m-d H:i:s', $_SERVER['REQUEST_TIME']),
+                    'updated_at' => date('Y-m-d H:i:s', $_SERVER['REQUEST_TIME'])
+                ]);
+
+                redirect('/admin/cdn');
+            } else {
+
+                $data['rules'] = $rules->errors;
+                return $this->view('admin/cdn/create', $data);
+            }
+        }
     }
 
     public function edit($request) {
@@ -126,6 +144,4 @@ class CdnController extends Controller {
 
         redirect("/admin/cdn/$cdnId/edit");
     }
-
-
 }

@@ -341,6 +341,16 @@ class Rules {
         return $this;
     }
 
+    public function create_cdn($unique) {
+
+        $validation = new Validate();
+        
+        $validation->input('title')->as('Title')->rules(['required' => true, 'max' => 49, 'special' => true, 'unique' => $unique]);
+        
+        $this->errors = $validation->errors;
+        return $this;
+    }
+
     /**
      * Validating validation rules
      * On fail, returning view with extracted validation error rules and if exists request data

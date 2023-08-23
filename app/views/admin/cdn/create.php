@@ -25,9 +25,14 @@
         <div class="row">
             <div class="col10 col9-L">
                 <div class="create-container">
-                    <form action="store" method="POST" class="form-code">
+                    <form id="editorForm" action="store" method="POST" class="form-code">
                         <div class="form-parts">
                             <input name="title" type="text" id="title" placeholder="Title" autofocus>
+                            <?php if(!empty(Errors::get($rules, 'title')) && Errors::get($rules, 'title') !== null) { ?>
+                                <div class="error-messages margin-b-10 margin-tm-10 font-size-14">
+                                    <span><?php echo Errors::get($rules, 'title'); ?></span>
+                                </div>    
+                            <?php } ?> 
                             <textarea name="code" id="code"></textarea>
                         </div>
                         <div class="form-parts">
