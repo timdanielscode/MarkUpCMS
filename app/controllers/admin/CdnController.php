@@ -15,13 +15,14 @@ class CdnController extends Controller {
 
     public function index() {
 
-        $cdns = DB::try()->all('cdn')->fetch();
+        $cdn = new Cdn();
+        $cdns = $cdn->orderedCdns();
 
         $search = get('search');
 
         if(!empty($search) ) {
 
-            $cdns = $cdns($search);
+            $cdns = $cdn->orderedCdns($search);
         }
 
         $count = count($cdns);
