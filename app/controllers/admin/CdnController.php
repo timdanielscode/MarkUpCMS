@@ -76,6 +76,15 @@ class CdnController extends Controller {
         }
     }
 
+    public function read($request) {
+
+        $cdn = Cdn::get($request['id']);
+
+        $data['cdn'] = $cdn;
+
+        return $this->view('admin/cdn/read', $data);
+    }
+
     public function edit($request) {
 
         $cdn = Cdn::get($request['id']);
