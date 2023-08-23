@@ -20,10 +20,11 @@
     $this->include('navbar');
 ?>
 
-    <div class="read-container">
+    
         <div class="row">
             <div class="col10 col9-L">
-                <form action="update" method="POST" class="form-code">
+            <div class="read-container">
+                <form action="update" method="POST" class="form-code" id="editorForm">
                     <div class="form-parts">
                         <input name="filename" type="text" id="filename" placeholder="Filename" value="<?php echo $file['file_name']; ?>">
                         <textarea name="code" id="code"><?php echo $code; ?></textarea>
@@ -33,12 +34,13 @@
                         <input type="hidden" name="token" value="<?php Csrf::token('add');?>" />
                     </div>
                 </form>
+                </div>
             </div>
             <div class="col2 col3-L">
                 <div id="sidebar" class="width-25-L">
                     <div class="sidebarContainer">
                         <div class="mainButtonContainer">
-                            <a href="/admin/css" class="button">Back</a>
+                            <a href="/admin/css" class="button darkBlueButton">Back</a>
                         </div>
                         <span class="text">File: </span>
                         <span class="data"><?php echo $file['file_name'] . $file['extension']; ?></span>
@@ -46,7 +48,7 @@
                 </div>
             </div>
         </div>
-    </div>
+   
 
     <script>
         var editor = CodeMirror.fromTextArea(document.getElementById("code"), {
@@ -56,8 +58,6 @@
             autoCloseBrackets: true,
             tabSize: 2
         });
-        editor.setSize('95%', "80vh");
-    
     </script>
     
 

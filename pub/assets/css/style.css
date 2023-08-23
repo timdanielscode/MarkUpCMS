@@ -342,26 +342,6 @@ h3 {
 }
 
 /*
-    code editor
-*/
-.fullscreen {
-    position: absolute !important;
-    top: 0;
-    bottom: 0;
-    left: 0;
-    right: 0;
-    z-index: 99999;
-    width: 100% !important;
-    height: 100% !important;
-}
-.CodeMirror.cm-s-monokai {
-    background: #161e2b !important;
-}
-.cm-s-monokai .CodeMirror-linenumber {
-    background: #161e2b !important;
-}
-
-/*
     Validation rules
 */
 .error-messages {

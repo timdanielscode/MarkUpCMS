@@ -15,6 +15,29 @@
     padding: 10px 0px 10px 10px;
     border-radius: 3px;
 }
+#editorForm {
+    position: relative;
+}
+.CodeMirror.cm-s-monokai {
+    background: #161e2b !important;
+}
+.cm-s-monokai .CodeMirror-linenumber {
+    background: #161e2b !important;
+}
+.CodeMirror {
+    position: absolute !important;
+    width: 95% !important;
+    height: 80vh !important;
+}
+.fullscreen {
+    top: 0;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    z-index: 99999;
+    width: 100% !important;
+    height: 100% !important;
+}
 /*
     Sidebar
 */

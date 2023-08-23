@@ -28,7 +28,7 @@
         <div class="row">
             <div class="col10 col9-L">
                 <div class="create-container">
-                    <form action="store" method="POST" class="form-code">
+                    <form id="editorForm" action="store" method="POST" class="form-code">
                         <div class="form-parts">
                             <input type="text" autofocus name="title" type="title" id="title" placeholder="Title" autofocus>
                             <?php if(!empty(Errors::get($rules, 'title')) && Errors::get($rules, 'title') !== null) { ?>
@@ -70,7 +70,6 @@
             autoCloseTags: true,
             tabSize: 2
         });
-        editor.setSize('95%', "80vh");
     
     </script>
     

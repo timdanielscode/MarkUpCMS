@@ -28,7 +28,7 @@
         <div class="row">
             <div class="col10 col9-L">
                 <div class="create-container">
-                    <form action="store" method="POST" class="form-code">
+                    <form action="store" method="POST" class="form-code" id="editorForm">
                         <div class="form-parts">
                             <input name="title" type="text" id="title" placeholder="Title" autofocus>
                             <?php if(!empty(Errors::get($rules, 'title')) && Errors::get($rules, 'title') !== null) { ?>
@@ -65,8 +65,6 @@
             autoCloseBrackets: true,
             tabSize: 2
         });
-        editor.setSize('95%', "80vh");
-    
     </script>
 
     
