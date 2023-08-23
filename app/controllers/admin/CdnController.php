@@ -55,14 +55,35 @@ class CdnController extends Controller {
 
         $cdn = Cdn::get($request['id']);
 
-        $pages = DB::try()->select('id, title')->from('pages')->where('removed', '!=', 1)->fetch();
         $importedPages = DB::try()->select('id, title')->from('pages')->join('cdn_page')->on('cdn_page.page_id', '=', 'pages.id')->fetch();
+        $pages = $this->getPages($importedPages);
 
         $data['cdn'] = $cdn;
         $data['pages'] = $pages;
         $data['importedPages'] = $importedPages;
 
         return $this->view('admin/cdn/edit', $data);
+    }
+
+    private function getPages($pages) {
+
+        if(!empty($pages) && $pages !== null) {
+
+            $importedIds = [];
+
+            foreach($pages as $page) {
+    
+                array_push($importedIds, $page['id']);
+            }
+    
+            $importedIds = implode(',', $importedIds);
+    
+            $otherPages = DB::try()->select('id, title')->from('pages')->whereNotIn('id', $importedIds)->and('pages.removed', '!=', 1)->fetch();
+        } else {
+            $otherPages = DB::try()->select('id, title')->from('pages')->where('removed', '!=', 1)->fetch();
+        }
+
+        return $otherPages;
     }
 
     public function update($request) {
