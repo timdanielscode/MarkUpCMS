@@ -9,6 +9,7 @@ use extensions\Pagination;
 use app\models\CdnPage;
 use core\Csrf;
 use validation\Rules;
+use core\Session;
 
 class CdnController extends Controller {
 
@@ -50,12 +51,17 @@ class CdnController extends Controller {
 
             $unique = DB::try()->select('id')->from('cdn')->where('title', '=', $request['title'])->fetch();
 
+            if(!empty($request['content']) && $request['content'] !== null) { $hasContent = 1; } else { $hasContent = 0; }
+
             if($rules->create_cdn($unique)->validated() ) {
 
                 Cdn::insert([
 
                     'title' => $request['title'],
-                    'content' => $request['code'],
+                    'content' => $request['content'],
+                    'has_content' => $hasContent,
+                    'removed'   => 0,
+                    'author' => Session::get('username'),
                     'created_at' => date('Y-m-d H:i:s', $_SERVER['REQUEST_TIME']),
                     'updated_at' => date('Y-m-d H:i:s', $_SERVER['REQUEST_TIME'])
                 ]);
@@ -115,12 +121,15 @@ class CdnController extends Controller {
 
             $rules = new Rules();
 
+            if(!empty($request['content']) && $request['content'] !== null) { $hasContent = 1; } else { $hasContent = 0; }
+
             if($rules->edit_cdn($unique)->validated() ) {
 
                 Cdn::update(['id' => $id], [
 
                     'title'     => $request['title'],
                     'content' => $request['content'],
+                    'has_content'   => $hasContent,
                     'updated_at' => date('Y-m-d H:i:s', $_SERVER['REQUEST_TIME'])
                 ]);
 
