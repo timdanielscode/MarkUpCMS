@@ -129,14 +129,21 @@
     left: 20px;
     z-index: 9;
 }
-.layer {
-    width: 87%;
-    z-index: 99;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
-    height: 90%;
+.cardContainer .layer {
+    height: 6px;
+    width: 75%;
+    left: 20px;
+    bottom: 8px;
     position: absolute;
+    z-index: 99;
+}
+.cardContainerSecondRow .layer {
+    position: absolute;
+    top: 6px;
+    left: 84px;
+    height: 7px;
+    width: 75%;
+    z-index: 99;
 }
 .stopMousemoveEvent {
     height: 100%;
