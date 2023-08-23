@@ -57,11 +57,11 @@
                         </div>
                         <div class="buttonContainer">
                             <form action="/admin/css/<?php echo $data['id']; ?>/link-all" method="POST">
-                                <input type="submit" name="submit" class="button greenButton margin-r-10" value="Link on all"/>
+                                <input type="submit" name="submit" class="button lightButton margin-r-10" value="Link on all"/>
                                 <input type="hidden" name="token" value="<?php Csrf::token('add');?>" />
                             </form>
                             <form action="/admin/css/<?php echo $data['id']; ?>/unlink-all" method="POST">
-                                <input type="submit" name="submit" class="button redButton" value="Unlink all"/>
+                                <input type="submit" name="submit" class="button lightButton" value="Unlink all"/>
                                 <input type="hidden" name="token" value="<?php Csrf::token('add');?>" />
                             </form>
                         </div>
@@ -74,7 +74,7 @@
                                     <option value="<?php echo $page['id']; ?>"><?php echo $page['title']; ?></option>
                                 <?php } ?>
                             </select>
-                            <input type="submit" name="submit" class="button redButton" value="Unlink"/>
+                            <input type="submit" name="submit" class="button blueButton" value="Unlink"/>
                             <input type="hidden" name="token" value="<?php Csrf::token('add');?>" />
                         </form>
                         <form action="/admin/css/<?php echo $data['id']; ?>/link-pages" method="POST" class="linkCssForm">

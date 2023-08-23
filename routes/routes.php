@@ -122,4 +122,6 @@ Route::middleware('login')->run(function() {
     Route::crud('/admin/widgets', '[id]')->add('admin\WidgetController', 'crud');
     Route::post('/admin/widgets/delete')->add('admin\WidgetController', 'delete');
     Route::post('/admin/widgets/recover')->add('admin\WidgetController', 'recover');
+
+    Route::crud('/admin/cdn', '[id]')->add('admin\CdnController', 'crud');
 });

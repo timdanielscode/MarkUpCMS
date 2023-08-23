@@ -228,18 +228,10 @@ CREATE TABLE websiteSlug (
     updated_at DATETIME NOT NULL
 );
 
-CREATE TABLE forms (
+CREATE TABLE cdn (
     id int(11) AUTO_INCREMENT PRIMARY KEY,
     title VARCHAR(50) NOT NULL,
     content MEDIUMTEXT NOT NULL,
     created_at DATETIME NOT NULL,
     updated_at DATETIME NOT NULL
 );
-
-ALTER TABLE forms ADD mailHost VARCHAR(50) AFTER content;
-ALTER TABLE forms ADD mailUsername VARCHAR(50) AFTER mailHost;
-ALTER TABLE forms ADD mailPassword VARCHAR(50) AFTER mailUsername;
-ALTER TABLE forms ADD mailPort INT(4) AFTER mailPassword;
-ALTER TABLE forms ADD mailSubject VARCHAR(50) AFTER mailPort;
-ALTER TABLE forms ADD mailBody MEDIUMTEXT AFTER mailSubject;
-ALTER TABLE forms ADD mailAltBody MEDIUMTEXT AFTER mailBody;
