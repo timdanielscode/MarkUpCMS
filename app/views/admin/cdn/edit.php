@@ -63,7 +63,8 @@
                                     <option value="<?php echo $importedPage['id']; ?>"><?php echo $importedPage['title']; ?></option>
                                 <?php } ?>
                             </select>
-                        <input type="submit" name="export" value="Export" class="button blueButton"/>
+                            <input type="submit" name="submit" value="Export" class="button blueButton"/>
+                            <input type="hidden" name="token" value="<?php Csrf::token('add');?>" />
                         </form>
                         <form class="cdnForm" action="/admin/cdn/<?php echo $cdn['id']; ?>/import-pages" method="POST">
                             <select name="pages[]" multiple>
@@ -71,7 +72,8 @@
                                     <option value="<?php echo $page['id']; ?>"><?php echo $page['title']; ?></option>
                                 <?php } ?>
                             </select>
-                        <input type="submit" name="import" value="Import" class="button greenButton"/>
+                            <input type="submit" name="submit" value="Import" class="button greenButton"/>
+                            <input type="hidden" name="token" value="<?php Csrf::token('add');?>" />
                         </form>
                     </div>
                 </div>

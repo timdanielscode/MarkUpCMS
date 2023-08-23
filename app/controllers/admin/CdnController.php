@@ -146,29 +146,62 @@ class CdnController extends Controller {
 
     public function importPage($request) {
 
-        $cdnId = $request['id'];
+        if(submitted("submit") === true && Csrf::validate(Csrf::token('get'), post('token')) === true ) {
 
-        foreach($request['pages'] as $pageId) {
+            $cdnId = $request['id'];
 
-            CdnPage::insert([
+            foreach($request['pages'] as $pageId) {
 
-                'page_id' => $pageId,
-                'cdn_id' => $request['id']
-            ]);
+                CdnPage::insert([
+
+                    'page_id' => $pageId,
+                    'cdn_id' => $request['id']
+                ]);
+            }
+
+            redirect("/admin/cdn/$cdnId/edit");
         }
-
-        redirect("/admin/cdn/$cdnId/edit");
     }
 
     public function exportPage($request) {
 
-        $cdnId = $request['id'];
+        if(submitted("submit") === true && Csrf::validate(Csrf::token('get'), post('token')) === true ) {
 
-        foreach($request['pages'] as $pageId) {
+            $cdnId = $request['id'];
 
-            CdnPage::delete('page_id', $pageId);
+            foreach($request['pages'] as $pageId) {
+
+                CdnPage::delete('page_id', $pageId);
+            }
+
+            redirect("/admin/cdn/$cdnId/edit");
+        }
+    }
+
+    public function delete($request) {
+
+        $deleteIds = explode(',', $request['deleteIds']);
+
+        if(!empty($deleteIds) && !empty($deleteIds[0])) {
+
+            foreach($deleteIds as $request['id']) {
+
+                $cdn = DB::try()->select('removed')->from('cdn')->where('id', '=', $request['id'])->first();
+
+                if($cdn['removed'] !== 1) {
+
+                    Cdn::update(['id' => $request['id']], [
+
+                        'removed'  => 1
+                    ]);
+
+                } else if($cdn['removed'] === 1) {
+
+                    Cdn::delete("id", $request['id']);
+                }
+            }
         }
 
-        redirect("/admin/cdn/$cdnId/edit");
+        redirect("/admin/cdn");
     }
 }
