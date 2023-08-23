@@ -79,6 +79,7 @@ class CdnController extends Controller {
         $data['cdn'] = $cdn;
         $data['pages'] = $pages;
         $data['importedPages'] = $importedPages;
+        $data['rules'] = [];
 
         return $this->view('admin/cdn/edit', $data);
     }
@@ -106,15 +107,32 @@ class CdnController extends Controller {
 
     public function update($request) {
 
-        $id = $request['id'];
+        if(submitted('submit') && Csrf::validate(Csrf::token('get'), post('token') ) === true) {
 
-        Cdn::update(['id' => $id], [
+            $id = $request['id'];
 
-            'title'     => $request['title'],
-            'content' => $request['content'],
-            'updated_at' => date('Y-m-d H:i:s', $_SERVER['REQUEST_TIME'])
-        ]);
-        redirect("/admin/cdn/$id/edit");
+            $unique = DB::try()->select('id')->from('cdn')->where('title', '=', $request['title'])->and('id', '!=', $request['id'])->fetch();
+
+            $rules = new Rules();
+
+            if($rules->edit_cdn($unique)->validated() ) {
+
+                Cdn::update(['id' => $id], [
+
+                    'title'     => $request['title'],
+                    'content' => $request['content'],
+                    'updated_at' => date('Y-m-d H:i:s', $_SERVER['REQUEST_TIME'])
+                ]);
+
+                redirect("/admin/cdn/$id/edit");
+
+            } else {
+
+                $data['cdn'] = Cdn::get($request['id']);
+                $data['rules'] = $rules->errors;
+                return $this->view('admin/cdn/edit', $data);
+            }
+        }
     }
 
     public function importPage($request) {

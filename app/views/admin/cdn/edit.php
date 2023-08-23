@@ -31,6 +31,11 @@
                     <form id="editorForm" action="/admin/cdn/<?php echo $cdn['id']; ?>/update" method="POST" class="form-code">
                         <div class="form-parts">
                             <input name="title" type="text" id="title" placeholder="Title" value="<?php echo $cdn['title']; ?>">
+                            <?php if(!empty(Errors::get($rules, 'title')) && Errors::get($rules, 'title') !== null) { ?>
+                                <div class="error-messages margin-b-10 margin-tm-10 font-size-14">
+                                    <span><?php echo Errors::get($rules, 'title'); ?></span>
+                                </div>    
+                            <?php } ?> 
                             <textarea name="content" id="content"><?php echo $cdn['content']; ?></textarea>
                         </div>
                         <div class="form-parts">
