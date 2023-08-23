@@ -1,0 +1,14 @@
+.edit-container, .create-container, .read-container {
+    margin-top: 20px;
+    margin-left: 5%;
+}
+#title {
+    outline: none;
+    font-size: 16px;
+    margin-bottom: 20px;
+    width: 95%;
+    border: 1px solid #aaa;
+    box-sizing: border-box;
+    padding: 10px 0px 10px 10px;
+    border-radius: 3px;
+}
