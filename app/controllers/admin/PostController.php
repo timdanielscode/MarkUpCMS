@@ -361,6 +361,20 @@ class PostController extends Controller {
                 $postSlug = "/" . $postSlug[array_key_last($postSlug)];
                 $data['data']['postSlug'] = $postSlug;
 
+                $widgets = DB::try()->select('id, title')->from('widgets')->where('removed', '!=', 1)->fetch();
+
+                $data['data']['applicableWidgets'] = DB::try()->select('widgets.id, widgets.title')->from('widgets')->join('page_widget')->on('page_widget.widget_id', '=', 'widgets.id')->where('page_widget.page_id', '=', $request['id'])->and('widgets.removed', '!=', 1)->fetch();
+                
+                if(!empty($data['data']['applicableWidgets']) && $data['data']['applicableWidgets'] !== null) {
+        
+                    $data['data']['inapplicableWidgets'] = $this->getInapplicableWidgets($data['data']['applicableWidgets']);
+                } else {
+                    $data['data']['inapplicableWidgets'] = $widgets;
+                }
+        
+                $data['data']['exportCdns'] = DB::try()->select('id, title')->from('cdn')->join('cdn_page')->on("cdn_page.cdn_id", '=', 'cdn.id')->where('cdn_page.page_id', '=', $request['id'])->and('removed', '!=', 1)->fetch();
+                $data['data']['importCdns'] = $this->getImportCdns($data['data']['exportCdns']);                
+
                 $data['rules'] = $rules->errors;
 
                 return $this->view('admin/posts/edit', $data);
@@ -517,6 +531,20 @@ class PostController extends Controller {
                 $postSlug = explode('/', $data['data']['slug']);
                 $postSlug = "/" . $postSlug[array_key_last($postSlug)];
                 $data['data']['postSlug'] = $postSlug;
+
+                $widgets = DB::try()->select('id, title')->from('widgets')->where('removed', '!=', 1)->fetch();
+
+                $data['data']['applicableWidgets'] = DB::try()->select('widgets.id, widgets.title')->from('widgets')->join('page_widget')->on('page_widget.widget_id', '=', 'widgets.id')->where('page_widget.page_id', '=', $request['id'])->and('widgets.removed', '!=', 1)->fetch();
+                
+                if(!empty($data['data']['applicableWidgets']) && $data['data']['applicableWidgets'] !== null) {
+        
+                    $data['data']['inapplicableWidgets'] = $this->getInapplicableWidgets($data['data']['applicableWidgets']);
+                } else {
+                    $data['data']['inapplicableWidgets'] = $widgets;
+                }
+        
+                $data['data']['exportCdns'] = DB::try()->select('id, title')->from('cdn')->join('cdn_page')->on("cdn_page.cdn_id", '=', 'cdn.id')->where('cdn_page.page_id', '=', $request['id'])->and('removed', '!=', 1)->fetch();
+                $data['data']['importCdns'] = $this->getImportCdns($data['data']['exportCdns']);
 
                 $data['rules'] = $rules->errors;
 
@@ -710,6 +738,20 @@ class PostController extends Controller {
                 $postSlug = "/" . $postSlug[array_key_last($postSlug)];
                 $data['data']['postSlug'] = $postSlug;
 
+                $widgets = DB::try()->select('id, title')->from('widgets')->where('removed', '!=', 1)->fetch();
+
+                $data['data']['applicableWidgets'] = DB::try()->select('widgets.id, widgets.title')->from('widgets')->join('page_widget')->on('page_widget.widget_id', '=', 'widgets.id')->where('page_widget.page_id', '=', $request['id'])->and('widgets.removed', '!=', 1)->fetch();
+                
+                if(!empty($data['data']['applicableWidgets']) && $data['data']['applicableWidgets'] !== null) {
+        
+                    $data['data']['inapplicableWidgets'] = $this->getInapplicableWidgets($data['data']['applicableWidgets']);
+                } else {
+                    $data['data']['inapplicableWidgets'] = $widgets;
+                }
+        
+                $data['data']['exportCdns'] = DB::try()->select('id, title')->from('cdn')->join('cdn_page')->on("cdn_page.cdn_id", '=', 'cdn.id')->where('cdn_page.page_id', '=', $request['id'])->and('removed', '!=', 1)->fetch();
+                $data['data']['importCdns'] = $this->getImportCdns($data['data']['exportCdns']);
+
                 $data['rules'] = $rules->errors;
 
                 return $this->view('admin/posts/edit', $data);
@@ -777,6 +819,20 @@ class PostController extends Controller {
                 $postSlug = "/" . $postSlug[array_key_last($postSlug)];
                 $data['data']['postSlug'] = $postSlug;
 
+                $widgets = DB::try()->select('id, title')->from('widgets')->where('removed', '!=', 1)->fetch();
+
+                $data['data']['applicableWidgets'] = DB::try()->select('widgets.id, widgets.title')->from('widgets')->join('page_widget')->on('page_widget.widget_id', '=', 'widgets.id')->where('page_widget.page_id', '=', $request['id'])->and('widgets.removed', '!=', 1)->fetch();
+                
+                if(!empty($data['data']['applicableWidgets']) && $data['data']['applicableWidgets'] !== null) {
+        
+                    $data['data']['inapplicableWidgets'] = $this->getInapplicableWidgets($data['data']['applicableWidgets']);
+                } else {
+                    $data['data']['inapplicableWidgets'] = $widgets;
+                }
+        
+                $data['data']['exportCdns'] = DB::try()->select('id, title')->from('cdn')->join('cdn_page')->on("cdn_page.cdn_id", '=', 'cdn.id')->where('cdn_page.page_id', '=', $request['id'])->and('removed', '!=', 1)->fetch();
+                $data['data']['importCdns'] = $this->getImportCdns($data['data']['exportCdns']);
+
                 $data['rules'] = $rules->errors;
 
                 return $this->view('admin/posts/edit', $data);
@@ -842,6 +898,20 @@ class PostController extends Controller {
                 $postSlug = explode('/', $data['data']['slug']);
                 $postSlug = "/" . $postSlug[array_key_last($postSlug)];
                 $data['data']['postSlug'] = $postSlug;
+
+                $widgets = DB::try()->select('id, title')->from('widgets')->where('removed', '!=', 1)->fetch();
+
+                $data['data']['applicableWidgets'] = DB::try()->select('widgets.id, widgets.title')->from('widgets')->join('page_widget')->on('page_widget.widget_id', '=', 'widgets.id')->where('page_widget.page_id', '=', $request['id'])->and('widgets.removed', '!=', 1)->fetch();
+                
+                if(!empty($data['data']['applicableWidgets']) && $data['data']['applicableWidgets'] !== null) {
+        
+                    $data['data']['inapplicableWidgets'] = $this->getInapplicableWidgets($data['data']['applicableWidgets']);
+                } else {
+                    $data['data']['inapplicableWidgets'] = $widgets;
+                }
+        
+                $data['data']['exportCdns'] = DB::try()->select('id, title')->from('cdn')->join('cdn_page')->on("cdn_page.cdn_id", '=', 'cdn.id')->where('cdn_page.page_id', '=', $request['id'])->and('removed', '!=', 1)->fetch();
+                $data['data']['importCdns'] = $this->getImportCdns($data['data']['exportCdns']);
 
                 $data['rules'] = $rules->errors;
 
