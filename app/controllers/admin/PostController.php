@@ -395,11 +395,6 @@ class PostController extends Controller {
 
         $this->ifExists($request['id']);
 
-        Session::set('updateCategory', true);
-        Session::delete('updateJs');
-        Session::delete('updateCss');
-        Session::delete('updateMeta');
-
         if(submitted("submit") === true && Csrf::validate(Csrf::token('get'), post('token')) === true ) {
 
             $categoryId = $request['categories'];
@@ -487,11 +482,6 @@ class PostController extends Controller {
 
         $this->ifExists($request['id']);
 
-        Session::set('updateJs', true);
-        Session::delete('updateCss');
-        Session::delete('updateMeta');
-        Session::delete('updateCategory');
-
         if(submitted("submit") === true && Csrf::validate(Csrf::token('get'), post('token')) === true ) {
 
             $id = $request['id'];
@@ -512,11 +502,6 @@ class PostController extends Controller {
     public function includeJs($request) {
 
         $this->ifExists($request['id']);
-
-        Session::set('updateJs', true);
-        Session::delete('updateCss');
-        Session::delete('updateMeta');
-        Session::delete('updateCategory');
 
         if(submitted("submit") === true && Csrf::validate(Csrf::token('get'), post('token')) === true ) {
 
@@ -544,11 +529,6 @@ class PostController extends Controller {
 
         $this->ifExists($request['id']);
 
-        Session::set('updateCss', true);
-        Session::delete('updateJs');
-        Session::delete('updateMeta');
-        Session::delete('updateCategory');
-
         if(submitted("submit") === true && Csrf::validate(Csrf::token('get'), post('token')) === true ) {
 
             $id = $request['id'];
@@ -573,11 +553,6 @@ class PostController extends Controller {
     public function unLinkCss($request) {
 
         $this->ifExists($request['id']);
-
-        Session::set('updateCss', true);
-        Session::delete('updateJs');
-        Session::delete('updateMeta');
-        Session::delete('updateCategory');
 
         if(submitted("submit") === true && Csrf::validate(Csrf::token('get'), post('token')) === true ) {
 
@@ -667,11 +642,6 @@ class PostController extends Controller {
 
     public function updateMetadata($request) {
 
-        Session::set('updateMeta', true);
-        Session::delete('updateJs');
-        Session::delete('updateCss');
-        Session::delete('updateCategory');
-
         $this->ifExists($request['id']);
 
         if(submitted("submit") === true && Csrf::validate(Csrf::token('get'), post('token')) === true ) {
@@ -732,11 +702,6 @@ class PostController extends Controller {
     public function detachCategory($request) {
 
         $this->ifExists($request['id']);
-
-        Session::set('updateCategory', true);
-        Session::delete('updateJs');
-        Session::delete('updateCss');
-        Session::delete('updateMeta');
 
         if(submitted("submit") === true && Csrf::validate(Csrf::token('get'), post('token')) === true ) {
 
