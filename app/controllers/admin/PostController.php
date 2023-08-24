@@ -171,6 +171,14 @@ class PostController extends Controller {
 
     public function importCdns($request) {
 
+        Session::delete('widget');
+        Session::delete('category');
+        Session::delete('css');
+        Session::delete('js');
+        Session::delete('meta');
+
+        Session::set('cdn', true);
+
         $pageId = $request['id'];
 
         foreach($request['cdns'] as $cdnId) {
@@ -186,6 +194,14 @@ class PostController extends Controller {
     }
 
     public function exportCdns($request) {
+
+        Session::delete('widget');
+        Session::delete('category');
+        Session::delete('css');
+        Session::delete('js');
+        Session::delete('meta');
+
+        Session::set('cdn', true);
 
         $pageId = $request['id'];
 
@@ -282,6 +298,13 @@ class PostController extends Controller {
 
     public function update($request) {
 
+        Session::delete('cdn');
+        Session::delete('widget');
+        Session::delete('category');
+        Session::delete('css');
+        Session::delete('js');
+        Session::delete('meta');
+
         $this->ifExists($request['id']);
 
         if(submitted("submit") === true && Csrf::validate(Csrf::token('get'), post('token')) === true ) {
@@ -347,6 +370,14 @@ class PostController extends Controller {
 
     public function addWidget($request) {
 
+        Session::delete('cdn');
+        Session::delete('category');
+        Session::delete('css');
+        Session::delete('js');
+        Session::delete('meta');
+
+        Session::set('widget', true);
+
         $this->ifExists($request['id']);
 
         if(submitted("submit") === true && Csrf::validate(Csrf::token('get'), post('token')) === true ) {
@@ -372,6 +403,14 @@ class PostController extends Controller {
 
     public function removeWidget($request) {
 
+        Session::delete('cdn');
+        Session::delete('category');
+        Session::delete('css');
+        Session::delete('js');
+        Session::delete('meta');
+
+        Session::set('widget', true);
+
         $this->ifExists($request['id']);
 
         if(submitted("submit") === true && Csrf::validate(Csrf::token('get'), post('token')) === true ) {
@@ -392,6 +431,14 @@ class PostController extends Controller {
     }
 
     public function assignCategory($request) {
+
+        Session::delete('widget');
+        Session::delete('cdn');
+        Session::delete('css');
+        Session::delete('js');
+        Session::delete('meta');
+
+        Session::set('category', true);
 
         $this->ifExists($request['id']);
 
@@ -480,6 +527,14 @@ class PostController extends Controller {
 
     public function removeJs($request) {
 
+        Session::delete('widget');
+        Session::delete('cdn');
+        Session::delete('category');
+        Session::delete('css');
+        Session::delete('meta');
+
+        Session::set('js', true);
+
         $this->ifExists($request['id']);
 
         if(submitted("submit") === true && Csrf::validate(Csrf::token('get'), post('token')) === true ) {
@@ -500,6 +555,14 @@ class PostController extends Controller {
     }
 
     public function includeJs($request) {
+
+        Session::delete('widget');
+        Session::delete('cdn');
+        Session::delete('category');
+        Session::delete('css');
+        Session::delete('meta');
+
+        Session::set('js', true);
 
         $this->ifExists($request['id']);
 
@@ -527,6 +590,14 @@ class PostController extends Controller {
 
     public function linkCss($request) {
 
+        Session::delete('widget');
+        Session::delete('cdn');
+        Session::delete('category');
+        Session::delete('js');
+        Session::delete('meta');
+
+        Session::set('css', true);
+
         $this->ifExists($request['id']);
 
         if(submitted("submit") === true && Csrf::validate(Csrf::token('get'), post('token')) === true ) {
@@ -551,6 +622,14 @@ class PostController extends Controller {
     }
 
     public function unLinkCss($request) {
+
+        Session::delete('widget');
+        Session::delete('cdn');
+        Session::delete('category');
+        Session::delete('js');
+        Session::delete('meta');
+
+        Session::set('css', true);
 
         $this->ifExists($request['id']);
 
@@ -642,6 +721,14 @@ class PostController extends Controller {
 
     public function updateMetadata($request) {
 
+        Session::delete('widget');
+        Session::delete('cdn');
+        Session::delete('category');
+        Session::delete('css');
+        Session::delete('js');
+
+        Session::set('meta', true);
+
         $this->ifExists($request['id']);
 
         if(submitted("submit") === true && Csrf::validate(Csrf::token('get'), post('token')) === true ) {
@@ -700,6 +787,14 @@ class PostController extends Controller {
     }
 
     public function detachCategory($request) {
+
+        Session::delete('widget');
+        Session::delete('cdn');
+        Session::delete('css');
+        Session::delete('js');
+        Session::delete('meta');
+
+        Session::set('category', true);
 
         $this->ifExists($request['id']);
 
