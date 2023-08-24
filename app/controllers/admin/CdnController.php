@@ -104,7 +104,7 @@ class CdnController extends Controller {
 
         $cdn = Cdn::get($request['id']);
 
-        $importedPages = DB::try()->select('id, title')->from('pages')->join('cdn_page')->on('cdn_page.page_id', '=', 'pages.id')->fetch();
+        $importedPages = DB::try()->select('id, title')->from('pages')->join('cdn_page')->on('cdn_page.page_id', '=', 'pages.id')->where('cdn_page.cdn_id', '=', $request['id'])->and('pages.removed', '!=', 1)->fetch();
         $pages = $this->getPages($importedPages);
 
         $data['cdn'] = $cdn;
@@ -128,7 +128,7 @@ class CdnController extends Controller {
     
             $importedIds = implode(',', $importedIds);
     
-            $otherPages = DB::try()->select('id, title')->from('pages')->whereNotIn('id', $importedIds)->and('pages.removed', '!=', 1)->fetch();
+            $otherPages = DB::try()->select('id, title')->from('pages')->whereNotIn('id', $importedIds)->and('removed', '!=', 1)->fetch();
         } else {
             $otherPages = DB::try()->select('id, title')->from('pages')->where('removed', '!=', 1)->fetch();
         }
@@ -198,6 +198,8 @@ class CdnController extends Controller {
 
                 $pageIds = DB::try()->select('id')->from('pages')->fetch();
 
+                CdnPage::delete('cdn_id', $id);
+
                 foreach($pageIds as $pageId ) {
 
                     CdnPage::insert([
@@ -220,7 +222,7 @@ class CdnController extends Controller {
 
             foreach($request['pages'] as $pageId) {
 
-                CdnPage::delete('page_id', $pageId);
+                DB::try()->delete('cdn_page')->where('cdn_page.cdn_id', '=', $cdnId)->and('cdn_page.page_id', '=', $pageId)->run();
             }
 
             redirect("/admin/cdn/$cdnId/edit");
@@ -231,19 +233,13 @@ class CdnController extends Controller {
 
         if(submitted("submit") === true && Csrf::validate(Csrf::token('get'), post('token')) === true ) {
 
-            $id = $request['id'];
-
             if(!empty($request['id']) && $request['id'] !== null) {
+                
+                $id = $request['id'];
 
-                $pageIds = DB::try()->select('id')->from('pages')->fetch();
-
-                foreach($pageIds as $pageId ) {
-
-                    DB::try()->delete('cdn_page')->where('cdn_id', '=', $id)->and('page_id', '=', $pageId['id'])->run();
-                }
+                CdnPage::delete('cdn_id', $request['id']);
+                redirect("/admin/cdn/$id/edit");
             }
-
-            redirect("/admin/cdn/$id/edit");
         }
     }
 
