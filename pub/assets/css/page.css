@@ -57,7 +57,7 @@
     color: #333;
     font-size: 14px;
 }
-.sidebarContainer .buttonContainer:nth-child(4) {
+.sidebarContainer .buttonContainer:nth-child(5) {
     margin-bottom: 50px !important;
 }
 .updateSlugButton {
@@ -87,15 +87,15 @@
 #metaForm, .linkedCssFilesForm {
     margin-top: 50px;
 }
-.linkedCssFilesForm select, .cssFilesForm select, .linkedJsFilesForm select, .jsFilesForm select, .widgetForm select {
+.linkedCssFilesForm select, .cssFilesForm select, .linkedJsFilesForm select, .jsFilesForm select, .widgetForm select, .cdnForm select {
     height: 80px;
 }
-.AddCategory select, .linkedCssFilesForm select, .cssFilesForm select, .linkedJsFilesForm select, .jsFilesForm select, .widgetForm select {
+.AddCategory select, .linkedCssFilesForm select, .cssFilesForm select, .linkedJsFilesForm select, .jsFilesForm select, .widgetForm select, .cdnForm select {
     width: 100%;
     border: none;
     margin-top: 10px;
 }
-.AddCategory select option, .cssFilesForm select option, .linkedCssFilesForm select option, .linkedJsFilesForm select option, .jsFilesForm select option, .widgetForm select option {
+.AddCategory select option, .cssFilesForm select option, .linkedCssFilesForm select option, .linkedJsFilesForm select option, .jsFilesForm select option, .widgetForm select option, .cdnForm select option {
     padding: 4px 0 4px 10px;
 }   
 .widgetForm label {
@@ -106,7 +106,7 @@
     width: 100%;
     overflow: hidden;
 }
-.updateMetaDataForm label, .linkedCssFilesForm label, .cssFilesForm label, .linkedJsFilesForm label, .jsFilesForm label {
+.updateMetaDataForm label, .linkedCssFilesForm label, .cssFilesForm label, .linkedJsFilesForm label, .jsFilesForm label, .cdnForm label {
     margin-bottom: 10px;
     color: #333;
     font-size: 14px;

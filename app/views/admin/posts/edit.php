@@ -62,6 +62,9 @@
                     <div class="buttonContainer">
                         <a id="cssButton" class="button lightButton margin-r-10">Css</a>
                         <a id="jsButton" class="button lightButton margin-r-10">Js</a>
+                        <a id="cdnButton" class="button lightButton">Cdn</a>
+                    </div>
+                    <div class="buttonContainer">
                         <a id="widgetButton" class="button lightButton">Widgets</a>
                     </div>
                     <span class="text">Slug:</span>
@@ -79,6 +82,30 @@
                         <input class="button greenButton margin-t-10" type="submit" name="submit" value="Update"/>
                         <input type="hidden" name="token" value="<?php Csrf::token('add'); ?>" />
                     </form>
+                    <div id="cdn">
+                        <form action="/admin/posts/<?php echo $data['id']; ?>/export-cdns" method="POST" class="cdnForm margin-t-50">
+                            <label>Import cdn: </label>
+                            <select name="cdns[]" multiple>
+                                <?php foreach($data['exportCdns'] as $cdn) { ?>
+                                <option value="<?php echo $cdn['id']; ?>">
+                                    <?php echo $cdn['title']; ?>
+                                </option>
+                                <?php } ?>
+                                <input type="submit" name="submit" value="Export" class="button greenButton margin-t-20"/>
+                            </select>
+                        </form>
+                        <form action="/admin/posts/<?php echo $data['id']; ?>/import-cdns" method="POST" class="cdnForm margin-t-20">
+                            <label>Export cdn: </label>
+                            <select name="cdns[]" multiple>
+                                <?php foreach($data['importCdns'] as $cdn) { ?>
+                                <option value="<?php echo $cdn['id']; ?>">
+                                    <?php echo $cdn['title']; ?>
+                                </option>
+                                <?php } ?>
+                                <input type="submit" name="submit" value="Import" class="button greenButton margin-t-20"/>
+                            </select>
+                        </form>
+                    </div>
                     <div id="widget" class="<?php if(Session::exists('updateWidget') === false) { echo 'display-none'; } ?>">
                         <div id="applyWidget"></div>
                         <form class="widgetForm" action="/admin/posts/<?php echo $data['id']; ?>/remove-widget" method="POST">

@@ -8,6 +8,7 @@ use validation\Rules;
 use app\models\Post;
 use app\models\CategoryPage;
 use app\models\Category;
+use app\models\CdnPage;
 use core\Session;
 use database\DB;
 use extensions\Pagination;
@@ -160,9 +161,61 @@ class PostController extends Controller {
             $data['data']['inapplicableWidgets'] = $widgets;
         }
 
+        $data['data']['exportCdns'] = DB::try()->select('id, title')->from('cdn')->join('cdn_page')->on("cdn_page.cdn_id", '=', 'cdn.id')->where('cdn_page.page_id', '=', $request['id'])->and('removed', '!=', 1)->fetch();
+        $data['data']['importCdns'] = $this->getImportCdns($data['data']['exportCdns']);
+
         $data['rules'] = [];
 
         return $this->view('admin/posts/edit', $data);
+    }
+
+    public function importCdns($request) {
+
+        $pageId = $request['id'];
+
+        foreach($request['cdns'] as $cdnId) {
+
+            CdnPage::insert([
+
+                'page_id' => $request['id'],
+                'cdn_id' => $cdnId
+            ]);
+        }
+
+        redirect("/admin/posts/$pageId/edit");
+    }
+
+    public function exportCdns($request) {
+
+        $pageId = $request['id'];
+
+        foreach($request['cdns'] as $cdnId) {
+
+            DB::try()->delete('cdn_page')->where('page_id', '=', $pageId)->and('cdn_id', '=', $cdnId)->run();
+        }
+
+        redirect("/admin/posts/$pageId/edit");
+    }
+
+    private function getImportCdns($cdns) {
+
+        if(!empty($cdns) && $cdns !== null) {
+
+            $cdnIds = [];
+
+            foreach($cdns as $cdn) {
+
+                array_push($cdnIds, $cdn['id']);
+            }
+
+            $cdnIds = implode(',', $cdnIds);
+
+            $data = DB::try()->select('id, title')->from('cdn')->whereNotIn('id', $cdnIds)->and('removed', '!=', 1)->fetch();
+        } else {
+            $data = DB::try()->select('id, title')->from('cdn')->where('removed', '!=', 1)->fetch();
+        }
+
+        return $data;
     }
 
     private function getInapplicableWidgets($widgets) {
