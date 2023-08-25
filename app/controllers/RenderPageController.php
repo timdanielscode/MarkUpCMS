@@ -44,6 +44,7 @@ class RenderPageController extends Controller {
             }
 
             $data['cdns'] = DB::try()->select('content')->from('cdn')->join('cdn_page')->on('cdn.id', '=', 'cdn_page.cdn_id')->where('cdn_page.page_id', '=', $postId)->fetch();
+
             $data['post'] = $post;
             $data['cssFiles'] = $cssFiles;
             $data['jsFiles'] = $jsFiles;

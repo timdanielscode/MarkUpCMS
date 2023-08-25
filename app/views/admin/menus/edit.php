@@ -61,6 +61,7 @@
                         <select name="position" multiple>
                             <option value="top">Top</option>
                             <option value="bottom">Bottom</option>
+                            <option value="unset">Unset</option>
                         </select>
                         <input type="submit" name="submit" class="button greenButton" value="Update"/>
                         <input type="hidden" name="token" value="<?php Csrf::token('add'); ?>" />

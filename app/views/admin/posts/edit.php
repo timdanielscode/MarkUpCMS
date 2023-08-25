@@ -247,7 +247,7 @@
         </div>
     </div>
 </div>
-<script>
+<script nonce="2726c7f26c">
     var editor = CodeMirror.fromTextArea(document.getElementById("code"), {
         theme: "monokai",
         lineNumbers: true,
