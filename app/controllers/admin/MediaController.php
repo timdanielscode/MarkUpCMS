@@ -18,7 +18,7 @@ class MediaController extends Controller {
 
     public function __construct() {
 
-        if(empty(get('folder')) ) {
+        if(empty(Get::validate([get('folder')])) ) {
 
             $this->_folderPath = 'website/assets';
         } else {
@@ -41,7 +41,7 @@ class MediaController extends Controller {
         $media = new Media();
         $allMedia = $media->allMediaButOrdered();
         
-        $search = get('search');
+        $search = Get::validate([get('search')]);
 
         if(!empty($search) ) {
 
@@ -66,7 +66,7 @@ class MediaController extends Controller {
         $media = new Media();
         $allMedia = $media->allMediaButOrdered();
 
-        $search = get('search');
+        $search = Get::validate([get('search')]);
 
         if(!empty($search) ) {
 
@@ -88,10 +88,10 @@ class MediaController extends Controller {
         $folders = glob($this->_folderPath . '/*', GLOB_ONLYDIR);
         $files = DB::try()->select('*')->from('media')->where('media_folder', '=', $this->_folderPath)->fetch();
 
-        if(!empty(get('search'))) {
+        if(!empty(Get::validate([get('search')]))) {
 
-            $searchValue = get('search');
-            $files = DB::try()->select('*')->from('media')->where('media_filename', 'LIKE', '%'.$searchValue.'%')->or('media_filetype', 'LIKE', '%'.$searchValue.'%')->or('date_created_at', 'LIKE', '%'.$searchValue.'%')->or('date_updated_at', 'LIKE', '%'.$searchValue.'%')->or('time_created_at', 'LIKE', '%'.$searchValue.'%')->or('time_updated_at', 'LIKE', '%'.$searchValue.'%')->fetch();    
+            $searchValue = Get::validate([get('search')]);
+            $files = DB::try()->select('*')->from('media')->where('media_filename', 'LIKE', '%'.$searchValue.'%')->or('media_filetype', 'LIKE', '%'.$searchValue.'%')->or('updated_at', 'LIKE', '%'.$searchValue.'%')->or('created_at', 'LIKE', '%'.$searchValue.'%')->fetch();    
         } else if(!empty($_GET['type']) ) {
 
             $filesQuery = "SELECT * FROM media";
@@ -102,9 +102,9 @@ class MediaController extends Controller {
                 $count++;
 
                 if($count === 1) {
-                    $filesQuery .= " WHERE media_filetype LIKE " . "'%" . $value . "%'";
+                    $filesQuery .= " WHERE media_filetype LIKE " . "'%" . Get::validate([$value]) . "%'";
                 } else {
-                    $filesQuery .= " OR media_filetype LIKE " . "'%" . $value . "%'";
+                    $filesQuery .= " OR media_filetype LIKE " . "'%" . Get::validate([$value]) . "%'";
                 }
             }
             
@@ -149,7 +149,7 @@ class MediaController extends Controller {
                 }
                
                 Session::set('create', 'You have successfully created a new post!');            
-                redirect('/admin/media/create?folder=' . get('folder'));
+                redirect('/admin/media/create?folder=' . Get::validate([get('folder')]));
             } else {
 
                 $folders = glob($this->_folderPath . '/*', GLOB_ONLYDIR);
@@ -181,7 +181,7 @@ class MediaController extends Controller {
             unlink($this->_folderPath . '/' . $filename);
         }
 
-        redirect('/admin/media/create?folder=' . get('folder'));
+        redirect('/admin/media/create?folder=' . Get::validate([get('folder')]));
     }
 
     private function folder($request) {
@@ -193,7 +193,7 @@ class MediaController extends Controller {
             $this->addFolder($request);
         }   
         
-        redirect('/admin/media/create?folder=' . get('folder'));
+        redirect('/admin/media/create?folder=' . Get::validate([get('search')]));
     }
 
     private function deleteFolder($request) {

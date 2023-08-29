@@ -18,13 +18,16 @@ class Get {
 
         foreach($values as $value) {
 
-            $regex = '/[#$%^&*()+=\\[\]\';,{}|":<>?~\\\\]/';
-            if(preg_match($regex, $value)) {
+            if(!empty($value) && $value !== null) {
 
-                return '';
+                $regex = '/[#$%^&*()+=\\[\]\';,{}|":<>?~\\\\]/';
+                if(preg_match($regex, $value)) {
+        
+                    return '';
+                }
+        
+                return htmlspecialchars($value);
             }
-
-            return $value;
         }
     }
 }
