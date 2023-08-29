@@ -49,7 +49,7 @@ function get($name) {
 
     if(!empty($name) && isset($_GET[$name])) {
 
-        $get = htmlentities($_GET[$name], ENT_QUOTES, 'UTF-8');
+        $get = htmlspecialchars($_GET[$name]);
         return $get;
     } 
 }

@@ -79,7 +79,6 @@ class Auth {
                 Session::set('logged_in', true);
                 Session::set('user_role', $sql['name']);
                 Session::set('username', $sql['username']);
-                Session::set('failed_login_attempt', 0);
 
                 return true;
             } 
