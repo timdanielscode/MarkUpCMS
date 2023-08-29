@@ -1,6 +1,7 @@
 <?php use validation\Errors; ?>
 <?php use core\Csrf; ?>
 <?php use core\Session; ?>
+<?php use validation\Get; ?>
 
 <?php 
     $this->include('headerOpen');  
@@ -30,11 +31,11 @@
         <div class="row">
             <div class="col10 col9-L">
 
-                    <?php if(!empty(get('folder')) && get('folder') !== 'website/assets') {
+                    <?php if(!empty(Get::validate([get('folder')])) && Get::validate([get('folder')]) !== 'website/assets') {
 
                         echo '<div class="crumPath">';
 
-                        $folderParts = explode('/', get('folder')); 
+                        $folderParts = explode('/', Get::validate([get('folder')])); 
                         unset($folderParts[0]);
                         $link = implode('/', $folderParts);
 

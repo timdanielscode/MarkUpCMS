@@ -9,6 +9,7 @@ use core\Session;
 use core\Csrf;
 use extensions\Pagination;
 use validation\Rules;
+use validation\Get;
 use core\http\Response;
 
 class MediaController extends Controller {
@@ -21,7 +22,7 @@ class MediaController extends Controller {
 
             $this->_folderPath = 'website/assets';
         } else {
-            $this->_folderPath = get('folder');
+            $this->_folderPath = Get::validate([get('folder')]);
         }
     }
 
