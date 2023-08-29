@@ -18,7 +18,7 @@ class Js extends Model {
 
     public function allJsButOrderedOnDate() {
 
-        return DB::try()->all('js')->where('removed', 'IS', NULL)->or('removed', '=', '0')->order('updated_at')->desc()->fetch();
+        return DB::try()->select('id, file_name, extension, has_content, removed, updated_at, created_at')->from('js')->where('removed', '=', 0)->order('updated_at')->desc()->fetch();
     }
 
     public function cssFilesOnSearch($searchValue) {
@@ -27,10 +27,10 @@ class Js extends Model {
 
             if($searchValue == 'Thrashcan') {
 
-                return DB::try()->all('js')->where('removed', '=', 1)->order('updated_at')->desc()->fetch();
+                return DB::try()->select('id, file_name, extension, has_content, removed, updated_at, created_at')->from('js')->where('removed', '=', 1)->fetch();
             }
 
-            return DB::try()->all('js')->where('file_name', 'LIKE', '%'.$searchValue.'%')->or('updated_at', 'LIKE', '%'.$searchValue.'%')->order('updated_at')->desc()->fetch();
+            return DB::try()->select('id, file_name, extension, has_content, removed, updated_at, created_at')->from('js')->where('removed', '=', 0)->and('file_name', 'LIKE', '%'.$searchValue.'%')->fetch();
         }
     }
 }

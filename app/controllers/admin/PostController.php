@@ -36,7 +36,7 @@ class PostController extends Controller {
 
         if(!empty($search) ) {
 
-            $posts = $post->allPostsWithCategories($search);
+            $posts = $post->allPostsWithCategoriesOnSearch($search);
         }
         $count = count($posts);
 

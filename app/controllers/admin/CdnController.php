@@ -28,13 +28,13 @@ class CdnController extends Controller {
     public function index() {
 
         $cdn = new Cdn();
-        $cdns = $cdn->orderedCdns();
+        $cdns = $cdn->allCdnsButOrderedByDate();
 
         $search = Get::validate([get('search')]);
 
         if(!empty($search) ) {
 
-            $cdns = $cdn->orderedCdns($search);
+            $cdns = $cdn->orderedCdnsOnSearch($search);
         }
 
         $count = count($cdns);

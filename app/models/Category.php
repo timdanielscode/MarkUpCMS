@@ -24,7 +24,7 @@ class Category extends Model {
 
     public function categoriesFilesOnSearch($searchValue) {
 
-        $categories = DB::try()->all('categories')->where('title', 'LIKE', '%'.$searchValue.'%')->or('created_at', 'LIKE', '%'.$searchValue.'%')->or('updated_at', 'LIKE', '%'.$searchValue.'%')->order('updated_at')->desc()->fetch();
+        $categories = DB::try()->all('categories')->where('title', 'LIKE', '%'.$searchValue.'%')->order('updated_at')->desc()->fetch();
         return $categories;
     }
 
