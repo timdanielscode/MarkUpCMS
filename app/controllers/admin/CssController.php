@@ -12,6 +12,7 @@ use validation\Rules;
 use core\Session;
 use extensions\Pagination;
 use core\http\Response;
+use validation\Get;
 
 class CssController extends Controller {
 
@@ -33,7 +34,7 @@ class CssController extends Controller {
         $css = new Css();
         $cssFiles = $css->allCssButOrderedOnDate();
 
-        $search = get('search');
+        $search = Get::validate([get('search')]);
 
         if(!empty($search) ) {
 

@@ -11,6 +11,7 @@ use extensions\Pagination;
 use database\DB;
 use validation\Rules;
 use core\http\Response;
+use validation\Get;
 
 class WidgetController extends Controller {
 
@@ -30,7 +31,7 @@ class WidgetController extends Controller {
 
         $widgets = $widget->allWidgetsButOrderedOnDate();
         
-        $search = get('search');
+        $search = Get::validate([get('search')]);
 
         if(!empty($search) ) {
 

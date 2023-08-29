@@ -13,6 +13,7 @@ use extensions\Pagination;
 use core\Csrf;
 use validation\Rules;
 use core\http\Response;
+use validation\Get;
 
 class CategoryController extends Controller {
 
@@ -31,7 +32,7 @@ class CategoryController extends Controller {
         $category = new Category();
         $categories = $category->allCategoriesButOrdered();
 
-        $search = get('search');
+        $search = Get::validate([get('search')]);
 
         if(!empty($search) ) {
 
@@ -85,7 +86,7 @@ class CategoryController extends Controller {
         $category = new Category();
         $categories = $category->allCategoriesButOrdered();
 
-        $search = get('search');
+        $search = Get::validate([get('search')]);
         
         if(!empty($search) ) {
 

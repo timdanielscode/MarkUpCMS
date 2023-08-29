@@ -11,6 +11,7 @@ use validation\Rules;
 use core\Session;
 use extensions\Pagination;
 use core\http\Response;
+use validation\Get;
 
 class JsController extends Controller {
 
@@ -32,7 +33,7 @@ class JsController extends Controller {
         $js = new Js();
         $jsFiles = $js->allJsButOrderedOnDate();
         
-        $search = get('search');
+        $search = Get::validate([get('search')]);
 
         if(!empty($search) ) {
 

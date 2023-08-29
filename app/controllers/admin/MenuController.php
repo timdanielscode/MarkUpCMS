@@ -10,6 +10,7 @@ use core\Session;
 use database\DB;
 use extensions\Pagination;
 use core\http\Response;
+use validation\Get;
 
 class MenuController extends Controller {
 
@@ -28,7 +29,7 @@ class MenuController extends Controller {
         $menu = new Menu();
         $menus = $menu->allMenusButOrderedOnDate();
         
-        $search = get('search');
+        $search = Get::validate([get('search')]);
 
         if(!empty($search) ) {
 

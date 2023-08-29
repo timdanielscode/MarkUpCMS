@@ -2,6 +2,7 @@
 <?php use core\Csrf; ?>
 <?php use core\Session; ?>
 <?php use extensions\Pagination; ?>
+<?php use validation\Get; ?>
 
 <?php 
     $this->include('headerOpen');  
@@ -104,9 +105,9 @@
                 <ul>
                     <?php 
 
-                        if(!empty(get('search')) ) {
+                        if(!empty(Get::validate([get('search')])) ) {
 
-                            echo '<li class="page-item"><a href="/admin/menus?search=' . get('search') . '&page='.$page.'">'.$page.'</a></li>';
+                            echo '<li class="page-item"><a href="/admin/menus?search=' . Get::validate([get('search')]) . '&page='.$page.'">'.$page.'</a></li>';
                         } else {
                             echo '<li class="page-item"><a href="/admin/menus?page='.$page.'">'.$page.'</a></li>';
                         }

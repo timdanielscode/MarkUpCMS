@@ -11,6 +11,7 @@ use core\Csrf;
 use validation\Rules;
 use core\Session;
 use core\http\Response;
+use validation\Get;
 
 class CdnController extends Controller {
 
@@ -29,7 +30,7 @@ class CdnController extends Controller {
         $cdn = new Cdn();
         $cdns = $cdn->orderedCdns();
 
-        $search = get('search');
+        $search = Get::validate([get('search')]);
 
         if(!empty($search) ) {
 

@@ -13,6 +13,7 @@ use core\Session;
 use database\DB;
 use extensions\Pagination;
 use core\http\Response;
+use validation\Get;
 
 class PostController extends Controller {
 
@@ -31,7 +32,7 @@ class PostController extends Controller {
         $post = new Post();
         $posts = $post->allPostsWithCategories();
         
-        $search = get('search');
+        $search = Get::validate([get('search')]);
 
         if(!empty($search) ) {
 
