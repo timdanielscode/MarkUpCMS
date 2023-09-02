@@ -15,12 +15,14 @@ h1 {
 }
 .usersCreateForm .form-parts label, .usersEditForm .form-parts label {
     display: block;
-    font-size: 18px;
+    font-size: 16px;
 }
-
+.deleteAccountForm input[type="submit"] {
+    height: 100%;
+}
 .usersCreateForm .form-parts input, .usersCreateForm .form-parts select, .usersEditForm .form-parts input, .usersEditForm .form-parts select {
     height: 38px;
-    width: 75%;
+    width: 100%;
     margin-top: 10px;
     margin-bottom: 10px;
     border: none;
@@ -41,11 +43,6 @@ h1 {
 .usersCreateForm .button:hover {
     cursor: pointer;
 }
-
-
-
-
-
 /*
     Sidebar
 */
@@ -53,47 +50,18 @@ h1 {
     width: 100%;
     display: flex;
     flex-wrap: wrap;
+}
+.buttonContainer:nth-child(2) {
     margin-top: 20px;
-}
-.mainButtonContainer a, .mainButtonContainer label, .updateRoleButton, .buttonContainer a, .buttonContainer input {
-    width: auto;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    height: 36px;
-    border-radius: 4px;
-    padding: 0 20px;
-    transition: 0.3s;
-    font-size: 16px;
-}
-.mainButtonContainer label {
-    margin-right: 20px;
-    color: #fff;
-    background: #42971c;
-    border: 1px solid #42971c;
-}
-.mainButtonContainer label:hover {
-    background: #6ba152;
-    border: 1px solid #6ba152;
-}
-.mainButtonContainer a, .updateRoleButton, .buttonContainer a, .buttonContainer input {
-    border: 1px solid #fff;
-    background: rgba(0,0,0,0.1);
-    color: #fff;
-}
-.mainButtonContainer a:hover, .updateRoleButton:hover, .buttonContainer a:hover, .buttonContainer input:hover {
-    background: #fff;
-    color: #000;
-}
-.mainButtonContainer label:hover, .updateRoleButton:hover, .buttonContainer a:hover, .buttonContainer input:hover {
-    cursor: pointer;
+    margin-bottom: 50px;
 }
 
 .text {
-    color: #fff;
+    color: #333;
     margin-top: 20px;
     margin-bottom: 10px;
     display: block;
+    font-size: 14px;
 }
 
 .data {
@@ -109,7 +77,10 @@ h1 {
 */
 .profileUpdateRoleForm {
     margin-top: 20px;
-    color: #fff;
+    color: #333;
+}
+.profileUpdateRoleForm label {
+    font-size: 14px;
 }
 .profileUpdateRoleForm select {
     width: 100%;
@@ -119,7 +90,7 @@ h1 {
     border-radius: 3px;
     overflow: hidden;
     height: 44px;
-    margin: 20px 0 10px 0;
+    margin: 10px 0 10px 0;
 }
 .profileUpdateRoleForm select option {
     padding: 4px 0 4px 10px;

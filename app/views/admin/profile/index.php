@@ -15,11 +15,9 @@
     $this->include('headerClose');
     $this->include('navbar');
 ?>
-
-<div class="edit-container">
     <div class="row">
         <div class="col10 col9-L">
-
+        <div class="edit-container">
             <h1>Details</h1>
             
                 <form action="/admin/profile/<?php echo Session::get('username'); ?>/update" method="POST" class="usersEditForm">
@@ -43,21 +41,20 @@
                         <input type="hidden" name="token" value="<?php echo Csrf::token('add');?>" />
                     </div>
                 </form>
+                </div>
         </div>
         <div class="col2 col3-L">
             <div id="sidebar" class="width-25-L">
                 <div class="sidebarContainer">
                     <div class="mainButtonContainer">
-                        <label for="submit" class="button">Update</label>
-                        <a href="/admin/dashboard" class="button">Back</a>
+                        <label for="submit" class="button greenButton margin-r-10">Update</label>
+                        <a href="/admin/dashboard" class="button darkBlueButton">Back</a>
                     </div>
                     <div class="buttonContainer">
-                        <a href="/admin/profile/<?php echo Session::get('username'); ?>/change-password" class="button">Change password</a>
-                    </div>
-                    <div class="buttonContainer">
-                        <form action="/profile/<?php echo Session::get('username'); ?>/delete" method="POST">
+                        <a href="/admin/profile/<?php echo Session::get('username'); ?>/change-password" class="button darkButton margin-r-10">Password</a>
+                        <form action="/profile/<?php echo Session::get('username'); ?>/delete" method="POST" class="deleteAccountForm">
                             <input type="hidden" name="id" value="<?php echo $user["id"]; ?>"> 
-                            <input type="submit" name="delete" class="button" value="Delete account"/>
+                            <input type="submit" name="delete" class="button redButton" value="Delete account"/>
                         </form>
                     </div>
                     <span class="text">Username:</span>
@@ -78,7 +75,7 @@
                                 </div>
                             </div>
                             <div class="form-parts">
-                                <button name="submit" type="submit" id="submit" class="button updateRoleButton">Update</button>
+                                <button name="submit" type="submit" id="submit" class="button greenButton margin-t-10">Update</button>
                                 <input type="hidden" name="id" value="<?php echo $user['id']; ?>"/>
                                 <input type="hidden" name="token" value="<?php echo Csrf::token('add');?>" />
                             </div>
@@ -87,7 +84,7 @@
                 </div>
             </div>
         </div>
-    </div>
+  
 </div>
 <?php 
     $this->include('footer');
