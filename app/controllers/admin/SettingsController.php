@@ -6,6 +6,7 @@ use app\controllers\Controller;
 use database\DB;
 use app\models\WebsiteSlug;
 use validation\Rules;
+use core\Session;
                     
 class SettingsController extends Controller {
                 
@@ -24,6 +25,8 @@ class SettingsController extends Controller {
         $rules = new Rules();
         $unique = DB::try()->select('slug')->from('pages')->where('slug', '=', "/" . $request['slug'])->fetch();
 
+        $slug = $request['slug'];
+
         if($rules->update_website_slug($unique)->validated()) {
 
             if(!empty($currentWebsiteSlug) && $currentWebsiteSlug !== null) {
@@ -32,15 +35,15 @@ class SettingsController extends Controller {
     
                 WebsiteSlug::update(['id' => $currentWebsiteSlugId[0]], [
     
-                    'slug'     => "/" . $request['slug'],
+                    'slug'     => "/" . $slug,
                     'updated_at' => date('Y-m-d H:i:s', $_SERVER['REQUEST_TIME'])
                 ]);
-    
+
             } else {
     
                 WebsiteSlug::insert([
     
-                    'slug' => "/" . $request['slug'],
+                    'slug' => "/" . $slug,
                     'created_at' => date('Y-m-d H:i:s', $_SERVER['REQUEST_TIME']),
                     'updated_at' => date('Y-m-d H:i:s', $_SERVER['REQUEST_TIME'])
                 ]);
@@ -51,6 +54,10 @@ class SettingsController extends Controller {
             return $this->view('/admin/settings/index', $data);
         }
 
-        redirect('/admin/settings');
+        Session::delete("logged_in");
+        Session::delete("username");
+        Session::delete('user_role');
+
+        redirect('/' . $slug);
     }
 }  

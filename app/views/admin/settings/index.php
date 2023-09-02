@@ -171,6 +171,7 @@
                             <span><?php echo Errors::get($rules, 'slug'); ?></span>
                         </div>    
                     <?php } ?>  
+                    <input type="submit" name="submit" value="Update" class="button greenButton margin-t-10"/>
                 </div>
             </form>
             </div>

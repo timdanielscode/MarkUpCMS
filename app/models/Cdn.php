@@ -30,7 +30,7 @@ class Cdn extends Model {
                 return DB::try()->select('id, title, author, removed, updated_at, created_at')->from('cdn')->where('removed', '=', 1)->order('updated_at')->desc()->fetch();
             } 
 
-            return DB::try()->select('id, title, author, removed, updated_at, created_at')->from('cdn')->where('title', 'LIKE', '%'.$searchValue.'%')->or('author', 'LIKE', '%'.$searchValue.'%')->and('removed', '!=', 1)->order('updated_at')->desc()->fetch();
+            return DB::try()->select('id, title, author, removed, updated_at, created_at')->from('cdn')->where('removed', '=', 0)->and('title', 'LIKE', '%'.$searchValue.'%')->or('author', 'LIKE', '%'.$searchValue.'%')->and('removed', '=', 0)->order('updated_at')->desc()->fetch();
         } 
     }
 }
