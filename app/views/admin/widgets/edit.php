@@ -18,6 +18,7 @@
     $this->script("/assets/js/codemirror/htmlmixed.js");
     $this->script('/assets/js/ajax.js');
     $this->script('/assets/js/fullscreen.js');
+    $this->script('/assets/js/zoom.js');
     $this->title("IndependentCMS");
     $this->include("headerClose");
     $this->include('navbar');
@@ -52,7 +53,9 @@
                         <a href="/admin/widgets" class="button darkBlueButton">Back</a>
                     </div>
                     <div class="buttonContainer margin-b-50">
-                        <a href="#" id="codeEditorFullScreen" class="button darkButton">Full screen</a>
+                        <a href="#" id="codeEditorFullScreen" class="button darkButton margin-r-10">Full screen</a>
+                        <a href="#" id="codeEditorZoomIn" class="button darkButton margin-r-10">+</a>
+                        <a href="#" id="codeEditorZoomOut" class="button darkButton">-</a>
                     </div>
                 </div>
             </div>

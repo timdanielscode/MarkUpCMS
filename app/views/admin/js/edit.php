@@ -18,6 +18,7 @@
 
     $this->script('/assets/js/ajax.js');
     $this->script('/assets/js/fullscreen.js');
+    $this->script('/assets/js/zoom.js');
 
     $this->title("IndependentCMS");
     $this->include("headerClose");
@@ -53,7 +54,9 @@
                             <a href="/admin/js" class="button blueButton">Back</a>
                         </div>
                         <div class="buttonContainer">
-                            <a href="#" id="codeEditorFullScreen" class="button darkButton">Full screen</a>
+                            <a href="#" id="codeEditorFullScreen" class="button darkButton margin-r-10">Full screen</a>
+                            <a href="#" id="codeEditorZoomIn" class="button darkButton margin-r-10">+</a>
+                            <a href="#" id="codeEditorZoomOut" class="button darkButton">-</a>
                         </div>
                         <div class="buttonContainer">
                             <form action="/admin/js/<?php echo $data['id']; ?>/include-all" method="POST">

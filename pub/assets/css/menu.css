@@ -44,9 +44,6 @@
     flex-wrap: wrap;
     margin-top: 20px;
 }
-.buttonContainer a:nth-child(1) {
-    margin-right: 20px;
-}
 .updatePositionForm input[type="submit"], .updateNumberForm input:nth-child(2) {
     margin: 20px 0;
 }
