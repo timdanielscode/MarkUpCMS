@@ -12,14 +12,17 @@
                     <a href="#" data-role="add" data-id="<?php echo $category['id']; ?>" class="add font-weight-300">Apply</a> |
                     <a href="#<?php echo $category['title']; ?>" class="read font-weight-300" data-id="<?php echo $category['id']; ?>">Read</a>
                 </td>
-                <td class="width-40">
+                <td class="width-30">
                     <form>
                         <input class="categorySlug" name="slug" id="slug-<?php echo $category['id']; ?>" type="text" value="<?php echo substr($category['slug'], 1); ?>"/>
                             <div id="message-<?php echo $category['id'] ?>"></div>
                     </form>
                 </td>
-                <td class="width-25">
+                <td class="width-10">
                     <a data-role="update" id="update" data-id="<?php echo $category['id']; ?>" class="button">Update</a>
+                </td>
+                <td class="widht-35">
+                    <?php echo $category['author']; ?>
                 </td>
                 <td class="width-15">
                     <span class="padding-b-2 bold">Created:</span> <span class="font-weight-300"><?php echo date("d/m/Y", strtotime($category["created_at"]) ); ?> <?php echo date("H:i:s", strtotime($category["created_at"]) ); ?></span><br>

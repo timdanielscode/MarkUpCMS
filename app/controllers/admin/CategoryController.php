@@ -70,6 +70,7 @@ class CategoryController extends Controller {
                 'title' => $request['title'],
                 'slug'  => "/" . $request['title'],
                 'category_description'  => $request['description'],
+                'author'    => Session::get('username'),
                 'created_at' => date('Y-m-d H:i:s', $_SERVER['REQUEST_TIME']),
                 'updated_at' => date('Y-m-d H:i:s', $_SERVER['REQUEST_TIME'])
             ]);

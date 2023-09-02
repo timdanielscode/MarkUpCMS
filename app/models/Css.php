@@ -18,7 +18,7 @@ class Css extends Model {
 
     public function allCssButOrderedOnDate() {
 
-        return DB::try()->select('id, file_name, extension, has_content, removed, updated_at, created_at')->from('css')->where('removed', '=', 0)->order('updated_at')->desc()->fetch();
+        return DB::try()->select('id, file_name, extension, author, has_content, removed, updated_at, created_at')->from('css')->where('removed', '=', 0)->order('updated_at')->desc()->fetch();
     }
 
     public function cssFilesOnSearch($searchValue) {
@@ -27,10 +27,10 @@ class Css extends Model {
 
             if($searchValue == 'Thrashcan') {
 
-                return DB::try()->select('id, file_name, extension, has_content, removed, updated_at, created_at')->from('css')->where('removed', '=', 1)->order('updated_at')->desc()->fetch();
+                return DB::try()->select('id, file_name, extension, author, has_content, removed, updated_at, created_at')->from('css')->where('removed', '=', 1)->order('updated_at')->desc()->fetch();
             }
 
-            return DB::try()->select('id, file_name, extension, has_content, removed, updated_at, created_at')->from('css')->where('removed', '=', 0)->and('file_name', 'LIKE', '%'.$searchValue.'%')->order('updated_at')->desc()->fetch();
+            return DB::try()->select('id, file_name, extension, author, has_content, removed, updated_at, created_at')->from('css')->where('removed', '=', 0)->and('file_name', 'LIKE', '%'.$searchValue.'%')->or('removed', '=', 0)->and('author', 'LIKE', '%'.$searchValue.'%')->order('updated_at')->desc()->fetch();
         }
     }
 }

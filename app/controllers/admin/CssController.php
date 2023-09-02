@@ -87,6 +87,7 @@ class CssController extends Controller {
 
                         'file_name' => $request['filename'],
                         'extension' => '.css',
+                        'author'    => Session::get('username'),
                         'has_content' => $hasContent,
                         'removed' => 0,
                         'created_at' => date('Y-m-d H:i:s', $_SERVER['REQUEST_TIME']),

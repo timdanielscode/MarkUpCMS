@@ -244,3 +244,7 @@ CREATE TABLE cdn_page (
 ALTER TABLE cdn ADD has_content TINYINT AFTER content;
 ALTER TABLE cdn ADD removed TINYINT AFTER has_content;
 ALTER TABLE cdn ADD author varchar(50) AFTER removed;
+
+ALTER TABLE categories ADD author VARCHAR(50) AFTER category_description;
+ALTER TABLE css ADD author VARCHAR(50) AFTER extension;
+ALTER TABLE js ADD author VARCHAR(50) AFTER extension;

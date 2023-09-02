@@ -644,6 +644,7 @@
     z-index: 999;
     height: 75%;
     width: 50%;
+    z-index: 9999;
 }
 #mediaReadVideo {
     position: absolute;
@@ -651,7 +652,7 @@
     left: 50%;
     transform: translate(-50%, -50%);
     height: 50%;
-    z-index: 999;
+    z-index: 9999;
 }
 table td .button {
     background: #42971c;

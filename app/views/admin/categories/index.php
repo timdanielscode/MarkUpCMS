@@ -38,6 +38,7 @@
                 <th>Title</th>
                 <th>Slug</th>
                 <th></th>
+                <th>Author</th>
                 <th>Date and time</th>
             </tr>
         </thead>

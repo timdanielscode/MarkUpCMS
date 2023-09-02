@@ -29,6 +29,7 @@
                 <tr>
                     <th></th>
                     <th>Filename</th>
+                    <th>Author</th>
                     <th>Date and time</th>
                 </tr>
             </thead>
@@ -40,18 +41,21 @@
                             <input class="deleteCheckbox" type="checkbox" name="delete" value="<?php echo $cssFile['id']; ?>"/>
                             </td>
                             <?php if($cssFile['removed'] !== 1) { ?>
-                            <td class="width-85">
+                            <td class="width-25">
                                 <a href="/admin/css/<?php echo $cssFile['id']; ?>/edit" class="font-weight-500"><?php echo $cssFile['file_name'] . $cssFile['extension']; ?></a> |
                                 <a href="/admin/css/<?php echo $cssFile['id']; ?>/edit" class="font-weight-300">Edit</a> |
                                 <a href="/admin/css/<?php echo $cssFile['id']; ?>/read" class="font-weight-300">Read</a>
                             </td>
                             <?php } else { ?>
-                                <td class="width-85">
+                                <td class="width-25">
                                 <span class="font-weight-500 removed"><?php echo $cssFile['file_name'] . $cssFile['extension']; ?></span> |
                                 <a href="/admin/css/<?php echo $cssFile['id']; ?>/read" class="font-weight-300">Read</a> |
                                 <a href="/admin/css/<?php echo $cssFile['id']; ?>/recover" class="font-weight-300">Recover</a>
                             </td>
                             <?php } ?>
+                            <td class="width-60">
+                                <?php echo $cssFile['author']; ?>
+                            </td>
                             <td class="width-15">
                                 <span class="padding-b-2 bold">Created:</span> <span class="font-weight-300"><?php echo date("d/m/Y", strtotime($cssFile["created_at"]) ); ?> <?php echo date("H:i:s", strtotime($cssFile["created_at"]) ); ?></span><br>
                                 <span class="bold">Updated:</span> <span class="font-weight-300"><?php echo date("d/m/Y", strtotime($cssFile["updated_at"]) ); ?> <?php echo date("H:i:s", strtotime($cssFile["updated_at"]) ); ?></span>

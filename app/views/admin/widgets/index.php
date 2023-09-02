@@ -49,19 +49,19 @@
                                 <?php echo $widget['id']; ?>
                             </td>
                             <?php if($widget['removed'] !== 1) { ?>
-                                <td class="width-60">
+                                <td class="width-25">
                                     <a href="/admin/widgets/<?php echo $widget['id']; ?>/edit" class="font-weight-500"><?php echo $widget['title']; ?></a> |
                                     <a href="/admin/widgets/<?php echo $widget['id']; ?>/edit" class="font-weight-300">Edit</a> |
                                     <a href="/admin/widgets/<?php echo $widget['id']; ?>/read" class="font-weight-300">Read</a>
                                 </td>
                             <?php } else { ?>
-                                <td class="width-60">
+                                <td class="width-25">
                                     <span class="removed font-weight-500"><?php echo $widget['title']; ?></span> |
                                     <a href="/admin/widgets/<?php echo $widget['id']; ?>/read" class="font-weight-300">Read</a>
                                 </td>
                             <?php } ?>
 
-                            <td class="width-20">
+                            <td class="width-55">
                                 <?php echo $widget['author']; ?>
                             </td>
                             <td class="width-15">

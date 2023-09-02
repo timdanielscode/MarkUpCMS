@@ -29,6 +29,7 @@
                 <tr>
                     <th></th>
                     <th>Title</th>
+                    <th>Author</th>
                     <th>Date and time</th>
                 </tr>
             </thead>
@@ -40,17 +41,20 @@
                             <input class="deleteCheckbox" type="checkbox" name="delete" value="<?php echo $cdn['id']; ?>"/>
                             </td>
                             <?php if($cdn['removed'] !== 1) { ?>
-                            <td class="width-85">
+                            <td class="width-25">
                                 <a href="/admin/cdn/<?php echo $cdn['id']; ?>/edit" class="font-weight-500"><?php echo $cdn['title']; ?></a> |
                                 <a href="/admin/cdn/<?php echo $cdn['id']; ?>/edit" class="font-weight-300">Edit</a> |
                                 <a href="/admin/cdn/<?php echo $cdn['id']; ?>/read" class="font-weight-300">Read</a>
                             </td>
                             <?php } else { ?>
-                                <td class="width-85">
+                                <td class="width-25">
                                 <span class="font-weight-500"><?php echo $cdn['title']; ?></span> |
                                 <a href="/admin/cdn/<?php echo $cdn['id']; ?>/read" class="font-weight-300">Read</a>
                             </td>
                             <?php } ?>
+                            <td class="width-60">
+                                <?php echo $cdn['author']; ?>
+                            </td>
                             <td class="width-15">
                                 <span class="padding-b-2 bold">Created:</span> <span class="font-weight-300"><?php echo date("d/m/Y", strtotime($cdn["created_at"]) ); ?> <?php echo date("H:i:s", strtotime($cdn["created_at"]) ); ?></span><br>
                                 <span class="bold">Updated:</span> <span class="font-weight-300"><?php echo date("d/m/Y", strtotime($cdn["updated_at"]) ); ?> <?php echo date("H:i:s", strtotime($cdn["updated_at"]) ); ?></span>
