@@ -47,9 +47,9 @@
                 <div class="sidebarContainer">
                     <div class="mainButtonContainer">
                         <label for="submit" class="button greenButton margin-r-10">Update</label>
-                        <a href="/profile/<?php echo Session::get('username'); ?>" class="button darkBlueButton">Back</a>
+                        <a href="/admin/profile/<?php echo Session::get('username'); ?>" class="button darkBlueButton">Back</a>
                     </div>
-                    <span class="text">Username:</span>
+                    <span class="text margin-t-50">Username:</span>
                     <span class="data"><?php echo $user['username']; ?></span>
                     <span class="text">Email:</span>
                     <span class="data"><?php echo $user['email']; ?></span>

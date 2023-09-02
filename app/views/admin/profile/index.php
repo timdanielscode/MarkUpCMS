@@ -48,13 +48,13 @@
                 <div class="sidebarContainer">
                     <div class="mainButtonContainer">
                         <label for="submit" class="button greenButton margin-r-10">Update</label>
-                        <a href="/admin/dashboard" class="button darkBlueButton">Back</a>
+                        <a href="/admin/dashboard" class="button blueButton">Back</a>
                     </div>
                     <div class="buttonContainer">
                         <a href="/admin/profile/<?php echo Session::get('username'); ?>/change-password" class="button darkButton margin-r-10">Password</a>
                         <form action="/profile/<?php echo Session::get('username'); ?>/delete" method="POST" class="deleteAccountForm">
                             <input type="hidden" name="id" value="<?php echo $user["id"]; ?>"> 
-                            <input type="submit" name="delete" class="button redButton" value="Delete account"/>
+                            <input type="submit" name="delete" class="button redButton" value="Delete account" onclick="return confirm('Are you sure?');"/>
                         </form>
                     </div>
                     <span class="text">Username:</span>
@@ -75,7 +75,7 @@
                                 </div>
                             </div>
                             <div class="form-parts">
-                                <button name="submit" type="submit" id="submit" class="button greenButton margin-t-10">Update</button>
+                                <button name="submit" type="submit" id="submit" class="button darkBlueButton margin-t-10" onclick="return confirm('Are you sure?');">Update</button>
                                 <input type="hidden" name="id" value="<?php echo $user['id']; ?>"/>
                                 <input type="hidden" name="token" value="<?php echo Csrf::token('add');?>" />
                             </div>
