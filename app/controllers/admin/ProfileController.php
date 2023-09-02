@@ -102,7 +102,7 @@
             Session::delete('username');
             Session::delete('user_role');
             
-            redirect('/login-independentcms');
+            $this->redirectLoginPage();
 
         } else {
 
@@ -110,6 +110,18 @@
             $data['rules'] = $rules->errors;
 
             return $this->view('/admin/profile/changePassword', $data);
+        }
+    }
+
+    private function redirectLoginPage() {
+
+        $websiteSlug = DB::try()->select('slug')->from('websiteSlug')->first();
+
+        if(!empty($websiteSlug) && $websiteSlug !== null) {
+
+            redirect($websiteSlug['slug']);
+        } else {
+            redirect('/login');
         }
     }
 

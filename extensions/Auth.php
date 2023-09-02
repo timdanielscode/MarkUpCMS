@@ -68,8 +68,6 @@ class Auth {
      */
     public static function verifyPassword($sql) {
 
-        self::loginAttempt($sql);
-
         if(!empty($sql) && $sql !== null) {
 
             $fetched_password = $sql['password'];
@@ -81,8 +79,14 @@ class Auth {
                 Session::set('username', $sql['username']);
 
                 return true;
-            } 
-        } 
+            } else {
+
+                self::loginAttempt($sql);
+            }
+        } else {
+
+            self::loginAttempt($sql);
+        }
     }
 
     /**

@@ -13,10 +13,10 @@
     $this->include('headerClose');
     $this->include('navbar');
 ?>
-<div class="edit-container">
+
     <div class="row">
         <div class="col10 col9-L">
-
+        <div class="edit-container">
             <h1>Change password: </h1>
             
                 <form action="/admin/profile/<?php echo $user['username']; ?>/change-password" method="POST" class="usersEditForm">
@@ -40,13 +40,14 @@
                         <input type="hidden" name="token" value="<?php echo Csrf::token('add');?>" />
                     </div>
                 </form>
+                </div>
         </div>
         <div class="col2 col3-L">
             <div id="sidebar" class="width-25-L">
                 <div class="sidebarContainer">
                     <div class="mainButtonContainer">
-                        <label for="submit" class="button">Update</label>
-                        <a href="/profile/<?php echo Session::get('username'); ?>" class="button">Back</a>
+                        <label for="submit" class="button greenButton margin-r-10">Update</label>
+                        <a href="/profile/<?php echo Session::get('username'); ?>" class="button darkBlueButton">Back</a>
                     </div>
                     <span class="text">Username:</span>
                     <span class="data"><?php echo $user['username']; ?></span>
@@ -57,7 +58,7 @@
                 </div>
             </div>
         </div>
-    </div>
+   
 </div>
 
 <?php 
