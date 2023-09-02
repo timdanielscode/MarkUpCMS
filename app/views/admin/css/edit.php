@@ -11,7 +11,7 @@
     $this->stylesheet("/assets/css/sidebar.css");
 
     $this->stylesheet("/assets/css/codemirror/codemirror.css");
-    $this->stylesheet("/assets/css/codemirror/rubyblue.css");
+    $this->stylesheet("/assets/css/codemirror/monokai.css");
     $this->script("/assets/js/codemirror/codemirror.js");
     $this->script("/assets/js/codemirror/css.js");
     $this->script("/assets/js/codemirror/closebrackets.js");
@@ -98,9 +98,8 @@
 
     <script>
         var editor = CodeMirror.fromTextArea(document.getElementById("code"), {
-            theme: "rubyblue",
+            theme: "monokai",
             lineNumbers: true,
-            matchBrackets: true,
             autoCloseBrackets: true,
             tabSize: 2
         });

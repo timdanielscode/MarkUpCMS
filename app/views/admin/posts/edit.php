@@ -15,10 +15,9 @@
 
     $this->stylesheet("/assets/css/codemirror/codemirror.css");
     $this->script("/assets/js/codemirror/codemirror.js");
-    $this->script("/assets/js/codemirror/closetag.js");
     $this->script("/assets/js/codemirror/xml.js");
-    $this->stylesheet("/assets/css/codemirror/monokai.css"); //ayu-mirage, lesser-dark, railscasts, seti
-    $this->script("/assets/js/codemirror/htmlmixed.js");
+    $this->stylesheet("/assets/css/codemirror/monokai.css");
+    $this->script("/assets/js/codemirror/matchBrackets.js");
     $this->script('/assets/js/ajax.js');
     $this->script('/assets/js/fullscreen.js');
     $this->script("/assets/js/zoom.js");
@@ -250,12 +249,11 @@
         </div>
     </div>
 </div>
-<script nonce="2726c7f26c">
+<script>
     var editor = CodeMirror.fromTextArea(document.getElementById("code"), {
         theme: "monokai",
         lineNumbers: true,
         mode: 'text/html',
-        autoCloseTags: true,
         tabSize: 2
     });
 </script>

@@ -11,10 +11,9 @@
     $this->stylesheet("/assets/css/sidebar.css");
 
     $this->stylesheet("/assets/css/codemirror/codemirror.css");
-    $this->stylesheet("/assets/css/codemirror/rubyblue.css");
     $this->script("/assets/js/codemirror/codemirror.js");
-    $this->script("/assets/js/codemirror/css.js");
-    $this->script("/assets/js/codemirror/closebrackets.js");
+    $this->script("/assets/js/codemirror/xml.js");
+    $this->stylesheet("/assets/css/codemirror/monokai.css");
 
     $this->script('/assets/js/ajax.js');
     $this->script('/assets/js/fullscreen.js');
@@ -90,14 +89,12 @@
                 </div>
             </div>
         </div>
-    
 
     <script>
         var editor = CodeMirror.fromTextArea(document.getElementById("content"), {
-            theme: "rubyblue",
+            theme: "monokai",
             lineNumbers: true,
-            matchBrackets: true,
-            autoCloseBrackets: true,
+            mode: 'text/html',
             tabSize: 2
         });
     </script>

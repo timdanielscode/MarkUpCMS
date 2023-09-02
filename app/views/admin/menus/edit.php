@@ -12,20 +12,16 @@
 
     $this->stylesheet("/assets/css/codemirror/codemirror.css");
     $this->script("/assets/js/codemirror/codemirror.js");
-    $this->script("/assets/js/codemirror/closetag.js");
     $this->script("/assets/js/codemirror/xml.js");
-    $this->stylesheet("/assets/css/codemirror/monokai.css"); //ayu-mirage, lesser-dark, railscasts, seti
-    $this->script("/assets/js/codemirror/htmlmixed.js");
+    $this->stylesheet("/assets/css/codemirror/monokai.css");
     $this->script('/assets/js/ajax.js');
     $this->script('/assets/js/fullscreen.js');
     $this->script('/assets/js/zoom.js');
     $this->title("IndependentCMS");
     $this->include("headerClose");
     $this->include('navbar');
-    
 ?>
 
-    
     <div class="row">
         <div class="col10 col9-L">
             <div class="edit-container">
@@ -87,7 +83,6 @@
             theme: "monokai",
             lineNumbers: true,
             mode: 'text/html',
-            autoCloseTags: true,
             tabSize: 2
         });
         editor.setSize('95%', "80vh");

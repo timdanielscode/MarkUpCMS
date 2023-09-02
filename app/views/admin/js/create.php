@@ -11,7 +11,7 @@
     $this->stylesheet("/assets/css/sidebar.css");
 
     $this->stylesheet("/assets/css/codemirror/codemirror.css");
-    $this->stylesheet("/assets/css/codemirror/gruvbox-dark.css");
+    $this->stylesheet("/assets/css/codemirror/shadowfox.css");
     $this->script("/assets/js/codemirror/codemirror.js");
     $this->script("/assets/js/codemirror/css.js");
     $this->script("/assets/js/codemirror/closebrackets.js");
@@ -59,9 +59,8 @@
    
     <script>
         var editor = CodeMirror.fromTextArea(document.getElementById("code"), {
-            theme: "gruvbox-dark",
+            theme: "shadowfox",
             lineNumbers: true,
-            matchBrackets: true,
             autoCloseBrackets: true,
             tabSize: 2
         });

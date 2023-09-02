@@ -15,7 +15,7 @@
 #editorForm {
     position: relative;
 }
-.CodeMirror.cm-s-monokai {
+.CodeMirror.cm-s-seti {
     background: #161e2b !important;
 }
 .cm-s-monokai .CodeMirror-linenumber {
