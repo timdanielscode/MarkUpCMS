@@ -38,7 +38,7 @@ class UserController extends Controller {
        
         $count = count($allUsers);
 
-        $allUsers = Pagination::get($allUsers, 3);
+        $allUsers = Pagination::get($allUsers, 10);
         $numberOfPages = Pagination::getPageNumbers();
 
         $data['allUsers'] = $allUsers;
@@ -71,6 +71,7 @@ class UserController extends Controller {
                     'email' => $request['email'],
                     'password' => password_hash($request['password'], PASSWORD_DEFAULT),
                     'retypePassword' => password_hash($request['password_confirm'], PASSWORD_DEFAULT),
+                    'removed'   => 0,
                     'created_at' => date("Y-m-d H:i:s"),
                     'updated_at' => date("Y-m-d H:i:s")
                 ]);
@@ -174,19 +175,38 @@ class UserController extends Controller {
         redirect('/admin/users/'); 
     }
 
+    public function recover($request) {
+
+
+
+    }
+
     public function delete($request) {
 
-        $this->ifExists($request['username']);
-        
-        $userRole = DB::try()->select('roles.name')->from('roles')->join('user_role')->on('user_role.role_id', '=', 'roles.id')->join('users')->on('user_role.user_id', '=', 'users.id')->where('users.username', '=', $request['username'])->first();
+        $deleteIds = explode(',', $request['deleteIds']);
 
-        if($userRole['name'] === 'admin') {
+        if(!empty($deleteIds) && !empty($deleteIds[0])) {
 
-            return Response::statusCode(404)->view("/404/404");
-        } else {
+            foreach($deleteIds as $request['id']) {
 
-            User::delete('username', $request['username']);
-            redirect("/admin/users");
+                $this->ifExists($request['id']);
+                
+                $user = DB::try()->select('removed')->from('users')->join('user_role')->on('users.id', '=', 'user_role.user_id')->where('users.id', '=', $request['id'])->and('user_role.role_id', '=', 1)->fetch();
+
+                if($user['removed'] !== 1) {
+
+                    User::update(['id' => $request['id']], [
+
+                        'removed'  => 1,
+                    ]);
+
+                } else if($user['removed'] === 1) {
+
+                    User::delete("id", $request['id']);
+                }
+            }
         }
+
+        redirect("/admin/users");
     }
 }
