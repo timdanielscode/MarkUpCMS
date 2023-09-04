@@ -33,7 +33,7 @@ class UserController extends Controller {
         if(submitted('search')) {
 
             $search = get('search');
-            $allUsers = $user->allUsersWithRoles($search);
+            $allUsers = $user->allUsersWithRolesOnSearch($search);
         }
        
         $count = count($allUsers);
@@ -177,8 +177,24 @@ class UserController extends Controller {
 
     public function recover($request) {
 
+        if(!empty($request['recoverIds']) && $request['recoverIds'] !== null) {
 
+            $recoverIds = explode(',', $request['recoverIds']);
+            
+            foreach($recoverIds as $request['id'] ) {
 
+                $this->ifExists($request['id']);
+
+                $user = DB::try()->select('removed')->from('users')->join('user_role')->on('users.id', '=', 'user_role.user_id')->where('users.id', '=', $request['id'])->and('user_role.role_id', '=', 1)->first();
+
+                User::update(['id' => $request['id']], [
+
+                    'removed'  => 0
+                ]);
+            }
+        }
+
+        redirect("/admin/users");
     }
 
     public function delete($request) {
@@ -190,8 +206,8 @@ class UserController extends Controller {
             foreach($deleteIds as $request['id']) {
 
                 $this->ifExists($request['id']);
-                
-                $user = DB::try()->select('removed')->from('users')->join('user_role')->on('users.id', '=', 'user_role.user_id')->where('users.id', '=', $request['id'])->and('user_role.role_id', '=', 1)->fetch();
+
+                $user = DB::try()->select('removed')->from('users')->join('user_role')->on('users.id', '=', 'user_role.user_id')->where('users.id', '=', $request['id'])->and('user_role.role_id', '=', 1)->first();
 
                 if($user['removed'] !== 1) {
 
