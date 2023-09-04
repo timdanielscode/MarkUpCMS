@@ -2,6 +2,7 @@
 <?php use core\Csrf; ?>
 <?php use core\Session; ?>
 <?php use extensions\Pagination; ?>
+<?php use validation\Get; ?>
 
 <?php 
     $this->include('headerOpen');  
@@ -16,23 +17,21 @@
 ?>
 <div class="index-container">
 
-    <div class="headerAndButtonContainer">
-        <h1>Users</h1>
-        <a class="button " href="/admin/users/create">Add new</a>
+
+
+    <div class="headerContainer">
+        <h1>Users</h1><span class="badge pages"><?php echo $count; ?></span>
     </div>
 
-    <div class="countContainer">
-        <span>All</span>
-        <span>(<?php echo $count; ?>)</span>
-    </div>
-    <form action="" method="GET">
+    <a href="/admin/posts/create" class="create">Create</a> <span class="deleteSeparator">|</span> <form action="/admin/posts/delete" method="POST" class="indexDeleteForm"><input type="submit" class="delete" value="<?php if(Get::validate([get('search')]) === 'Thrashcan') { echo 'Delete permanently'; } else { echo 'Delete'; } ?>"/><input type="hidden" name="deleteIds" id="deleteIds" value=""/></form> | <form action="" method="GET" class="thrashcanForm"><input type="submit" name="search" value="Thrashcan"/></form><?php if(Get::validate([get('search')]) === 'Thrashcan') { ?> | <form action="/admin/posts/recover" method="POST" class="recoverForm"><input type="submit" class="recover" value="Recover"/><input type="hidden" name="recoverIds" id="recoverIds" value=""/></form> <?php } ?>
+    <form action="" method="GET" class="searchForm">
         <input type="text" name="search" placeholder="Search" id="search">
-        <input type="hidden" name="submit" value="search">
+        <input type="submit" name="submit" value="Search" class="button">
     </form>
     <table>
             <thead>
                 <tr>
-                    <th>#</th>
+                    <th></th>
                     <th>Username</th>
                     <th>Email</th>
                     <th>Role</th>
@@ -43,8 +42,12 @@
                 <?php if(!empty($allUsers) && $allUsers !== null) { ?>
                     <?php foreach($allUsers as $user) { ?>
                         <tr>
-                            <td >
-                                <?php echo $user['id']; ?>
+                            <td>
+                                <?php if($user['name'] === 'normal') { ?>
+                                    <input class="deleteCheckbox" type="checkbox" name="delete" value="<?php echo $user['id']; ?>"/>
+                                <?php } else { ?>
+                                    <input class="deleteCheckbox" type="checkbox" disabled/>
+                                <?php } ?>
                             </td>
                             <td class="width-20">
                             <?php if($user['name'] === 'admin') { ?>
@@ -53,21 +56,15 @@
                             <?php } else { ?>
 
                                 <a href="/admin/users/<?php echo $user['username']; ?>/edit" class="font-weight-500"><?php echo $user['username']; ?></a> |
-                                <a href="/admin/users/<?php echo $user['username']; ?>/edit" class="font-weight-300">Edit</a> |     
+                                <a href="/admin/users/<?php echo $user['username']; ?>/edit" class="font-weight-300">Edit</a>  
                             <?php } ?>
-                                
-                            <?php if($user['name'] !== 'admin') { ?> <a href="/admin/users/<?php echo $user['username']; ?>/read" class="font-weight-300">Read</a> |
-
-                                    <a href="/admin/users/<?php echo $user['username']; ?>/delete" class="font-weight-300 color-red">Remove</a>
-                                <?php } ?>
-                            </td>
                             <td class="width-20">
                                 <?php echo $user['email']; ?>
                             </td>
                             <td class="width-50">
                                 <?php echo $user['name']; ?>
                             </td>
-                            <td class="width-10">
+                            <td class="width-15">
                                 <span class="padding-b-2">Created:</span> <span class="font-weight-300"><?php echo $user["created_at"]; ?></span><br>
                                 <span>Updated:</span> <span class="font-weight-300"><?php echo $user["updated_at"]; ?></span>
                             </td>

@@ -248,3 +248,5 @@ ALTER TABLE cdn ADD author varchar(50) AFTER removed;
 ALTER TABLE categories ADD author VARCHAR(50) AFTER category_description;
 ALTER TABLE css ADD author VARCHAR(50) AFTER extension;
 ALTER TABLE js ADD author VARCHAR(50) AFTER extension;
+
+ALTER TABLE users ADD removed TINYINT AFTER retypePassword;
