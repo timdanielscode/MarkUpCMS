@@ -143,7 +143,7 @@ h3 {
     margin: 20px 0;
 }
 .margin-b-50 {
-    margin-bottom: 50px;
+    margin-bottom: 50px !important;
 }
 .margin-tm-10 {
     margin-top: -10px;

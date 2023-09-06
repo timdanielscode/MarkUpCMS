@@ -23,7 +23,8 @@
 
 
     <div class="headerContainer">
-        <h1>Users</h1><span class="badge pages"><?php echo $count; ?></span>
+        <h1>Users</h1>
+            <span class="badge pages"><?php echo $count; ?></span>
     </div>
 
     <a href="/admin/users/create" class="create">Create</a> <span class="deleteSeparator">|</span> <form action="/admin/users/delete" method="POST" class="indexDeleteForm"><input type="submit" class="delete" value="<?php if(Get::validate([get('search')]) === 'Thrashcan') { echo 'Delete permanently'; } else { echo 'Delete'; } ?>"/><input type="hidden" name="deleteIds" id="deleteIds" value=""/></form> | <form action="" method="GET" class="thrashcanForm"><input type="submit" name="search" value="Thrashcan"/></form><?php if(Get::validate([get('search')]) === 'Thrashcan') { ?> | <form action="/admin/users/recover" method="POST" class="recoverForm"><input type="submit" class="recover" value="Recover"/><input type="hidden" name="recoverIds" id="recoverIds" value=""/></form> <?php } ?>
@@ -53,13 +54,10 @@
                                 <?php } ?>
                             </td>
                             <td class="width-20">
-                            <?php if($user['name'] === 'admin') { ?>
-                                <a href="/admin/users/<?php echo $user['username']; ?>/read" class="font-weight-500"><?php echo $user['username']; ?></a>
-                                
+                            <?php if($user['name'] === 'admin' || $user['removed'] === 1) { ?>
+                                <?php echo $user['username']; ?>
                             <?php } else { ?>
-
-                                <a href="/admin/users/<?php echo $user['username']; ?>/edit" class="font-weight-500"><?php echo $user['username']; ?></a> |
-                                <a href="/admin/users/<?php echo $user['username']; ?>/edit" class="font-weight-300">Edit</a>  
+                                <a href="/admin/users/<?php echo $user['username']; ?>/edit" class="font-weight-500"><?php echo $user['username']; ?></a>
                             <?php } ?>
                             <td class="width-20">
                                 <?php echo $user['email']; ?>
