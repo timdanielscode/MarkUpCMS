@@ -57,7 +57,7 @@ Route::middleware('login')->run(function() {
 
 });
 
-Route::get('/admin/posts')->add('admin\PostController', 'index');
+Route::get('/admin/posts/')->add('admin\PostController', 'index');
 Route::get('/admin/posts/[id]/read')->add('admin\PostController', 'read');
 
 Route::middleware(['auth' => 'admin'])->run(function() { 
@@ -83,7 +83,7 @@ Route::middleware(['auth' => 'admin'])->run(function() {
     Route::post('/admin/posts/delete')->add('admin\PostController', 'delete');
 });
 
-Route::get('/admin/users')->add('admin\UserController', 'index');
+Route::get('/admin/users/')->add('admin\UserController', 'index');
 Route::get('/admin/users/[id]/read')->add('admin\UserController', 'read');
 
 Route::middleware(['auth' => 'admin'])->run(function() { 
@@ -97,7 +97,7 @@ Route::middleware(['auth' => 'admin'])->run(function() {
     Route::post('/admin/users/delete')->add('admin\UserController', 'delete');
 });
 
-Route::get('/admin/css')->add('admin\CssController', 'index');
+Route::get('/admin/css/')->add('admin\CssController', 'index');
 Route::get('/admin/css/[id]/read')->add('admin\CssController', 'read');
 
 Route::middleware(['auth' => 'admin'])->run(function() { 
@@ -114,7 +114,7 @@ Route::middleware(['auth' => 'admin'])->run(function() {
     Route::post('/admin/css/delete')->add('admin\CssController', 'delete');
 });
 
-Route::get('/admin/js')->add('admin\JsController', 'index');
+Route::get('/admin/js/')->add('admin\JsController', 'index');
 Route::get('/admin/js/[id]/read')->add('admin\JsController', 'read');
 
 Route::middleware(['auth' => 'admin'])->run(function() { 
@@ -178,7 +178,7 @@ Route::middleware(['auth' => 'admin'])->run(function() {
     Route::post('/admin/categories/delete')->add('admin\CategoryController', 'delete');
 }); 
 
-Route::get('/admin/widgets')->add('admin\WidgetController', 'index');
+Route::get('/admin/widgets/')->add('admin\WidgetController', 'index');
 Route::get('/admin/widgets/[id]/read')->add('admin\WidgetController', 'read');
 
 Route::middleware(['auth' => 'admin'])->run(function() {
@@ -191,7 +191,7 @@ Route::middleware(['auth' => 'admin'])->run(function() {
     Route::post('/admin/widgets/recover')->add('admin\WidgetController', 'recover');
 });
 
-Route::get('/admin/cdn')->add('admin\WidgetController', 'index');
+Route::get('/admin/cdn/')->add('admin\WidgetController', 'index');
 Route::get('/admin/cdn/[id]/read')->add('admin\WidgetController', 'read');
 
 Route::middleware(['auth' => 'admin'])->run(function() {
