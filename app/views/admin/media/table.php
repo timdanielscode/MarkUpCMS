@@ -1,11 +1,12 @@
 <?php header('Content-Type: application/json; charset=utf-8'); ?>
+<?php use core\Session; ?>
 
 <?php if(!empty($allMedia) && $allMedia !== null) { ?>
     <?php foreach($allMedia as $media) { ?>
         <tr id="<?php echo $media["id"]; ?>">
 
             <td>
-                <input class="deleteCheckbox" type="checkbox" name="delete" value="<?php echo $media['id']; ?>"/>
+                <input class="deleteCheckbox" type="checkbox" name="delete" value="<?php echo $media['id']; ?>" <?php if(Session::get('user_role') === 'normal') { echo 'disabled'; } ?>/>
             </td>
             <td class="width-10">
 
@@ -37,7 +38,7 @@
                 <?php } ?>
             </td>
             <td class="width-10">
-                <a data-role="update" data-folder="<?php echo $media['media_folder']; ?>" id="update" class="button" value="<?php echo $media['id']; ?>" data-folder="<?php echo $media['media_folder']; ?>">Update</a>
+                <?php if(Session::get('user_role') === 'admin') { ?><a data-role="update" data-folder="<?php echo $media['media_folder']; ?>" id="update" class="button" value="<?php echo $media['id']; ?>" data-folder="<?php echo $media['media_folder']; ?>">Update</a><?php } ?>
             </td>
             <td class="width-15">
                 <?php if(!empty($media['media_description']) && $media['media_description'] !== null) { ?>
@@ -49,7 +50,7 @@
                 <div class="margin-t-10" id="MESSAGE-DESCRIPTION-<?php echo $media['id']; ?>"></div>
             </td>
             <td class="width-10 text-center">
-                <a data-role="update-description" id="update-description" class="button" value="<?php echo $media['id']; ?>">Update</a>
+                <?php if(Session::get('user_role') === 'admin') { ?><a data-role="update-description" id="update-description" class="button" value="<?php echo $media['id']; ?>">Update</a><?php } ?>
             </td>
             <td class="width-10">
                 <span class="font-weight-500"><?php echo $media['media_filetype']; ?></span>

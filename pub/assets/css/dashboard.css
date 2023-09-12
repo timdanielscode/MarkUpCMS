@@ -294,20 +294,14 @@ progress.lightBlue::-moz-progress-bar, progress.blue::-webkit-progress-value, pr
     margin-top: 10px;
     color: #333;
 }
-.colorAdmin, .colorNormal {
+.colorAdmin {
     width: 20px;
     height: 10px;
     position: absolute;
     bottom: 3px;
     display: block;
-    
+    background: #1888e1;
     left: 75px;
-}
-.colorAdmin {
-    background: #1888e1
-}
-.colorNormal {
-    background: #72b7ee;
 }
 .cardContainerSecondRow .container .mediaTextContainer {
     position: absolute;

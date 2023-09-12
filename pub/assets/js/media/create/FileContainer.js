@@ -210,8 +210,15 @@ function showFileInfo(element, checkboxElements, sidebar) {
     sidebar.currentFileFolderElement.innerText = "/" + element.dataset.folder + '/' + element.dataset.filename;
     sidebar.currentFilenameElement.value = element.dataset.filename;
     sidebar.currentFolderElement.setAttribute('data-folder', element.dataset.folder);
-    sidebar.updateFilenameButtonElement.setAttribute('value', element.dataset.id);
-    sidebar.updateDescriptionButtonElement.setAttribute('value', element.dataset.id);
+
+    if(sidebar.updateFilenameButtonElement !== null && typeof sidebar.updateFilenameButtonElement !== 'undefined') {
+
+        sidebar.updateFilenameButtonElement.setAttribute('value', element.dataset.id);
+    }
+    if(sidebar.updateDescriptionButtonElement !== null && typeof sidebar.updateDescriptionButtonElement !== 'undefined') {
+        
+        sidebar.updateDescriptionButtonElement.setAttribute('value', element.dataset.id);
+    }
 }
 
 function getFileNodeType(elementType) {

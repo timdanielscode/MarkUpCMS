@@ -1,3 +1,5 @@
+<?php use core\Session; ?>
+
 <?php 
     $this->include('headerOpen');  
 
@@ -24,7 +26,7 @@
     <div class="headerContainer">
         <h1>Categories</h1><span class="badge categories"><?php echo $count; ?></span>
     </div>
-    <a class="create">Create</a> <span class="deleteSeparator">|</span> <form action="/admin/categories/delete" method="POST" class="indexDeleteForm"><input type="submit" value="Delete" class="delete"/><input type="hidden" name="deleteIds" id="deleteIds" value=""/></form>
+    <?php if(Session::get('user_role') === 'admin') { ?><a class="create">Create</a> <span class="deleteSeparator">|</span> <form action="/admin/categories/delete" method="POST" class="indexDeleteForm"><input type="submit" value="Delete" class="delete"/><input type="hidden" name="deleteIds" id="deleteIds" value=""/></form><?php } ?>
     <form action="" method="GET" class="searchForm">
         <input type="text" name="search" placeholder="Search" id="search">
         <input id="searchValue" type="hidden" name="submit" value="<?php if(!empty($search) && $search !== null) { echo $search; } ?>">

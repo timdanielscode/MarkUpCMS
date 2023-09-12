@@ -10,6 +10,7 @@
     $this->stylesheet("/assets/css/style.css");
     $this->stylesheet("/assets/css/navbar.css");
     $this->stylesheet("/assets/css/index.css");
+    $this->stylesheet("/assets/css/users.css");
     $this->stylesheet("/assets/css/pagination.css");
 
     $this->script("/assets/js/delete.js", true);
@@ -38,7 +39,6 @@
                     <th></th>
                     <th>Username</th>
                     <th>Email</th>
-                    <th>Role</th>
                     <th>Date</th>
                 </tr>
             </thead>
@@ -55,15 +55,12 @@
                             </td>
                             <td class="width-20">
                             <?php if($user['name'] === 'admin' || $user['removed'] === 1) { ?>
-                                <?php echo $user['username']; ?>
+                                <?php echo $user['username'] . ' | <span class="isAdmin">admin</span>'; ?>
                             <?php } else { ?>
                                 <a href="/admin/users/<?php echo $user['username']; ?>/edit" class="font-weight-500"><?php echo $user['username']; ?></a>
                             <?php } ?>
-                            <td class="width-20">
+                            <td class="width-65">
                                 <?php echo $user['email']; ?>
-                            </td>
-                            <td class="width-50">
-                                <?php echo $user['name']; ?>
                             </td>
                             <td class="width-15">
                                 <span class="padding-b-2">Created:</span> <span class="font-weight-300"><?php echo $user["created_at"]; ?></span><br>

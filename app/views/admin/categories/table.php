@@ -1,17 +1,24 @@
+<?php use core\Session; ?>
 
 <?php if(!empty($categories) && $categories !== null) { ?>
     <?php foreach($categories as $category) { ?>
         <tr>
 
                 <td>
-                    <input class="deleteCheckbox" type="checkbox" name="delete" value="<?php echo $category['id']; ?>"/>
+                    <input class="deleteCheckbox" type="checkbox" name="delete" value="<?php echo $category['id']; ?>" <?php if(Session::get('user_role') === 'normal') { echo 'disabled'; } ?>/>
                 </td>
-                <td class="width-20">
+                <?php if(Session::get('user_role') === 'admin') { ?><td class="width-20">
                     <a data-id="<?php echo $category['id']; ?>" data-id="<?php echo $category['id']; ?>" class="edit font-weight-300" id="TABLE-TITLE-<?php echo $category['id']; ?>"><?php echo $category["title"]; ?></a> |
                     <a data-id="<?php echo $category['id']; ?>" class="edit font-weight-300" class="edit">Edit</a> |
                     <a href="#" data-role="add" data-id="<?php echo $category['id']; ?>" class="add font-weight-300">Apply</a> |
                     <a href="#<?php echo $category['title']; ?>" class="read font-weight-300" data-id="<?php echo $category['id']; ?>">Read</a>
                 </td>
+                <?php } else { ?>
+                    <td class="width-20">
+                        <?php echo $category['title'] . ' | '; ?>
+                        <a href="#<?php echo $category['title']; ?>" class="read font-weight-300" data-id="<?php echo $category['id']; ?>">Read</a>
+                    </td>
+                <?php } ?>
                 <td class="width-30">
                     <form>
                         <input class="categorySlug" name="slug" id="slug-<?php echo $category['id']; ?>" type="text" value="<?php echo substr($category['slug'], 1); ?>"/>

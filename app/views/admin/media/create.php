@@ -55,16 +55,17 @@
                         <div class="crumPath"><span>/website</span><span class="separator">/</span><a class="folderPath" href="?folder=website/assets">assets</a></div>
 
                     <?php } ?>
-                
-                <form action="" method="POST" class="folderForm">
-                    <input type="text" placeholder="Folder" name="P_folder">
-                    <input type="submit" name="submitFolder" value="Folder &plusmn"/>
-                    <?php if(!empty(Errors::get($rules, 'P_folder')) && Errors::get($rules, 'P_folder') !== null) { ?>
-                        <div class="error-messages font-size-14 folder">
-                            <span><?php echo Errors::get($rules, 'P_folder'); ?></span>
-                        </div>    
-                    <?php } ?> 
-                </form>
+                <?php if(Session::get('user_role') === 'admin') { ?>
+                    <form action="" method="POST" class="folderForm">
+                        <input type="text" placeholder="Folder" name="P_folder">
+                        <input type="submit" name="submitFolder" value="Folder &plusmn"/>
+                        <?php if(!empty(Errors::get($rules, 'P_folder')) && Errors::get($rules, 'P_folder') !== null) { ?>
+                            <div class="error-messages font-size-14 folder">
+                                <span><?php echo Errors::get($rules, 'P_folder'); ?></span>
+                            </div>    
+                        <?php } ?> 
+                    </form>
+                <?php } ?>
                 <div class="readImageContainer display-none"></div>
                 <div class="filesContainer">
                     <div class="row flex-center">
@@ -120,7 +121,7 @@
                                     <?php } else if($type === 'application') { ?>
                                         <img class="file mediaFile pdfFile" data-id="<?php echo $file['id']; ?>" data-filename="<?php echo $file['media_filename']; ?>" data-folder="<?php echo $file['media_folder']; ?>" data-filetype="<?php echo $file['media_filetype']; ?>" data-filesize="<?php echo $file['media_filesize']; ?>" src="/assets/img/pdf.png" data-description="<?php if(!empty($file['media_description']) && $file['media_description'] !== null) { echo $file['media_description']; } else { echo '-'; } ?>" loading="lazy"></iframe>
                                     <?php } ?>
-                                    <input class="deleteSelection" type="checkbox"/> 
+                                    <input class="deleteSelection <?php if(Session::get('user_role') === 'normal') { echo 'display-none-important'; } ?>" type="checkbox"/>
                                 </div>
                         <?php } ?>
                         <?php } ?>
@@ -134,7 +135,7 @@
                 <div id="sidebar" class="width-25-L">
                     <div class="sidebarContainer">
                         <div class="mainButtonContainer">
-                            <label for="submit" class="button greenButton margin-r-10">Upload</label>
+                            <label for="submit" class="button greenButton margin-r-10 <?php if(Session::get('user_role') === 'normal') { echo 'display-none-important'; } ?>">Upload</label>
                             <form action="" method="POST" class="deleteForm display-none">
                                 <input id="selectedFiles" type="hidden" name="files" value=""/>
                                 <input type="submit" name="submitDelete" class="button redButton margin-r-10" value="Delete"/>
@@ -143,33 +144,33 @@
                             <a href="#" class="button close blueButton display-none-important">Close</a>
                             <a href="/admin/media" class="button back darkBlueButton">Back</a>
                         </div>
-                        <form action="" method="POST" class="uploadFileForm" enctype="multipart/form-data">
-                            <div class="form-parts">
-                                <label>Description: </label>
-                                <textarea name="media_description" type="text" id="media_description" autofocus placeholder="Optional"></textarea>
-                                <?php if(!empty(Errors::get($rules, 'file')) && Errors::get($rules, 'file') !== null) { ?>
-                                    <div class="error-messages margin-tm-10 font-size-14">
-                                        <span><?php echo Errors::get($rules, 'file'); ?></span>
-                                    </div>    
-                                <?php } ?> 
-                                <?php if(!empty(Errors::get($rules, 'media_description')) && Errors::get($rules, 'media_description') !== null) { ?>
-                                    <div class="error-messages margin-tm-10 font-size-14">
-                                        <span><?php echo Errors::get($rules, 'media_description'); ?></span>
-                                    </div>    
-                                <?php } ?> 
-                            </div>
-                            <div class="form-parts">
-                                <input name="file[]" type="file" multiple="true" id="file" class="display-none">
-                            </div>
-                            <div class="form-parts">
-                                <button name="submit" id="submit" type="submit" class="display-none">Upload</button>
-                                <input type="hidden" name="token" value="<?php Csrf::token('add');?>" />
-                            </div>
-                        </form>
-                        <div class="buttonContainer">
-                        <label for="file" class="button darkButton margin-t-10">Select files</label>
-                        </div>
+                            <form action="" method="POST" class="uploadFileForm <?php if(Session::get('user_role') === 'normal') { echo 'display-none-important'; } ?>" enctype="multipart/form-data">
+                                <div class="form-parts">
+                                    <label>Description: </label>
+                                    <textarea name="media_description" type="text" id="media_description" autofocus placeholder="Optional"></textarea>
+                                    <?php if(!empty(Errors::get($rules, 'file')) && Errors::get($rules, 'file') !== null) { ?>
+                                        <div class="error-messages margin-tm-10 font-size-14">
+                                            <span><?php echo Errors::get($rules, 'file'); ?></span>
+                                        </div>    
+                                    <?php } ?> 
+                                    <?php if(!empty(Errors::get($rules, 'media_description')) && Errors::get($rules, 'media_description') !== null) { ?>
+                                        <div class="error-messages margin-tm-10 font-size-14">
+                                            <span><?php echo Errors::get($rules, 'media_description'); ?></span>
+                                        </div>    
+                                    <?php } ?> 
+                                </div>
+                                <div class="form-parts">
+                                    <input name="file[]" type="file" multiple="true" id="file" class="display-none">
+                                </div>
+                                <div class="form-parts">
+                                    <button name="submit" id="submit" type="submit" class="display-none <?php if(Session::get('user_role') === 'normal') { echo 'display-none-important'; } ?>">Upload</button>
+                                    <input type="hidden" name="token" value="<?php Csrf::token('add');?>" />
+                                </div>
+                            </form>
                         
+                        <div class="buttonContainer">
+                        <label for="file" class="button darkButton margin-t-10 <?php if(Session::get('user_role') === 'normal') { echo 'display-none-important'; } ?>">Select files</label>
+                        </div>
                         <div class="totalContainer">
                             <span class="text">Total: </span>
                             <span class="data"><?php echo count($files); ?></span>
@@ -200,7 +201,7 @@
                                     <span id="currentFolder"></span>
                                     <input id="currentFilename" type="text" name="filename" value=""/>
                                     <div id="MESSAGE"></div>
-                                    <a data-role="update" id="update" class="button greenButton margin-t-10 width-50-px">Update</a>
+                                    <?php if(Session::get('user_role') === 'admin') { ?><a data-role="update" id="update" class="button greenButton margin-t-10 width-50-px">Update</a><?php } ?>
                                 </div>
                                 <div class="infoPart">
                                     <span class="infoText">Type: </span>
@@ -214,7 +215,7 @@
                                     <span class="infoText">Description: </span>
                                     <textarea type="text" name="description" class="infoData" id="currentDescription"></textarea>
                                     <div id="MESSAGE-DESCRIPTION"></div>
-                                    <a data-role="update-description" id="updateDescription" class="button greenButton margin-t-10 width-50-px">Update</a>
+                                    <?php if(Session::get('user_role') === 'admin') { ?><a data-role="update-description" id="updateDescription" class="button greenButton margin-t-10 width-50-px">Update</a><?php } ?>
                                 </div>
                             </div>
                         </div>

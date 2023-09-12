@@ -2,6 +2,12 @@
     margin-top: 20px;
     margin-left: 5%;
 }
+/*
+    Index
+*/
+.isAdmin {
+    color: #4f80c8;
+}
 
 h1 {
     font-size: 28px;
