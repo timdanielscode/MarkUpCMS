@@ -17,7 +17,7 @@
     <div class="row">
         <div class="col10 col9-L">
         <div class="edit-container">
-        <h1>Details: </h1>
+        <h1 class="margin-b-30">Update details</h1>
                 <form action="/admin/users/<?php echo $user['username']; ?>/update" method="POST" class="usersEditForm">
                     <div class="form-parts">
                         <label for="username">Username:</label>
@@ -62,7 +62,7 @@
                             </select>
                         </div>
                         <div class="form-parts">
-                            <button name="submit" type="submit" class="button greenButton margin-t-10">Update</button>
+                            <button name="submit" type="submit" class="button greenButton margin-t-10" onclick="return confirm('Are you sure?');">Update</button>
                             <input type="hidden" name="id" value="<?php echo $user['id']; ?>"/>
                             <input type="hidden" name="token" value="<?php echo Csrf::token('add');?>" />
                         </div>

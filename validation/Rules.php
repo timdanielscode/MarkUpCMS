@@ -361,6 +361,19 @@ class Rules {
         return $this;
     }
 
+    public function updatePassword() {
+
+        $validation = new Validate();
+
+        $validation->input('password')->as('Password')->rules(['required' => true, 'min' => 5]);
+        $validation->input('newPassword')->as('New passoword')->rules(['required' => true, 'min' => 5]);
+        $validation->input('retypePassword')->as('Retype password and new password')->rules(['match' => 'newPassword']);
+
+        $this->errors = $validation->errors;
+
+        return $this;
+    }
+
     /**
      * Validating validation rules
      * On fail, returning view with extracted validation error rules and if exists request data

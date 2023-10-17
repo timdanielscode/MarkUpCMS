@@ -17,19 +17,26 @@
     <div class="row">
         <div class="col10 col9-L">
         <div class="edit-container">
-            <h1>Change password: </h1>
-            
+            <h1 class="margin-b-30">Update password</h1>
                 <form action="/admin/profile/<?php echo $user['username']; ?>/change-password" method="POST" class="usersEditForm">
                     <div class="form-parts">
-                        <label for="password">Password:</label>
-                        <input name="password" type="password" id="password">
+                        <label for="currentPassword">Current password: </label>
+                        <input id="currentPassword" type="password" name="password">
+                        <input type="hidden" name="username" value="<?php echo Session::get('username'); ?>">
                         <div class="error-messages">
                             <?php echo Errors::get($rules, 'password'); ?>
                         </div>
                     </div>
                     <div class="form-parts">
+                        <label for="newPassword">New password:</label>
+                        <input id="newPassowrd" name="newPassword" type="password">
+                        <div class="error-messages">
+                            <?php echo Errors::get($rules, 'newPassword'); ?>
+                        </div>
+                    </div>
+                    <div class="form-parts">
                         <label for="retypePassword">Retype password:</label>
-                        <input name="retypePassword" type="password" id="retypePassword">
+                        <input id="retypePassword" name="retypePassword" type="password">
                         <div class="error-messages">
                             <?php echo Errors::get($rules, 'retypePassword'); ?>
                         </div>

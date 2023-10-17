@@ -68,25 +68,16 @@ class Auth {
      */
     public static function verifyPassword($sql) {
 
-        if(!empty($sql) && $sql !== null) {
+        if(password_verify(self::$_password, $sql['password']) && Session::exists('failed_login_attempts_timestamp') === false) {
 
-            $fetched_password = $sql['password'];
-            
-            if(password_verify(self::$_password, $fetched_password) && Session::exists('failed_login_attempts_timestamp') === false) {
+            Session::set('logged_in', true);
+            Session::set('user_role', $sql['name']);
+            Session::set('username', $sql['username']);
 
-                Session::set('logged_in', true);
-                Session::set('user_role', $sql['name']);
-                Session::set('username', $sql['username']);
+            return true;
+        } 
 
-                return true;
-            } else {
-
-                self::loginAttempt($sql);
-            }
-        } else {
-
-            self::loginAttempt($sql);
-        }
+        self::loginAttempt();
     }
 
     /**
@@ -94,27 +85,24 @@ class Auth {
      * 
      * @return string failed_login_attempt session value | failed_login_attempts_timestamp session value
      */
-    public static function loginAttempt($sql) {
+    public static function loginAttempt() {
 
         self::checkTooManyLoginAttempts();
 
-        if(empty($sql) || $sql === null || Session::exists('logged_in') === false) {
+        if(Session::exists('failed_login_attempt') === true) {
 
-            if(Session::exists('failed_login_attempt') === true) {
+            $attempt = Session::get('failed_login_attempt');
+            $attempt++;
 
-                $attempt = Session::get('failed_login_attempt');
-                $attempt++;
-
-                if(Session::get('failed_login_attempt') > 2) {
+            if(Session::get('failed_login_attempt') > 2) {
                     
-                    return Session::set('failed_login_attempts_timestamp', time());
-                }
-
+                return Session::set('failed_login_attempts_timestamp', time());
+            } else {
                 return Session::set('failed_login_attempt', $attempt);
             }
+        } 
 
-            Session::set('failed_login_attempt', 1);
-        }
+        Session::set('failed_login_attempt', 1);
     }
 
     /**

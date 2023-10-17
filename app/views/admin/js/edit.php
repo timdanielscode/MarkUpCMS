@@ -61,11 +61,11 @@
                         </div>
                         <div class="buttonContainer">
                             <form action="/admin/js/<?php echo $data['id']; ?>/include-all" method="POST">
-                                <input type="submit" name="submit" class="button greenButton margin-r-10" value="Include on all"/>
+                                <input type="submit" name="submit" class="button lightButton margin-r-10" value="Include on all"/>
                                 <input type="hidden" name="token" value="<?php Csrf::token('add');?>" />
                             </form>
                             <form action="/admin/js/<?php echo $data['id']; ?>/remove-all" method="POST">
-                                <input type="submit" name="submit" class="button redButton" value="Remove all"/>
+                                <input type="submit" name="submit" class="button lightButton" value="Remove all"/>
                                 <input type="hidden" name="token" value="<?php Csrf::token('add');?>" />
                             </form>
                         </div>
@@ -78,7 +78,7 @@
                                     <option value="<?php echo $page['id']; ?>"><?php echo $page['title']; ?></option>
                                 <?php } ?> 
                             </select>
-                            <input type="submit" name="submit" class="button redButton" value="Exclude"/>
+                            <input type="submit" name="submit" class="button blueButton" value="Exclude"/>
                             <input type="hidden" name="token" value="<?php Csrf::token('add');?>" />
                         </form>   
                         <form action="/admin/js/<?php echo $data['id']; ?>/include-pages" method="POST" class="includeJsForm">

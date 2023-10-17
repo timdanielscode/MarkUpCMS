@@ -145,6 +145,9 @@ h3 {
 .margin-b-50 {
     margin-bottom: 50px !important;
 }
+.margin-b-30 {
+    margin-bottom: 30px;
+}
 .margin-tm-10 {
     margin-top: -10px;
 }

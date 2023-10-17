@@ -10,6 +10,7 @@
   use app\models\User;
   use app\models\UserRole;
   use core\Csrf;
+  use extensions\Auth;
                 
   class ProfileController extends Controller {
     
@@ -90,27 +91,63 @@
 
         $rules = new Rules();
 
-        if($rules->change_password()->validated()) {
+        if($rules->updatePassword()->validated() === true) {
 
-            User::update(['id' => $request['id']], [
-
-                'password' => password_hash($request['password'], PASSWORD_DEFAULT),
-                'retypePassword' => password_hash($request['password_confirm'], PASSWORD_DEFAULT),
-            ]);
-        
-            Session::delete('logged_in');
-            Session::delete('username');
-            Session::delete('user_role');
-            
-            $this->redirectLoginPage();
-
+            $this->authenticate($rules, $request['id'], $request['newPassword']);
         } else {
 
             $data['user'] = DB::try()->select('users.id, users.username, users.email, roles.name')->from('users')->join('user_role')->on('users.id', '=', 'user_role.user_id')->join('roles')->on('user_role.role_id', '=', 'roles.id')->where('users.username', '=', Session::get('username'))->first();
             $data['rules'] = $rules->errors;
 
+            return $this->view('admin/profile/changePassword', $data);
+        }
+    }
+
+    private function authenticate($rules, $id, $password) {
+
+        if(Auth::authenticate() ) {
+
+            $this->updateCurrentPassword($id, $password);
+        } else {
+
+            $data['user'] = DB::try()->select('users.id, users.username, users.email, roles.name')->from('users')->join('user_role')->on('users.id', '=', 'user_role.user_id')->join('roles')->on('user_role.role_id', '=', 'roles.id')->where('users.username', '=', Session::get('username'))->first();
+            $rules->errors[] = ['retypePassword' => $this->getFailedLoginAttemptMessages()];
+            $data['rules'] = $rules->errors;
+
             return $this->view('/admin/profile/changePassword', $data);
         }
+    }
+
+    private function updateCurrentPassword($id, $password) {
+
+        if(!empty($id) && $id !== null && !empty($password) && $password !== null) {
+
+            User::update(['id' => $id], [
+
+                'password' => password_hash($password, PASSWORD_DEFAULT),
+                'retypePassword' => password_hash($password, PASSWORD_DEFAULT),
+            ]);
+        }
+    
+        Session::delete('logged_in');
+        Session::delete('username');
+        Session::delete('user_role');
+        
+        $this->redirectLoginPage();
+    }
+
+    private function getFailedLoginAttemptMessages() {
+
+        if(Session::exists('failed_login_attempt') === true && Session::exists('failed_login_attempts_timestamp') === false) {
+
+            $message = "Incorrect credentials.";
+        } else if(Session::exists('failed_login_attempt') === true && Session::exists('failed_login_attempts_timestamp') === true) {
+            $message = "Too many failed attempts.";
+        } else {
+            $message = "";
+        }
+
+        return $message;
     }
 
     private function redirectLoginPage() {

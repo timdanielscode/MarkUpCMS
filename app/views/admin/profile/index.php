@@ -18,7 +18,7 @@
     <div class="row">
         <div class="col10 col9-L">
         <div class="edit-container">
-            <h1>Details</h1>
+            <h1 class="margin-b-30">Update details</h1>
             
                 <form action="/admin/profile/<?php echo Session::get('username'); ?>/update" method="POST" class="usersEditForm">
                     <div class="form-parts">
@@ -54,7 +54,7 @@
                         <a href="/admin/profile/<?php echo Session::get('username'); ?>/change-password" class="button darkButton margin-r-10">Password</a>
                         <form action="/profile/<?php echo Session::get('username'); ?>/delete" method="POST" class="deleteAccountForm">
                             <input type="hidden" name="id" value="<?php echo $user["id"]; ?>"> 
-                            <input type="submit" name="delete" class="button redButton" value="Delete account" onclick="return confirm('Are you sure?');"/>
+                            <input type="submit" name="delete" class="button lightButton" value="Delete account" onclick="return confirm('Are you sure?');"/>
                         </form>
                     </div>
                     <span class="text">Username:</span>
@@ -75,7 +75,7 @@
                                 </div>
                             </div>
                             <div class="form-parts">
-                                <button name="submit" type="submit" id="submit" class="button darkBlueButton margin-t-10" onclick="return confirm('Are you sure?');">Update</button>
+                                <input name="submit" type="submit" id="submit" class="button darkBlueButton margin-t-10" value="Update" onclick="return confirm('Are you sure?');">
                                 <input type="hidden" name="id" value="<?php echo $user['id']; ?>"/>
                                 <input type="hidden" name="token" value="<?php echo Csrf::token('add');?>" />
                             </div>

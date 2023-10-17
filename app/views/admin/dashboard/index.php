@@ -35,7 +35,7 @@
             <ul id="profileDropdown">
             <span class="triangle"></span>
                 <span class="profileIcon"><?php echo substr(Session::get('username'), 0, 1); ?></span>
-                <li class="text-center username"><?php echo Session::get('username'); ?> <span>(<?php echo Session::get('user_role'); ?></span>)</li>
+                <li class="text-center username"><?php echo Session::get('username'); ?> <span>(<?php if(Session::get('user_role') !== 'admin') { echo 'non admin'; } else { echo Session::get('user_role'); } ?></span>)</li>
                 <li><a href="/admin/profile/<?php echo Session::get('username'); ?>">Profile</a></li>
                 <li class="/logout"><a href="/logout">Sign out</a></li>
             </ul>
