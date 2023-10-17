@@ -52,7 +52,7 @@
                     </div>
                     <div class="buttonContainer">
                         <a href="/admin/profile/<?php echo Session::get('username'); ?>/change-password" class="button darkButton margin-r-10">Password</a>
-                        <form action="/profile/<?php echo Session::get('username'); ?>/delete" method="POST" class="deleteAccountForm">
+                        <form action="/admin/profile/<?php echo Session::get('username'); ?>/delete" method="POST" class="deleteAccountForm">
                             <input type="hidden" name="id" value="<?php echo $user["id"]; ?>"> 
                             <input type="submit" name="delete" class="button lightButton" value="Delete account" onclick="return confirm('Are you sure?');"/>
                         </form>

@@ -1,9 +1,20 @@
 <?php use core\Csrf; ?>             
 <?php use validation\Errors; ?>
-                
+        
+
+<?php 
+    $this->include('headerOpen');  
+
+    $this->stylesheet("/assets/css/style.css");
+    $this->stylesheet("/assets/css/installation.css");
+
+    $this->include('headerClose');
+?>
+
+
+<div class="container">
 <h1>Register</h1>    
 <p>Welcome, create an admin account to build your website!</p>
-
 <form action="" method="POST">
   <div class="form-parts">
     <label for="username">Username:</label>
@@ -38,3 +49,7 @@
     <input type="hidden" name="token" value="<?php Csrf::token("add"); ?>"/>
   </div>                
 </form> 
+</div>
+
+
+<?php $this->include("footer"); ?>

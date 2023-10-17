@@ -25,9 +25,6 @@ if(!empty($postPaths) && $postPaths !== null) {
 
 Route::middleware('notLoggedIn')->run(function() {
 
-    Route::get("/register")->add("RegisterController", "create");
-    Route::post("/register")->add("RegisterController", "store");
-
     $settedWebsiteSlug = DB::try()->select('slug')->from('websiteSlug')->first();
 
     if(!empty($settedWebsiteSlug) && $settedWebsiteSlug !== null) {
@@ -54,7 +51,6 @@ Route::middleware('login')->run(function() {
     Route::post('/admin/profile/' . Session::get('username') . '/delete')->add('admin\ProfileController', 'delete');
 
     Route::get('/logout')->add('LogoutController', 'logout');
-
 });
 
 Route::middleware('login')->run(function() { 

@@ -6,8 +6,8 @@ use core\Csrf;
 use validation\Rules;
 use app\models\User;
 use app\models\UserRole;
-use app\models\Post;
-
+use app\models\Roles;
+use database\DB;
 
 class InstallationController extends Controller {
 
@@ -25,27 +25,24 @@ class InstallationController extends Controller {
             $rules = new Rules();  
                     
             if($rules->installationRules()->validated() ) {
-                     
-                $users = User::all();
 
-                $user = new User(); 
-                $userRole = new UserRole();  
-                $post = new Post();
+                $this->insertRoles(1, 'normal');
+                $this->insertRoles(2, 'admin');
 
                 User::insert([
                     
                     'username' => $request["username"], 
                     'email' => $request["email"], 
                     'password' => password_hash($request["password"], PASSWORD_DEFAULT),
-                    'retypePassword' => password_hash($request["retypePassword"], PASSWORD_DEFAULT),
                     'created_at' => date("Y-m-d H:i:s"), 
                     'updated_at' => date("Y-m-d H:i:s")
-                                 
                 ]); 
+
+                $lastId = DB::try()->getLastId('users')->first();
 
                 UserRole::insert([
     
-                    'user_id' => 1,
+                    'user_id' => $lastId['id'],
                     'role_id' => 2
                 ]);
 
@@ -57,5 +54,15 @@ class InstallationController extends Controller {
                 return $this->view("admin/installation/index", $data);
             }
         }
+    }
+
+    private function insertRoles($id, $roleType) {
+
+        $role = DB::try()->select('id')->from('roles')->where('id', '=', $id)->and('name', '=', $roleType)->first();
+
+        if(empty($role)) {
+
+            Roles::insert(['id' => $id, 'name'  =>  $roleType]);
+        } 
     }
 }

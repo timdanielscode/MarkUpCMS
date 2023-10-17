@@ -2,6 +2,10 @@
 
 namespace app\models;
 
-class Roles {
+class Roles extends Model {
 
+    public function __construct() {
+
+        self::table('roles');
+    }
 }

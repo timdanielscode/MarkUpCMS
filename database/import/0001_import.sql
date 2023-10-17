@@ -250,3 +250,11 @@ ALTER TABLE css ADD author VARCHAR(50) AFTER extension;
 ALTER TABLE js ADD author VARCHAR(50) AFTER extension;
 
 ALTER TABLE users ADD removed TINYINT AFTER retypePassword;
+
+ALTER TABLE users DROP COLUMN retypePassword;
+ALTER TABLE user_role DROP COLUMN id;
+
+DROP TABLE forms;
+
+ALTER TABLE roles DROP COLUMN id;
+ALTER TABLE roles ADD COLUMN id INT(11) FIRST;
