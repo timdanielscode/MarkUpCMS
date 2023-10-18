@@ -25,7 +25,9 @@ class Middlewares {
         "user"  =>  "UserMiddleware",
         "login"     =>      "LoginMiddleware",
         "notLoggedIn"   =>      "NoLoginMiddleware",
-        "auth"      =>      "AuthMiddleware"
+        "auth"      =>      "AuthMiddleware",
+        "hasDBConn"  => "HasDBConnectionMiddleware",
+        "hasNotDBConn"  => "HasNotDBConnectionMiddleware"
     ];
 
 

@@ -6,22 +6,27 @@ use core\Session;
 
 Route::setRouteKeys(['id', 'username']);
 
-$postPaths = DB::try()->select('slug')->from('pages')->fetch();
+Route::middleware('hasNotDBConn')->run(function() { 
 
-if(!empty($postPaths) && $postPaths !== null) {
+    Route::get('/')->add('InstallationController', 'databaseSetup');
+    Route::post('/')->add('InstallationController', 'createConnection');
+});
 
-    foreach($postPaths as $postPath) {
+Route::middleware('hasDBConn')->run(function() { 
 
-        Route::get($postPath['slug'])->add('RenderPageController', 'render');
+    Route::get('/')->add('InstallationController', 'createUser');
+    Route::post('/')->add('InstallationController', 'storeUser');
+
+    $postPaths = DB::try()->select('slug')->from('pages')->fetch();
+
+    if(!empty($postPaths) && $postPaths !== null) {
+
+        foreach($postPaths as $postPath) {
+
+            Route::get($postPath['slug'])->add('RenderPageController', 'render');
+        }
     }
-} else {
-    
-    Route::middleware('user')->run(function() { 
-
-        Route::get('/')->add('InstallationController', 'create');
-        Route::post('/')->add('InstallationController', 'store');
-    });
-}
+});
 
 Route::middleware('notLoggedIn')->run(function() {
 
