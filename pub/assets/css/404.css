@@ -1,0 +1,8 @@
+h1 {
+    font-size: 46px;
+    color: #333;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+}

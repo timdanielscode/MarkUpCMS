@@ -41,9 +41,9 @@ class Table {
             body MEDIUMTEXT NOT NULL,
             has_content TINYINT NOT NULL,
             author VARCHAR(255) NOT NULL,
-            metaTitle VARCHAR(255) NOT NULL,
-            metaDescription VARCHAR(255) NOT NULL,
-            metaKeywords VARCHAR(255) NOT NUll,
+            metaTitle VARCHAR(255),
+            metaDescription VARCHAR(255),
+            metaKeywords VARCHAR(255),
             removed TINYINT NOT NULL,
             created_at DATETIME NOT NULL,
             updated_at DATETIME NOT NULL

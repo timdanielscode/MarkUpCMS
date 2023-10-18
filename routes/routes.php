@@ -221,8 +221,8 @@ Route::middleware(['auth' => 'admin'])->run(function() {
 
 Route::middleware('login')->run(function() { 
     
-    Route::get('/admin/cdn/')->add('admin\WidgetController', 'index');
-    Route::get('/admin/cdn/[id]/read')->add('admin\WidgetController', 'read');
+    Route::get('/admin/cdn/')->add('admin\CdnController', 'index');
+    Route::get('/admin/cdn/[id]/read')->add('admin\CdnController', 'read');
 });
 
 Route::middleware(['auth' => 'admin'])->run(function() {

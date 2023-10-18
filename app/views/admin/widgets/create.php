@@ -11,13 +11,10 @@
     $this->stylesheet("/assets/css/sidebar.css");
 
     $this->stylesheet("/assets/css/codemirror/codemirror.css");
-    $this->stylesheet("/assets/css/codemirror/gruvbox-dark.css");
     $this->script("/assets/js/codemirror/codemirror.js");
-    $this->script("/assets/js/codemirror/css.js");
-    $this->script("/assets/js/codemirror/closebrackets.js");
-
+    $this->script("/assets/js/codemirror/xml.js");
+    $this->stylesheet("/assets/css/codemirror/monokai.css");
     $this->script('/assets/js/ajax.js');
-    $this->script('/assets/js/fullscreen.js');
     
     $this->title("IndependentCMS");
     $this->include("headerClose");
@@ -57,14 +54,15 @@
             </div>
         </div>
    
-    <script>
+        <script>
         var editor = CodeMirror.fromTextArea(document.getElementById("content"), {
-            theme: "gruvbox-dark",
+            theme: "monokai",
             lineNumbers: true,
-            matchBrackets: true,
-            autoCloseBrackets: true,
+            mode: 'text/html',
             tabSize: 2
         });
+        editor.setSize('95%', "80vh");
+    
     </script>
 
     
