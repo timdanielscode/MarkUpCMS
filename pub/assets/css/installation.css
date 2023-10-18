@@ -5,7 +5,7 @@
     transform: translate(-50%, -50%);
     background: #0c203d;
     width: 500px;
-    height: 600px;
+    height: 660px;
 }
 .container h1 {
     color: #fff;
@@ -16,13 +16,6 @@
     color: #fff;
     margin-left: 25px;
 }
-.container span {
-    font-size: 20px;
-    color: #fff;
-    margin-left: 25px;
-    margin-top: 25px;
-    display: block;
-}
 form {
     position: relative;
     margin: 25px;
@@ -31,7 +24,7 @@ form input {
     display: block;
     width: 100%;
     box-sizing: border-box;
-    margin-bottom: 15px;
+    margin-bottom: 20px;
     height: 32px;
     background: #fff;
     border: none;

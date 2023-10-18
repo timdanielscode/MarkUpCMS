@@ -19,29 +19,29 @@
   <div class="form-parts">
     <label for="username">Username:</label>
     <input type="text" name="username"/>
-    <div class="form-rules">
-      <?php echo Errors::get($rules, "username"); ?>
+    <div class="error-messages margin-b-10 margin-tm-10 font-size-14">
+      <span><?php echo Errors::get($rules, "username"); ?></span>
     </div>                
   </div>                
   <div class="form-parts">                
     <label for="email">Email:</label>                
     <input type="email" name="email"/>                
-    <div class="form-rules">                
-      <?php echo Errors::get($rules, "email"); ?>                
+    <div class="error-messages margin-b-10 margin-tm-10 font-size-14">              
+      <span><?php echo Errors::get($rules, "email"); ?></span>                
     </div>                
   </div>                
   <div class="form-parts">                
     <label for="password">Password:</label>                
     <input type="password" name="password"/>                
-    <div class="form-rules">                
-      <?php echo Errors::get($rules, "password"); ?>                
+    <div class="error-messages margin-b-10 margin-tm-10 font-size-14">               
+      <span><?php echo Errors::get($rules, "password"); ?></span>                
     </div>                
   </div>                
   <div class="form-parts">                
     <label for="retypePassword">Retype password:</label>                
     <input type="password" name="retypePassword"/>                
-    <div class="form-rules">                
-      <?php echo Errors::get($rules, "retypePassword"); ?>                
+    <div class="error-messages margin-b-10 margin-tm-10 font-size-14">              
+      <span><?php echo Errors::get($rules, "retypePassword"); ?></span>                
     </div>                
   </div>                
   <div class="form-parts">                

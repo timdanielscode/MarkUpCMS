@@ -18,7 +18,7 @@ class InstallationController extends Controller {
 
         $data['rules'] = [];
 
-        return $this->view('admin/installation/index', $data);
+        return $this->view('admin/installation/user', $data);
     }
 
     public function storeUser($request) {
@@ -54,7 +54,7 @@ class InstallationController extends Controller {
             } else {
                          
                 $data["rules"] = $rules->errors;
-                return $this->view("admin/installation/index", $data);
+                return $this->view("admin/installation/user", $data);
             }
         }
     }
