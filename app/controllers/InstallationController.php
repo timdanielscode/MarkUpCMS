@@ -27,7 +27,7 @@ class InstallationController extends Controller {
                 
             $rules = new Rules();  
                     
-            if($rules->installationRules()->validated() ) {
+            if($rules->installationStoreUser()->validated() ) {
 
                 $this->insertRoles(1, 'normal');
                 $this->insertRoles(2, 'admin');
@@ -71,10 +71,33 @@ class InstallationController extends Controller {
 
     public function databaseSetup() {
 
-        return $this->view('admin/installation/database');
+        $data['rules'] = [];
+        return $this->view('admin/installation/database', $data);
     }
     
     public function createConnection($request) {
+
+        if(submitted("submit") && Csrf::validate(Csrf::token("get"), post("token")) ) {
+
+            $rules = new Rules();  
+                    
+            if($rules->installationDatabase()->validated() ) {
+
+                $this->databaseConfigFile($request);
+                
+                $table = new Table();
+                $table->create();
+    
+                redirect('/');
+            } else {
+
+                $data['rules'] = $rules->errors;
+                return $this->view('admin/installation/database', $data);
+            }
+        }
+    }
+
+    private function databaseConfigFile($request) {
 
         if(file_exists($this->_configDatabasePath) === false) {
 
@@ -89,10 +112,5 @@ class InstallationController extends Controller {
             fwrite($file, $content);
             fclose($file);
         } 
-
-        $table = new Table();
-        $table->create();
-
-        redirect('/');
     }
 }

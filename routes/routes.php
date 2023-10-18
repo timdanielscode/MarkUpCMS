@@ -14,8 +14,11 @@ Route::middleware('hasNotDBConn')->run(function() {
 
 Route::middleware('hasDBConn')->run(function() { 
 
-    Route::get('/')->add('InstallationController', 'createUser');
-    Route::post('/')->add('InstallationController', 'storeUser');
+    Route::middleware('user')->run(function() { 
+
+        Route::get('/')->add('InstallationController', 'createUser');
+        Route::post('/')->add('InstallationController', 'storeUser');
+    });
 
     $postPaths = DB::try()->select('slug')->from('pages')->fetch();
 
@@ -25,7 +28,7 @@ Route::middleware('hasDBConn')->run(function() {
 
             Route::get($postPath['slug'])->add('RenderPageController', 'render');
         }
-    }
+    } 
 });
 
 Route::middleware('notLoggedIn')->run(function() {

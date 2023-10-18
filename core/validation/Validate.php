@@ -119,6 +119,13 @@ class Validate {
                             $_POST[$this->_inputName] = "";
                         }
                     break;
+                    case 'special-ini':
+                        $regex = '/[?{}|&~![()^"]/';
+                        if(preg_match($regex, $this->_inputValue)) {
+                            $this->message($this->_inputName, "$this->_alias contains one of the following special characters: ?{}|&~![()^" . '"');  
+                            $_POST[$this->_inputName] = "";
+                        }
+                    break;
                     case 'first':
                         if($this->_inputValue[0] !== $value) {
 

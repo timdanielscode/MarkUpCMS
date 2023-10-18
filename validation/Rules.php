@@ -31,20 +31,34 @@ class Rules {
      * return $this
      */
 
-     public function installationRules() {    
+    public function installationDatabase() {    
                 
-      $validation = new Validate();
-                
-      $validation->input("username")->as("Username")->rules(["required" => true, "min" => "6", "max" => "30", "special" => true]);         
-      $validation->input("email")->as("Email")->rules(["required" => true, "min" => "6", "max" => "30", "special" => true]);         
-      $validation->input("password")->as("Password")->rules(["required" => true, "min" => "16", "max" => "200"]);          
-      $validation->input("retypePassword")->as("Password")->rules(["required" => true, "match" => "password"]);
-                 
-      $this->errors = $validation->errors;
-      return $this;
+        $validation = new Validate();
+                    
+        $validation->input("host")->as("Host")->rules(["required" => true, "min" => "1", "max" => "99"]);         
+        $validation->input("database")->as("Database name")->rules(["required" => true, "min" => "1", "max" => "99"]);         
+        $validation->input("username")->as("Database username")->rules(["required" => true, "min" => "1", "max" => "99", "special-ini" => true]); 
+        $validation->input("password")->as("Password")->rules(["required" => true, "min" => "10", "max" => "200", "special-ini" => true]);          
+        $validation->input("retypePassword")->as("Password")->rules(["required" => true, "match" => "password"]);
+                    
+        $this->errors = $validation->errors;
+        return $this;
     }
 
-     public function registerRules() {    
+    public function installationStoreUser() {    
+                
+        $validation = new Validate();
+                    
+        $validation->input("username")->as("Username")->rules(["required" => true, "min" => "6", "max" => "30", "special" => true]);         
+        $validation->input("email")->as("Email")->rules(["required" => true, "min" => "6", "max" => "30", "special" => true]);         
+        $validation->input("password")->as("Password")->rules(["required" => true, "min" => "16", "max" => "200"]);          
+        $validation->input("retypePassword")->as("Password")->rules(["required" => true, "match" => "password"]);
+                    
+        $this->errors = $validation->errors;
+        return $this;
+    }
+
+    public function registerRules() {    
                 
         $validation = new Validate();
                   
@@ -57,7 +71,7 @@ class Rules {
         return $this;
       }
 
-      public function loginRules() {    
+    public function loginRules() {    
                     
         $validation = new Validate();
                   
@@ -68,7 +82,7 @@ class Rules {
         return $this;
       }  
 
-      public function profile_edit_details($username, $email) {
+    public function profile_edit_details($username, $email) {
 
         $validation = new Validate();
   

@@ -18,22 +18,37 @@
     <div class="form-parts">
     <label for="host">Name of server host: </label>
     <input type="text" name="host"/>
+    <div class="error-messages margin-b-10 margin-tm-10 font-size-14">
+        <span><?php echo Errors::get($rules, 'host'); ?></span>
+    </div> 
 </div>
   <div class="form-parts">                
     <label for="database">Name of database:</label>                
-    <input type="text" name="database"/>                     
+    <input type="text" name="database"/> 
+    <div class="error-messages margin-b-10 margin-tm-10 font-size-14">
+        <span><?php echo Errors::get($rules, 'database'); ?></span>
+    </div>                     
   </div>           
   <div class="form-parts">                
     <label for="database">Database username:</label>                
-    <input type="text" name="username"/>                     
+    <input type="text" name="username"/>    
+    <div class="error-messages margin-b-10 margin-tm-10 font-size-14">
+        <span><?php echo Errors::get($rules, 'username'); ?></span>
+    </div>                  
   </div>   
   <div class="form-parts">                
     <label for="database">Database password:</label>                
-    <input type="password" name="password"/>                     
+    <input type="password" name="password"/>    
+    <div class="error-messages margin-b-10 margin-tm-10 font-size-14">
+        <span><?php echo Errors::get($rules, 'password'); ?></span>
+    </div>                  
   </div>       
   <div class="form-parts">                
     <label for="database">Retype password:</label>                
-    <input type="password" name="retypePassword"/>                     
+    <input type="password" name="retypePassword"/>    
+    <div class="error-messages margin-b-10 margin-tm-10 font-size-14">
+        <span><?php echo Errors::get($rules, 'retypePassword'); ?></span>
+    </div>                  
   </div>              
   <div class="form-parts">                
     <button type="submit" name="submit">Setup database</button>                 
