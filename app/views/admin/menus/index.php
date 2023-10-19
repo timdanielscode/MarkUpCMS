@@ -102,8 +102,10 @@
         </table>
         <?php if($numberOfPages !== null && count($numberOfPages) > 1) { ?>
             <nav class="pagination">
-                <ul>
-                    <?php 
+            <ul>
+                <?php 
+                
+                    foreach($numberOfPages as $page) {
 
                         if(!empty(Get::validate([get('search')])) ) {
 
@@ -111,10 +113,11 @@
                         } else {
                             echo '<li class="page-item"><a href="/admin/menus?page='.$page.'">'.$page.'</a></li>';
                         }
-                    ?>
-                </ul>
-            </nav>
-        <?php } ?>
+                    }  
+                ?>
+            </ul>
+        </nav>
+    <?php } ?>
 </div>
 
 <?php 

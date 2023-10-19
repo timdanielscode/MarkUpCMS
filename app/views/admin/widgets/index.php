@@ -85,19 +85,22 @@
         </table>
         <?php if($numberOfPages !== null && count($numberOfPages) > 1) { ?>
             <nav class="pagination">
-                <ul>
-                    <?php 
+            <ul>
+                <?php 
+                
+                    foreach($numberOfPages as $page) {
 
                         if(!empty(Get::validate([get('search')])) ) {
 
-                            echo '<li class="page-item"><a href="/admin/menus?search=' . Get::validate([get('search')]) . '&page='.$page.'">'.$page.'</a></li>';
+                            echo '<li class="page-item"><a href="/admin/widgets?search=' . Get::validate([get('search')]) . '&page='.$page.'">'.$page.'</a></li>';
                         } else {
-                            echo '<li class="page-item"><a href="/admin/menus?page='.$page.'">'.$page.'</a></li>';
+                            echo '<li class="page-item"><a href="/admin/widgets?page='.$page.'">'.$page.'</a></li>';
                         }
-                    ?>
-                </ul>
-            </nav>
-        <?php } ?>
+                    }  
+                ?>
+            </ul>
+        </nav>
+    <?php } ?>
 </div>
 
 <?php 
