@@ -75,12 +75,14 @@
     <?php } ?>
 <?php } else { ?>
     <tr id="<?php echo $media["id"]; ?>">
-        <td class="width-25">-</td>
+        <td>-</td>
         <td class="width-10">-</td>
-        <td class="width-25">-</td>
-        <td class="width-10">-</td>
+        <td class="width-20">-</td>
+        <td class="width-10"></td>
+        <td class="width-15">-</td>
         <td class="width-10"></td>
         <td class="width-10">-</td>
         <td class="width-10">-</td>
+        <td class="width-15">-</td>
     </tr>
 <?php } ?>

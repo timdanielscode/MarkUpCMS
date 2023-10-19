@@ -28,7 +28,7 @@
                 <td class="width-10">
                     <a data-role="update" id="update" data-id="<?php echo $category['id']; ?>" class="button">Update</a>
                 </td>
-                <td class="widht-35">
+                <td class="widht-25">
                     <?php echo $category['author']; ?>
                 </td>
                 <td class="width-15">
@@ -41,9 +41,10 @@
     <tr>
         <td>-</td>
         <td class="width-20">-</td>
-        <td class="width-20">-</td>
-        <td class="width-50">-</td>
+        <td class="width-30">-</td>
         <td class="width-10">-</td>
+        <td class="width-25">-</td>
+        <td class="width-15">-</td>
     </tr>
 
 <?php } ?>

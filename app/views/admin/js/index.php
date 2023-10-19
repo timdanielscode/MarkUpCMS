@@ -28,7 +28,7 @@
         
             <thead>
                 <tr>
-                    <th></th>
+                    <th>#</th>
                     <th>Filename</th>
                     <th>Author</th>
                     <th>Date and time</th>
@@ -65,8 +65,9 @@
                 <?php } else { ?>
                         <tr>
                             <td>-</td>
-                            <td class="width-90">-</td>
-                            <td class="width-10">-</td>
+                            <td class="width-25">-</td>
+                            <td class="width-60">-</td>
+                            <td class="width-15">-</td>
                         </tr>
                 <?php } ?>
             </tbody>

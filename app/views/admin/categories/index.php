@@ -36,7 +36,7 @@
         
         <thead>
             <tr>
-                <th></th>
+                <th>#</th>
                 <th>Title</th>
                 <th>Slug</th>
                 <th></th>

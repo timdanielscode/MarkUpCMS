@@ -31,8 +31,8 @@
         
             <thead>
                 <tr>
-                    <th></th>
                     <th>#</th>
+                    <th></th>
                     <th>Title</th>
                     <th>Author</th>
                     <th>Date and time</th>
@@ -74,11 +74,10 @@
 
                     <tr>
                         <td>-</td>
-                        <td class="width-30">-</td>
-                        <td class="width-20">-</td>
-                        <td class="width-20">-</td>
-                        <td class="width-20">-</td>
-                        <td class="width-10">-</td>
+                        <td class="width-5">-</td>
+                        <td class="width-25">-</td>
+                        <td class="width-55">-</td>
+                        <td class="width-15">-</td>
                     </tr>
 
                 <?php } ?>
