@@ -63,7 +63,7 @@ class PostController extends Controller {
             $rules = new Rules();
             $post = new Post();
 
-            $uniqueTitle = DB::try()->select('id, title')->from('pages')->where('title', '=', $request['title'])->and('id', '!=', $request['id'])->fetch();
+            $uniqueTitle = DB::try()->select('id, title')->from('pages')->where('title', '=', $request['title'])->fetch();
     
             if($rules->create_post($uniqueTitle)->validated()) {
                         

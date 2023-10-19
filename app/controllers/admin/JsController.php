@@ -77,7 +77,7 @@ class JsController extends Controller {
 
             $rules = new Rules();
 
-            $uniqueFilename = DB::try()->select('file_name')->from('js')->where('file_name', '=', $request['filename'])->and('id', '!=', $request['id'])->fetch();
+            $uniqueFilename = DB::try()->select('file_name')->from('js')->where('file_name', '=', $request['filename'])->fetch();
 
             if($rules->js($uniqueFilename)->validated()) {
                     

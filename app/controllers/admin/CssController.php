@@ -67,7 +67,7 @@ class CssController extends Controller {
 
                 $rules = new Rules();
 
-                $uniqueFilename = DB::try()->select('file_name')->from('css')->where('file_name', '=', $request['filename'])->and('id', '!=', $request['id'])->fetch();
+                $uniqueFilename = DB::try()->select('file_name')->from('css')->where('file_name', '=', $request['filename'])->fetch();
 
                 if($rules->css($uniqueFilename)->validated()) {
                     

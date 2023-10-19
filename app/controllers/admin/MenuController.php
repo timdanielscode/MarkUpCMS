@@ -59,7 +59,7 @@ class MenuController extends Controller {
 
             $rules = new Rules();
 
-            $unique = DB::try()->select('title')->from('menus')->where('title', '=', $request['title'])->and('id', '!=', $request['id'])->fetch();
+            $unique = DB::try()->select('title')->from('menus')->where('title', '=', $request['title'])->fetch();
 
             if($rules->create_menu($unique)->validated()) {
                     
