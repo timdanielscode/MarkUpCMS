@@ -168,7 +168,6 @@ Route::middleware(['auth' => 'admin'])->run(function() {
 Route::middleware('login')->run(function() { 
 
     Route::get('/admin/media')->add('admin\MediaController', 'index');
-    Route::get('/admin/media/')->add('admin\MediaController', 'TABLE');
     Route::get('/admin/media/create')->add('admin\MediaController', 'create');
 });
 

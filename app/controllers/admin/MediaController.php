@@ -61,28 +61,6 @@ class MediaController extends Controller {
         return $this->view('admin/media/index', $data);
     }
 
-    public function TABLE() {
-
-        $media = new Media();
-        $allMedia = $media->allMediaButOrdered();
-
-        $search = Get::validate([get('search')]);
-
-        if(!empty($search) ) {
-
-            $allMedia = $media->mediaFilesOnSearch($search);
-        }
-
-        $allMedia = Pagination::get($allMedia, 8);
-        $numberOfPages = Pagination::getPageNumbers();
-
-        $data['allMedia'] = $allMedia;
-        $data['numberOfPages'] = $numberOfPages;
-        $data['search'] = $search;
-
-        return $this->view('admin/media/table', $data);
-    }
-
     public function create() {
 
         $folders = glob($this->_folderPath . '/*', GLOB_ONLYDIR);
