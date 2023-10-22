@@ -55,17 +55,15 @@
                 <td>
                     <input class="deleteCheckbox" type="checkbox" name="delete" value="<?php echo $category['id']; ?>" <?php if(Session::get('user_role') === 'normal') { echo 'disabled'; } ?>/>
                 </td>
-                <?php if(Session::get('user_role') === 'admin') { ?><td class="width-20">
-                    <a data-id="<?php echo $category['id']; ?>" data-id="<?php echo $category['id']; ?>" class="edit font-weight-300" id="TABLE-TITLE-<?php echo $category['id']; ?>"><?php echo $category["title"]; ?></a> |
-                    <a data-id="<?php echo $category['id']; ?>" data-title="<?php echo $category["title"]; ?>" data-description="<?php echo $category["category_description"]; ?>" class="edit font-weight-300" class="edit">Edit</a> |
-                    <a href="#" data-role="add" data-id="<?php echo $category['id']; ?>" class="add font-weight-300">Apply</a> |
-                    <a class="read font-weight-300" id="read-<?php echo $category['id']; ?>">Read</a>
+                <?php if(Session::get('user_role') === 'admin') { ?>
+                <td class="width-20">
+                    <a data-id="<?php echo $category['id']; ?>" data-title="<?php echo $category["title"]; ?>" data-description="<?php echo $category["category_description"]; ?>" class="edit font-weight-300"><?php echo $category["title"]; ?></a> |
+                    <a data-id="<?php echo $category['id']; ?>" data-title="<?php echo $category["title"]; ?>" data-description="<?php echo $category["category_description"]; ?>" class="edit font-weight-300">Edit</a> |
+                    <a href="#" data-role="add" data-id="<?php echo $category['id']; ?>" class="add font-weight-300">Apply</a>
                 </td>
                 <?php } else { ?>
-                    <td class="width-20">
-                        <?php echo $category['title'] . ' | '; ?>
-                        <a href="#<?php echo $category['title']; ?>" class="read font-weight-300" data-id="<?php echo $category['id']; ?>">Read</a>
-                    </td>
+                    <a href="#" data-role="add" data-id="<?php echo $category['id']; ?>"><?php echo $category["title"]; ?></a> |
+                    <a href="#" data-role="add" data-id="<?php echo $category['id']; ?>" class="add font-weight-300">Apply</a>
                 <?php } ?>
                 <td class="width-30">
                     <form>

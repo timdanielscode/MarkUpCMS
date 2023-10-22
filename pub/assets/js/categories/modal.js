@@ -1,21 +1,20 @@
+var modal = $('#modal');
+var html = $('html');
+var modalForm = $('#modalForm');
+
 $(document).on('click', '#CLOSE', function() {
     
-    var modal = $('#modal');
     modal.addClass('display-none'); 
     modal.removeClass('display-block'); 
-    var html = $('html');
     html.removeClass('dark-layer');
 });
 
 $(document).on('click', '#create', function() {
 
     $('#modalForm').empty();
-    var modal = $('#modal');
     modal.removeClass('modal-add');
     modal.addClass('modal-create');
-    var modalForm = $('#modalForm');
     modal.removeClass('display-none'); 
-    var html = $('html');
     html.addClass('dark-layer');
     
     var form = $(
@@ -37,12 +36,10 @@ $(document).on('click', '#create', function() {
 $(document).on('click', '.edit', function() {
 
     $('#modalForm').empty();
-    var modal = $('#modal');
     modal.removeClass('modal-add');
     modal.addClass('modal-edit');
     var modalForm = $('#modalForm');
     modal.removeClass('display-none'); 
-    var html = $('html');
     html.addClass('dark-layer');
     
     var form = $(
