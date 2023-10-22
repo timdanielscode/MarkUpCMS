@@ -1,3 +1,5 @@
+<?php use core\Session; ?>
+
 <div class="row">
     <div class="col8">
         <span class="categorySlugAdd">Slug: </span><div id="SUBCATEGORYSLUGCONTAINER"><?php if(!empty($assingedSubCategories) && $assingedSubCategories !== null) { ?><?php foreach($assingedSubCategories as $assingedSubCategory) { ?><div id="LISTEDCATEGORY-<?php echo $assingedSubCategory['id']; ?>" class="listedItem"><?php echo $assingedSubCategory['slug']; ?></div><?php } ?><?php } ?><div id="CATEGORYSLUG" class="listedItem"><?php echo $slug; ?></div></div>
@@ -28,7 +30,9 @@
                         </option>
                     <?php } ?>
                     </select>  
-                    <a id="ASSIGNCATEGORY" class="button">Apply</a>
+                    <?php if(Session::get('user_role') === 'admin') { ?>
+                        <a id="ASSIGNCATEGORY" class="button">Apply</a>
+                    <?php } ?>
                 </form>
             </div>
             <div class="col6">
@@ -47,7 +51,9 @@
                     <?php } ?>
                 </select>
                 <input type="hidden" id="CATEGORYID" value="<?php echo $id; ?>"/>
-                <a id="ASSIGNPAGES" class="button">Apply</a>
+                <?php if(Session::get('user_role') === 'admin') { ?>
+                    <a id="ASSIGNPAGES" class="button">Apply</a>
+                <?php } ?>
                 </form>
             </div>
         </div>

@@ -186,16 +186,12 @@ Route::middleware(['auth' => 'admin'])->run(function() {
 Route::middleware('login')->run(function() { 
 
     Route::get('/admin/categories')->add('admin\CategoryController', 'index');
-    Route::get('/admin/categories/')->add('admin\CategoryController', 'TABLE');
-    Route::get('/admin/categories/read')->add('admin\CategoryController', 'READ');
 }); 
 
 Route::middleware(['auth' => 'admin'])->run(function() { 
 
-    Route::get('/admin/categories/create')->add('admin\CategoryController', 'CREATE');
-    Route::post('/admin/categories/store')->add('admin\CategoryController', 'STORE');
-    Route::get('/admin/categories/edit')->add('admin\CategoryController', 'EDIT');
-    Route::post('/admin/categories/update')->add('admin\CategoryController', 'UPDATE');
+    Route::post('/admin/categories/store')->add('admin\CategoryController', 'store');
+    Route::post('/admin/categories/update')->add('admin\CategoryController', 'update');
     Route::get('/admin/categories/showaddable')->add('admin\CategoryController', 'SHOWADDABLE');
     Route::post('/admin/categories/addpage')->add('admin\CategoryController', 'ADDPAGE');
     Route::post('/admin/categories/addcategory')->add('admin\CategoryController', 'ADDCATEGORY');

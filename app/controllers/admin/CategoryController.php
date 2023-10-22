@@ -52,12 +52,7 @@ class CategoryController extends Controller {
         return $this->view('admin/categories/index', $data);
     }
 
-    public function CREATE() {
-
-        return $this->view('admin/categories/create');
-    }
-
-    public function STORE($request) {
+    public function store($request) {
 
         $rules = new Rules();
         
@@ -75,67 +70,15 @@ class CategoryController extends Controller {
                 'updated_at' => date('Y-m-d H:i:s', $_SERVER['REQUEST_TIME'])
             ]);
 
-            $DATA['title'] = $request['title'];
-            $DATA['description'] = $request['description'];
+            Session::set('success', 'You have successfully created a new category!');
+        } else {
+            Session::set('failed', "Title can't be empty, must be unique, max 49 characters, no special characters! Description max 99 characters, no special characters!");
         }
 
-        echo json_encode($DATA);
-    }
-    
-    public function TABLE() {
-
-        $category = new Category();
-        $categories = $category->allCategoriesButOrdered();
-
-        $search = Get::validate([get('search')]);
-        
-        if(!empty($search) ) {
-
-            $categories = $category->categoriesFilesOnSearch($search);
-        }
-
-        $categories = Pagination::get($categories, 10);
-        $numberOfPages = Pagination::getPageNumbers();
-
-        $data['categories'] = $categories;
-        $data['numberOfPages'] = $numberOfPages;
-
-        echo json_encode($data);
-
-        return $this->view('admin/categories/table', $data);
+        redirect('/admin/categories');
     }
 
-    public function READ($request) {
-
-        $this->ifExists($request['id']);
-
-        $category = new Category();
-        
-        $pages = $category->allCategoriesWithPosts($request['id']);
-        $subCategories = DB::try()->select('categories.title, categories.slug')->from('categories')->join("category_sub")->on("categories.id", '=', 'category_sub.sub_id')->where('category_sub.category_id', '=', $request['id'])->fetch();
-        $categorySlug = Category::where('id', '=', $request['id'])[0];
-
-        $data['pages'] = $pages;
-        $data['categories'] = $subCategories;
-        $data['categorySlug'] = $categorySlug;
-
-        return $this->view('admin/categories/read', $data);
-    }
-
-    public function EDIT($request) {
-
-        $this->ifExists($request['id']);
-
-        $category = Category::where('id', '=', $request['id'])[0];
-
-        $data['id'] = $request['id'];
-        $data['title'] = $category['title'];
-        $data['description'] = $category['category_description'];
-        
-        return $this->view('admin/categories/edit', $data);
-    }
-
-    public function UPDATE($request) {
+    public function update($request) {
 
         $this->ifExists($request['id']);
 
@@ -151,13 +94,13 @@ class CategoryController extends Controller {
                 'category_description' => $request['description'],
                 'updated_at' => date('Y-m-d H:i:s', $_SERVER['REQUEST_TIME'])
             ]);
-  
-            $DATA['id'] = $request['id'];
-            $DATA['title'] = $request['title'];
-            $DATA['description'] = $request['description'];
+
+            Session::set('success', 'You have successfully created a new category!');
+        } else {
+            Session::set('failed', "Title can't be empty, must be unique, max 49 characters, no special characters! Description max 99 characters, no special characters!");
         }
 
-        echo json_encode($DATA);
+        redirect('/admin/categories');
     }
 
     public function SHOWADDABLE($request) {

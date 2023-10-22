@@ -49,7 +49,7 @@ class Alert {
 
         if(Session::exists(self::$_type)) {
 
-            echo '<div class="message-container"><span class="success-message">' . Session::get(self::$_type) . '</span></div>';
+            echo '<div class="message-container success"><span class="success-message">' . Session::get(self::$_type) . '</span></div>';
             Session::delete(self::$_type);
         }
     }
@@ -61,7 +61,7 @@ class Alert {
 
         if(Session::exists(self::$_type)) {
 
-            echo '<div class="message-container"><span class="failed-message">' . Session::get(self::$_type) . '</span></div>';
+            echo '<div class="message-container failed"><span class="failed-message">' . Session::get(self::$_type) . '</span></div>';
             Session::delete(self::$_type);
         }
     }

@@ -1,32 +1,33 @@
 <?php use core\Session; ?>
+<?php use core\Alert; ?>
 
 <?php 
     $this->include('headerOpen');  
 
     $this->stylesheet("/assets/css/style.css");
+    $this->stylesheet("/assets/css/modal.css");
     $this->stylesheet("/assets/css/navbar.css");
     $this->stylesheet("/assets/css/index.css");
     $this->stylesheet("/assets/css/categories.css");
     $this->stylesheet("/assets/css/pagination.css");
 
     $this->script('/assets/js/ajax.js', true);
-    $this->script('/assets/js/categories/table.js', true);
     $this->script('/assets/js/categories/modal.js', true);
-    $this->script('/assets/js/categories/edit.js', true);
-    $this->script('/assets/js/categories/create.js', true);
-    $this->script('/assets/js/categories/read.js', true);
     $this->script('/assets/js/categories/add.js', true);
     $this->script('/assets/js/categories/slug.js', true);
-    $this->script('/assets/js/categories/index/delete.js', true);
+    $this->script('/assets/js/categories/delete.js', true);
     $this->include('headerClose');
     $this->include('navbar');
 ?>
 <div class="index-container">
 
+    <?php Alert::message('failed'); ?>
+    <?php Alert::message('success'); ?>
+
     <div class="headerContainer">
         <h1>Categories</h1><span class="badge categories"><?php echo $count; ?></span>
     </div>
-    <?php if(Session::get('user_role') === 'admin') { ?><a class="create">Create</a> <span class="deleteSeparator">|</span> <form action="/admin/categories/delete" method="POST" class="indexDeleteForm"><input type="submit" value="Delete" class="delete" onclick="return confirm('Are you sure?')"/><input type="hidden" name="deleteIds" id="deleteIds" value=""/></form><?php } ?>
+    <?php if(Session::get('user_role') === 'admin') { ?><a class="create" id="create">Create</a> <span class="deleteSeparator">|</span> <form action="/admin/categories/delete" method="POST" class="indexDeleteForm"><input type="submit" value="Delete" class="delete" onclick="return confirm('Are you sure?')"/><input type="hidden" name="deleteIds" id="deleteIds" value=""/></form><?php } ?>
     <form action="" method="GET" class="searchForm">
         <input type="text" name="search" placeholder="Search" id="search">
         <input id="searchValue" type="hidden" name="submit" value="<?php if(!empty($search) && $search !== null) { echo $search; } ?>">
@@ -45,7 +46,55 @@
             </tr>
         </thead>
         <tbody id="categoryTableBody">
-                
+
+<?php if(!empty($categories) && $categories !== null) { ?>
+    <?php foreach($categories as $category) { ?>
+        <tr>
+
+                <td>
+                    <input class="deleteCheckbox" type="checkbox" name="delete" value="<?php echo $category['id']; ?>" <?php if(Session::get('user_role') === 'normal') { echo 'disabled'; } ?>/>
+                </td>
+                <?php if(Session::get('user_role') === 'admin') { ?><td class="width-20">
+                    <a data-id="<?php echo $category['id']; ?>" data-id="<?php echo $category['id']; ?>" class="edit font-weight-300" id="TABLE-TITLE-<?php echo $category['id']; ?>"><?php echo $category["title"]; ?></a> |
+                    <a data-id="<?php echo $category['id']; ?>" data-title="<?php echo $category["title"]; ?>" data-description="<?php echo $category["category_description"]; ?>" class="edit font-weight-300" class="edit">Edit</a> |
+                    <a href="#" data-role="add" data-id="<?php echo $category['id']; ?>" class="add font-weight-300">Apply</a> |
+                    <a class="read font-weight-300" id="read-<?php echo $category['id']; ?>">Read</a>
+                </td>
+                <?php } else { ?>
+                    <td class="width-20">
+                        <?php echo $category['title'] . ' | '; ?>
+                        <a href="#<?php echo $category['title']; ?>" class="read font-weight-300" data-id="<?php echo $category['id']; ?>">Read</a>
+                    </td>
+                <?php } ?>
+                <td class="width-30">
+                    <form>
+                        <input class="categorySlug" name="slug" id="slug-<?php echo $category['id']; ?>" type="text" value="<?php echo substr($category['slug'], 1); ?>"/>
+                            <div id="message-<?php echo $category['id'] ?>"></div>
+                    </form>
+                </td>
+                <td class="width-10">
+                    <a data-role="update" id="update" data-id="<?php echo $category['id']; ?>" class="button">Update</a>
+                </td>
+                <td class="width-25">
+                    <?php echo $category['author']; ?>
+                </td>
+                <td class="width-15">
+                    <span class="padding-b-2 bold">Created:</span> <span class="font-weight-300"><?php echo date("d/m/Y", strtotime($category["created_at"]) ); ?> <?php echo date("H:i:s", strtotime($category["created_at"]) ); ?></span><br>
+                    <span class="bold">Updated:</span> <span class="font-weight-300"><?php echo date("d/m/Y", strtotime($category["updated_at"]) ); ?> <?php echo date("H:i:s", strtotime($category["updated_at"]) ); ?></span>
+                </td> 
+        </tr>
+    <?php } ?>
+<?php } else { ?>
+    <tr>
+        <td>-</td>
+        <td class="width-20">-</td>
+        <td class="width-30">-</td>
+        <td class="width-10">-</td>
+        <td class="width-25">-</td>
+        <td class="width-15">-</td>
+    </tr>
+
+<?php } ?>
         </tbody>
     </table>
 
