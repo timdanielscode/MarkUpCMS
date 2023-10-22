@@ -1,5 +1,6 @@
 <?php use core\Session; ?>
 <?php use core\Alert; ?>
+<?php use validation\Get; ?>
 
 <?php 
     $this->include('headerOpen');  
@@ -100,11 +101,17 @@
 
     <?php if(!empty($numberOfPages) && count($numberOfPages) > 1) { ?>
         <nav id="pagination" class="pagination">
-            <ul>
+        <ul>
                 <?php 
+                
                     foreach($numberOfPages as $page) {
 
-                        echo '<li class="page-item"><a class="PAGE" id="'. $page. '">'.$page.'</a></li>';
+                        if(!empty(Get::validate([get('search')])) ) {
+
+                            echo '<li class="page-item"><a href="/admin/categories?search=' . Get::validate([get('search')]) . '&page='.$page.'">'.$page.'</a></li>';
+                        } else {
+                            echo '<li class="page-item"><a href="/admin/categories?page='.$page.'">'.$page.'</a></li>';
+                        }
                     }  
                 ?>
             </ul>
