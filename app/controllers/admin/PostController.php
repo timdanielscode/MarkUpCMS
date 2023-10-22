@@ -84,7 +84,7 @@ class PostController extends Controller {
                     'updated_at' => date('Y-m-d H:i:s', $_SERVER['REQUEST_TIME'])
                 ]);
     
-                Session::set('create', 'You have successfully created a new post!');            
+                Session::set('success', 'You have successfully created a new page!');            
                 redirect('/admin/posts');
             } else {
 

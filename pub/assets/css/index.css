@@ -181,3 +181,16 @@ table thead {
     background: none;
     color: #4bb54b;
 }
+
+.message-container {
+    background: #42971c;
+    width: 95%;
+    padding: 10px;
+    color: #fff;
+    border: 1px solid #2E7D0B;
+    border-radius: 3px;
+    opacity: 0.7;
+    text-align: center;
+    font-size: 14px;
+    margin-top: 25px;
+}
