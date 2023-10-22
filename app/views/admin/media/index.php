@@ -2,6 +2,7 @@
 <?php use core\Csrf; ?>
 <?php use core\Session; ?>
 <?php use extensions\Pagination; ?>
+<?php use validation\Get; ?>
 
 <?php 
     $this->include('headerOpen');  

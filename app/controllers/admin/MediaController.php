@@ -170,8 +170,8 @@ class MediaController extends Controller {
         } else {
             $this->addFolder($request);
         }   
-        
-        redirect('/admin/media/create?folder=' . Get::validate([get('search')]));
+
+        redirect('/admin/media/create?folder=' . Get::validate([get('folder')]));
     }
 
     private function deleteFolder($request) {
