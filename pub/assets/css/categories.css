@@ -240,7 +240,7 @@ table td .button {
     top: 50px;
     right: 50px;
 }
-.modal-edit #modalForm input, .modal-create #modalForm input {
+.modal-edit #modalForm input[type="text"], .modal-create #modalForm input[type="text"] {
     width: 100%;
     box-sizing: border-box;
     color: #000;

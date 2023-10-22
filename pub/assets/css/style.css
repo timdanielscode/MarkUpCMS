@@ -311,6 +311,12 @@ h3 {
 /*
     Button
 */
+.buttonContainer {
+    width: 100%;
+    display: flex;
+    flex-wrap: wrap;
+    margin-top: 10px;
+}
 .button {
     width: auto;
     display: flex;
@@ -328,6 +334,65 @@ h3 {
 }
 .button:hover {
     cursor: pointer;
+}
+.greenButton {
+    background: #42971c;
+    border: 1px solid #2e7d0b;
+}
+.greenButton:hover {
+    background: #2e7d0b;
+    cursor: pointer;
+}
+.blueButton {
+    background: #4f80c8;
+    border: 1px solid #2e60aa;
+}
+.darkBlueButton {
+    background: #2e6ac1;
+    border: 1px solid #003582;
+}
+.darkBlueButton:hover {
+    background: #003582;
+    cursor: pointer;
+}
+.blueButton:hover {
+    background: #2e60aa;
+    cursor: pointer;
+}
+.redButton {
+    background: #ce3333;
+    border: 1px solid rgb(174, 35, 35);
+}
+.redButton:hover {
+    background: rgb(174, 35, 35);
+}
+.lightButton {
+    /*background: #8ca2bd;
+    border: 1px solid #657d99;*/
+    background: #BBB;
+    border: 1px solid #9B9B9B;
+}
+.lightButton:hover {
+    background: #9B9B9B;
+    cursor: pointer;
+}
+.darkButton {
+    /*background: #657d99;
+    border: 1px solid #4d688a;
+    */
+    background: #9B9B9B;
+    border: 1px solid #717171;
+}
+.darkButton:hover {
+    background: #717171;
+    cursor: pointer;
+}
+
+/*
+    Box sizing
+*/
+.box-sizing-border-box {
+    box-sizing: border-box;
 }
 
 /*

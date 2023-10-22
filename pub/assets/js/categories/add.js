@@ -1,3 +1,12 @@
+$(document).on('click', '#BACK', function() {
+    
+    var modal = $('#modal');
+    modal.addClass('display-none'); 
+    modal.removeClass('display-block'); 
+    var html = $('html');
+    html.removeClass('dark-layer');
+});
+
 $(document).on('click', '.add', function() {
 
     var modal = $('#modal');
