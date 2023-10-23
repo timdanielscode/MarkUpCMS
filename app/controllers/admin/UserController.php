@@ -86,7 +86,7 @@ class UserController extends Controller {
                     'role_id' => $roleId
                 ]);
 
-                Session::set('registered', 'You have been successfully registered!');            
+                Session::set('success', 'You have successfully created a new user!');           
                 redirect('/admin/users');
 
             } else {
@@ -171,6 +171,7 @@ class UserController extends Controller {
             'user_id' => $request['id']
         ]);
         
+        Session::set('success', 'You have successfully updateed the user role!'); 
         redirect('/admin/users/'); 
     }
 
@@ -193,6 +194,7 @@ class UserController extends Controller {
             }
         }
 
+        Session::set('success', 'You have successfully recovered the user(s)!');
         redirect("/admin/users");
     }
 
@@ -215,9 +217,12 @@ class UserController extends Controller {
                         'removed'  => 1,
                     ]);
 
+                    Session::set('success', 'You have successfully moved the user(s) to the trashcan!');
+
                 } else if($user['removed'] === 1) {
 
                     User::delete("id", $request['id']);
+                    Session::set('success', 'You have successfully removed the user(s)!');
                 }
             }
         }

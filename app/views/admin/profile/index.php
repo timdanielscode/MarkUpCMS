@@ -1,6 +1,7 @@
 <?php use core\Csrf; ?>
 <?php use core\Session; ?>
 <?php use validation\Errors; ?>
+<?php use core\Alert; ?>
 
 <?php 
     $this->include('headerOpen');  
@@ -18,6 +19,7 @@
     <div class="row">
         <div class="col10 col9-L">
         <div class="edit-container">
+            <?php Alert::message('success'); ?>
             <h1 class="margin-b-30">Update details</h1>
             
                 <form action="/admin/profile/<?php echo Session::get('username'); ?>/update" method="POST" class="usersEditForm">

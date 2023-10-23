@@ -40,6 +40,7 @@
             ]);
 
             Session::set('username', $request['f_username']);
+            Session::set('success', 'You have successfully updated the your details!');
             redirect('/admin/profile/' . $request['f_username']);
 
         } else {
@@ -66,6 +67,7 @@
             ]);
         
             Session::set('user_role', 'normal');
+            Session::set('success', 'You have successfully updated your user role!');
             redirect('/admin/profile/' . Session::get('username'));
 
         } else {
@@ -124,8 +126,7 @@
 
             User::update(['id' => $id], [
 
-                'password' => password_hash($password, PASSWORD_DEFAULT),
-                'retypePassword' => password_hash($password, PASSWORD_DEFAULT),
+                'password' => password_hash($password, PASSWORD_DEFAULT)
             ]);
         }
     
