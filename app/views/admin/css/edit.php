@@ -62,11 +62,11 @@
                         </div>
                         <div class="buttonContainer">
                             <form action="/admin/css/<?php echo $data['id']; ?>/link-all" method="POST">
-                                <input type="submit" name="submit" class="button lightButton margin-r-10" value="Link on all"/>
+                                <input type="submit" name="submit" class="button lightButton margin-r-10" value="Link on all" onclick="return confirm('Are you sure?');"/>
                                 <input type="hidden" name="token" value="<?php Csrf::token('add');?>" />
                             </form>
                             <form action="/admin/css/<?php echo $data['id']; ?>/unlink-all" method="POST">
-                                <input type="submit" name="submit" class="button lightButton" value="Unlink all"/>
+                                <input type="submit" name="submit" class="button lightButton" value="Unlink all" onclick="return confirm('Are you sure?');"/>
                                 <input type="hidden" name="token" value="<?php Csrf::token('add');?>" />
                             </form>
                         </div>

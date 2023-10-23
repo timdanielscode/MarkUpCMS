@@ -72,7 +72,7 @@
                     <span class="text">Ordering: </span>
                     <form action="/admin/menus/<?php echo $menu['id']; ?>/update-ordering" method="POST" class="updateNumberForm">
                         <input dir="rtl" type="number" name="ordering" min="1" max="99" value="1">
-                        <input type="submit" name="submit" class="button greenButton" value="Update"/>
+                        <input type="submit" name="submit" class="button blueButton" value="Update"/>
                         <input type="hidden" name="token" value="<?php Csrf::token('add'); ?>" />
                     </form>
                 </div>

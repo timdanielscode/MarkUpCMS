@@ -63,11 +63,11 @@
                         </div>
                         <div class="buttonContainer">
                             <form action="/admin/js/<?php echo $data['id']; ?>/include-all" method="POST">
-                                <input type="submit" name="submit" class="button lightButton margin-r-10" value="Include on all"/>
+                                <input type="submit" name="submit" class="button lightButton margin-r-10" value="Include on all" onclick="return confirm('Are you sure?');"/>
                                 <input type="hidden" name="token" value="<?php Csrf::token('add');?>" />
                             </form>
                             <form action="/admin/js/<?php echo $data['id']; ?>/remove-all" method="POST">
-                                <input type="submit" name="submit" class="button lightButton" value="Remove all"/>
+                                <input type="submit" name="submit" class="button lightButton" value="Remove all" onclick="return confirm('Are you sure?');"/>
                                 <input type="hidden" name="token" value="<?php Csrf::token('add');?>" />
                             </form>
                         </div>

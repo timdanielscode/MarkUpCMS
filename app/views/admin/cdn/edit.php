@@ -60,11 +60,11 @@
                         </div>
                         <div class="buttonContainer">
                             <form action="/admin/cdn/<?php echo $cdn['id']; ?>/import-all" method="POST">
-                                <input type="submit" name="submit" value="Import all" class="button lightButton margin-t-10 margin-r-10"/>
+                                <input type="submit" name="submit" value="Import all" class="button lightButton margin-t-10 margin-r-10" onclick="return confirm('Are you sure?');"/>
                                 <input type="hidden" name="token" value="<?php Csrf::token('add');?>" />
                             </form>
                             <form action="/admin/cdn/<?php echo $cdn['id']; ?>/export-all" method="POST">
-                                <input type="submit" name="submit" value="Export all" class="button lightButton margin-t-10"/>
+                                <input type="submit" name="submit" value="Export all" class="button lightButton margin-t-10" onclick="return confirm('Are you sure?');"/>
                                 <input type="hidden" name="token" value="<?php Csrf::token('add');?>" />
                             </form>
                         </div>

@@ -108,7 +108,7 @@
                                     <?php echo $cdn['title']; ?>
                                 </option>
                                 <?php } ?>
-                                <input type="submit" name="submit" value="Import" class="button greenButton margin-t-20"/>
+                                <input type="submit" name="submit" value="Import" class="button darkBlueButton margin-t-20"/>
                             </select>
                         </form>
                     </div>
@@ -135,7 +135,7 @@
                                     </option>
                                 <?php } ?>
                             </select>
-                            <input class="button greenButton margin-t-20" type="submit" name="submit" value="Make it applicable"/>
+                            <input class="button darkBlueButton margin-t-20" type="submit" name="submit" value="Make it applicable"/>
                             <input type="hidden" name="token" value="<?php Csrf::token('add'); ?>" />
                         </form>
                     </div>
@@ -164,7 +164,7 @@
                                     <div class="error-messages">
                                         <?php echo Errors::get($rules, 'submit'); ?>
                                     </div>   
-                                    <input class="button redButton margin-t-10" type="submit" name="submit" value="Detach"/>
+                                    <input class="button blueButton margin-t-10" type="submit" name="submit" value="Detach" onclick="return confirm('Are you sure?');"/>
                                     <input type="hidden" name="token" value="<?php Csrf::token('add'); ?>" />
                                 </form>
                         <?php } ?>
@@ -197,7 +197,7 @@
                                 </div>   
                             <?php } ?>  
                         </div>
-                        <input type="submit" name="submit" class="button greenButton margin-t-10" value="Update"/>
+                        <input type="submit" name="submit" class="button blueButton margin-t-10" value="Update"/>
                         <input type="hidden" name="token" value="<?php Csrf::token('add'); ?>" />
                     </form>
                     <form id="linkedCssFiles" class="linkedCssFilesForm <?php if(Session::exists('css') === false ) { echo 'display-none'; } ?>" action="/admin/posts/<?php echo $data['id']; ?>/unlink-css" method="POST">
@@ -222,7 +222,7 @@
                             <?php } ?>
                         </select>
                         <input type="hidden" name="token" value="<?php Csrf::token('add'); ?>" />
-                        <input type="submit" class="button greenButton margin-t-20" name="submit" value="Link"/>
+                        <input type="submit" class="button darkBlueButton margin-t-20" name="submit" value="Link"/>
                     </form>
                     <form id="linkedJsFiles" class="linkedJsFilesForm margin-t-50 <?php if(Session::exists('js') === false ) { echo 'display-none'; } ?>" action="/admin/posts/<?php echo $data['id'] ?>/remove-js" method="POST">
                         <label for="linkedJsFiles">Linked js files:</label>
@@ -246,7 +246,7 @@
                                 <?php } ?>
                             </select>
                         <input type="hidden" name="token" value="<?php Csrf::token('add'); ?>" />
-                        <input type="submit" name="submit" class="button greenButton margin-t-20" value="Include"/>
+                        <input type="submit" name="submit" class="button darkBlueButton margin-t-20" value="Include"/>
                     </form>
                 </div>
             </div>
