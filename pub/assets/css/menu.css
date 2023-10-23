@@ -35,6 +35,12 @@
     width: 100% !important;
     height: 100% !important;
 }
+.message-container.success {
+    color: #42971c;
+    margin-bottom: 10px;
+    margin-top: -10px;
+    font-size: 14px;
+}
 /*
     Sidebar
 */

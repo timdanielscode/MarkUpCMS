@@ -1,6 +1,7 @@
 <?php use validation\Errors; ?>
 <?php use core\Csrf; ?>
 <?php use core\Session; ?>
+<?php use core\Alert; ?>
 
 <?php 
     $this->include('headerOpen');  
@@ -30,6 +31,7 @@
         <div class="row">
             <div class="col10 col9-L">
                 <div class="edit-container">
+                <?php Alert::message('success'); ?>
                     <form id="editorForm" action="/admin/js/<?php echo $data['id']; ?>/update" method="POST" class="form-code">
                         <div class="form-parts">
                             <input name="filename" type="text" id="filename" placeholder="Filename" value="<?php echo $data['file_name']; ?>">

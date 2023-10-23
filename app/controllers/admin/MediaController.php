@@ -126,7 +126,7 @@ class MediaController extends Controller {
                     ]);
                 }
                
-                Session::set('create', 'You have successfully created a new post!');            
+                Session::set('success', 'You have successfully uploaded new file(s)!');            
                 redirect('/admin/media/create?folder=' . Get::validate([get('folder')]));
             } else {
 
@@ -159,6 +159,7 @@ class MediaController extends Controller {
             unlink($this->_folderPath . '/' . $filename);
         }
 
+        Session::set('success', 'You have successfully deleted the file(s)!');  
         redirect('/admin/media/create?folder=' . Get::validate([get('folder')]));
     }
 
@@ -170,7 +171,7 @@ class MediaController extends Controller {
         } else {
             $this->addFolder($request);
         }   
-
+  
         redirect('/admin/media/create?folder=' . Get::validate([get('folder')]));
     }
 
@@ -196,6 +197,7 @@ class MediaController extends Controller {
                 ]); 
             }
 
+            Session::set('success', 'You have successfully added the folder!');
             mkdir($this->_folderPath . '/' . $request['P_folder'], 0777, true); 
 
         } else {
@@ -321,6 +323,7 @@ class MediaController extends Controller {
                 
             }
 
+            Session::set('success', 'You have successfully removed the file(s)!');
             redirect("/admin/media");
         }
     }

@@ -80,6 +80,7 @@ class WidgetController extends Controller {
                     'updated_at' => date('Y-m-d H:i:s', $_SERVER['REQUEST_TIME'])
                 ]);
 
+                Session::set('success', 'You have successfully created a new widget!');
                 redirect('/admin/widgets');
             } else {
 
@@ -134,6 +135,7 @@ class WidgetController extends Controller {
                     'updated_at' => date('Y-m-d H:i:s', $_SERVER['REQUEST_TIME'])
                 ]);
 
+                Session::set('success', 'You have successfully updated the widget!');
                 redirect("/admin/widgets/$id/edit");
             } else {
 
@@ -163,6 +165,7 @@ class WidgetController extends Controller {
             }
         }
 
+        Session::set('success', 'You have successfully recovered the widget(s)!');
         redirect("/admin/widgets");
     }
 
@@ -186,11 +189,13 @@ class WidgetController extends Controller {
                     ]);
 
                     PageWidget::delete('widget_id', $request['id']);
+                    Session::set('success', 'You have successfully moved the widget(s) to the trashcan!');
 
                 } else if($widget['removed'] === 1) {
 
                     Widget::delete("id", $request['id']);
                     PageWidget::delete('widget_id', $request['id']);
+                    Session::set('success', 'You have successfully removed the widget(s)!');
                 }
             }
         }

@@ -193,10 +193,10 @@ table thead {
     margin-top: 25px;
 }
 .message-container.success {
-    background: #42971c;
-    border: 1px solid #2E7D0B;
+    background: #4F80C8;
+    border: 1px solid #2E60AA;
 }
 .message-container.failed {
     background: rgb(199, 48, 48);
-    border: 1px solid red;
+    border: 1px solid #790404;
 }

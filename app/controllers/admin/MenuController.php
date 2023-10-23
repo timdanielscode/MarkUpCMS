@@ -78,6 +78,7 @@ class MenuController extends Controller {
                     'updated_at' => date('Y-m-d H:i:s', $_SERVER['REQUEST_TIME'])
                 ]);
           
+                Session::set('success', 'You have successfully created a new menu!');
                 redirect('/admin/menus');
 
             } else {
@@ -107,7 +108,6 @@ class MenuController extends Controller {
         if($menu['removed'] === 1) { return Response::statusCode(404)->view("/404/404") . exit(); }
 
         $data['menu'] = $menu;
-        
         $data['rules'] = [];
 
         return $this->view('admin/menus/edit', $data);
@@ -137,6 +137,7 @@ class MenuController extends Controller {
                     'updated_at' => date('Y-m-d H:i:s', $_SERVER['REQUEST_TIME'])
                 ]);
 
+                Session::set('success', 'You have successfully updated the menu!');
                 redirect("/admin/menus/$id/edit");
                     
             } else {
@@ -163,6 +164,7 @@ class MenuController extends Controller {
                 'updated_at' => date('Y-m-d H:i:s', $_SERVER['REQUEST_TIME']) 
             ]); 
 
+            Session::set('success', 'You have successfully updated the menu position!');
             redirect("/admin/menus/$id/edit");
         }
     }
@@ -181,6 +183,7 @@ class MenuController extends Controller {
                 'updated_at' => date('Y-m-d H:i:s', $_SERVER['REQUEST_TIME'])
             ]);
             
+            Session::set('success', 'You have successfully updated the menu ordering!');
             redirect("/admin/menus/$id/edit");
         }
     }
@@ -204,6 +207,7 @@ class MenuController extends Controller {
             }
         }
 
+        Session::set('success', 'You have successfully recovered the menu(s)!');
         redirect("/admin/menus");
     }
 
@@ -228,9 +232,12 @@ class MenuController extends Controller {
                         'ordering' => 0
                     ]);
 
+                    Session::set('success', 'You have successfully moved the menu(s) to the trashcan!');
+
                 } else if($menu['removed'] === 1) {
 
                     Menu::delete("id", $request['id']);
+                    Session::set('success', 'You have successfully removed the menu(s)!');
                 }
             }
         }

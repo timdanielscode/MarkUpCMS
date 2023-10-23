@@ -1,5 +1,6 @@
 <?php use validation\Get; ?>
 <?php use core\Session; ?>
+<?php use core\Alert; ?>
 
 <?php 
     $this->include('headerOpen'); 
@@ -16,6 +17,7 @@
     $this->include('navbar');
 ?>
 <div class="index-container">
+    <?php Alert::message('success'); ?>
     <div class="headerContainer">
         <h1>Js</h1><span class="badge js"><?php echo $count; ?></span>
     </div>

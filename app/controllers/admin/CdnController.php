@@ -79,7 +79,9 @@ class CdnController extends Controller {
                     'updated_at' => date('Y-m-d H:i:s', $_SERVER['REQUEST_TIME'])
                 ]);
 
+                Session::set('success', 'You have successfully created a new cdn!');
                 redirect('/admin/cdn');
+               
             } else {
 
                 $data['rules'] = $rules->errors;
@@ -93,7 +95,6 @@ class CdnController extends Controller {
         $this->ifExists($request['id']);
 
         $cdn = Cdn::get($request['id']);
-
         $data['cdn'] = $cdn;
 
         return $this->view('admin/cdn/read', $data);
@@ -159,6 +160,7 @@ class CdnController extends Controller {
                     'updated_at' => date('Y-m-d H:i:s', $_SERVER['REQUEST_TIME'])
                 ]);
 
+                Session::set('success', 'You have successfully updated the cdn!');
                 redirect("/admin/cdn/$id/edit");
 
             } else {
@@ -185,6 +187,7 @@ class CdnController extends Controller {
                 ]);
             }
 
+            Session::set('success', 'You have successfully imported the cdn on the page(s)!');
             redirect("/admin/cdn/$cdnId/edit");
         }
     }
@@ -211,6 +214,7 @@ class CdnController extends Controller {
                 }
             }
 
+            Session::set('success', 'You have successfully imported the cdn on all pages!');
             redirect("/admin/cdn/$id/edit");
         }
     }
@@ -226,6 +230,7 @@ class CdnController extends Controller {
                 DB::try()->delete('cdn_page')->where('cdn_page.cdn_id', '=', $cdnId)->and('cdn_page.page_id', '=', $pageId)->run();
             }
 
+            Session::set('success', 'You have successfully removed the cdn on the page(s)!');
             redirect("/admin/cdn/$cdnId/edit");
         }
     }
@@ -239,6 +244,8 @@ class CdnController extends Controller {
                 $id = $request['id'];
 
                 CdnPage::delete('cdn_id', $request['id']);
+
+                Session::set('success', 'You have successfully removed the cdn on all pages!');
                 redirect("/admin/cdn/$id/edit");
             }
         }
@@ -263,6 +270,7 @@ class CdnController extends Controller {
             }
         }
 
+        Session::set('success', 'You have successfully recovered the cdn(s)!');
         redirect("/admin/cdn");
     }
 
@@ -285,9 +293,12 @@ class CdnController extends Controller {
                         'removed'  => 1
                     ]);
 
+                    Session::set('success', 'You have successfully moved the cdn(s) to the trashcan!');
+
                 } else if($cdn['removed'] === 1) {
 
                     Cdn::delete("id", $request['id']);
+                    Session::set('success', 'You have successfully removed the cdn(s)!');
                 }
             }
         }

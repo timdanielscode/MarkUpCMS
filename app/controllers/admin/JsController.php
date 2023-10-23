@@ -101,7 +101,7 @@ class JsController extends Controller {
                     'updated_at' => date('Y-m-d H:i:s', $_SERVER['REQUEST_TIME'])
                 ]);
 
-                Session::set('create', 'You have successfully created a new post!');            
+                Session::set('success', 'You have successfully created a new js file!');          
                 redirect('/admin/js');
 
             } else {
@@ -199,7 +199,7 @@ class JsController extends Controller {
                 fwrite($file, $request["code"]);
                 fclose($file);
 
-                Session::set('updated', 'User updated successfully!');
+                Session::set('success', 'You have successfully updated the js file!');
                 redirect("/admin/js/$id/edit");
                     
             } else {
@@ -239,6 +239,7 @@ class JsController extends Controller {
                 }
             }
 
+            Session::set('success', 'You have successfully included the js file the page(s)!');
             redirect("/admin/js/$id/edit");
         }
     }
@@ -260,6 +261,7 @@ class JsController extends Controller {
                 }
             }
 
+            Session::set('success', 'You have successfully removed the js file the page(s)!');
             redirect("/admin/js/$id/edit");
         }
     }
@@ -286,6 +288,8 @@ class JsController extends Controller {
                     ]);
                 }
             }
+
+            Session::set('success', 'You have successfully included the js file on all pages!');
             redirect("/admin/js/$id/edit");
         }
     }
@@ -297,8 +301,9 @@ class JsController extends Controller {
         if(submitted("submit") === true && Csrf::validate(Csrf::token('get'), post('token')) === true ) {
 
             $id = $request['id'];
-
             JsPage::delete('js_id', $id);
+
+            Session::set('success', 'You have successfully removed the js file on all pages!');
             redirect("/admin/js/$id/edit");
         }
     }
@@ -322,6 +327,7 @@ class JsController extends Controller {
             }
         }
 
+        Session::set('success', 'You have successfully recovered the js file(s)!');
         redirect("/admin/js");
     }
 
@@ -344,6 +350,8 @@ class JsController extends Controller {
                         'removed'  => 1
                     ]);
 
+                    Session::set('success', 'You have successfully moved the js file(s) to the trashcan!');
+
                 } else if($js['removed'] === 1) {
 
                     $filename = Js::where('id', '=', $request['id'])[0]['file_name'];
@@ -352,6 +360,7 @@ class JsController extends Controller {
                     unlink($path);
 
                     Js::delete("id", $request['id']);
+                    Session::set('success', 'You have successfully removed the js file(s)!');
                 }
             }
         }

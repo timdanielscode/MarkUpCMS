@@ -3,6 +3,7 @@
 <?php use core\Session; ?>
 <?php use extensions\Pagination; ?>
 <?php use validation\Get; ?>
+<?php use core\Alert; ?>
 
 <?php 
     $this->include('headerOpen');  
@@ -19,6 +20,7 @@
     $this->include('navbar');
 ?>
 <div class="index-container">
+    <?php Alert::message('success'); ?>
     <div class="headerContainer">
         <h1>Menus</h1><span class="badge menus"><?php echo $count; ?></span>
     </div>

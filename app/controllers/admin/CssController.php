@@ -94,7 +94,7 @@ class CssController extends Controller {
                         'updated_at' => date('Y-m-d H:i:s', $_SERVER['REQUEST_TIME'])
                     ]);
 
-                    Session::set('create', 'You have successfully created a new post!');            
+                    Session::set('success', 'You have successfully created a new css file!');         
                     redirect('/admin/css');
 
                 } else {
@@ -206,7 +206,7 @@ class CssController extends Controller {
                 fwrite($file, $request["code"]);
                 fclose($file);
 
-                Session::set('updated', 'User updated successfully!');
+                Session::set('success', 'You have successfully updated the css file!');
                 redirect("/admin/css/$id/edit");
                     
             } else {
@@ -249,6 +249,7 @@ class CssController extends Controller {
                 }
             }
 
+            Session::set('success', 'You have successfully linked the css file on all pages!');
             redirect("/admin/css/$id/edit");
         }
     }
@@ -262,6 +263,8 @@ class CssController extends Controller {
             $id = $request['id'];
 
             CssPage::delete('css_id', $id);
+
+            Session::set('success', 'You have successfully removed the css file on all pages!');
             redirect("/admin/css/$id/edit");
         }
     }
@@ -283,6 +286,7 @@ class CssController extends Controller {
                 }
             }
 
+            Session::set('success', 'You have successfully removed the css file on the page(s)!');
             redirect("/admin/css/$id/edit");
         }
     }
@@ -308,6 +312,7 @@ class CssController extends Controller {
                 }
             }
 
+            Session::set('success', 'You have successfully linked the css file on the page(s)!');
             redirect("/admin/css/$id/edit");
         }
     }
@@ -331,6 +336,7 @@ class CssController extends Controller {
             }
         }
 
+        Session::set('success', 'You have successfully recovered the css file(s)!');
         redirect("/admin/css");
     }
 
@@ -353,14 +359,16 @@ class CssController extends Controller {
                         'removed'  => 1
                     ]);
 
+                    Session::set('success', 'You have successfully moved the css file(s) to the trashcan!');
+
                 } else if($css['removed'] === 1) {
 
                     $filename = Css::where('id', '=', $request['id'])[0]['file_name'];
                     $path = "website/assets/css/" . $filename . ".css";
-                    
+        
                     unlink($path);
-
                     Css::delete("id", $request['id']);
+                    Session::set('success', 'You have successfully removed the css file(s)!');
                 }
             }
         }

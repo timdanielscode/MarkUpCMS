@@ -2,6 +2,7 @@
 <?php use core\Csrf; ?>
 <?php use core\Session; ?>
 <?php use validation\Get; ?>
+<?php use core\Alert; ?>
 
 <?php 
     $this->include('headerOpen');  
@@ -66,6 +67,7 @@
                         <?php } ?> 
                     </form>
                 <?php } ?>
+                <?php Alert::message('success'); ?>
                 <div class="readImageContainer display-none"></div>
                 <div class="filesContainer">
                     <div class="row flex-center">

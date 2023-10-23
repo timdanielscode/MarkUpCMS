@@ -246,6 +246,22 @@
     right: 5px;
     z-index: 999999;
 }
+.message-container.success {
+    color: #42971c;
+    position: absolute;
+    top: 20px;
+    left: 50%;
+    transform: translate(-50%);
+    font-size: 14px;
+}
+.index-container .message-container.success {
+    color: #fff;
+    font-size: 14px;
+    position: unset;
+    left: unset;
+    top: unset;
+    transform: unset;
+}
 
 /*
     Sidebar

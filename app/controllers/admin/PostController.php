@@ -191,6 +191,7 @@ class PostController extends Controller {
             ]);
         }
 
+        Session::set('success', 'You have successfully imported the cdn(s) on this page!'); 
         redirect("/admin/posts/$pageId/edit");
     }
 
@@ -211,6 +212,7 @@ class PostController extends Controller {
             DB::try()->delete('cdn_page')->where('page_id', '=', $pageId)->and('cdn_id', '=', $cdnId)->run();
         }
 
+        Session::set('success', 'You have successfully removed the cdn(s) on this page!'); 
         redirect("/admin/posts/$pageId/edit");
     }
 
@@ -329,7 +331,7 @@ class PostController extends Controller {
                         'updated_at' => date('Y-m-d H:i:s', $_SERVER['REQUEST_TIME'])
                     ]);
 
-                    Session::set('updated', 'User updated successfully!');
+                    Session::set('success', 'You have successfully updated the page!'); 
                     redirect("/admin/posts/$id/edit");
                 
             } else {
@@ -413,6 +415,7 @@ class PostController extends Controller {
             }
         }
 
+        Session::set('success', 'You have successfully made the widget(s) applicable for this page!'); 
         redirect("/admin/posts/$id/edit");
     }
 
@@ -442,6 +445,7 @@ class PostController extends Controller {
             }
         }
 
+        Session::set('success', 'You have successfully made the widget(s) inapplicable for this page!'); 
         redirect("/admin/posts/$id/edit");
     }
 
@@ -512,6 +516,7 @@ class PostController extends Controller {
                 }
     
                 redirect('/admin/posts/'. $pageId . '/edit');
+                Session::set('success', 'You have successfully assigned the category on this page!'); 
 
             } else {
 
@@ -579,6 +584,7 @@ class PostController extends Controller {
                 }
             }
 
+            Session::set('success', 'You have successfully removed the js file(s) on this page!');
             redirect("/admin/posts/$id/edit");
         }
     }
@@ -612,7 +618,8 @@ class PostController extends Controller {
                     ])->where('js_page', '=', $id)->and('js_id', '=', $jsId);
                 }
             }
-            
+
+            Session::set('success', 'You have successfully included the js file(s) on this page!');
             redirect("/admin/posts/$id/edit");
         }
     }
@@ -646,6 +653,8 @@ class PostController extends Controller {
                     ])->where('css_page', '=', $id)->and('css_id', '=', $cssId);
                 }
             }
+
+            Session::set('success', 'You have successfully linked the css file(s) on this page!');
             redirect("/admin/posts/$id/edit");
         }
     }
@@ -675,6 +684,7 @@ class PostController extends Controller {
                 }
             }
 
+            Session::set('success', 'You have successfully removed the css file(s) on this page!');
             redirect("/admin/posts/$id/edit");
         }
     }
@@ -758,6 +768,7 @@ class PostController extends Controller {
                 return $this->view('admin/posts/edit', $data);
             }
 
+            Session::set('success', 'You have successfully updated the slug on this page!');
             redirect("/admin/posts/$id/edit");
         }
     }
@@ -839,6 +850,7 @@ class PostController extends Controller {
                 return $this->view('admin/posts/edit', $data);
             }
 
+            Session::set('success', 'You have successfully updated the meta data on this page!');
             redirect("/admin/posts/$id/edit");
         }
     }
@@ -878,6 +890,7 @@ class PostController extends Controller {
     
                 CategoryPage::delete('page_id', $pageId);
     
+                Session::set('success', 'You have successfully removed the category on this page!');
                 redirect('/admin/posts/'. $request['id'] . '/edit');
 
             } else {
@@ -940,7 +953,8 @@ class PostController extends Controller {
                 ]);
             }
         } 
-
+        
+        Session::set('success', 'You have successfully recovered the page(s)!');
         redirect("/admin/posts");
     }
 
@@ -963,11 +977,15 @@ class PostController extends Controller {
                         'removed'  => 1,
                         'slug'  => ''
                     ]);
+
+                    Session::set('success', 'You have successfully moved the page(s) to the trashcan!');
         
                 } else if($post['removed'] === 1) {
         
                     Post::delete("id", $request['id']);
                     CategoryPage::delete('page_id', $request['id']);
+
+                    Session::set('success', 'You have successfully removed the page(s)!');
                 }
             }
         }
