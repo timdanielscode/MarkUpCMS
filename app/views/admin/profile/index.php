@@ -57,6 +57,7 @@
                         <form action="/admin/profile/<?php echo Session::get('username'); ?>/delete" method="POST" class="deleteAccountForm">
                             <input type="hidden" name="id" value="<?php echo $user["id"]; ?>"> 
                             <input type="submit" name="delete" class="button lightButton" value="Delete account" onclick="return confirm('Are you sure?');"/>
+                            <input type="hidden" name="token" value="<?php echo Csrf::token('add');?>" />
                         </form>
                     </div>
                     <span class="text">Username:</span>

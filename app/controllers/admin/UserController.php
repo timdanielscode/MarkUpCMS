@@ -136,28 +136,31 @@ class UserController extends Controller {
 
         $this->ifExists($request['username']);
 
-        $username = $request['f_username'];
-        $uniqueUsername = DB::try()->select('username')->from('users')->where('username', '=', $request['f_username'])->and('username', '!=', $request['username'])->fetch();
-        $uniqueEmail = DB::try()->select('email')->from('users')->where('email', '=', $request['email'])->and('username', '!=', $request['username'])->fetch();
+        if(submitted("submit") === true && Csrf::validate(Csrf::token('get'), post('token')) === true ) {
 
-        $rules = new Rules();
+            $username = $request['f_username'];
+            $uniqueUsername = DB::try()->select('username')->from('users')->where('username', '=', $request['f_username'])->and('username', '!=', $request['username'])->fetch();
+            $uniqueEmail = DB::try()->select('email')->from('users')->where('email', '=', $request['email'])->and('username', '!=', $request['username'])->fetch();
 
-        if($rules->user_edit($uniqueUsername, $uniqueEmail)->validated()) {
+            $rules = new Rules();
 
-            User::update(['username' => $request['username']],[
+            if($rules->user_edit($uniqueUsername, $uniqueEmail)->validated()) {
 
-                'username'  =>  $username,
-                'email' => $request['email']
-            ]);
+                User::update(['username' => $request['username']],[
 
-            redirect('/admin/users/' . $username . '/edit'); 
+                    'username'  =>  $username,
+                    'email' => $request['email']
+                ]);
 
-        } else {
+                redirect('/admin/users/' . $username . '/edit'); 
 
-            $data['user'] = DB::try()->select('users.id, users.username, users.email, roles.name')->from('users')->join('user_role')->on('users.id', '=', 'user_role.user_id')->join('roles')->on('user_role.role_id', '=', 'roles.id')->where('users.username', '=', $request['username'])->first();
-            $data['rules'] = $rules->errors;
+            } else {
 
-            return $this->view('admin/users/edit', $data);
+                $data['user'] = DB::try()->select('users.id, users.username, users.email, roles.name')->from('users')->join('user_role')->on('users.id', '=', 'user_role.user_id')->join('roles')->on('user_role.role_id', '=', 'roles.id')->where('users.username', '=', $request['username'])->first();
+                $data['rules'] = $rules->errors;
+
+                return $this->view('admin/users/edit', $data);
+            }
         }
     }
 
@@ -165,19 +168,22 @@ class UserController extends Controller {
 
         $this->ifExists($request['username']);
 
-        UserRole::update(['user_id' => $request['id']], [
+        if(submitted("submit") === true && Csrf::validate(Csrf::token('get'), post('token')) === true ) {
 
-            'role_id'  =>  2,
-            'user_id' => $request['id']
-        ]);
-        
-        Session::set('success', 'You have successfully updateed the user role!'); 
-        redirect('/admin/users/'); 
+            UserRole::update(['user_id' => $request['id']], [
+
+                'role_id'  =>  2,
+                'user_id' => $request['id']
+            ]);
+            
+            Session::set('success', 'You have successfully updateed the user role!'); 
+            redirect('/admin/users/'); 
+        }
     }
 
     public function recover($request) {
 
-        if(!empty($request['recoverIds']) && $request['recoverIds'] !== null) {
+        if(submitted("recoverIds") === true && Csrf::validate(Csrf::token('get'), post('token')) === true ) {
 
             $recoverIds = explode(',', $request['recoverIds']);
             
@@ -200,33 +206,36 @@ class UserController extends Controller {
 
     public function delete($request) {
 
-        $deleteIds = explode(',', $request['deleteIds']);
+        if(submitted("deleteIds") === true && Csrf::validate(Csrf::token('get'), post('token')) === true ) {
 
-        if(!empty($deleteIds) && !empty($deleteIds[0])) {
+            $deleteIds = explode(',', $request['deleteIds']);
 
-            foreach($deleteIds as $request['id']) {
+            if(!empty($deleteIds) && !empty($deleteIds[0])) {
 
-                $this->ifExists($request['id']);
+                foreach($deleteIds as $request['id']) {
 
-                $user = DB::try()->select('removed')->from('users')->join('user_role')->on('users.id', '=', 'user_role.user_id')->where('users.id', '=', $request['id'])->and('user_role.role_id', '=', 1)->first();
+                    $this->ifExists($request['id']);
 
-                if($user['removed'] !== 1) {
+                    $user = DB::try()->select('removed')->from('users')->join('user_role')->on('users.id', '=', 'user_role.user_id')->where('users.id', '=', $request['id'])->and('user_role.role_id', '=', 1)->first();
 
-                    User::update(['id' => $request['id']], [
+                    if($user['removed'] !== 1) {
 
-                        'removed'  => 1,
-                    ]);
+                        User::update(['id' => $request['id']], [
 
-                    Session::set('success', 'You have successfully moved the user(s) to the trashcan!');
+                            'removed'  => 1,
+                        ]);
 
-                } else if($user['removed'] === 1) {
+                        Session::set('success', 'You have successfully moved the user(s) to the trashcan!');
 
-                    User::delete("id", $request['id']);
-                    Session::set('success', 'You have successfully removed the user(s)!');
+                    } else if($user['removed'] === 1) {
+
+                        User::delete("id", $request['id']);
+                        Session::set('success', 'You have successfully removed the user(s)!');
+                    }
                 }
             }
-        }
 
-        redirect("/admin/users");
+            redirect("/admin/users");
+        }
     }
 }
