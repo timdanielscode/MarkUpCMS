@@ -76,7 +76,7 @@
 
                     <tr>
                         <td>-</td>
-                        <td class="width-5">-</td>
+                        <td class="width-5"></td>
                         <td class="width-25">-</td>
                         <td class="width-55">-</td>
                         <td class="width-15">-</td>

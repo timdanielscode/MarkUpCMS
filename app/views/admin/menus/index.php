@@ -33,7 +33,7 @@
         
             <thead>
                 <tr>
-                    <th></th>
+                    <th>#</th>
                     <th>Title</th>
                     <th>Position</th>
                     <th>Ordering</th>

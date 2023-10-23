@@ -41,7 +41,7 @@
                 <th>#</th>
                 <th>Title</th>
                 <th>Slug</th>
-                <th></th>
+                <?php if(Session::get('user_role') === 'admin') { ?><th></th><?php } ?>
                 <th>Author</th>
                 <th>Date and time</th>
             </tr>
@@ -60,20 +60,30 @@
                     <a data-id="<?php echo $category['id']; ?>" data-title="<?php echo $category["title"]; ?>" data-description="<?php echo $category["category_description"]; ?>" class="edit font-weight-300"><?php echo $category["title"]; ?></a> |
                     <a data-id="<?php echo $category['id']; ?>" data-title="<?php echo $category["title"]; ?>" data-description="<?php echo $category["category_description"]; ?>" class="edit font-weight-300">Edit</a> |
                     <a href="#" data-role="add" data-id="<?php echo $category['id']; ?>" class="add font-weight-300">Apply</a>
-                </td>
+                    </td>
                 <?php } else { ?>
-                    <a href="#" data-role="add" data-id="<?php echo $category['id']; ?>"><?php echo $category["title"]; ?></a> |
+                    <td class="width-30">
+                    <span class="removed font-weight-500"><?php echo $category["title"]; ?></span> |
                     <a href="#" data-role="add" data-id="<?php echo $category['id']; ?>" class="add font-weight-300">Apply</a>
+                </td>
                 <?php } ?>
+                <?php if(Session::get('user_role') === 'admin') { ?>
                 <td class="width-30">
                     <form>
                         <input class="categorySlug" name="slug" id="slug-<?php echo $category['id']; ?>" type="text" value="<?php echo substr($category['slug'], 1); ?>"/>
                             <div id="message-<?php echo $category['id'] ?>"></div>
                     </form>
                 </td>
-                <td class="width-10">
-                    <a data-role="update" id="update" data-id="<?php echo $category['id']; ?>" class="button">Update</a>
+                <?php } else { ?>
+                <td class="width-30">
+                    <?php echo $category['slug']; ?>
                 </td>
+                <?php } ?>
+                <?php if(Session::get('user_role') === 'admin') { ?>
+                    <td class="width-10">
+                        <a data-role="update" id="update" data-id="<?php echo $category['id']; ?>" class="button">Update</a>
+                    </td>
+                <?php } ?>
                 <td class="width-25">
                     <?php echo $category['author']; ?>
                 </td>
@@ -88,7 +98,7 @@
         <td>-</td>
         <td class="width-20">-</td>
         <td class="width-30">-</td>
-        <td class="width-10">-</td>
+        <td class="width-10"></td>
         <td class="width-25">-</td>
         <td class="width-15">-</td>
     </tr>

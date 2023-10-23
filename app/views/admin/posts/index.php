@@ -59,22 +59,25 @@
                     <td>
                         <input class="deleteCheckbox" type="checkbox" name="delete" value="<?php echo $post['id']; ?>" <?php if(Session::get('user_role') === 'normal') { echo 'disabled'; } ?>/>
                     </td>
-                    <?php if($post['removed'] !== 1 && Session::get('user_role') === 'admin') { ?>
+                    <?php if(Session::get('user_role') === 'admin') { ?>
                     <td class="width-25">
                         <a href="/admin/posts/<?php echo $post['id']; ?>/edit" class="font-weight-500"><?php echo $post[1]; ?></a> |
                         <a href="/admin/posts/<?php echo $post['id']; ?>/edit" class="font-weight-300">Edit</a> |
                         <a href="/admin/posts/<?php echo $post['id']; ?>/read" class="font-weight-300">Read</a>
-                    </td>
-                    <td class="width-20">
-                        <a href="<?php echo $_SERVER['HTTP_HOST'] . $post['slug']; ?>"><?php echo $post['slug']; ?></a>
                     </td>
                     <?php } else { ?>
                     <td class="width-25">
                         <span class="removed font-weight-500"><?php echo $post[1]; ?></span> |
                         <a href="/admin/posts/<?php echo $post['id']; ?>/read" class="font-weight-300">Read</a>
                     </td>
+                    <?php } ?>
+                    <?php if($post['removed'] === 1) { ?>
                     <td class="width-20">
                         <span class="removed">TEMPORARILY UNSET</span>
+                    </td>
+                    <?php } else { ?>
+                        <td class="width-20">
+                        <a href="<?php echo $_SERVER['HTTP_HOST'] . $post['slug']; ?>"><?php echo $post['slug']; ?></a>
                     </td>
                     <?php } ?>
                     <td class="width-15">

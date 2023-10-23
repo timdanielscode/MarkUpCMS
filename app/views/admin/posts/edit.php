@@ -154,7 +154,7 @@
                                         <?php echo Errors::get($rules, 'categories'); ?>
                                     </div>  
                                     <div class="AssingCategoryContainer">
-                                        <input class="button greenButton margin-t-20" type="submit" name="submit" value="Assign"/>
+                                        <input class="button blueButton margin-t-20" type="submit" name="submit" value="Assign"/>
                                     </div> 
                                     <input type="hidden" name="token" value="<?php Csrf::token('add'); ?>" />
                                 </form>

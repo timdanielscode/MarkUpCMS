@@ -80,13 +80,13 @@
                             <?php echo "/" . $media['media_folder'] . '/' . $media["media_filename"] ?>
                         <?php } ?>
                 </span>
-                <?php if($media["media_filename"] !== "-") { ?>
+                <?php if(Session::get('user_role') === 'admin') { ?>
                 <form>
                     <input class="mediaFilename" name="filename" id="filename-<?php echo $media['id']; ?>" type="text" value="<?php echo $media["media_filename"]; ?>"/>
                     <div class="margin-t-10" id="MESSAGE-<?php echo $media['id'] ?>"></div>
                 </form>
                 <?php } else { ?>
-                    <span class="font-weight-500"><?php echo $media["media_filename"]; ?></span>
+                    <span class="font-weight-500 display-block"><?php echo $media["media_filename"]; ?></span>
                 <?php } ?>
             </td>
             <td class="width-10">
@@ -94,10 +94,16 @@
             </td>
             <td class="width-15">
                 <?php if(!empty($media['media_description']) && $media['media_description'] !== null) { ?>
-
+                    <?php if(Session::get('user_role') === 'admin') { ?>
                     <textarea id="description-<?php echo $media['id']; ?>" class="updateDescription" value="<?php echo $media['media_description']; ?>"><?php echo $media['media_description']; ?></textarea>
+                    <?php } else { ?>
+                        <?php echo $media['media_description']; ?>
+                    <?php } ?>
                 <?php } else { ?>
-                    <textarea id="description-<?php echo $media['id']; ?>" class="updateDescription" value="<?php echo $media['media_description']; ?>"><?php echo '-'; ?></textarea>
+                    <?php if(Session::get('user_role') === 'admin') { ?>
+                    <?php } else { ?>
+                        -
+                    <?php } ?>
                 <?php } ?>
                 <div class="margin-t-10" id="MESSAGE-DESCRIPTION-<?php echo $media['id']; ?>"></div>
             </td>

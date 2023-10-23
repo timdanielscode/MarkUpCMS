@@ -185,15 +185,15 @@ Route::middleware(['auth' => 'admin'])->run(function() {
 Route::middleware('login')->run(function() { 
 
     Route::get('/admin/categories')->add('admin\CategoryController', 'index');
+    Route::get('/admin/categories/showaddable')->add('admin\CategoryController', 'SHOWADDABLE');
 }); 
 
 Route::middleware(['auth' => 'admin'])->run(function() { 
 
+    Route::post('/admin/categories/addcategory')->add('admin\CategoryController', 'ADDCATEGORY');
+    Route::post('/admin/categories/addpage')->add('admin\CategoryController', 'ADDPAGE');
     Route::post('/admin/categories/store')->add('admin\CategoryController', 'store');
     Route::post('/admin/categories/update')->add('admin\CategoryController', 'update');
-    Route::get('/admin/categories/showaddable')->add('admin\CategoryController', 'SHOWADDABLE');
-    Route::post('/admin/categories/addpage')->add('admin\CategoryController', 'ADDPAGE');
-    Route::post('/admin/categories/addcategory')->add('admin\CategoryController', 'ADDCATEGORY');
     Route::post('/admin/categories/slug')->add('admin\CategoryController', 'SLUG');
     Route::post('/admin/categories/delete')->add('admin\CategoryController', 'delete');
 }); 
