@@ -28,7 +28,7 @@
             <input type="text" name="search" placeholder="Pages" id="search">
             <input type="hidden" name="submit" value="search">
         </form>
-        <a href="/admin/settings" id="settings"><img src="/assets/img/settings.png"/></a>
+        <?php if(Session::get('user_role') === 'admin') { ?><a href="/admin/settings" id="settings"><img src="/assets/img/settings.png"/></a><?php } ?>
         <?php if(Session::exists('username') === true) { ?>
         <div class="profileContainer">
             <span id="profileIcon" class="profileIcon <?php if(Session::get('user_role') === 'admin') { echo 'admin'; } else { echo 'normal';} ?>"><?php echo substr(Session::get('username'), 0, 1); ?></span>
