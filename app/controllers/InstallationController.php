@@ -37,6 +37,7 @@ class InstallationController extends Controller {
                     'username' => $request["username"], 
                     'email' => $request["email"], 
                     'password' => password_hash($request["password"], PASSWORD_DEFAULT),
+                    'removed'   => 0,
                     'created_at' => date("Y-m-d H:i:s"), 
                     'updated_at' => date("Y-m-d H:i:s")
                 ]); 

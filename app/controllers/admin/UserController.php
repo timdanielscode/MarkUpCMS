@@ -70,7 +70,6 @@ class UserController extends Controller {
                     'username' => $request['f_username'],
                     'email' => $request['email'],
                     'password' => password_hash($request['password'], PASSWORD_DEFAULT),
-                    'retypePassword' => password_hash($request['password_confirm'], PASSWORD_DEFAULT),
                     'removed'   => 0,
                     'created_at' => date("Y-m-d H:i:s"),
                     'updated_at' => date("Y-m-d H:i:s")
