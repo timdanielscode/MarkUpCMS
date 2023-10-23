@@ -310,7 +310,7 @@ class JsController extends Controller {
 
     public function recover($request) {
 
-        if(!empty($request['recoverIds']) && $request['recoverIds'] !== null) {
+        if(submitted('recoverIds') && Csrf::validate(Csrf::token('get'), post('token') ) === true) {
 
             $recoverIds = explode(',', $request['recoverIds']);
             
@@ -333,38 +333,41 @@ class JsController extends Controller {
 
     public function delete($request) {
 
-        $deleteIds = explode(',', $request['deleteIds']);
+        if(submitted('deleteIds') && Csrf::validate(Csrf::token('get'), post('token') ) === true) {
 
-        if(!empty($deleteIds) && !empty($deleteIds[0])) {
+            $deleteIds = explode(',', $request['deleteIds']);
 
-            foreach($deleteIds as $request['id']) {
+            if(!empty($deleteIds) && !empty($deleteIds[0])) {
 
-                $this->ifExists($request['id']);
+                foreach($deleteIds as $request['id']) {
 
-                $js = DB::try()->select('removed')->from('js')->where('id', '=', $request['id'])->first();
+                    $this->ifExists($request['id']);
 
-                if($js['removed'] !== 1) {
+                    $js = DB::try()->select('removed')->from('js')->where('id', '=', $request['id'])->first();
 
-                    Js::update(['id' => $request['id']], [
+                    if($js['removed'] !== 1) {
 
-                        'removed'  => 1
-                    ]);
+                        Js::update(['id' => $request['id']], [
 
-                    Session::set('success', 'You have successfully moved the js file(s) to the trashcan!');
+                            'removed'  => 1
+                        ]);
 
-                } else if($js['removed'] === 1) {
+                        Session::set('success', 'You have successfully moved the js file(s) to the trashcan!');
 
-                    $filename = Js::where('id', '=', $request['id'])[0]['file_name'];
-                    $path = "website/assets/js/" . $filename . ".js";
-                    
-                    unlink($path);
+                    } else if($js['removed'] === 1) {
 
-                    Js::delete("id", $request['id']);
-                    Session::set('success', 'You have successfully removed the js file(s)!');
+                        $filename = Js::where('id', '=', $request['id'])[0]['file_name'];
+                        $path = "website/assets/js/" . $filename . ".js";
+                        
+                        unlink($path);
+
+                        Js::delete("id", $request['id']);
+                        Session::set('success', 'You have successfully removed the js file(s)!');
+                    }
                 }
             }
-        }
 
-        redirect("/admin/js");
+            redirect("/admin/js");
+        }
     }
 }

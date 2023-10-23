@@ -253,7 +253,7 @@ class CdnController extends Controller {
 
     public function recover($request) {
 
-        if(!empty($request['recoverIds']) && $request['recoverIds'] !== null) {
+        if(submitted("recoverIds") === true && Csrf::validate(Csrf::token('get'), post('token')) === true ) {
 
             $recoverIds = explode(',', $request['recoverIds']);
             
@@ -276,33 +276,36 @@ class CdnController extends Controller {
 
     public function delete($request) {
 
-        $deleteIds = explode(',', $request['deleteIds']);
+        if(submitted("deleteIds") === true && Csrf::validate(Csrf::token('get'), post('token')) === true ) {
 
-        if(!empty($deleteIds) && !empty($deleteIds[0])) {
+            $deleteIds = explode(',', $request['deleteIds']);
 
-            foreach($deleteIds as $request['id']) {
+            if(!empty($deleteIds) && !empty($deleteIds[0])) {
 
-                $this->ifExists($request['id']);
-                
-                $cdn = DB::try()->select('removed')->from('cdn')->where('id', '=', $request['id'])->first();
+                foreach($deleteIds as $request['id']) {
 
-                if($cdn['removed'] !== 1) {
+                    $this->ifExists($request['id']);
+                    
+                    $cdn = DB::try()->select('removed')->from('cdn')->where('id', '=', $request['id'])->first();
 
-                    Cdn::update(['id' => $request['id']], [
+                    if($cdn['removed'] !== 1) {
 
-                        'removed'  => 1
-                    ]);
+                        Cdn::update(['id' => $request['id']], [
 
-                    Session::set('success', 'You have successfully moved the cdn(s) to the trashcan!');
+                            'removed'  => 1
+                        ]);
 
-                } else if($cdn['removed'] === 1) {
+                        Session::set('success', 'You have successfully moved the cdn(s) to the trashcan!');
 
-                    Cdn::delete("id", $request['id']);
-                    Session::set('success', 'You have successfully removed the cdn(s)!');
+                    } else if($cdn['removed'] === 1) {
+
+                        Cdn::delete("id", $request['id']);
+                        Session::set('success', 'You have successfully removed the cdn(s)!');
+                    }
                 }
             }
-        }
 
-        redirect("/admin/cdn");
+            redirect("/admin/cdn");
+        }
     }
 }

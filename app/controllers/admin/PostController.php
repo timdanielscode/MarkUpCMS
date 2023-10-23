@@ -180,19 +180,22 @@ class PostController extends Controller {
 
         Session::set('cdn', true);
 
-        $pageId = $request['id'];
+        if(submitted("submit") === true && Csrf::validate(Csrf::token('get'), post('token')) === true ) {
 
-        foreach($request['cdns'] as $cdnId) {
+            $pageId = $request['id'];
 
-            CdnPage::insert([
+            foreach($request['cdns'] as $cdnId) {
 
-                'page_id' => $request['id'],
-                'cdn_id' => $cdnId
-            ]);
+                CdnPage::insert([
+
+                    'page_id' => $request['id'],
+                    'cdn_id' => $cdnId
+                ]);
+            }
+
+            Session::set('success', 'You have successfully imported the cdn(s) on this page!'); 
+            redirect("/admin/posts/$pageId/edit");
         }
-
-        Session::set('success', 'You have successfully imported the cdn(s) on this page!'); 
-        redirect("/admin/posts/$pageId/edit");
     }
 
     public function exportCdns($request) {
@@ -205,15 +208,18 @@ class PostController extends Controller {
 
         Session::set('cdn', true);
 
-        $pageId = $request['id'];
+        if(submitted("submit") === true && Csrf::validate(Csrf::token('get'), post('token')) === true ) {
 
-        foreach($request['cdns'] as $cdnId) {
+            $pageId = $request['id'];
 
-            DB::try()->delete('cdn_page')->where('page_id', '=', $pageId)->and('cdn_id', '=', $cdnId)->run();
+            foreach($request['cdns'] as $cdnId) {
+
+                DB::try()->delete('cdn_page')->where('page_id', '=', $pageId)->and('cdn_id', '=', $cdnId)->run();
+            }
+
+            Session::set('success', 'You have successfully removed the cdn(s) on this page!'); 
+            redirect("/admin/posts/$pageId/edit");
         }
-
-        Session::set('success', 'You have successfully removed the cdn(s) on this page!'); 
-        redirect("/admin/posts/$pageId/edit");
     }
 
     private function getImportCdns($cdns) {
@@ -936,60 +942,63 @@ class PostController extends Controller {
 
     public function recover($request) {
 
-        if(!empty($request['recoverIds']) && $request['recoverIds'] !== null) {
+        if(submitted("recoverIds") === true && Csrf::validate(Csrf::token('get'), post('token')) === true ) {
 
             $recoverIds = explode(',', $request['recoverIds']);
-            
+                
             foreach($recoverIds as $request['id'] ) {
 
                 $this->ifExists($request['id']);
-    
+        
                 $post = DB::try()->select('title, removed')->from('pages')->where('id', '=', $request['id'])->first();
-        
+            
                 Post::update(['id' => $request['id']], [
-        
+            
                     'removed'  => 0,
                     'slug' => "/" . $post['title']
                 ]);
             }
-        } 
         
-        Session::set('success', 'You have successfully recovered the page(s)!');
-        redirect("/admin/posts");
+            Session::set('success', 'You have successfully recovered the page(s)!');
+            redirect("/admin/posts");
+        }
     }
 
     public function delete($request) {
 
-        $deleteIds = explode(',', $request['deleteIds']);
+        if(submitted("deleteIds") === true && Csrf::validate(Csrf::token('get'), post('token')) === true ) {
 
-        if(!empty($deleteIds) && !empty($deleteIds[0])) {
+            $deleteIds = explode(',', $request['deleteIds']);
 
-            foreach($deleteIds as $request['id']) {
+            if(!empty($deleteIds) && !empty($deleteIds[0])) {
 
-                $this->ifExists($request['id']);
-    
-                $post = DB::try()->select('removed')->from('pages')->where('id', '=', $request['id'])->first();
-        
-                if($post['removed'] !== 1) {
-        
-                    Post::update(['id' => $request['id']], [
-        
-                        'removed'  => 1,
-                        'slug'  => ''
-                    ]);
+                foreach($deleteIds as $request['id']) {
 
-                    Session::set('success', 'You have successfully moved the page(s) to the trashcan!');
+                    $this->ifExists($request['id']);
         
-                } else if($post['removed'] === 1) {
-        
-                    Post::delete("id", $request['id']);
-                    CategoryPage::delete('page_id', $request['id']);
+                    $post = DB::try()->select('removed')->from('pages')->where('id', '=', $request['id'])->first();
+            
+                    if($post['removed'] !== 1) {
+            
+                        Post::update(['id' => $request['id']], [
+            
+                            'removed'  => 1,
+                            'slug'  => ''
+                        ]);
 
-                    Session::set('success', 'You have successfully removed the page(s)!');
+                        Session::set('success', 'You have successfully moved the page(s) to the trashcan!');
+            
+                    } else if($post['removed'] === 1) {
+            
+                        Post::delete("id", $request['id']);
+                        CategoryPage::delete('page_id', $request['id']);
+
+                        Session::set('success', 'You have successfully removed the page(s)!');
+                    }
                 }
             }
-        }
 
-        redirect("/admin/posts");
+            redirect("/admin/posts");
+        }
     }
 }

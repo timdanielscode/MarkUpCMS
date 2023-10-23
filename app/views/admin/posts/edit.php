@@ -98,6 +98,7 @@
                                 </option>
                                 <?php } ?>
                                 <input type="submit" name="submit" value="Export" class="button blueButton margin-t-20"/>
+                                <input type="hidden" name="token" value="<?php Csrf::token('add'); ?>" />
                             </select>
                         </form>
                         <form action="/admin/posts/<?php echo $data['id']; ?>/import-cdns" method="POST" class="cdnForm margin-t-20">
@@ -109,6 +110,7 @@
                                 </option>
                                 <?php } ?>
                                 <input type="submit" name="submit" value="Import" class="button darkBlueButton margin-t-20"/>
+                                <input type="hidden" name="token" value="<?php Csrf::token('add'); ?>" />
                             </select>
                         </form>
                     </div>

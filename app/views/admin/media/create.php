@@ -65,6 +65,7 @@
                                 <span><?php echo Errors::get($rules, 'P_folder'); ?></span>
                             </div>    
                         <?php } ?> 
+                        <input type="hidden" name="token" value="<?php Csrf::token('add'); ?>" />
                     </form>
                 <?php } ?>
                 <?php Alert::message('success'); ?>
@@ -141,6 +142,7 @@
                             <form action="" method="POST" class="deleteForm display-none">
                                 <input id="selectedFiles" type="hidden" name="files" value=""/>
                                 <input type="submit" name="submitDelete" class="button redButton margin-r-10" value="Delete"/>
+                                <input type="hidden" name="token" value="<?php Csrf::token('add'); ?>" />
                             </form>
                             <a href="#" class="button read blueButton display-none-important">Read</a>
                             <a href="#" class="button close blueButton display-none-important">Close</a>

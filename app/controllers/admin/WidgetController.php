@@ -28,9 +28,7 @@ class WidgetController extends Controller {
     public function index() {
 
         $widget = new Widget();
-
         $widgets = $widget->allWidgetsButOrderedOnDate();
-        
         $search = Get::validate([get('search')]);
 
         if(!empty($search) ) {
@@ -53,7 +51,6 @@ class WidgetController extends Controller {
     public function create() {
 
         $data['rules'] = [];
-
         return $this->view('admin/widgets/create', $data);
     }
 
@@ -64,7 +61,6 @@ class WidgetController extends Controller {
             if(!empty($request['content']) ) { $hasContent = 1; } else { $hasContent = 0; }
 
             $rules = new Rules();
-
             $uniqueTitle = DB::try()->select('title')->from('widgets')->where('title', '=', $request['title'])->fetch();
 
             if($rules->create_widget($uniqueTitle)->validated()) {
@@ -148,7 +144,7 @@ class WidgetController extends Controller {
 
     public function recover($request) {
 
-        if(!empty($request['recoverIds']) && $request['recoverIds'] !== null) {
+        if(submitted('recoverIds') && Csrf::validate(Csrf::token('get'), post('token') ) === true) {
 
             $recoverIds = explode(',', $request['recoverIds']);
             
@@ -171,35 +167,37 @@ class WidgetController extends Controller {
 
     public function delete($request) {
 
-        $deleteIds = explode(',', $request['deleteIds']);
+        if(submitted('deleteIds') && Csrf::validate(Csrf::token('get'), post('token') ) === true) {
 
-        if(!empty($deleteIds) && !empty($deleteIds[0])) {
+            $deleteIds = explode(',', $request['deleteIds']);
 
-            foreach($deleteIds as $request['id']) {
+            if(!empty($deleteIds) && !empty($deleteIds[0])) {
 
-                $this->ifExists($request['id']);
+                foreach($deleteIds as $request['id']) {
 
-                $widget = DB::try()->select('title, removed')->from('widgets')->where('id', '=', $request['id'])->first();
+                    $this->ifExists($request['id']);
 
-                if($widget['removed'] !== 1) {
+                    $widget = DB::try()->select('title, removed')->from('widgets')->where('id', '=', $request['id'])->first();
 
-                    Widget::update(['id' => $request['id']], [
+                    if($widget['removed'] !== 1) {
 
-                        'removed'  => 1
-                    ]);
+                        Widget::update(['id' => $request['id']], [
 
-                    PageWidget::delete('widget_id', $request['id']);
-                    Session::set('success', 'You have successfully moved the widget(s) to the trashcan!');
+                            'removed'  => 1
+                        ]);
 
-                } else if($widget['removed'] === 1) {
+                        PageWidget::delete('widget_id', $request['id']);
+                        Session::set('success', 'You have successfully moved the widget(s) to the trashcan!');
 
-                    Widget::delete("id", $request['id']);
-                    PageWidget::delete('widget_id', $request['id']);
-                    Session::set('success', 'You have successfully removed the widget(s)!');
+                    } else if($widget['removed'] === 1) {
+
+                        Widget::delete("id", $request['id']);
+                        PageWidget::delete('widget_id', $request['id']);
+                        Session::set('success', 'You have successfully removed the widget(s)!');
+                    }
                 }
             }
+            redirect("/admin/widgets");
         }
-
-        redirect("/admin/widgets");
     }
 }

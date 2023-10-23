@@ -61,49 +61,46 @@ class CssController extends Controller {
 
     public function store($request) {
 
-        if(submitted('submit')) {
+        if(submitted('submit') && Csrf::validate(Csrf::token('get'), post('token') ) === true) {
 
-            if(Csrf::validate(Csrf::token('get'), post('token') ) === true) {
+            $rules = new Rules();
 
-                $rules = new Rules();
+            $uniqueFilename = DB::try()->select('file_name')->from('css')->where('file_name', '=', $request['filename'])->fetch();
 
-                $uniqueFilename = DB::try()->select('file_name')->from('css')->where('file_name', '=', $request['filename'])->fetch();
-
-                if($rules->css($uniqueFilename)->validated()) {
+            if($rules->css($uniqueFilename)->validated()) {
                     
-                    $filename = "/".$request['filename'];
-                    $filename = str_replace(" ", "-", $filename);
+                $filename = "/".$request['filename'];
+                $filename = str_replace(" ", "-", $filename);
 
-                    $code = $request['code'];
+                $code = $request['code'];
 
-                    $file = fopen("website/assets/css" . $filename . ".css", "w");
+                $file = fopen("website/assets/css" . $filename . ".css", "w");
 
-                    fwrite($file, $code);
-                    fclose($file);
+                fwrite($file, $code);
+                fclose($file);
                     
-                    if(!empty($request['code']) ) { $hasContent = 1; } else { $hasContent = 0; }
+                if(!empty($request['code']) ) { $hasContent = 1; } else { $hasContent = 0; }
 
-                    Css::insert([
+                Css::insert([
 
-                        'file_name' => $request['filename'],
-                        'extension' => '.css',
-                        'author'    => Session::get('username'),
-                        'has_content' => $hasContent,
-                        'removed' => 0,
-                        'created_at' => date('Y-m-d H:i:s', $_SERVER['REQUEST_TIME']),
-                        'updated_at' => date('Y-m-d H:i:s', $_SERVER['REQUEST_TIME'])
-                    ]);
+                    'file_name' => $request['filename'],
+                    'extension' => '.css',
+                    'author'    => Session::get('username'),
+                    'has_content' => $hasContent,
+                    'removed' => 0,
+                    'created_at' => date('Y-m-d H:i:s', $_SERVER['REQUEST_TIME']),
+                    'updated_at' => date('Y-m-d H:i:s', $_SERVER['REQUEST_TIME'])
+                ]);
 
-                    Session::set('success', 'You have successfully created a new css file!');         
-                    redirect('/admin/css');
+                Session::set('success', 'You have successfully created a new css file!');         
+                redirect('/admin/css');
 
-                } else {
+            } else {
 
-                    $data['rules'] = $rules->errors;
-                    return $this->view('admin/css/create', $data);
-                }
-            } 
-        }
+                $data['rules'] = $rules->errors;
+                return $this->view('admin/css/create', $data);
+            }
+        } 
     }
 
     private function getFileContent($filename) {
@@ -319,7 +316,7 @@ class CssController extends Controller {
 
     public function recover($request) {
 
-        if(!empty($request['recoverIds']) && $request['recoverIds'] !== null) {
+        if(submitted('recoverIds') && Csrf::validate(Csrf::token('get'), post('token') ) === true) {
 
             $recoverIds = explode(',', $request['recoverIds']);
             
@@ -342,38 +339,40 @@ class CssController extends Controller {
 
     public function delete($request) {
 
-        $deleteIds = explode(',', $request['deleteIds']);
+        if(submitted('deleteIds') && Csrf::validate(Csrf::token('get'), post('token') ) === true) {
 
-        if(!empty($deleteIds) && !empty($deleteIds[0])) {
+            $deleteIds = explode(',', $request['deleteIds']);
 
-            foreach($deleteIds as $request['id']) {
+            if(!empty($deleteIds) && !empty($deleteIds[0])) {
 
-                $this->ifExists($request['id']);
+                foreach($deleteIds as $request['id']) {
 
-                $css = DB::try()->select('removed')->from('css')->where('id', '=', $request['id'])->first();
+                    $this->ifExists($request['id']);
 
-                if($css['removed'] !== 1) {
+                    $css = DB::try()->select('removed')->from('css')->where('id', '=', $request['id'])->first();
 
-                    Css::update(['id' => $request['id']], [
+                    if($css['removed'] !== 1) {
 
-                        'removed'  => 1
-                    ]);
+                        Css::update(['id' => $request['id']], [
 
-                    Session::set('success', 'You have successfully moved the css file(s) to the trashcan!');
+                            'removed'  => 1
+                        ]);
 
-                } else if($css['removed'] === 1) {
+                        Session::set('success', 'You have successfully moved the css file(s) to the trashcan!');
 
-                    $filename = Css::where('id', '=', $request['id'])[0]['file_name'];
-                    $path = "website/assets/css/" . $filename . ".css";
-        
-                    unlink($path);
-                    Css::delete("id", $request['id']);
-                    Session::set('success', 'You have successfully removed the css file(s)!');
+                    } else if($css['removed'] === 1) {
+
+                        $filename = Css::where('id', '=', $request['id'])[0]['file_name'];
+                        $path = "website/assets/css/" . $filename . ".css";
+            
+                        unlink($path);
+                        Css::delete("id", $request['id']);
+                        Session::set('success', 'You have successfully removed the css file(s)!');
+                    }
                 }
             }
+
+            redirect("/admin/css");
         }
-
-        redirect("/admin/css");
     }
-
 }

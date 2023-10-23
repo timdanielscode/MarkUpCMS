@@ -1,6 +1,7 @@
 <?php use core\Session; ?>
 <?php use core\Alert; ?>
 <?php use validation\Get; ?>
+<?php use core\Csrf; ?>
 
 <?php 
     $this->include('headerOpen');  
@@ -28,7 +29,7 @@
     <div class="headerContainer">
         <h1>Categories</h1><span class="badge categories"><?php echo $count; ?></span>
     </div>
-    <?php if(Session::get('user_role') === 'admin') { ?><a class="create" id="create">Create</a> <span class="deleteSeparator">|</span> <form action="/admin/categories/delete" method="POST" class="indexDeleteForm"><input type="submit" value="Delete" class="delete" onclick="return confirm('Are you sure?')"/><input type="hidden" name="deleteIds" id="deleteIds" value=""/></form><?php } ?>
+    <?php if(Session::get('user_role') === 'admin') { ?><a class="create" id="create">Create</a> <span class="deleteSeparator">|</span> <form action="/admin/categories/delete" method="POST" class="indexDeleteForm"><input type="submit" value="Delete" class="delete" onclick="return confirm('Are you sure?')"/><input type="hidden" name="deleteIds" id="deleteIds" value=""/><input type="hidden" name="token" value="<?php Csrf::token('add'); ?>" /></form><?php } ?>
     <form action="" method="GET" class="searchForm">
         <input type="text" name="search" placeholder="Search" id="search">
         <input id="searchValue" type="hidden" name="submit" value="<?php if(!empty($search) && $search !== null) { echo $search; } ?>">

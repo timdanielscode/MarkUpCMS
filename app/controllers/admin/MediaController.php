@@ -152,15 +152,18 @@ class MediaController extends Controller {
 
         $fileIds = explode(',', $request['files']);
 
-        foreach($fileIds as $fileId) {
+        if(submitted('submitDelete') && Csrf::validate(Csrf::token('get'), post('token') ) === true) {
 
-            $filename = Media::where('id', '=', $fileId)[0]['media_filename'];
-            Media::delete('id', $fileId);
-            unlink($this->_folderPath . '/' . $filename);
+            foreach($fileIds as $fileId) {
+
+                $filename = Media::where('id', '=', $fileId)[0]['media_filename'];
+                Media::delete('id', $fileId);
+                unlink($this->_folderPath . '/' . $filename);
+            }
+
+            Session::set('success', 'You have successfully deleted the file(s)!');  
+            redirect('/admin/media/create?folder=' . Get::validate([get('folder')]));
         }
-
-        Session::set('success', 'You have successfully deleted the file(s)!');  
-        redirect('/admin/media/create?folder=' . Get::validate([get('folder')]));
     }
 
     private function folder($request) {
@@ -177,39 +180,45 @@ class MediaController extends Controller {
 
     private function deleteFolder($request) {
 
-        rmdir($this->_folderPath . '/' . $request['P_folder']);
-        DB::try()->delete('mediaFolders')->where('folder_name', '=', $request['P_folder'])->run();
+        if(submitted("submitFolder") === true && Csrf::validate(Csrf::token('get'), post('token')) === true ) {
+
+            rmdir($this->_folderPath . '/' . $request['P_folder']);
+            DB::try()->delete('mediaFolders')->where('folder_name', '=', $request['P_folder'])->run();
+        }
     }
 
     private function addFolder($request) {
 
-        $rules = new Rules();
+        if(submitted("submitFolder") === true && Csrf::validate(Csrf::token('get'), post('token')) === true ) {
 
-        if($rules->insert_media_folder()->validated() ) {
+            $rules = new Rules();
 
-            $unique = DB::try()->select('id')->from('mediaFolders')->where('folder_name', '=', $request['P_folder'])->fetch();
+            if($rules->insert_media_folder()->validated() ) {
 
-            if(empty($unique) ) {
+                $unique = DB::try()->select('id')->from('mediaFolders')->where('folder_name', '=', $request['P_folder'])->fetch();
 
-                DB::try()->insert("mediaFolders", [
-    
-                    "folder_name" => $request['P_folder']
-                ]); 
+                if(empty($unique) ) {
+
+                    DB::try()->insert("mediaFolders", [
+        
+                        "folder_name" => $request['P_folder']
+                    ]); 
+                }
+
+                Session::set('success', 'You have successfully added the folder!');
+                mkdir($this->_folderPath . '/' . $request['P_folder'], 0777, true); 
+
+            } else {
+
+                $folders = glob($this->_folderPath . '/*', GLOB_ONLYDIR);
+                $files = DB::try()->select('*')->from('media')->where('media_folder', '=', $this->_folderPath)->fetch();
+
+                $data['folders'] = $folders;
+                $data['files'] = $files;
+                $data['rules'] = $rules->errors;
+
+                return $this->view('admin/media/create', $data);
             }
-
-            Session::set('success', 'You have successfully added the folder!');
-            mkdir($this->_folderPath . '/' . $request['P_folder'], 0777, true); 
-
-        } else {
-
-            $folders = glob($this->_folderPath . '/*', GLOB_ONLYDIR);
-            $files = DB::try()->select('*')->from('media')->where('media_folder', '=', $this->_folderPath)->fetch();
-
-            $data['folders'] = $folders;
-            $data['files'] = $files;
-            $data['rules'] = $rules->errors;
-
-            return $this->view('admin/media/create', $data);
         }
     }
 
@@ -309,7 +318,7 @@ class MediaController extends Controller {
 
     public function delete($request) {
 
-        if(!empty($request['deleteIds']) && $request['deleteIds'] !== null) {
+        if(submitted('deleteIds') && Csrf::validate(Csrf::token('get'), post('token') ) === true) {
 
             $ids = explode(',', $request['deleteIds']);
 

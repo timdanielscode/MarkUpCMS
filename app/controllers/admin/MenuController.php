@@ -190,7 +190,7 @@ class MenuController extends Controller {
 
     public function recover($request) {
 
-        if(!empty($request['recoverIds']) && $request['recoverIds'] !== null) {
+        if(submitted('recoverIds') && Csrf::validate(Csrf::token('get'), post('token') ) === true) {
 
             $recoverIds = explode(',', $request['recoverIds']);
             
@@ -205,43 +205,47 @@ class MenuController extends Controller {
                     'removed'  => 0
                 ]);
             }
-        }
 
-        Session::set('success', 'You have successfully recovered the menu(s)!');
-        redirect("/admin/menus");
+            Session::set('success', 'You have successfully recovered the menu(s)!');
+            redirect("/admin/menus");
+        }
     }
 
     public function delete($request) {
 
-        $deleteIds = explode(',', $request['deleteIds']);
+        if(submitted('deleteIds') && Csrf::validate(Csrf::token('get'), post('token') ) === true) {
 
-        if(!empty($deleteIds) && !empty($deleteIds[0])) {
+            $deleteIds = explode(',', $request['deleteIds']);
 
-            foreach($deleteIds as $request['id']) {
+            if(!empty($deleteIds) && !empty($deleteIds[0])) {
 
-                $this->ifExists($request['id']);
+                foreach($deleteIds as $request['id']) {
 
-                $menu = DB::try()->select('title, removed')->from('menus')->where('id', '=', $request['id'])->first();
+                    $this->ifExists($request['id']);
 
-                if($menu['removed'] !== 1) {
+                    $menu = DB::try()->select('title, removed')->from('menus')->where('id', '=', $request['id'])->first();
 
-                    Menu::update(['id' => $request['id']], [
+                    if($menu['removed'] !== 1) {
 
-                        'removed'  => 1,
-                        'position' => 'unset',
-                        'ordering' => 0
-                    ]);
+                        Menu::update(['id' => $request['id']], [
 
-                    Session::set('success', 'You have successfully moved the menu(s) to the trashcan!');
+                            'removed'  => 1,
+                            'position' => 'unset',
+                            'ordering' => 0
+                        ]);
 
-                } else if($menu['removed'] === 1) {
+                        Session::set('success', 'You have successfully moved the menu(s) to the trashcan!');
 
-                    Menu::delete("id", $request['id']);
-                    Session::set('success', 'You have successfully removed the menu(s)!');
+                    } else if($menu['removed'] === 1) {
+
+                        Menu::delete("id", $request['id']);
+                        Session::set('success', 'You have successfully removed the menu(s)!');
+                    }
                 }
             }
+            redirect("/admin/menus");
         }
 
-        redirect("/admin/menus");
+       
     }
 }

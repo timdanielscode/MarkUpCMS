@@ -54,53 +54,57 @@ class CategoryController extends Controller {
 
     public function store($request) {
 
-        $rules = new Rules();
-        
-        $uniqueTitle = DB::try()->select('title')->from('categories')->where('title', '=', $request['title'])->fetch();
+        if(submitted("submit") === true) {
 
-        if($rules->create_category($uniqueTitle)->validated()) {
+            $rules = new Rules();
+            $uniqueTitle = DB::try()->select('title')->from('categories')->where('title', '=', $request['title'])->fetch();
 
-            Category::insert([
+            if($rules->create_category($uniqueTitle)->validated()) {
 
-                'title' => $request['title'],
-                'slug'  => "/" . $request['title'],
-                'category_description'  => $request['description'],
-                'author'    => Session::get('username'),
-                'created_at' => date('Y-m-d H:i:s', $_SERVER['REQUEST_TIME']),
-                'updated_at' => date('Y-m-d H:i:s', $_SERVER['REQUEST_TIME'])
-            ]);
+                Category::insert([
 
-            Session::set('success', 'You have successfully created a new category!');
-        } else {
-            Session::set('failed', "Title can't be empty, must be unique, max 49 characters, no special characters! Description max 99 characters, no special characters!");
+                    'title' => $request['title'],
+                    'slug'  => "/" . $request['title'],
+                    'category_description'  => $request['description'],
+                    'author'    => Session::get('username'),
+                    'created_at' => date('Y-m-d H:i:s', $_SERVER['REQUEST_TIME']),
+                    'updated_at' => date('Y-m-d H:i:s', $_SERVER['REQUEST_TIME'])
+                ]);
+
+                Session::set('success', 'You have successfully created a new category!');
+            } else {
+                Session::set('failed', "Title can't be empty, must be unique, max 49 characters, no special characters! Description max 99 characters, no special characters!");
+            }
+
+            redirect('/admin/categories');
         }
-
-        redirect('/admin/categories');
     }
 
     public function update($request) {
 
         $this->ifExists($request['id']);
 
-        $rules = new Rules();
+        if(submitted("submit") === true) {
 
-        $uniqueTitle = DB::try()->select('title')->from('categories')->where('title', '=', $request['title'])->and('id', '!=', $request['id'])->fetch();
+            $rules = new Rules();
+            $uniqueTitle = DB::try()->select('title')->from('categories')->where('title', '=', $request['title'])->and('id', '!=', $request['id'])->fetch();
 
-        if($rules->edit_category($uniqueTitle)->validated()) {
+            if($rules->edit_category($uniqueTitle)->validated()) {
 
-            Category::update(['id' => $request['id']], [
+                Category::update(['id' => $request['id']], [
 
-                'title'   => $request['title'],
-                'category_description' => $request['description'],
-                'updated_at' => date('Y-m-d H:i:s', $_SERVER['REQUEST_TIME'])
-            ]);
+                    'title'   => $request['title'],
+                    'category_description' => $request['description'],
+                    'updated_at' => date('Y-m-d H:i:s', $_SERVER['REQUEST_TIME'])
+                ]);
 
-            Session::set('success', 'You have successfully created a new category!');
-        } else {
-            Session::set('failed', "Title can't be empty, must be unique, max 49 characters, no special characters! Description max 99 characters, no special characters!");
+                Session::set('success', 'You have successfully created a new category!');
+            } else {
+                Session::set('failed', "Title can't be empty, must be unique, max 49 characters, no special characters! Description max 99 characters, no special characters!");
+            }
+
+            redirect('/admin/categories');
         }
-
-        redirect('/admin/categories');
     }
 
     public function SHOWADDABLE($request) {
@@ -445,53 +449,56 @@ class CategoryController extends Controller {
     
     public function delete($request) {
 
-        $deleteIds = explode(',', $request['deleteIds']);
+        if(submitted("deleteIds") === true && Csrf::validate(Csrf::token('get'), post('token')) === true ) {
 
-        foreach($deleteIds as $request['id']) {
+            $deleteIds = explode(',', $request['deleteIds']);
 
-            $this->ifExists($request['id']);
+            foreach($deleteIds as $request['id']) {
 
-            $currentSlug = Category::where('id', '=', $request['id'])[0];
-    
-            $assingedSubCategorySlugsPages = DB::try()->select('id, slug')->from('pages')->join('category_page')->on("category_page.page_id",'=','pages.id')->join('category_sub')->on('category_sub.category_id', '=', 'category_page.category_id')->where('category_sub.sub_id', '=', $request['id'])->fetch();
-            $assingedCategorySlugsPages = DB::try()->select('id, slug')->from('pages')->join('category_page')->on("category_page.page_id", '=', 'pages.id')->where('category_page.category_id', '=', $request['id'])->fetch();
-    
-            if(!empty($assingedCategorySlugsPages) && $assingedCategorySlugsPages !== null) {
+                $this->ifExists($request['id']);
+
+                $currentSlug = Category::where('id', '=', $request['id'])[0];
         
-                foreach($assingedCategorySlugsPages as $page) {
-    
-                    $slugParts = explode('/', $page['slug']);
-                    $lastPageSlugKey = array_key_last($slugParts);
-                    $lastPageSlugValue = "/" . $slugParts[$lastPageSlugKey];
-    
-                    Post::update(['id' => $page['id']], [
-                
-                        'slug'  => $lastPageSlugValue
-                    ]);
-                } 
+                $assingedSubCategorySlugsPages = DB::try()->select('id, slug')->from('pages')->join('category_page')->on("category_page.page_id",'=','pages.id')->join('category_sub')->on('category_sub.category_id', '=', 'category_page.category_id')->where('category_sub.sub_id', '=', $request['id'])->fetch();
+                $assingedCategorySlugsPages = DB::try()->select('id, slug')->from('pages')->join('category_page')->on("category_page.page_id", '=', 'pages.id')->where('category_page.category_id', '=', $request['id'])->fetch();
+        
+                if(!empty($assingedCategorySlugsPages) && $assingedCategorySlugsPages !== null) {
+            
+                    foreach($assingedCategorySlugsPages as $page) {
+        
+                        $slugParts = explode('/', $page['slug']);
+                        $lastPageSlugKey = array_key_last($slugParts);
+                        $lastPageSlugValue = "/" . $slugParts[$lastPageSlugKey];
+        
+                        Post::update(['id' => $page['id']], [
+                    
+                            'slug'  => $lastPageSlugValue
+                        ]);
+                    } 
+                }
+        
+                if(!empty($assingedSubCategorySlugsPages) && $assingedSubCategorySlugsPages !== null) {
+            
+                    foreach($assingedSubCategorySlugsPages as $page) {
+            
+                        $slugParts = explode('/', $page['slug']);
+                        $categorySlugKey = array_search(substr($currentSlug['slug'], 1), $slugParts);
+                        unset($slugParts[$categorySlugKey]);
+                        $slugMinusSubCategorySlug = implode('/', $slugParts);
+                    
+                        Post::update(['id' => $page['id']], [
+                    
+                            'slug'  => $slugMinusSubCategorySlug
+                        ]);
+                    } 
+                }
+        
+                Category::delete('id', $request['id']);
+                CategoryPage::delete('category_id', $request['id']);
+                CategorySub::delete('category_id', $request['id']);
+        
+                redirect("/admin/categories");
             }
-    
-            if(!empty($assingedSubCategorySlugsPages) && $assingedSubCategorySlugsPages !== null) {
-        
-                foreach($assingedSubCategorySlugsPages as $page) {
-        
-                    $slugParts = explode('/', $page['slug']);
-                    $categorySlugKey = array_search(substr($currentSlug['slug'], 1), $slugParts);
-                    unset($slugParts[$categorySlugKey]);
-                    $slugMinusSubCategorySlug = implode('/', $slugParts);
-                
-                    Post::update(['id' => $page['id']], [
-                
-                        'slug'  => $slugMinusSubCategorySlug
-                    ]);
-                } 
-            }
-    
-            Category::delete('id', $request['id']);
-            CategoryPage::delete('category_id', $request['id']);
-            CategorySub::delete('category_id', $request['id']);
-    
-            redirect("/admin/categories");
         }
     }
 }
