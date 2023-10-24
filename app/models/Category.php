@@ -13,33 +13,67 @@ class Category extends Model {
 
     public function ifRowExists($id) {
 
-        return DB::try()->select('id')->from('categories')->where('id', '=', $id)->first();
+        if(!empty($id) && $id !== null) {
+
+            return DB::try()->select('id')->from('categories')->where('id', '=', $id)->first();
+        }
     }
 
     public function allCategoriesButOrdered() {
 
-        $categories = DB::try()->all('categories')->order('updated_at')->desc()->fetch();
-        return $categories;
+        return DB::try()->all('categories')->order('created_at')->desc()->fetch();
     }
 
     public function categoriesFilesOnSearch($searchValue) {
 
-        $categories = DB::try()->all('categories')->where('title', 'LIKE', '%'.$searchValue.'%')->order('updated_at')->desc()->fetch();
-        return $categories;
+        if(!empty($searchValue) && $searchValue !== null) {
+
+            return DB::try()->all('categories')->where('title', 'LIKE', '%'.$searchValue.'%')->order('created_at')->desc()->fetch();
+        }
     }
 
     public function getLastRegisteredCategoryId() {
 
-        $category = DB::try()->getLastId('categories')->first();
-        return $category;
+        return DB::try()->getLastId('categories')->first();
     }
 
     public function allCategoriesWithPosts($id) {
 
         if(!empty($id) && $id !== null) {
 
-            $categories = DB::try()->select('pages.title', 'pages.id')->from('pages')->join('category_page')->on('category_page.page_id', '=', 'pages.id')->join('categories')->on('category_page.category_id', '=', 'categories.id')->where('categories.id', '=', $id)->fetch();
-            return $categories;
+            return DB::try()->select('pages.title', 'pages.id')->from('pages')->join('category_page')->on('category_page.page_id', '=', 'pages.id')->join('categories')->on('category_page.category_id', '=', 'categories.id')->where('categories.id', '=', $id)->fetch();
         }
     }
+
+    public function getAllCategories() {
+
+        return DB::try()->select('id, title')->from("categories")->fetch();
+    }
+
+    public function ifPageIdExists($postId) {
+
+        if(!empty($postId) && $postId !== null) {
+
+            return DB::try()->select('page_id')->from('category_page')->where('page_id', '=', $postId)->fetch();
+        }        
+    }
+
+    public function getPostCategory($postId) {
+
+        if(!empty($postId) && $postId !== null) {
+
+            return DB::try()->select('categories.title, categories.slug')->from('categories')->join('category_page')->on('category_page.category_id', '=', 'categories.id')->where('category_page.page_id', '=', $postId)->first();
+        }
+    }
+
+    public function getSlug($id) {
+
+        return $currentCategorySlug = DB::try()->select('categories.slug')->from('categories')->join('category_page')->on('category_page.category_id', '=', 'categories.id')->where('categories.id', '=', $id)->first();
+    }
+
+    public function getSubSlug($id) {
+
+        return DB::try()->select('categories.slug')->from('categories')->join('category_sub')->on('categories.id', '=', 'category_sub.sub_id')->where('category_sub.category_id', '=', $id)->fetch();
+    }
+
 }

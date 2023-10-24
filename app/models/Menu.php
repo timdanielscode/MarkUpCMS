@@ -33,4 +33,14 @@ class Menu extends Model {
             return DB::try()->select('id, title, has_content, position, ordering, author, removed, updated_at, created_at')->from('menus')->where('removed', '=', 0)->and('title', 'LIKE', '%'.$searchValue.'%')->or('author', 'LIKE', '%'.$searchValue.'%')->and('removed', '=', 0)->or('ordering', 'LIKE', '%'.$searchValue.'%')->and('removed', '=', 0)->or('position', 'LIKE', '%'.$searchValue.'%')->and('removed', '=', 0)->order('updated_at')->desc()->fetch();
         }
     }
+
+    public function getTopMenus() {
+
+        return DB::try()->all('menus')->where('position', '=', 'top')->and('removed', '!=', 1)->order('ordering')->fetch();
+    }
+
+    public function getBottomMenus() {
+
+        return DB::try()->all('menus')->where('position', '=', 'bottom')->and('removed', '!=', 1)->order('ordering')->fetch();
+    }
 }
