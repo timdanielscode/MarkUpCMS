@@ -33,6 +33,14 @@ class PostController extends Controller {
         }
     }
 
+    private function redirect($inputName, $path) {
+
+        if(submitted($inputName) === false || Csrf::validate(Csrf::token('get'), post('token')) === false ) { 
+            
+            redirect($path) . exit(); 
+        } 
+    }
+
     public function index() {
 
         $post = new Post();
@@ -64,37 +72,36 @@ class PostController extends Controller {
 
     public function store($request) {
 
-        if(submitted("submit") === true && Csrf::validate(Csrf::token('get'), post('token')) === true ) {
+        $this->redirect("submit", '/admin/posts/create');
 
-            $post = new Post();
-            $rules = new Rules();
+        $post = new Post();
+        $rules = new Rules();
     
-            if($rules->create_post($post->checkUniqueTitle($request['title']))->validated()) {
+        if($rules->create_post($post->checkUniqueTitle($request['title']))->validated()) {
                         
-                $slug = "/".post('title');
-                $slug = str_replace(" ", "-", $slug);
+            $slug = "/".post('title');
+            $slug = str_replace(" ", "-", $slug);
 
-                if(!empty($request['body']) ) { $hasContent = 1; } else { $hasContent = 0; }
+            if(!empty($request['body']) ) { $hasContent = 1; } else { $hasContent = 0; }
 
-                Post::insert([
+            Post::insert([
     
-                    'title' => $request['title'],
-                    'slug' => $slug,
-                    'body' => $request['body'],
-                    'has_content' => $hasContent,
-                    'author' => Session::get('username'),
-                    'removed' => 0,
-                    'created_at' => date('Y-m-d H:i:s', $_SERVER['REQUEST_TIME']),
-                    'updated_at' => date('Y-m-d H:i:s', $_SERVER['REQUEST_TIME'])
-                ]);
+                'title' => $request['title'],
+                'slug' => $slug,
+                'body' => $request['body'],
+                'has_content' => $hasContent,
+                'author' => Session::get('username'),
+                'removed' => 0,
+                'created_at' => date('Y-m-d H:i:s', $_SERVER['REQUEST_TIME']),
+                'updated_at' => date('Y-m-d H:i:s', $_SERVER['REQUEST_TIME'])
+            ]);
     
-                Session::set('success', 'You have successfully created a new page!');            
-                redirect('/admin/posts');
-            } else {
+            Session::set('success', 'You have successfully created a new page!');            
+            redirect('/admin/posts');
+        } else {
 
-                $data['rules'] = $rules->errors;
-                return $this->view('admin/posts/create', $data);
-            }
+            $data['rules'] = $rules->errors;
+            return $this->view('admin/posts/create', $data);
         }
     }
 
@@ -131,34 +138,32 @@ class PostController extends Controller {
         $id = $request['id'];
         $this->unsetSessions(['cdn', 'widget', 'category', 'css', 'js', 'js', 'meta']);
         $this->ifExists($id);
+        $this->redirect("submit", "/admin/posts/$id/edit");
 
-        if(submitted("submit") === true && Csrf::validate(Csrf::token('get'), post('token')) === true ) {
+        $post = new Post();
+        $rules = new Rules();
+
+        if($rules->update_post($post->checkUniqueTitleId($request['title'], $id))->validated()) {
                 
-            $post = new Post();
-            $rules = new Rules();
+            if(!empty($request['body']) ) { $hasContent = 1; } else { $hasContent = 0; }
 
-            if($rules->update_post($post->checkUniqueTitleId($request['title'], $id))->validated()) {
+            Post::update(['id' => $id], [
+
+                'title' => $request["title"],
+                'body' => $request["body"],
+                'has_content' => $hasContent,
+                'updated_at' => date('Y-m-d H:i:s', $_SERVER['REQUEST_TIME'])
+            ]);
+
+            Session::set('success', 'You have successfully updated the page!'); 
+            redirect("/admin/posts/$id/edit");
                 
-                if(!empty($request['body']) ) { $hasContent = 1; } else { $hasContent = 0; }
+        } else {
 
-                    Post::update(['id' => $id], [
+            $data = $this->getAllData($id);
+            $data['rules'] = $rules->errors;
 
-                        'title' => $request["title"],
-                        'body' => $request["body"],
-                        'has_content' => $hasContent,
-                        'updated_at' => date('Y-m-d H:i:s', $_SERVER['REQUEST_TIME'])
-                    ]);
-
-                    Session::set('success', 'You have successfully updated the page!'); 
-                    redirect("/admin/posts/$id/edit");
-                
-            } else {
-
-                $data = $this->getAllData($id);
-                $data['rules'] = $rules->errors;
-
-                return $this->view('admin/posts/edit', $data);
-            }
+            return $this->view('admin/posts/edit', $data);
         }
     }
 
@@ -229,44 +234,39 @@ class PostController extends Controller {
     public function exportCdns($request) {
 
         $id = $request['id'];
+        $this->redirect("submit", "/admin/posts/$id/edit");
         $this->unsetSessions(['widget', 'category', 'css', 'js', 'meta']);
         Session::set('cdn', true);
 
-        if(submitted("submit") === true && Csrf::validate(Csrf::token('get'), post('token')) === true ) {
+        foreach($request['cdns'] as $cdnId) {
 
-            foreach($request['cdns'] as $cdnId) {
-
-                $post = new Post();
-                $post->deleteCdn($id, $cdnId);
-            }
-
-            Session::set('success', 'You have successfully removed the cdn(s) on this page!'); 
-            redirect("/admin/posts/$id/edit");
+            $post = new Post();
+            $post->deleteCdn($id, $cdnId);
         }
+
+        Session::set('success', 'You have successfully removed the cdn(s) on this page!'); 
+        redirect("/admin/posts/$id/edit");
     }
 
     public function addWidget($request) {
 
         $id = $request['id'];
+        $this->redirect("submit", "/admin/posts/$id/edit");
+        $this->ifExists($id);
         $this->unsetSessions(['cdn', 'category', 'css', 'js', 'meta']);
         Session::set('widget', true);
 
-        $this->ifExists($id);
+        $widgetIds = $request['widgets'];
 
-        if(submitted("submit") === true && Csrf::validate(Csrf::token('get'), post('token')) === true ) {
+        if(!empty($widgetIds) && $widgetIds !== null) {
 
-            $widgetIds = $request['widgets'];
+            foreach($widgetIds as $widgetId) {
 
-            if(!empty($widgetIds) && $widgetIds !== null) {
+                PageWidget::insert([
 
-                foreach($widgetIds as $widgetId) {
-
-                    PageWidget::insert([
-
-                        'page_id' => $id,
-                        'widget_id' => $widgetId
-                    ]);
-                }
+                    'page_id' => $id,
+                    'widget_id' => $widgetId
+                ]);
             }
         }
 
@@ -277,22 +277,17 @@ class PostController extends Controller {
     public function removeWidget($request) {
 
         $id = $request['id'];
+        $this->ifExists($id);
+        $this->redirect("submit", "/admin/posts/$id/edit");
         $this->unsetSessions(['cdn', 'category', 'css', 'js', 'meta']);
         Session::set('widget', true);
 
-        $this->ifExists($id);
+        if(!empty($request['widgets']) && $request['widgets'] !== null) {
 
-        if(submitted("submit") === true && Csrf::validate(Csrf::token('get'), post('token')) === true ) {
-            
-            $widgetIds = $request['widgets'];
+            foreach($request['widgets'] as $widgetId) {
 
-            if(!empty($widgetIds) && $widgetIds !== null) {
-
-                foreach($widgetIds as $widgetId) {
-
-                    $widget = new Widget();
-                    $widget->removePostwidget($id, $widgetId);
-                }
+                $widget = new Widget();
+                $widget->removePostwidget($id, $widgetId);
             }
         }
 
@@ -303,41 +298,38 @@ class PostController extends Controller {
     public function assignCategory($request) {
 
         $id = $request['id'];
+        $this->ifExists($id);
+        $this->redirect("submit", "/admin/posts/$id/edit");
         $this->unsetSessions(['widget', 'cdn', 'css', 'js', 'meta']);
         Session::set('category', true);
 
-        $this->ifExists($id);
-
-        if(submitted("submit") === true && Csrf::validate(Csrf::token('get'), post('token')) === true ) {
-
-            $categoryId = $request['categories'];
+        $categoryId = $request['categories'];
             
-            $post = new Post();
-            $rules = new Rules();
+        $post = new Post();
+        $rules = new Rules();
 
-            $slug = explode('/', $post->getData($id, ['slug'])['slug']);
-            $lastKey = array_key_last($slug);
+        $slug = explode('/', $post->getData($id, ['slug'])['slug']);
+        $lastKey = array_key_last($slug);
 
-            if($rules->update_post_category($post->checkUniqueSlugCategory($id, $slug[$lastKey], $categoryId))->validated()) {
+        if($rules->update_post_category($post->checkUniqueSlugCategory($id, $slug[$lastKey], $categoryId))->validated()) {
 
-                CategoryPage::insert([
+            CategoryPage::insert([
 
-                    'category_id' => $categoryId,
-                    'page_id'    => $id
-                ]);
+                'category_id' => $categoryId,
+                'page_id'    => $id
+            ]);
 
-                $this->updateSlugCategory($post, new Category(), $id, $categoryId);
+            $this->updateSlugCategory($post, new Category(), $id, $categoryId);
 
-                Session::set('success', 'You have successfully assigned the category on this page!'); 
-                redirect("/admin/posts/$id/edit");
+            Session::set('success', 'You have successfully assigned the category on this page!'); 
+            redirect("/admin/posts/$id/edit");
 
-            } else {
+        } else {
 
-                $data = $this->getAllData($id);
-                $data['rules'] = $rules->errors;
+            $data = $this->getAllData($id);
+            $data['rules'] = $rules->errors;
 
-                return $this->view('admin/posts/edit', $data);
-            }
+            return $this->view('admin/posts/edit', $data);
         }
     }
 
@@ -371,262 +363,238 @@ class PostController extends Controller {
     public function removeJs($request) {
 
         $id = $request['id'];
+        $this->ifExists($id);
+        $this->redirect("submit", "/admin/posts/$id/edit");
         $this->unsetSessions(['widget', 'cdn', 'category', 'css', 'meta']);
         Session::set('js', true);
 
-        $this->ifExists($id);
+        foreach($request['linkedJsFiles'] as $linkedJsId) {
 
-        if(submitted("submit") === true && Csrf::validate(Csrf::token('get'), post('token')) === true ) {
-
-            foreach($request['linkedJsFiles'] as $linkedJsId) {
-
-                $post = new Post();
-                $post->deleteJs($id, $linkedJsId);
-            }
-            
-            Session::set('success', 'You have successfully removed the js file(s) on this page!');
-            redirect("/admin/posts/$id/edit");
+            $post = new Post();
+            $post->deleteJs($id, $linkedJsId);
         }
+            
+        Session::set('success', 'You have successfully removed the js file(s) on this page!');
+        redirect("/admin/posts/$id/edit");
     }
 
     public function includeJs($request) {
 
         $id = $request['id'];
+        $this->ifExists($id);
+        $this->redirect("submit", "/admin/posts/$id/edit");
         $this->unsetSessions(['widget', 'cdn', 'category', 'css', 'meta']);
         Session::set('js', true);
 
-        $this->ifExists($id);
+        foreach($request['jsFiles'] as $jsId) {
 
-        if(submitted("submit") === true && Csrf::validate(Csrf::token('get'), post('token')) === true ) {
-
-            foreach($request['jsFiles'] as $jsId) {
-
-                $post = new Post();
-                $post->insertJs($id, $jsId);
-            }
-
-            Session::set('success', 'You have successfully included the js file(s) on this page!');
-            redirect("/admin/posts/$id/edit");
+            $post = new Post();
+            $post->insertJs($id, $jsId);
         }
+
+        Session::set('success', 'You have successfully included the js file(s) on this page!');
+        redirect("/admin/posts/$id/edit");
     }
 
     public function linkCss($request) {
 
         $id = $request['id'];
+        $this->ifExists($id);
+        $this->redirect("submit", "/admin/posts/$id/edit");
         $this->unsetSessions(['widget', 'cdn', 'category', 'js', 'meta']);
         Session::set('css', true);
 
-        $this->ifExists($id);
+        foreach($request['cssFiles'] as $cssId) {
 
-        if(submitted("submit") === true && Csrf::validate(Csrf::token('get'), post('token')) === true ) {
-
-            foreach($request['cssFiles'] as $cssId) {
-
-                $post = new Post();
-                $post->insertCss($id, $cssId);
-            }
-
-            Session::set('success', 'You have successfully linked the css file(s) on this page!');
-            redirect("/admin/posts/$id/edit");
+            $post = new Post();
+            $post->insertCss($id, $cssId);
         }
+
+        Session::set('success', 'You have successfully linked the css file(s) on this page!');
+        redirect("/admin/posts/$id/edit");
     }
 
     public function unLinkCss($request) {
 
         $id = $request['id'];
+        $this->ifExists($id);
+        $this->redirect("submit", "/admin/posts/$id/edit");
         $this->unsetSessions(['widget', 'cdn', 'category', 'js', 'meta']);
         Session::set('css', true);
 
-        $this->ifExists($id);
+        foreach($request['linkedCssFiles'] as $cssId) {
 
-        if(submitted("submit") === true && Csrf::validate(Csrf::token('get'), post('token')) === true ) {
-
-            foreach($request['linkedCssFiles'] as $cssId) {
-
-                $post = new Post();
-                $post->deleteCss($id, $cssId);
-            }
-
-            Session::set('success', 'You have successfully removed the css file(s) on this page!');
-            redirect("/admin/posts/$id/edit");
+            $post = new Post();
+            $post->deleteCss($id, $cssId);
         }
+
+        Session::set('success', 'You have successfully removed the css file(s) on this page!');
+        redirect("/admin/posts/$id/edit");
     }
 
     public function updateSlug($request) {
 
         $id = $request['id'];
-
         $this->ifExists($id);
+        $this->redirect("submit", "/admin/posts/$id/edit");
 
-        if(submitted("submit") === true && Csrf::validate(Csrf::token('get'), post('token')) === true ) {
-
-            $post = new Post();
-            $rules = new Rules();
+        $post = new Post();
+        $rules = new Rules();
             
-            $slug = explode('/', $request['slug']);
-            $lastKey = array_key_last($slug);
+        $slug = explode('/', $request['slug']);
+        $lastKey = array_key_last($slug);
 
-            $slug[$lastKey] = $request['postSlug'];
-            $fullPostSlug = implode('/', $slug);
+        $slug[$lastKey] = $request['postSlug'];
+        $fullPostSlug = implode('/', $slug);
 
-            if($rules->update_post_slug($post->checkUniqueSlug($fullPostSlug, $id))->validated()) {
+        if($rules->update_post_slug($post->checkUniqueSlug($fullPostSlug, $id))->validated()) {
 
-                $slug = explode('/', "/" . $request['slug']);
-                $slug[array_key_last($slug)] = substr("/" . $request['postSlug'], 1);
-                $slug = implode('/', array_filter($slug));
+            $slug = explode('/', "/" . $request['slug']);
+            $slug[array_key_last($slug)] = substr("/" . $request['postSlug'], 1);
+            $slug = implode('/', array_filter($slug));
 
-                Post::update(['id' => $id], [
+            Post::update(['id' => $id], [
 
-                    'slug' => "/" . $slug,
-                    'updated_at' => date('Y-m-d H:i:s', $_SERVER['REQUEST_TIME'])
-                ]);
+                'slug' => "/" . $slug,
+                'updated_at' => date('Y-m-d H:i:s', $_SERVER['REQUEST_TIME'])
+            ]);
 
-            } else {
+        } else {
 
-                $data = $this->getAllData($id);
-                $data['rules'] = $rules->errors;
+            $data = $this->getAllData($id);
+            $data['rules'] = $rules->errors;
 
-                return $this->view('admin/posts/edit', $data);
-            }
-
-            Session::set('success', 'You have successfully updated the slug on this page!');
-            redirect("/admin/posts/$id/edit");
+            return $this->view('admin/posts/edit', $data);
         }
+
+        Session::set('success', 'You have successfully updated the slug on this page!');
+        redirect("/admin/posts/$id/edit");
     }
 
     public function updateMetadata($request) {
 
         $id = $request['id'];
+        $this->ifExists($id);
+        $this->redirect("submit", "/admin/posts/$id/edit");
         $this->unsetSessions(['widget', 'cdn', 'category', 'css', 'js']);
         Session::set('meta', true);
 
-        $this->ifExists($id);
+        $rules = new Rules();
 
-        if(submitted("submit") === true && Csrf::validate(Csrf::token('get'), post('token')) === true ) {
+        if($rules->update_metadata()->validated()) {
 
-            $rules = new Rules();
+            Post::update(['id' => $id], [
 
-            if($rules->update_metadata()->validated()) {
+                'metaTitle' => $request['metaTitle'],
+                'metaDescription' => $request['metaDescription'],
+                'metaKeywords' => $request['metaKeywords'],
+                'updated_at' => date('Y-m-d H:i:s', $_SERVER['REQUEST_TIME'])
+            ]);
 
-                Post::update(['id' => $id], [
+        } else {
 
-                    'metaTitle' => $request['metaTitle'],
-                    'metaDescription' => $request['metaDescription'],
-                    'metaKeywords' => $request['metaKeywords'],
-                    'updated_at' => date('Y-m-d H:i:s', $_SERVER['REQUEST_TIME'])
-                ]);
+            $data = $this->getAllData($id);
+            $data['rules'] = $rules->errors;
 
-            } else {
-
-                $data = $this->getAllData($id);
-                $data['rules'] = $rules->errors;
-
-                return $this->view('admin/posts/edit', $data);
-            }
-
-            Session::set('success', 'You have successfully updated the meta data on this page!');
-            redirect("/admin/posts/$id/edit");
+            return $this->view('admin/posts/edit', $data);
         }
+
+        Session::set('success', 'You have successfully updated the meta data on this page!');
+        redirect("/admin/posts/$id/edit");
     }
 
     public function detachCategory($request) {
 
         $id = $request['id'];
+        $this->ifExists($request['id']);
+        $this->redirect("submit", "/admin/posts/$id/edit");
         $this->unsetSessions(['widget', 'cdn', 'css', 'js', 'meta']);
         Session::set('category', true);
 
-        $this->ifExists($request['id']);
+        $post = new Post();
+        $rules = new Rules();
 
-        if(submitted("submit") === true && Csrf::validate(Csrf::token('get'), post('token')) === true ) {
-
-            $post = new Post();
-            $rules = new Rules();
-
-            $slugParts = explode('/', $post->getData($id, ['slug'])['slug']);
-            $lastPageSlugKey = array_key_last($slugParts);
-            $lastPageSlugValue = "/" . $slugParts[$lastPageSlugKey];
+        $slugParts = explode('/', $post->getData($id, ['slug'])['slug']);
+        $lastPageSlugKey = array_key_last($slugParts);
+        $lastPageSlugValue = "/" . $slugParts[$lastPageSlugKey];
             
-            if($rules->remove_post_category($post->checkUniqueSlug($lastPageSlugValue, $id ))->validated()) {
+        if($rules->remove_post_category($post->checkUniqueSlug($lastPageSlugValue, $id ))->validated()) {
             
-                Post::update(['id' => $id], [
+            Post::update(['id' => $id], [
 
-                    'slug'  => $lastPageSlugValue,
-                ]);
+                'slug'  => $lastPageSlugValue,
+            ]);
     
-                CategoryPage::delete('page_id', $id);
+            CategoryPage::delete('page_id', $id);
     
-                Session::set('success', 'You have successfully removed the category on this page!');
-                redirect("/admin/posts/$id/edit");
+            Session::set('success', 'You have successfully removed the category on this page!');
+            redirect("/admin/posts/$id/edit");
 
-            } else {
+        } else {
                 
-                $data = $this->getAllData($id);
-                $data['rules'] = $rules->errors;
+            $data = $this->getAllData($id);
+            $data['rules'] = $rules->errors;
 
-                return $this->view('admin/posts/edit', $data);
-            }
+            return $this->view('admin/posts/edit', $data);
         }
     }
 
     public function recover($request) {
 
-        if(submitted("recoverIds") === true && Csrf::validate(Csrf::token('get'), post('token')) === true ) {
-
-            $recoverIds = explode(',', $request['recoverIds']);
+        $id = $request['id'];
+        $this->redirect("recoverIds", "/admin/posts");
+        $recoverIds = explode(',', $request['recoverIds']);
                 
-            foreach($recoverIds as $request['id'] ) {
+        foreach($recoverIds as $request['id'] ) {
 
-                $this->ifExists($request['id']);
+            $this->ifExists($request['id']);
 
-                $post = new Post();
+            $post = new Post();
             
-                Post::update(['id' => $request['id']], [
+            Post::update(['id' => $request['id']], [
             
-                    'removed'  => 0,
-                    'slug' => "/" . $post->getData($request['id'], ['title'])['title']
-                ]);
-            }
-        
-            Session::set('success', 'You have successfully recovered the page(s)!');
-            redirect("/admin/posts");
+                'removed'  => 0,
+                'slug' => "/" . $post->getData($request['id'], ['title'])['title']
+            ]);
         }
+        
+        Session::set('success', 'You have successfully recovered the page(s)!');
+        redirect("/admin/posts");
     }
 
     public function delete($request) {
 
-        if(submitted("deleteIds") === true && Csrf::validate(Csrf::token('get'), post('token')) === true ) {
+        $id = $request['id'];
+        $this->redirect("deleteIds", "/admin/posts");
+        $deleteIds = explode(',', $request['deleteIds']);
 
-            $deleteIds = explode(',', $request['deleteIds']);
+        if(!empty($deleteIds) && !empty($deleteIds[0])) {
 
-            if(!empty($deleteIds) && !empty($deleteIds[0])) {
+            foreach($deleteIds as $request['id']) {
 
-                foreach($deleteIds as $request['id']) {
-
-                    $this->ifExists($request['id']);
-        
-                    $post = new Post();
+                $this->ifExists($request['id']);
+                $post = new Post();
             
-                    if($post->getData($request['id'],['removed']) !== 1) {
+                if($post->getData($request['id'],['removed']) !== 1) {
             
-                        Post::update(['id' => $request['id']], [
+                    Post::update(['id' => $request['id']], [
             
-                            'removed'  => 1,
-                            'slug'  => ''
-                        ]);
+                        'removed'  => 1,
+                        'slug'  => ''
+                    ]);
 
-                        Session::set('success', 'You have successfully moved the page(s) to the trashcan!');
+                    Session::set('success', 'You have successfully moved the page(s) to the trashcan!');
             
-                    } else if($post->getData($request['id'], ['removed']) === 1) {
+                } else if($post->getData($request['id'], ['removed']) === 1) {
             
-                        Post::delete("id", $request['id']);
-                        CategoryPage::delete('page_id', $request['id']);
+                    Post::delete("id", $request['id']);
+                    CategoryPage::delete('page_id', $request['id']);
 
-                        Session::set('success', 'You have successfully removed the page(s)!');
-                    }
+                    Session::set('success', 'You have successfully removed the page(s)!');
                 }
             }
-
-            redirect("/admin/posts");
         }
+
+        redirect("/admin/posts");
     }
 }
