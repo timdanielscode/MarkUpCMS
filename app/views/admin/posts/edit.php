@@ -35,14 +35,14 @@
 
                 <form id="editorForm" action="/admin/posts/<?php echo $data['id']; ?>/update" method="POST">
                     <div class="form-parts">
-                        <input type="text" autofocus name="title" id="title" value="<?php if(!empty($data['title'] )) { echo $data['title']; } ?>">
+                        <input type="text" autofocus name="title" id="title" value="<?php echo $data['title']; ?>">
                         <?php if(!empty(Errors::get($rules, 'title')) && Errors::get($rules, 'title') !== null) { ?>
                             <div class="error-messages margin-b-10 margin-tm-10 font-size-14">
                                 <span><?php echo Errors::get($rules, 'title'); ?></span>
                             </div>    
                         <?php } ?>
                     </div>
-                    <textarea name="body" id="code"><?php if(!empty($data['body'] )) { echo htmlentities($data['body']); } ?></textarea>
+                    <textarea name="body" id="code"><?php echo htmlentities($data['body']); ?></textarea>
                     <button name="submit" id="submit" type="submit" class="hiddenButton" value="submit">Update</button>
                     <input type="hidden" name="token" value="<?php Csrf::token('add'); ?>" />
                 </form>
@@ -53,7 +53,7 @@
                 <div class="sidebarContainer">
                     <div class="mainButtonContainer">
                         <label for="submit" class="button greenButton margin-r-10">Update</label>
-                        <a href="/admin/posts/<?php if(!empty($data['id']) ) { echo $data['id']; } ?>/read" target="_blank" class="button blueButton margin-r-10">Read</a>
+                        <a href="/admin/posts/<?php echo $data['id']; ?>/read" target="_blank" class="button blueButton margin-r-10">Read</a>
                         <a href="/admin/posts" class="button darkBlueButton">Back</a>
                     </div>
                     <div class="buttonContainer">
@@ -74,17 +74,17 @@
                         <a id="widgetButton" class="button lightButton">Widgets</a>
                     </div>
                     <span class="text">Slug:</span>
-                    <span class="fullSlug"><?php if(!empty($data['slug']) ) { echo $data['slug']; } ?></span>
+                    <span class="fullSlug"><?php echo $data['slug']; ?></span>
                     <form class="updateSlugForm" action="/admin/posts/<?php echo $data['id']; ?>/update-slug" method="POST">
                         <div class="form-parts">
-                            <input type="text" name="postSlug" id="slug" value="<?php if(!empty($data['postSlug'] )) { echo substr($data['postSlug'], 1); } ?>">
+                            <input type="text" name="postSlug" id="slug" value="<?php echo substr($data['postSlug'], 1); ?>">
                             <?php if(!empty(Errors::get($rules, 'postSlug')) && Errors::get($rules, 'postSlug') !== null) { ?>
                                 <div class="error-messages">
                                     <?php echo Errors::get($rules, 'postSlug'); ?>
                                 </div>   
                             <?php } ?>
                         </div>
-                        <input type="hidden" name="slug" value="<?php if(!empty($data['slug']) ) { echo $data['slug']; } ?>">
+                        <input type="hidden" name="slug" value="<?php echo $data['slug']; ?>">
                         <input class="button greenButton margin-t-10" type="submit" name="submit" value="Update"/>
                         <input type="hidden" name="token" value="<?php Csrf::token('add'); ?>" />
                     </form>
@@ -174,7 +174,7 @@
                     <form id="metaForm" class="updateMetaDataForm <?php if(Session::exists('meta') === false ) { echo 'display-none'; } ?>"action="/admin/posts/<?php echo $data['id']; ?>/update-metadata" method="POST">
                         <div class="form-parts">
                             <label for="metaTitle">Meta title: </label>
-                            <input id="metaTitle" type="text" name="metaTitle" value="<?php if(!empty($data['metaTitle']) && $data['metaTitle'] !== null) { echo $data['metaTitle']; } ?>" placeholder="Title"/>
+                            <input id="metaTitle" type="text" name="metaTitle" value="<?php echo $data['metaTitle']; ?>" placeholder="Title"/>
                             <?php if(!empty(Errors::get($rules, 'metaTitle')) && Errors::get($rules, 'metaTitle') !== null) { ?>
                                 <div class="error-messages font-size-12 margin-b-5">
                                     <?php echo Errors::get($rules, 'metaTitle'); ?>
@@ -183,7 +183,7 @@
                         </div>
                         <div class="form-parts">
                             <label for="metaDescription">Meta description: </label>
-                            <textarea id="metaDescription" name="metaDescription" placeholder="Description"><?php if(!empty($data['metaDescription']) && $data['metaDescription'] !== null) { echo $data['metaDescription']; } ?></textarea>
+                            <textarea id="metaDescription" name="metaDescription" placeholder="Description"><?php echo $data['metaDescription']; ?></textarea>
                             <?php if(!empty(Errors::get($rules, 'metaDescription')) && Errors::get($rules, 'metaDescription') !== null) { ?>
                                 <div class="error-messages font-size-12 margin-b-5">
                                     <?php echo Errors::get($rules, 'metaDescription'); ?>
@@ -192,7 +192,7 @@
                         </div>
                         <div class="form-parts">
                             <label for="metaKeywords">Meta keywords: </label>
-                            <textarea id="metaKeywords" name="metaKeywords" placeholder="Keywords separated with a comma"><?php if(!empty($data['metaKeywords']) && $data['metaKeywords'] !== null) { echo $data['metaKeywords']; } ?></textarea>
+                            <textarea id="metaKeywords" name="metaKeywords" placeholder="Keywords separated with a comma"><?php echo $data['metaKeywords']; ?></textarea>
                             <?php if(!empty(Errors::get($rules, 'metaKeywords')) && Errors::get($rules, 'metaKeywords') !== null) { ?>
                                 <div class="error-messages font-size-12 margin-b-5">
                                     <?php echo Errors::get($rules, 'metaKeywords'); ?>

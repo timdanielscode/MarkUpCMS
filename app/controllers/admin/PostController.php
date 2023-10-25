@@ -160,7 +160,7 @@ class PostController extends Controller {
                 
         } else {
 
-            $data = $this->getAllData($id);
+            $data = $this->getAllData($id, $request);
             $data['rules'] = $rules->errors;
 
             return $this->view('admin/posts/edit', $data);
@@ -178,7 +178,7 @@ class PostController extends Controller {
         }
     }
 
-    private function getAllData($id) {
+    private function getAllData($id, $requestData = null) {
 
         $post = new Post();
         $category = new Category();
@@ -188,6 +188,12 @@ class PostController extends Controller {
         $postSlug = "/" . $postSlug[array_key_last($postSlug)];
 
         $data['data'] = $postData;
+
+        if(!empty($requestData['body']) && $requestData['body'] !== null) {
+
+            $data['data']['body'] = $requestData['body'];
+        }
+
         $data['data']['postSlug'] = $postSlug;
         $data['data']['linkedCssFiles'] = $post->getCssIdFilenameExtension($id);
         $data['data']['notLinkedCssFiles'] = $post->getNotCssIdFilenameExtension($post->getCssIdFilenameExtension($id));
