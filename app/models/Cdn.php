@@ -6,8 +6,6 @@ use database\DB;
 
 class Cdn extends Model {
 
-    private $_postCdnIds = [];
-
     public function __construct() {
 
         self::table('cdn');
@@ -39,38 +37,5 @@ class Cdn extends Model {
     public function getAllCdn() {
 
         return DB::try()->select('id, title')->from('cdn')->where('removed', '!=', 1)->fetch();
-    }
-
-    public function getPostCdn($postId) {
-
-        if(!empty($postId) && $postId !== null) {
-
-            return DB::try()->select('id, title')->from('cdn')->join('cdn_page')->on("cdn_page.cdn_id", '=', 'cdn.id')->where('cdn_page.page_id', '=', $postId)->and('removed', '!=', 1)->fetch();
-        }
-    }
-
-    public function getNotPostCdn($postCdn) {
-
-        if(!empty($postCdn) && $postCdn !== null) {
-
-            foreach($postCdn as $cdn) {
-
-                array_push($this->_postCdnIds, $cdn['id']);
-            }
-
-            $postCdnIdsString = implode(',', $this->_postCdnIds);
-            return DB::try()->select('id, title')->from('cdn')->whereNotIn('id', $postCdnIdsString)->fetch();
-        } else {
-
-            return $this->getAllCdn();
-        }
-    }
-
-    public function removePostCdn($postId, $cdnId) {
-
-        if(!empty($postId) && $postId !== null && !empty($cdnId) && $cdnId !== null) {
-
-            return DB::try()->delete('cdn_page')->where('page_id', '=', $postId)->and('cdn_id', '=', $cdnId)->run();
-        }
     }
 }

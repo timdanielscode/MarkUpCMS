@@ -6,8 +6,6 @@ use database\DB;
 
 class Widget extends Model {
 
-    private $_postApplicableWidgetIds = [];
-
     public function __construct() {
 
         self::table('widgets');
@@ -52,31 +50,6 @@ class Widget extends Model {
     public function getAllWidgets() {
 
         return DB::try()->select('id, title')->from('widgets')->where('removed', '!=', 1)->fetch();
-    }
-
-    public function getPostApplicableWidgets($postId) {
-
-        if(!empty($postId) && $postId !== null) {
-
-            return DB::try()->select('id, title')->from('widgets')->join('page_widget')->on('page_widget.widget_id', '=', 'widgets.id')->where('page_widget.page_id', '=', $postId)->and('removed', '!=', 1)->fetch();
-        }
-    }
-
-    public function getPostInapplicableWidgets($postApplicableWidgets) {
-
-        if(!empty($postApplicableWidgets) && $postApplicableWidgets !== null) {
-
-            foreach($postApplicableWidgets as $postApplicableWidget) {
-
-                array_push($this->_postApplicableWidgetIds, $postApplicableWidget['id']);
-            }
-
-            $postWidgetApplicableIdsString = implode(',', $this->_postApplicableWidgetIds);
-            return DB::try()->select('id, title')->from('widgets')->whereNotIn('id', $postWidgetApplicableIdsString)->fetch();
-        } else {
-
-            return $this->getAllWidgets();
-        }
     }
 
     public function removePostWidget($postId, $widgetId) {

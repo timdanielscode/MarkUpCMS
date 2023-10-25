@@ -69,7 +69,7 @@ class PostController extends Controller {
             $post = new Post();
             $rules = new Rules();
     
-            if($rules->create_post($post->getUniqueTitle($request['title']))->validated()) {
+            if($rules->create_post($post->checkUniqueTitle($request['title']))->validated()) {
                         
                 $slug = "/".post('title');
                 $slug = str_replace(" ", "-", $slug);
@@ -102,12 +102,13 @@ class PostController extends Controller {
 
         $this->ifExists($request['id']);
 
+        $post = new Post();
         $css = new Css();
         $js = new Js();
         $menu = new Menu();
 
         $data['post'] = Post::get($request['id']);
-        $data['cssFiles'] = $css->getPostCss($request['id']);
+        $data['cssFiles'] = $post->getCssIdFilenameExtension($request['id']);
         $data['jsFiles'] = $js->getPostJs($request['id']);
         $data['menusTop'] = $menu->getTopMenus();
         $data['menusBottom'] =  $menu->getBottomMenus();
@@ -127,33 +128,31 @@ class PostController extends Controller {
 
     private function getAllData($id) {
 
-        $css = new Css();
-        $js = new Js();
+        $post = new Post();
         $category = new Category();
-        $widget = new Widget();
-        $cdn = new Cdn();
 
-        $post = Post::get($id);
-        $postSlug = explode('/', $post['slug']);
+        $postData = Post::get($id);
+        $postSlug = explode('/', $postData['slug']);
         $postSlug = "/" . $postSlug[array_key_last($postSlug)];
 
-        $data['data'] = $post;
-        $data['data']['linkedCssFiles'] = $css->getPostCss($id);
-        $data['data']['notLinkedCssFiles'] = $css->getNotPostCss($css->getPostCss($id));
-        $data['data']['linkedJsFiles'] = $js->getPostJs($id);
-        $data['data']['notLinkedJsFiles'] = $js->getNotPostJs($js->getPostJs($id));
+        $data['data'] = $postData;
+        $data['data']['postSlug'] = $postSlug;
+        $data['data']['linkedCssFiles'] = $post->getCssIdFilenameExtension($id);
+        $data['data']['notLinkedCssFiles'] = $post->getNotCssIdFilenameExtension($post->getCssIdFilenameExtension($id));
+        $data['data']['linkedJsFiles'] = $post->getJsIdFilenameExtension($id);
+        $data['data']['notLinkedJsFiles'] = $post->getNotJsIdFilenameExtension($post->getJsIdFilenameExtension($id));
 
-        if(empty($category->ifPageIdExists($id))) {
+        if(empty($post->checkCategory($id))) {
 
-            $data['data']['categories'] = $category->getAllCategories();
+            $data['data']['categories'] = $category->getAll(['id', 'title']);
         } else {
-            $data['data']['category'] = $category->getPostCategory($id);
+            $data['data']['category'] = $post->getCategoryTitleSlug($id);
         }
 
-        $data['data']['applicableWidgets'] = $widget->getPostApplicableWidgets($id);
-        $data['data']['inapplicableWidgets'] = $widget->getPostInapplicableWidgets($widget->getPostApplicableWidgets($id));
-        $data['data']['exportCdns'] = $cdn->getPostCdn($id);
-        $data['data']['importCdns'] = $cdn->getNotPostCdn($cdn->getPostCdn($id));
+        $data['data']['applicableWidgets'] = $post->getApplicableWidgetIdTitle($id);
+        $data['data']['inapplicableWidgets'] = $post->getInapplicableWidgetIdTitle($post->getApplicableWidgetIdTitle($id));
+        $data['data']['exportCdns'] = $post->getCdnIdTitle($id);
+        $data['data']['importCdns'] = $post->getNotCdnIdTitle($post->getCdnIdTitle($id));
 
         return $data;
     }
@@ -202,8 +201,8 @@ class PostController extends Controller {
 
             foreach($request['cdns'] as $cdnId) {
 
-                $cdn = new Cdn();
-                $cdn->removePostCdn($id, $cdnId);
+                $post = new Post();
+                $post->deleteCdn($id, $cdnId);
             }
 
             Session::set('success', 'You have successfully removed the cdn(s) on this page!'); 
@@ -229,7 +228,7 @@ class PostController extends Controller {
             $post = new Post();
             $rules = new Rules();
 
-            if($rules->update_post($post->getUniqueTitleAlsoOnId($request['title'], $id))->validated()) {
+            if($rules->update_post($post->checkUniqueTitleId($request['title'], $id))->validated()) {
                 
                 if(!empty($request['body']) ) { $hasContent = 1; } else { $hasContent = 0; }
 
@@ -342,7 +341,7 @@ class PostController extends Controller {
             $post = new Post();
             $rules = new Rules();
 
-            $slug = explode('/', $post->getSlug($id)['slug']);
+            $slug = explode('/', $post->getData($id, ['slug'])['slug']);
             $lastKey = array_key_last($slug);
 
             if($rules->update_post_category($post->checkUniqueSlugCategory($id, $slug[$lastKey], $categoryId))->validated()) {
@@ -370,11 +369,11 @@ class PostController extends Controller {
 
     private function updateSlugCategory($post, $category, $id, $categoryId) {
 
-        if(!empty($category->getSubSlug($categoryId))) {
+        if(!empty($category->getSlugSub($categoryId))) {
 
             $subCategorySlugs = [];
 
-            foreach($category->getSubSlug($categoryId) as $subCategorySlug) {
+            foreach($category->getSlugSub($categoryId) as $subCategorySlug) {
 
                 array_push($subCategorySlugs, $subCategorySlug['slug']);
             }
@@ -383,14 +382,14 @@ class PostController extends Controller {
     
             Post::update(['id' => $id], [
 
-                'slug'  =>  $subCategorySlugsString . $category->getSlug($categoryId)['slug'] . $post->getSlug($id)['slug']
+                'slug'  =>  $subCategorySlugsString . $category->getSlug($categoryId)['slug'] . $post->getData($id, ['slug'])['slug']
             ]);
 
         } else {
 
             Post::update(['id' => $id], [
     
-                'slug'  => $category->getSlug($categoryId)['slug'] . $post->getSlug($id)['slug']
+                'slug'  => $category->getSlug($categoryId)['slug'] . $post->getData($id, ['slug'])['slug']
             ]);
         }
     }
@@ -605,7 +604,7 @@ class PostController extends Controller {
             $post = new Post();
             $rules = new Rules();
 
-            $slugParts = explode('/', $post->getSlug($id)['slug']);
+            $slugParts = explode('/', $post->getData($id, ['slug'])['slug']);
             $lastPageSlugKey = array_key_last($slugParts);
             $lastPageSlugValue = "/" . $slugParts[$lastPageSlugKey];
             
@@ -646,7 +645,7 @@ class PostController extends Controller {
                 Post::update(['id' => $request['id']], [
             
                     'removed'  => 0,
-                    'slug' => "/" . $post->getTitle($request['id'])['title']
+                    'slug' => "/" . $post->getData($request['id'], ['title'])['title']
                 ]);
             }
         
@@ -669,7 +668,7 @@ class PostController extends Controller {
         
                     $post = new Post();
             
-                    if($post->getRemoved($request['id']) !== 1) {
+                    if($post->getData($request['id'],['removed']) !== 1) {
             
                         Post::update(['id' => $request['id']], [
             
@@ -679,7 +678,7 @@ class PostController extends Controller {
 
                         Session::set('success', 'You have successfully moved the page(s) to the trashcan!');
             
-                    } else if($post->getRemoved($request['id']) === 1) {
+                    } else if($post->getData($request['id'], ['removed']) === 1) {
             
                         Post::delete("id", $request['id']);
                         CategoryPage::delete('page_id', $request['id']);
