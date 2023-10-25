@@ -126,6 +126,53 @@ class PostController extends Controller {
         return $this->view('admin/posts/edit', $data);
     }
 
+    public function update($request) {
+
+        $id = $request['id'];
+        $this->unsetSessions(['cdn', 'widget', 'category', 'css', 'js', 'js', 'meta']);
+        $this->ifExists($id);
+
+        if(submitted("submit") === true && Csrf::validate(Csrf::token('get'), post('token')) === true ) {
+                
+            $post = new Post();
+            $rules = new Rules();
+
+            if($rules->update_post($post->checkUniqueTitleId($request['title'], $id))->validated()) {
+                
+                if(!empty($request['body']) ) { $hasContent = 1; } else { $hasContent = 0; }
+
+                    Post::update(['id' => $id], [
+
+                        'title' => $request["title"],
+                        'body' => $request["body"],
+                        'has_content' => $hasContent,
+                        'updated_at' => date('Y-m-d H:i:s', $_SERVER['REQUEST_TIME'])
+                    ]);
+
+                    Session::set('success', 'You have successfully updated the page!'); 
+                    redirect("/admin/posts/$id/edit");
+                
+            } else {
+
+                $data = $this->getAllData($id);
+                $data['rules'] = $rules->errors;
+
+                return $this->view('admin/posts/edit', $data);
+            }
+        }
+    }
+
+    private function unsetSessions($names) {
+
+        if(!empty($names) && $names !== null) {
+
+            foreach($names as $name) {
+
+                Session::delete($name);
+            }
+        }
+    }
+
     private function getAllData($id) {
 
         $post = new Post();
@@ -160,13 +207,7 @@ class PostController extends Controller {
     public function importCdns($request) {
 
         $id = $request['id'];
-
-        Session::delete('widget');
-        Session::delete('category');
-        Session::delete('css');
-        Session::delete('js');
-        Session::delete('meta');
-
+        $this->unsetSessions(['widget', 'category', 'css', 'js', 'meta']);
         Session::set('cdn', true);
 
         if(submitted("submit") === true && Csrf::validate(Csrf::token('get'), post('token')) === true ) {
@@ -188,13 +229,7 @@ class PostController extends Controller {
     public function exportCdns($request) {
 
         $id = $request['id'];
-
-        Session::delete('widget');
-        Session::delete('category');
-        Session::delete('css');
-        Session::delete('js');
-        Session::delete('meta');
-
+        $this->unsetSessions(['widget', 'category', 'css', 'js', 'meta']);
         Session::set('cdn', true);
 
         if(submitted("submit") === true && Csrf::validate(Csrf::token('get'), post('token')) === true ) {
@@ -210,59 +245,10 @@ class PostController extends Controller {
         }
     }
 
-    public function update($request) {
-
-        $id = $request['id'];
-
-        Session::delete('cdn');
-        Session::delete('widget');
-        Session::delete('category');
-        Session::delete('css');
-        Session::delete('js');
-        Session::delete('meta');
-
-        $this->ifExists($id);
-
-        if(submitted("submit") === true && Csrf::validate(Csrf::token('get'), post('token')) === true ) {
-                
-            $post = new Post();
-            $rules = new Rules();
-
-            if($rules->update_post($post->checkUniqueTitleId($request['title'], $id))->validated()) {
-                
-                if(!empty($request['body']) ) { $hasContent = 1; } else { $hasContent = 0; }
-
-                    Post::update(['id' => $id], [
-
-                        'title' => $request["title"],
-                        'body' => $request["body"],
-                        'has_content' => $hasContent,
-                        'updated_at' => date('Y-m-d H:i:s', $_SERVER['REQUEST_TIME'])
-                    ]);
-
-                    Session::set('success', 'You have successfully updated the page!'); 
-                    redirect("/admin/posts/$id/edit");
-                
-            } else {
-
-                $data = $this->getAllData($id);
-                $data['rules'] = $rules->errors;
-
-                return $this->view('admin/posts/edit', $data);
-            }
-        }
-    }
-
     public function addWidget($request) {
 
         $id = $request['id'];
-
-        Session::delete('cdn');
-        Session::delete('category');
-        Session::delete('css');
-        Session::delete('js');
-        Session::delete('meta');
-
+        $this->unsetSessions(['cdn', 'category', 'css', 'js', 'meta']);
         Session::set('widget', true);
 
         $this->ifExists($id);
@@ -291,13 +277,7 @@ class PostController extends Controller {
     public function removeWidget($request) {
 
         $id = $request['id'];
-
-        Session::delete('cdn');
-        Session::delete('category');
-        Session::delete('css');
-        Session::delete('js');
-        Session::delete('meta');
-
+        $this->unsetSessions(['cdn', 'category', 'css', 'js', 'meta']);
         Session::set('widget', true);
 
         $this->ifExists($id);
@@ -323,13 +303,7 @@ class PostController extends Controller {
     public function assignCategory($request) {
 
         $id = $request['id'];
-
-        Session::delete('widget');
-        Session::delete('cdn');
-        Session::delete('css');
-        Session::delete('js');
-        Session::delete('meta');
-
+        $this->unsetSessions(['widget', 'cdn', 'css', 'js', 'meta']);
         Session::set('category', true);
 
         $this->ifExists($id);
@@ -397,13 +371,7 @@ class PostController extends Controller {
     public function removeJs($request) {
 
         $id = $request['id'];
-
-        Session::delete('widget');
-        Session::delete('cdn');
-        Session::delete('category');
-        Session::delete('css');
-        Session::delete('meta');
-
+        $this->unsetSessions(['widget', 'cdn', 'category', 'css', 'meta']);
         Session::set('js', true);
 
         $this->ifExists($id);
@@ -424,13 +392,7 @@ class PostController extends Controller {
     public function includeJs($request) {
 
         $id = $request['id'];
-
-        Session::delete('widget');
-        Session::delete('cdn');
-        Session::delete('category');
-        Session::delete('css');
-        Session::delete('meta');
-
+        $this->unsetSessions(['widget', 'cdn', 'category', 'css', 'meta']);
         Session::set('js', true);
 
         $this->ifExists($id);
@@ -451,13 +413,7 @@ class PostController extends Controller {
     public function linkCss($request) {
 
         $id = $request['id'];
-
-        Session::delete('widget');
-        Session::delete('cdn');
-        Session::delete('category');
-        Session::delete('js');
-        Session::delete('meta');
-
+        $this->unsetSessions(['widget', 'cdn', 'category', 'js', 'meta']);
         Session::set('css', true);
 
         $this->ifExists($id);
@@ -478,13 +434,7 @@ class PostController extends Controller {
     public function unLinkCss($request) {
 
         $id = $request['id'];
-
-        Session::delete('widget');
-        Session::delete('cdn');
-        Session::delete('category');
-        Session::delete('js');
-        Session::delete('meta');
-
+        $this->unsetSessions(['widget', 'cdn', 'category', 'js', 'meta']);
         Session::set('css', true);
 
         $this->ifExists($id);
@@ -547,13 +497,7 @@ class PostController extends Controller {
     public function updateMetadata($request) {
 
         $id = $request['id'];
-
-        Session::delete('widget');
-        Session::delete('cdn');
-        Session::delete('category');
-        Session::delete('css');
-        Session::delete('js');
-
+        $this->unsetSessions(['widget', 'cdn', 'category', 'css', 'js']);
         Session::set('meta', true);
 
         $this->ifExists($id);
@@ -588,13 +532,7 @@ class PostController extends Controller {
     public function detachCategory($request) {
 
         $id = $request['id'];
-
-        Session::delete('widget');
-        Session::delete('cdn');
-        Session::delete('css');
-        Session::delete('js');
-        Session::delete('meta');
-
+        $this->unsetSessions(['widget', 'cdn', 'css', 'js', 'meta']);
         Session::set('category', true);
 
         $this->ifExists($request['id']);
