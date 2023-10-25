@@ -5,6 +5,7 @@ namespace app\controllers\admin;
 use app\controllers\Controller;
 use app\models\Js;
 use app\models\JsPage;
+use app\models\Post;
 use database\DB;
 use core\Csrf;
 use validation\Rules;
@@ -28,6 +29,14 @@ class JsController extends Controller {
         }
     }
 
+    private function redirect($inputName, $path) {
+
+        if(submitted($inputName) === false || Csrf::validate(Csrf::token('get'), post('token')) === false ) { 
+            
+            redirect($path) . exit(); 
+        } 
+    }
+
     public function index() {
 
         $js = new Js();
@@ -37,7 +46,7 @@ class JsController extends Controller {
 
         if(!empty($search) ) {
 
-            $jsFiles = $js->cssFilesOnSearch($search);
+            $jsFiles = $js->jsFilesOnSearch($search);
         }
         
         $count = count($jsFiles);
@@ -73,42 +82,40 @@ class JsController extends Controller {
 
     public function store($request) {
 
-        if(submitted('submit') && Csrf::validate(Csrf::token('get'), post('token') ) === true) {
+        $this->redirect("submit", '/admin/js');
 
-            $rules = new Rules();
+        $rules = new Rules();
+        $js = new Js();
 
-            $uniqueFilename = DB::try()->select('file_name')->from('js')->where('file_name', '=', $request['filename'])->fetch();
-
-            if($rules->js($uniqueFilename)->validated()) {
+        if($rules->js($js->checkUniqueFilename($request['filename']))->validated()) {
                     
-                $filename = "/".$request['filename'];
-                $filename = str_replace(" ", "-", $filename);
+            $filename = "/".$request['filename'];
+            $filename = str_replace(" ", "-", $filename);
 
-                $file = fopen("website/assets/js/" . $filename . ".js", "w");
-                fwrite($file, $request['code']);
-                fclose($file);
+            $file = fopen("website/assets/js/" . $filename . ".js", "w");
+            fwrite($file, $request['code']);
+            fclose($file);
 
-                if(!empty($request['code']) ) { $hasContent = 1; } else { $hasContent = 0; }
+            if(!empty($request['code']) ) { $hasContent = 1; } else { $hasContent = 0; }
                 
-                Js::insert([
+            Js::insert([
 
-                    'file_name' => $request['filename'],
-                    'extension' => '.js',
-                    'author'    => Session::get('username'),
-                    'has_content' => $hasContent,
-                    'removed'   => 0,
-                    'created_at' => date('Y-m-d H:i:s', $_SERVER['REQUEST_TIME']),
-                    'updated_at' => date('Y-m-d H:i:s', $_SERVER['REQUEST_TIME'])
-                ]);
+                'file_name' => $request['filename'],
+                'extension' => '.js',
+                'author'    => Session::get('username'),
+                'has_content' => $hasContent,
+                'removed'   => 0,
+                'created_at' => date('Y-m-d H:i:s', $_SERVER['REQUEST_TIME']),
+                'updated_at' => date('Y-m-d H:i:s', $_SERVER['REQUEST_TIME'])
+            ]);
 
-                Session::set('success', 'You have successfully created a new js file!');          
-                redirect('/admin/js');
+            Session::set('success', 'You have successfully created a new js file!');          
+            redirect('/admin/js');
 
-            } else {
+        } else {
 
-                $data['rules'] = $rules->errors;
-                return $this->view('admin/js/create', $data);
-            }
+            $data['rules'] = $rules->errors;
+            return $this->view('admin/js/create', $data);
         }
     }
 
@@ -135,239 +142,196 @@ class JsController extends Controller {
 
         $code = $this->getFileContent($file['file_name']);
 
-        $assingedPages = DB::try()->select('id, title')->from('pages')->join('js_page')->on('pages.id', '=', 'js_page.page_id')->where('js_page.js_id', '=', $request['id'])->and('pages.removed', '!=', 1)->fetch();
-        $pages = $this->getPages($assingedPages);
-
+        $js = new Js();
+        
         $data['data'] = $file;
-        $data['data']['pages'] = $pages;
-        $data['data']['assingedPages'] = $assingedPages;
+        $data['data']['pages'] = $js->getNotPostAssingedIdTitle($js->getPostAssignedIdTitle($request['id']));
+        $data['data']['assingedPages'] = $js->getPostAssignedIdTitle($request['id']); 
         $data['data']['code'] = $code;
         $data['rules'] = [];
 
         return $this->view('admin/js/edit', $data);
     }
 
-    public function getPages($assingedPages) {
-
-        $listAssingedPageIds = [];
-
-        if(!empty($assingedPages) && $assingedPages !== null) {
-
-            foreach($assingedPages as $assingedPage) {
-
-                array_push($listAssingedPageIds, $assingedPage['id']);
-            }
-
-            $listAssingedPageIdString = implode(',', $listAssingedPageIds);
-
-            $pages = DB::try()->select('id, title')->from('pages')->whereNotIn('id', $listAssingedPageIdString)->and('pages.removed', '!=', 1)->fetch();
-        } else {
-            $pages = DB::try()->select('id, title')->from('pages')->where('pages.removed', '!=', 1)->fetch();
-        }
-
-        return $pages;
-    }
-
     public function update($request) {
 
-        $this->ifExists($request['id']);
-
-        if(submitted('submit') && Csrf::validate(Csrf::token('get'), post('token'))) {
+        $id = $request['id'];
+        $this->ifExists($id);
+        $this->redirect("submit", "/admin/js/$id/edit");
                 
-            $id = $request['id'];
-            $filename = str_replace(" ", "-", $request["filename"]);
-            $currentJsFileName = Js::where('id', '=', $id)[0]['file_name'];
+        $filename = str_replace(" ", "-", $request["filename"]);
+        $currentJsFileName = Js::where('id', '=', $id)[0]['file_name'];
 
-            $rules = new Rules();
+        $rules = new Rules();
+        $js = new Js();
 
-            $uniqueFilename = DB::try()->select('file_name')->from('js')->where('file_name', '=', $request['filename'])->and('id', '!=', $request['id'])->fetch();
+        if($rules->Js($js->checkUniqueFilenameId($request['filename'], $id))->validated()) {
 
-            if($rules->Js($uniqueFilename)->validated()) {
+            rename($this->_folderLocation . $currentJsFileName . $this->_fileExtension, $this->_folderLocation . $filename . $this->_fileExtension);
 
-                rename($this->_folderLocation . $currentJsFileName . $this->_fileExtension, $this->_folderLocation . $filename . $this->_fileExtension);
+            if(!empty($request['code']) ) { $hasContent = 1; } else { $hasContent = 0; }
 
-                if(!empty($request['code']) ) { $hasContent = 1; } else { $hasContent = 0; }
+            Js::update(['id' => $id], [
 
-                Js::update(['id' => $id], [
-
-                    'file_name'     => $filename,
-                    'has_content' => $hasContent,
-                    'updated_at' => date('Y-m-d H:i:s', $_SERVER['REQUEST_TIME'])
-                ]);
+                'file_name'     => $filename,
+                'has_content' => $hasContent,
+                'updated_at' => date('Y-m-d H:i:s', $_SERVER['REQUEST_TIME'])
+            ]);
 	
-                $file = fopen("website/assets/js/" . $filename . $this->_fileExtension, "w");
-                fwrite($file, $request["code"]);
-                fclose($file);
+            $file = fopen("website/assets/js/" . $filename . $this->_fileExtension, "w");
+            fwrite($file, $request["code"]);
+            fclose($file);
 
-                Session::set('success', 'You have successfully updated the js file!');
-                redirect("/admin/js/$id/edit");
+            Session::set('success', 'You have successfully updated the js file!');
+            redirect("/admin/js/$id/edit");
                     
-            } else {
+        } else {
                 
-                $filePath = $this->_folderLocation . $currentJsFileName . $this->_fileExtension; 
-                $code = file_get_contents($filePath);
+            $filePath = $this->_folderLocation . $currentJsFileName . $this->_fileExtension; 
+            $code = file_get_contents($filePath);
                 
-                $data['data'] = Js::where('id', '=', $id)[0];
-                $data['data']['assingedPages'] = DB::try()->select('id, title')->from('pages')->join('js_page')->on('pages.id', '=', 'js_page.page_id')->where('js_page.js_id', '=', $request['id'])->fetch();
-                $data['data']['pages'] = $this->getPages($data['data']['assingedPages']);
-                $data['data']['code'] = $code;
-                $data['rules'] = $rules->errors;
+            $data['data'] = Js::where('id', '=', $id)[0];
+            $data['data']['assingedPages'] = $js->getPostAssignedIdTitle($request['id']); 
+            $data['data']['pages'] = $js->getNotPostAssingedIdTitle($js->getPostAssignedIdTitle($request['id']));
+            $data['data']['code'] = $code;
+            $data['rules'] = $rules->errors;
                 
-                return $this->view("/admin/css/edit", $data);
-            }
+            return $this->view("/admin/js/edit", $data);
         }
     }
 
     public function includePages($request) {
 
-        $this->ifExists($request['id']);
-
-        if(submitted("submit") === true && Csrf::validate(Csrf::token('get'), post('token')) === true ) {
-
-            $id = $request['id'];
-            $pageIds = $request['pages'];
+        $id = $request['id'];
+        $this->ifExists($id);
+        $this->redirect("submit", "/admin/js/$id/edit");
             
-            if(!empty($pageIds) && $pageIds !== null) {
+        if(!empty($request['pages']) && $request['pages'] !== null) {
 
-                foreach($pageIds as $pageId) {
+            foreach($request['pages'] as $pageId) {
 
-                    JsPage::insert([
+                JsPage::insert([
 
-                        'page_id' => $pageId,
-                        'js_id' => $id
-                    ]);
-                }
-            }
-
-            Session::set('success', 'You have successfully included the js file the page(s)!');
-            redirect("/admin/js/$id/edit");
-        }
-    }
-
-    public function removePages($request) {
-
-        $this->ifExists($request['id']);
-
-        if(submitted("submit") === true && Csrf::validate(Csrf::token('get'), post('token')) === true ) {
-
-            $id = $request['id'];
-            $pageIds = $request['pages'];
-
-            if(!empty($pageIds) && $pageIds !== null) {
-
-                foreach($pageIds as $pageId) {
-
-                    JsPage::delete('page_id', $pageId);
-                }
-            }
-
-            Session::set('success', 'You have successfully removed the js file the page(s)!');
-            redirect("/admin/js/$id/edit");
-        }
-    }
-
-    public function includeAll($request) {
-
-        $this->ifExists($request['id']);
-
-        if(submitted("submit") === true && Csrf::validate(Csrf::token('get'), post('token')) === true ) {
-
-            $id = $request['id'];
-            $pageIds = DB::try()->select('id')->from('pages')->fetch();
-
-            JsPage::delete('js_id', $id);
-
-            if(!empty($pageIds) && $pageIds !== null) {
-
-                foreach($pageIds as $pageId) {
-
-                    JsPage::insert([
-
-                        'page_id' => $pageId['id'],
-                        'js_id' => $id
-                    ]);
-                }
-            }
-
-            Session::set('success', 'You have successfully included the js file on all pages!');
-            redirect("/admin/js/$id/edit");
-        }
-    }
-
-    public function removeAll($request) {
-
-        $this->ifExists($request['id']);
-
-        if(submitted("submit") === true && Csrf::validate(Csrf::token('get'), post('token')) === true ) {
-
-            $id = $request['id'];
-            JsPage::delete('js_id', $id);
-
-            Session::set('success', 'You have successfully removed the js file on all pages!');
-            redirect("/admin/js/$id/edit");
-        }
-    }
-
-    public function recover($request) {
-
-        if(submitted('recoverIds') && Csrf::validate(Csrf::token('get'), post('token') ) === true) {
-
-            $recoverIds = explode(',', $request['recoverIds']);
-            
-            foreach($recoverIds as $request['id'] ) {
-
-                $this->ifExists($request['id']);
-
-                $js = DB::try()->select('removed')->from('js')->where('id', '=', $request['id'])->first();
-
-                Js::update(['id' => $request['id']], [
-
-                    'removed'  => 0
+                    'page_id' => $pageId,
+                    'js_id' => $id
                 ]);
             }
         }
 
+        Session::set('success', 'You have successfully included the js file the page(s)!');
+        redirect("/admin/js/$id/edit");
+    }
+
+    public function removePages($request) {
+
+        $id = $request['id'];
+        $this->ifExists($request['id']);
+        $this->redirect("submit", "/admin/js/$id/edit");
+
+        if(!empty($request['pages']) && $request['pages'] !== null) {
+
+            foreach($request['pages'] as $pageId) {
+
+                JsPage::delete('page_id', $pageId);
+            }
+        }
+
+        Session::set('success', 'You have successfully removed the js file the page(s)!');
+        redirect("/admin/js/$id/edit");
+    }
+
+    public function includeAll($request) {
+
+        $id = $request['id'];
+        $this->ifExists($request['id']);
+        $this->redirect("submit", "/admin/js/$id/edit");
+
+        $post = new Post();
+        JsPage::delete('js_id', $id);
+
+        if(!empty($post->getAll(['id'])) && $post->getAll(['id']) !== null) {
+
+            foreach($post->getAll(['id']) as $pageId) {
+
+                JsPage::insert([
+
+                    'page_id' => $pageId['id'],
+                    'js_id' => $id
+                ]);
+            }
+        }
+
+        Session::set('success', 'You have successfully included the js file on all pages!');
+        redirect("/admin/js/$id/edit");
+    }
+
+    public function removeAll($request) {
+
+        $id = $request['id'];
+        $this->ifExists($request['id']);
+        $this->redirect("submit", "/admin/js/$id/edit");
+
+        JsPage::delete('js_id', $id);
+
+        Session::set('success', 'You have successfully removed the js file on all pages!');
+        redirect("/admin/js/$id/edit");
+    }
+
+    public function recover($request) {
+
+        $this->redirect("recoverIds", "/admin/js");
+
+        $recoverIds = explode(',', $request['recoverIds']);
+            
+        foreach($recoverIds as $request['id'] ) {
+
+            $this->ifExists($request['id']);
+
+            Js::update(['id' => $request['id']], [
+
+                'removed'  => 0
+            ]);
+        }
+        
         Session::set('success', 'You have successfully recovered the js file(s)!');
         redirect("/admin/js");
     }
 
     public function delete($request) {
 
-        if(submitted('deleteIds') && Csrf::validate(Csrf::token('get'), post('token') ) === true) {
+        $this->redirect("deleteIds", "/admin/js");
 
-            $deleteIds = explode(',', $request['deleteIds']);
+        $deleteIds = explode(',', $request['deleteIds']);
 
-            if(!empty($deleteIds) && !empty($deleteIds[0])) {
+        if(!empty($deleteIds) && !empty($deleteIds[0])) {
 
-                foreach($deleteIds as $request['id']) {
+            foreach($deleteIds as $id) {
 
-                    $this->ifExists($request['id']);
+                $this->ifExists($id);
+                $js = new Js();
+            
+                if($js->getData($id, ['removed'])['removed'] !== 1) {
 
-                    $js = DB::try()->select('removed')->from('js')->where('id', '=', $request['id'])->first();
+                    Js::update(['id' => $id], [
 
-                    if($js['removed'] !== 1) {
+                        'removed'  => 1
+                    ]);
 
-                        Js::update(['id' => $request['id']], [
+                    Session::set('success', 'You have successfully moved the js file(s) to the trashcan!');
 
-                            'removed'  => 1
-                        ]);
+                } else if($js->getData($id, ['removed'])['removed'] === 1) {
 
-                        Session::set('success', 'You have successfully moved the js file(s) to the trashcan!');
-
-                    } else if($js['removed'] === 1) {
-
-                        $filename = Js::where('id', '=', $request['id'])[0]['file_name'];
-                        $path = "website/assets/js/" . $filename . ".js";
+                    $filename = Js::where('id', '=', $id)[0]['file_name'];
+                    $path = "website/assets/js/" . $filename . ".js";
                         
-                        unlink($path);
+                    unlink($path);
 
-                        Js::delete("id", $request['id']);
-                        Session::set('success', 'You have successfully removed the js file(s)!');
-                    }
+                    Js::delete("id", $id);
+                    Session::set('success', 'You have successfully removed the js file(s)!');
                 }
             }
-
-            redirect("/admin/js");
         }
+
+        redirect("/admin/js");
     }
 }
