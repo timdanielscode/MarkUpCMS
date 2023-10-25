@@ -6,6 +6,8 @@ use database\DB;
 
 class Menu extends Model {
 
+    private $_columns;
+
     public function __construct() {
 
         self::table('menus');
@@ -14,6 +16,15 @@ class Menu extends Model {
     public function ifRowExists($id) {
 
         return DB::try()->select('id')->from('menus')->where('id', '=', $id)->first();
+    }
+
+    public function getData($id, $columns) {
+
+        if(!empty($columns) && $columns !== null) {
+
+            $this->_columns = implode(',', $columns);
+            return DB::try()->select($this->_columns)->from('menus')->where('id', '=', $id)->first();
+        }
     }
 
     public function allMenusButOrderedOnDate() {
@@ -42,5 +53,15 @@ class Menu extends Model {
     public function getBottomMenus() {
 
         return DB::try()->all('menus')->where('position', '=', 'bottom')->and('removed', '!=', 1)->order('ordering')->fetch();
+    }
+
+    public function checkUniqueTitle($title) {
+
+        return DB::try()->select('title')->from('menus')->where('title', '=', $title)->fetch();
+    }
+
+    public function checkUniqueTitleId($title, $id) {
+
+        return DB::try()->select('title')->from('menus')->where('title', '=', $title)->and('id', '!=', $id)->fetch();
     }
 }

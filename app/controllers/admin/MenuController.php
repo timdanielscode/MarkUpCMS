@@ -24,6 +24,14 @@ class MenuController extends Controller {
         }
     }
 
+    private function redirect($inputName, $path) {
+
+        if(submitted($inputName) === false || Csrf::validate(Csrf::token('get'), post('token')) === false ) { 
+            
+            redirect($path) . exit(); 
+        } 
+    }
+
     public function index() {
 
         $menu = new Menu();
@@ -55,38 +63,36 @@ class MenuController extends Controller {
 
     public function store($request) {
 
-        if(submitted('submit') && Csrf::validate(Csrf::token('get'), post('token') ) === true) {
+        $this->redirect("submit", '/admin/menus');
 
-            $rules = new Rules();
+        $rules = new Rules();
+        $menu = new Menu();
 
-            $unique = DB::try()->select('title')->from('menus')->where('title', '=', $request['title'])->fetch();
-
-            if($rules->create_menu($unique)->validated()) {
+        if($rules->create_menu($menu->checkUniqueTitle($request['title']))->validated()) {
                     
-                if(!empty($request['content']) ) { $hasContent = 1; } else { $hasContent = 0; }
+            if(!empty($request['content']) ) { $hasContent = 1; } else { $hasContent = 0; }
 
-                Menu::insert([
+            Menu::insert([
 
-                    'title' => $request['title'],
-                    'content'   => $request['content'],
-                    'has_content' => $hasContent,
-                    'position'  => 'unset',
-                    'ordering'  => 0,
-                    'author'    =>  Session::get('username'),
-                    'removed' => 0,
-                    'created_at' => date('Y-m-d H:i:s', $_SERVER['REQUEST_TIME']),
-                    'updated_at' => date('Y-m-d H:i:s', $_SERVER['REQUEST_TIME'])
-                ]);
+                'title' => $request['title'],
+                'content'   => $request['content'],
+                'has_content' => $hasContent,
+                'position'  => 'unset',
+                'ordering'  => 0,
+                'author'    =>  Session::get('username'),
+                'removed' => 0,
+                'created_at' => date('Y-m-d H:i:s', $_SERVER['REQUEST_TIME']),
+                'updated_at' => date('Y-m-d H:i:s', $_SERVER['REQUEST_TIME'])
+            ]);
           
-                Session::set('success', 'You have successfully created a new menu!');
-                redirect('/admin/menus');
+            Session::set('success', 'You have successfully created a new menu!');
+            redirect('/admin/menus');
 
-            } else {
+        } else {
 
-                $data['rules'] = $rules->errors;
-                return $this->view('admin/menus/create', $data);
-            } 
-        }
+            $data['rules'] = $rules->errors;
+            return $this->view('admin/menus/create', $data);
+        } 
     }
 
     public function read($request) {
@@ -115,137 +121,120 @@ class MenuController extends Controller {
 
     public function update($request) {
 
-        $this->ifExists($request['id']);
+        $id = $request['id'];
+        $this->ifExists($id);
+        $this->redirect("submit", "/admin/menus/$id/edit");
 
-        if(submitted("submit") === true && Csrf::validate(Csrf::token('get'), post('token')) === true ) {
-
-            $rules = new Rules();
-
-            $unique = DB::try()->select('title')->from('menus')->where('title', '=', $request['title'])->and('id', '!=', $request['id'])->fetch();
-
-            if($rules->menu_update($unique)->validated()) {
+        $rules = new Rules();
+        $menu = new Menu();
+        
+        if($rules->menu_update($menu->checkUniqueTitleId($request['title'], $request['id']))->validated()) {
                     
-                $id = $request['id'];
+            if(!empty($request['content']) ) { $hasContent = 1; } else { $hasContent = 0; }
 
-                if(!empty($request['content']) ) { $hasContent = 1; } else { $hasContent = 0; }
+            Menu::update(['id' => $id], [
 
-                Menu::update(['id' => $id], [
+                'title'     => $request['title'],
+                'content'   => $request['content'],
+                'has_content' => $hasContent, 
+                'updated_at' => date('Y-m-d H:i:s', $_SERVER['REQUEST_TIME'])
+            ]);
 
-                    'title'     => $request['title'],
-                    'content'   => $request['content'],
-                    'has_content' => $hasContent, 
-                    'updated_at' => date('Y-m-d H:i:s', $_SERVER['REQUEST_TIME'])
-                ]);
-
-                Session::set('success', 'You have successfully updated the menu!');
-                redirect("/admin/menus/$id/edit");
+            Session::set('success', 'You have successfully updated the menu!');
+            redirect("/admin/menus/$id/edit");
                     
-            } else {
+        } else {
 
-                $data['rules'] = $rules->errors;
-                $data['menu'] = Menu::where('id', '=', $request['id'])[0];
+            $data['rules'] = $rules->errors;
+            $data['menu'] = Menu::where('id', '=', $request['id'])[0];
 
-                return $this->view("/admin/menus/edit", $data);
-            }
+            return $this->view("/admin/menus/edit", $data);
         }
     }
 
     public function updatePosition($request) {
 
-        $this->ifExists($request['id']);
+        $id = $request['id'];
+        $this->ifExists($id);
+        $this->redirect("submit", "/admin/menus/$id/edit");
 
-        if(submitted("submit") === true && Csrf::validate(Csrf::token('get'), post('token')) === true ) {
+        Menu::update(['id' => $id], [
 
-            $id = $request['id'];
+            'position' => $request['position'],
+            'updated_at' => date('Y-m-d H:i:s', $_SERVER['REQUEST_TIME']) 
+        ]); 
 
-            Menu::update(['id' => $id], [
-
-                'position' => $request['position'],
-                'updated_at' => date('Y-m-d H:i:s', $_SERVER['REQUEST_TIME']) 
-            ]); 
-
-            Session::set('success', 'You have successfully updated the menu position!');
-            redirect("/admin/menus/$id/edit");
-        }
+        Session::set('success', 'You have successfully updated the menu position!');
+        redirect("/admin/menus/$id/edit");
     }
 
     public function updateOrdering($request) {
 
-        $this->ifExists($request['id']);
+        $id = $request['id'];
+        $this->ifExists($id);
+        $this->redirect("submit", "/admin/menus/$id/edit");
 
-        if(submitted("submit") === true && Csrf::validate(Csrf::token('get'), post('token')) === true ) {
+        Menu::update(['id' => $id], [
 
-            $id = $request['id'];
-
-            Menu::update(['id' => $id], [
-
-                'ordering'  => $request['ordering'],
-                'updated_at' => date('Y-m-d H:i:s', $_SERVER['REQUEST_TIME'])
-            ]);
+            'ordering'  => $request['ordering'],
+            'updated_at' => date('Y-m-d H:i:s', $_SERVER['REQUEST_TIME'])
+        ]);
             
-            Session::set('success', 'You have successfully updated the menu ordering!');
-            redirect("/admin/menus/$id/edit");
-        }
+        Session::set('success', 'You have successfully updated the menu ordering!');
+        redirect("/admin/menus/$id/edit");
     }
 
     public function recover($request) {
 
-        if(submitted('recoverIds') && Csrf::validate(Csrf::token('get'), post('token') ) === true) {
+        $id = $request['id'];
+        $this->redirect("recoverIds", "/admin/menus");
 
-            $recoverIds = explode(',', $request['recoverIds']);
+        $recoverIds = explode(',', $request['recoverIds']);
             
-            foreach($recoverIds as $request['id'] ) {
+        foreach($recoverIds as $request['id'] ) {
 
-                $this->ifExists($request['id']);
+            $this->ifExists($request['id']);
 
-                $menu = DB::try()->select('removed')->from('menus')->where('id', '=', $request['id'])->first();
+            Menu::update(['id' => $request['id']], [
 
-                Menu::update(['id' => $request['id']], [
-
-                    'removed'  => 0
-                ]);
-            }
-
-            Session::set('success', 'You have successfully recovered the menu(s)!');
-            redirect("/admin/menus");
+                'removed'  => 0
+            ]);
         }
+
+        Session::set('success', 'You have successfully recovered the menu(s)!');
+        redirect("/admin/menus");
     }
 
     public function delete($request) {
 
-        if(submitted('deleteIds') && Csrf::validate(Csrf::token('get'), post('token') ) === true) {
+        $this->redirect("deleteIds", "/admin/menus");
+        $deleteIds = explode(',', $request['deleteIds']);
 
-            $deleteIds = explode(',', $request['deleteIds']);
+        if(!empty($deleteIds) && !empty($deleteIds[0])) {
 
-            if(!empty($deleteIds) && !empty($deleteIds[0])) {
+            foreach($deleteIds as $id) {
 
-                foreach($deleteIds as $request['id']) {
+                $this->ifExists($id);
+                $menu = new Menu();
 
-                    $this->ifExists($request['id']);
+                if($menu->getData($id, ['removed'])['removed'] !== 1) {
 
-                    $menu = DB::try()->select('title, removed')->from('menus')->where('id', '=', $request['id'])->first();
+                    Menu::update(['id' => $id], [
 
-                    if($menu['removed'] !== 1) {
+                        'removed'  => 1,
+                        'position' => 'unset',
+                        'ordering' => 0
+                    ]);
 
-                        Menu::update(['id' => $request['id']], [
+                    Session::set('success', 'You have successfully moved the menu(s) to the trashcan!');
 
-                            'removed'  => 1,
-                            'position' => 'unset',
-                            'ordering' => 0
-                        ]);
+                } else if($menu->getData($id, ['removed'])['removed'] === 1) {
 
-                        Session::set('success', 'You have successfully moved the menu(s) to the trashcan!');
-
-                    } else if($menu['removed'] === 1) {
-
-                        Menu::delete("id", $request['id']);
-                        Session::set('success', 'You have successfully removed the menu(s)!');
-                    }
+                    Menu::delete("id", $id);
+                    Session::set('success', 'You have successfully removed the menu(s)!');
                 }
             }
-            redirect("/admin/menus");
         }
-
-       
+        redirect("/admin/menus");
     }
 }

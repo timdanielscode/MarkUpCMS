@@ -570,20 +570,19 @@ class PostController extends Controller {
 
     public function delete($request) {
 
-        $id = $request['id'];
         $this->redirect("deleteIds", "/admin/posts");
         $deleteIds = explode(',', $request['deleteIds']);
 
         if(!empty($deleteIds) && !empty($deleteIds[0])) {
 
-            foreach($deleteIds as $request['id']) {
+            foreach($deleteIds as $id) {
 
-                $this->ifExists($request['id']);
+                $this->ifExists($id);
                 $post = new Post();
             
-                if($post->getData($request['id'],['removed']) !== 1) {
+                if($post->getData($id,['removed']) !== 1) {
             
-                    Post::update(['id' => $request['id']], [
+                    Post::update(['id' => $id], [
             
                         'removed'  => 1,
                         'slug'  => ''
@@ -591,10 +590,10 @@ class PostController extends Controller {
 
                     Session::set('success', 'You have successfully moved the page(s) to the trashcan!');
             
-                } else if($post->getData($request['id'], ['removed']) === 1) {
+                } else if($post->getData($id, ['removed']) === 1) {
             
-                    Post::delete("id", $request['id']);
-                    CategoryPage::delete('page_id', $request['id']);
+                    Post::delete("id", $id);
+                    CategoryPage::delete('page_id', $id);
 
                     Session::set('success', 'You have successfully removed the page(s)!');
                 }
