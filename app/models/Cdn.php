@@ -6,6 +6,8 @@ use database\DB;
 
 class Cdn extends Model {
 
+    private $_postIds = [];
+
     public function __construct() {
 
         self::table('cdn');
@@ -14,6 +16,15 @@ class Cdn extends Model {
     public function ifRowExists($id) {
 
         return DB::try()->select('id')->from('cdn')->where('id', '=', $id)->first();
+    }
+
+    public function getData($id, $columns) {
+
+        if(!empty($columns) && $columns !== null) {
+
+            $this->_columns = implode(',', $columns);
+            return DB::try()->select($this->_columns)->from('cdn')->where('id', '=', $id)->first();
+        }
     }
 
     public function allCdnsButOrderedByDate() {
@@ -37,5 +48,42 @@ class Cdn extends Model {
     public function getAllCdn() {
 
         return DB::try()->select('id, title')->from('cdn')->where('removed', '!=', 1)->fetch();
+    }
+
+    public function checkUniqueTitle($title) {
+
+        return DB::try()->select('id')->from('cdn')->where('title', '=', $title)->fetch();
+    }
+
+    public function checkUniqueTitleId($title, $id) {
+
+        return DB::try()->select('id')->from('cdn')->where('title', '=', $title)->and('id', '!=', $id)->fetch();
+    }
+
+    public function getPostImportedIdTitle($id) {
+
+        return DB::try()->select('id, title')->from('pages')->join('cdn_page')->on('cdn_page.page_id', '=', 'pages.id')->where('cdn_page.cdn_id', '=', $id)->and('pages.removed', '!=', 1)->fetch();
+    }
+
+    public function getNotPostImportedIdTitle($postImportedIdTitle) {
+
+        if(!empty($postImportedIdTitle) && $postImportedIdTitle !== null) {
+
+            foreach($postImportedIdTitle as $post) {
+
+                array_push($this->_postIds, $post['id']);
+            }
+
+            $postIdsString = implode(',', $this->_postIds);
+
+            return DB::try()->select('id, title')->from('pages')->whereNotIn('id', $postIdsString)->and('removed', '!=', 1)->fetch();
+        } else {
+            return DB::try()->select('id, title')->from('pages')->where('removed', '!=', 1)->fetch();
+        }
+    }
+
+    public function deleteIdPostId($id, $postId) {
+        
+        return DB::try()->delete('cdn_page')->where('cdn_page.cdn_id', '=', $id)->and('cdn_page.page_id', '=', $postId)->run();
     }
 }
