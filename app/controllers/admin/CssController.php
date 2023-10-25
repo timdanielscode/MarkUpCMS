@@ -29,6 +29,14 @@ class CssController extends Controller {
         }
     }
 
+    private function redirect($inputName, $path) {
+
+        if(submitted($inputName) === false || Csrf::validate(Csrf::token('get'), post('token')) === false ) { 
+            
+            redirect($path) . exit(); 
+        } 
+    }
+
     public function index() {
 
         $css = new Css();
@@ -61,46 +69,42 @@ class CssController extends Controller {
 
     public function store($request) {
 
-        if(submitted('submit') && Csrf::validate(Csrf::token('get'), post('token') ) === true) {
+        $this->redirect("submit", '/admin/css');
 
-            $rules = new Rules();
-
-            $uniqueFilename = DB::try()->select('file_name')->from('css')->where('file_name', '=', $request['filename'])->fetch();
-
-            if($rules->css($uniqueFilename)->validated()) {
+        $rules = new Rules();
+        $css = new Css();
+        
+        if($rules->css($css->checkUniqueFilename($request['filename']))->validated()) {
                     
-                $filename = "/".$request['filename'];
-                $filename = str_replace(" ", "-", $filename);
+            $filename = "/".$request['filename'];
+            $filename = str_replace(" ", "-", $filename);
+            $code = $request['code'];
+            $file = fopen("website/assets/css" . $filename . ".css", "w");
 
-                $code = $request['code'];
-
-                $file = fopen("website/assets/css" . $filename . ".css", "w");
-
-                fwrite($file, $code);
-                fclose($file);
+            fwrite($file, $code);
+            fclose($file);
                     
-                if(!empty($request['code']) ) { $hasContent = 1; } else { $hasContent = 0; }
+            if(!empty($request['code']) ) { $hasContent = 1; } else { $hasContent = 0; }
 
-                Css::insert([
+            Css::insert([
 
-                    'file_name' => $request['filename'],
-                    'extension' => '.css',
-                    'author'    => Session::get('username'),
-                    'has_content' => $hasContent,
-                    'removed' => 0,
-                    'created_at' => date('Y-m-d H:i:s', $_SERVER['REQUEST_TIME']),
-                    'updated_at' => date('Y-m-d H:i:s', $_SERVER['REQUEST_TIME'])
-                ]);
+                'file_name' => $request['filename'],
+                'extension' => '.css',
+                'author'    => Session::get('username'),
+                'has_content' => $hasContent,
+                'removed' => 0,
+                'created_at' => date('Y-m-d H:i:s', $_SERVER['REQUEST_TIME']),
+                'updated_at' => date('Y-m-d H:i:s', $_SERVER['REQUEST_TIME'])
+            ]);
 
-                Session::set('success', 'You have successfully created a new css file!');         
-                redirect('/admin/css');
+            Session::set('success', 'You have successfully created a new css file!');         
+            redirect('/admin/css');
 
-            } else {
+        } else {
 
-                $data['rules'] = $rules->errors;
-                return $this->view('admin/css/create', $data);
-            }
-        } 
+            $data['rules'] = $rules->errors;
+            return $this->view('admin/css/create', $data);
+        }
     }
 
     private function getFileContent($filename) {
@@ -139,12 +143,13 @@ class CssController extends Controller {
 
         $code = $this->getFileContent($cssFile['file_name']);
 
-        $assingedPages = DB::try()->select('id, title')->from('pages')->join('css_page')->on('pages.id', '=', 'css_page.page_id')->where('css_page.css_id', '=', $request['id'])->and('pages.removed', '!=', 1)->fetch();
-        $pages = $this->notAssingedPages($assingedPages);
+        $css = new Css();
+        $assingedPages = $css->getPostAssignedIdTitle($request['id']);
+        $notAssignedPages = $css->getNotPostAssingedIdTitle($css->getPostAssignedIdTitle($request['id']));
 
         $data['data'] = $cssFile;
         $data['data']['code'] = $code;
-        $data['data']['pages'] = $pages;
+        $data['data']['pages'] = $notAssignedPages;
         $data['data']['assingedPages'] = $assingedPages;
         
         $data['rules'] = [];
@@ -152,185 +157,144 @@ class CssController extends Controller {
         return $this->view('admin/css/edit', $data);
     }
 
-    public function notAssingedPages($assingedPages) {
-
-        $listAssingedPageIds = [];
-
-        if(!empty($assingedPages) && $assingedPages !== null) {
-
-            foreach($assingedPages as $assingedPage) {
-
-                array_push($listAssingedPageIds, $assingedPage['id']);
-            }
-
-            $listAssingedPageIdString = implode(',', $listAssingedPageIds);
-
-            $pages = DB::try()->select('id, title')->from('pages')->whereNotIn('id', $listAssingedPageIdString)->and('removed', '!=', 1)->fetch();
-        } else {
-            $pages = DB::try()->select('id, title')->from('pages')->where('removed', '!=', 1)->fetch();
-        }
-        return $pages;
-    }
-
     public function update($request) {
 
-        $this->ifExists($request['id']);
+        $id = $request['id'];
+        $this->ifExists($id);
+        $this->redirect("submit", "/admin/css/$id/edit");
 
-        if(submitted('submit') && Csrf::validate(Csrf::token('get'), post('token'))) {
-                
-            $id = $request['id'];
-            $filename = str_replace(" ", "-", $request["filename"]);
-            $currentCssFileName = Css::where('id', '=', $id)[0]['file_name'];
+        $filename = str_replace(" ", "-", $request["filename"]);
+        $currentCssFileName = Css::where('id', '=', $id)[0]['file_name'];
 
-            $rules = new Rules();
+        $rules = new Rules();
+        $css = new Css();
+        
+        if($rules->css($css->checkUniqueFilenameId($request['filename'], $id))->validated()) {
 
-            $uniqueFilename = DB::try()->select('file_name')->from('css')->where('file_name', '=', $request['filename'])->and('id', '!=', $request['id'])->fetch();
+            rename($this->_folderLocation . $currentCssFileName . $this->_fileExtension, $this->_folderLocation . $filename . $this->_fileExtension);
 
-            if($rules->css($uniqueFilename)->validated()) {
+            if(!empty($request['code']) ) { $hasContent = 1; } else { $hasContent = 0; }
 
-                rename($this->_folderLocation . $currentCssFileName . $this->_fileExtension, $this->_folderLocation . $filename . $this->_fileExtension);
+            Css::update(['id' => $id], [
 
-                if(!empty($request['code']) ) { $hasContent = 1; } else { $hasContent = 0; }
-
-                Css::update(['id' => $id], [
-
-                    'file_name'     => $filename,
-                    'has_content' => $hasContent,
-                    'updated_at' => date('Y-m-d H:i:s', $_SERVER['REQUEST_TIME'])
-                ]);
+                'file_name'     => $filename,
+                'has_content' => $hasContent,
+                'updated_at' => date('Y-m-d H:i:s', $_SERVER['REQUEST_TIME'])
+            ]);
 	
-                $file = fopen("website/assets/css/" . $filename . $this->_fileExtension, "w");
-                fwrite($file, $request["code"]);
-                fclose($file);
+            $file = fopen("website/assets/css/" . $filename . $this->_fileExtension, "w");
+            fwrite($file, $request["code"]);
+            fclose($file);
 
-                Session::set('success', 'You have successfully updated the css file!');
-                redirect("/admin/css/$id/edit");
+            Session::set('success', 'You have successfully updated the css file!');
+            redirect("/admin/css/$id/edit");
                     
-            } else {
+        } else {
                 
-                $filePath = $this->_folderLocation . $currentCssFileName . $this->_fileExtension; 
-                $code = file_get_contents($filePath);
+            $filePath = $this->_folderLocation . $currentCssFileName . $this->_fileExtension; 
+            $code = file_get_contents($filePath);
 
-                $data['data'] = Css::where('id', '=', $id)[0];
-                $data['data']['assingedPages'] = DB::try()->select('id, title')->from('pages')->join('css_page')->on('pages.id', '=', 'css_page.page_id')->where('css_page.css_id', '=', $request['id'])->fetch();
-                $data['data']['pages'] = $this->notAssingedPages($data['data']['assingedPages']);           
-                $data['data']['code'] = $code;
-                $data['rules'] = $rules->errors;
+            $data['data'] = Css::where('id', '=', $id)[0];
+            $data['data']['assingedPages'] = $css->getPostAssignedIdTitle($request['id']);
+            $data['data']['pages'] = $css->getNotPostAssingedIdTitle($css->getPostAssignedIdTitle($request['id']));         
+            $data['data']['code'] = $code;
+            $data['rules'] = $rules->errors;
                 
-                return $this->view("/admin/css/edit", $data);
-            }
+            return $this->view("/admin/css/edit", $data);
         }
     }
 
     public function linkAll($request) {
 
+        $id = $request['id'];
         $this->ifExists($request['id']);
+        $this->redirect("submit", "/admin/css/$id/edit");
 
-        if(submitted("submit") === true && Csrf::validate(Csrf::token('get'), post('token')) === true ) {
+        $post = new Post();
+        CssPage::delete('css_id', $id);
 
-            $id = $request['id'];
+        if(!empty($post->getAll(['id'])) && $post->getAll(['id']) !== null) {
 
-            $pageIds = DB::try()->select('id')->from('pages')->fetch();
+            foreach($post->getAll(['id']) as $pageId) {
 
-            CssPage::delete('css_id', $id);
+                CssPage::insert([
 
-            if(!empty($pageIds) && $pageIds !== null) {
-
-                foreach($pageIds as $pageId) {
-
-                    CssPage::insert([
-
-                        'page_id' => $pageId['id'],
-                        'css_id' => $id
-                    ]);
-                }
+                    'page_id' => $pageId['id'],
+                    'css_id' => $id
+                ]);
             }
-
-            Session::set('success', 'You have successfully linked the css file on all pages!');
-            redirect("/admin/css/$id/edit");
         }
+
+        Session::set('success', 'You have successfully linked the css file on all pages!');
+        redirect("/admin/css/$id/edit");
     }
 
     public function unlinkAll($request) {
 
-        $this->ifExists($request['id']);
+        $id = $request['id'];
+        $this->ifExists($id);
+        $this->redirect("submit", "/admin/css/$id/edit");
 
-        if(submitted("submit") === true && Csrf::validate(Csrf::token('get'), post('token')) === true ) {
+        CssPage::delete('css_id', $id);
 
-            $id = $request['id'];
-
-            CssPage::delete('css_id', $id);
-
-            Session::set('success', 'You have successfully removed the css file on all pages!');
-            redirect("/admin/css/$id/edit");
-        }
+        Session::set('success', 'You have successfully removed the css file on all pages!');
+        redirect("/admin/css/$id/edit");
     }
 
     public function unlinkPages($request) {
 
-        $this->ifExists($request['id']);
+        $id = $request['id'];
+        $this->ifExists($id);
+        $this->redirect("submit", "/admin/css/$id/edit");
 
-        if(submitted("submit") === true && Csrf::validate(Csrf::token('get'), post('token')) === true ) {
+        if(!empty($request['pages']) && $request['pages'] !== null) {
 
-            $id = $request['id'];
-            $pageIds = $request['pages'];
+            foreach($request['pages'] as $pageId) {
 
-            if(!empty($pageIds) && $pageIds !== null) {
-
-                foreach($pageIds as $pageId) {
-
-                    CssPage::delete('page_id', $pageId);
-                }
+                CssPage::delete('page_id', $pageId);
             }
-
-            Session::set('success', 'You have successfully removed the css file on the page(s)!');
-            redirect("/admin/css/$id/edit");
         }
+
+        Session::set('success', 'You have successfully removed the css file on the page(s)!');
+        redirect("/admin/css/$id/edit");
     }
 
     public function linkPages($request) {
 
-        $this->ifExists($request['id']);
+        $id = $request['id'];
+        $this->ifExists($id);
+        $this->redirect("submit", "/admin/css/$id/edit");
 
-        if(submitted("submit") === true && Csrf::validate(Csrf::token('get'), post('token')) === true ) {
+        if(!empty($request['pages']) && $request['pages'] !== null) {
 
-            $id = $request['id'];
-            $pageIds = $request['pages'];
-            
-            if(!empty($pageIds) && $pageIds !== null) {
+            foreach($request['pages'] as $pageId) {
 
-                foreach($pageIds as $pageId) {
+                CssPage::insert([
 
-                    CssPage::insert([
-
-                        'page_id' => $pageId,
-                        'css_id' => $id
-                    ]);
-                }
+                    'page_id' => $pageId,
+                    'css_id' => $id
+                ]);
             }
-
-            Session::set('success', 'You have successfully linked the css file on the page(s)!');
-            redirect("/admin/css/$id/edit");
         }
+
+        Session::set('success', 'You have successfully linked the css file on the page(s)!');
+        redirect("/admin/css/$id/edit");
     }
 
     public function recover($request) {
 
-        if(submitted('recoverIds') && Csrf::validate(Csrf::token('get'), post('token') ) === true) {
+        $this->redirect("recoverIds", "/admin/css");
 
-            $recoverIds = explode(',', $request['recoverIds']);
+        $recoverIds = explode(',', $request['recoverIds']);
             
-            foreach($recoverIds as $request['id'] ) {
+        foreach($recoverIds as $request['id'] ) {
 
-                $this->ifExists($request['id']);
+            $this->ifExists($request['id']);
 
-                $css = DB::try()->select('removed')->from('css')->where('id', '=', $request['id'])->first();
+            Css::update(['id' => $request['id']], [
 
-                Css::update(['id' => $request['id']], [
-
-                    'removed'  => 0
-                ]);
-            }
+                'removed'  => 0
+            ]);
         }
 
         Session::set('success', 'You have successfully recovered the css file(s)!');
@@ -339,40 +303,37 @@ class CssController extends Controller {
 
     public function delete($request) {
 
-        if(submitted('deleteIds') && Csrf::validate(Csrf::token('get'), post('token') ) === true) {
+        $this->redirect("deleteIds", "/admin/css");
+        $deleteIds = explode(',', $request['deleteIds']);
 
-            $deleteIds = explode(',', $request['deleteIds']);
+        if(!empty($deleteIds) && !empty($deleteIds[0])) {
 
-            if(!empty($deleteIds) && !empty($deleteIds[0])) {
+            foreach($deleteIds as $id) {
 
-                foreach($deleteIds as $request['id']) {
+                $this->ifExists($id);
+                $css = new Css();
+                
+                if($css->getData($id, ['removed'])['removed']!== 1) {
 
-                    $this->ifExists($request['id']);
+                    Css::update(['id' => $id], [
 
-                    $css = DB::try()->select('removed')->from('css')->where('id', '=', $request['id'])->first();
+                        'removed'  => 1
+                    ]);
 
-                    if($css['removed'] !== 1) {
+                    Session::set('success', 'You have successfully moved the css file(s) to the trashcan!');
 
-                        Css::update(['id' => $request['id']], [
+                } else if($css->getData($id, ['removed'])['removed'] === 1) {
 
-                            'removed'  => 1
-                        ]);
-
-                        Session::set('success', 'You have successfully moved the css file(s) to the trashcan!');
-
-                    } else if($css['removed'] === 1) {
-
-                        $filename = Css::where('id', '=', $request['id'])[0]['file_name'];
-                        $path = "website/assets/css/" . $filename . ".css";
+                    $filename = Css::where('id', '=', $id)[0]['file_name'];
+                    $path = "website/assets/css/" . $filename . ".css";
             
-                        unlink($path);
-                        Css::delete("id", $request['id']);
-                        Session::set('success', 'You have successfully removed the css file(s)!');
-                    }
+                    unlink($path);
+                    Css::delete("id", $id);
+                    Session::set('success', 'You have successfully removed the css file(s)!');
                 }
             }
-
-            redirect("/admin/css");
         }
+
+        redirect("/admin/css");
     }
 }

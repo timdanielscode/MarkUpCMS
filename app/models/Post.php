@@ -28,6 +28,15 @@ class Post extends Model {
         }
     }
 
+    public function getAll($columns) {
+
+        if(!empty($columns) && $columns !== null) {
+
+            $this->_columns = implode(',', $columns);
+            return DB::try()->select($this->_columns)->from('pages')->fetch();
+        }
+    }
+
     public function allPostsWithCategories() {
 
         return DB::try()->select('pages.id, pages.title, pages.slug, pages.author, pages.metaTitle, pages.metaDescription, pages.removed, pages.created_at, pages.updated_at, categories.title')->from('pages')->joinLeft('category_page')->on('category_page.page_id', '=', 'pages.id')->joinLeft('categories')->on('categories.id', '=', 'category_page.category_id')->where('removed', '=', 0)->order('created_at')->desc()->fetch();
