@@ -25,6 +25,14 @@ class WidgetController extends Controller {
         }
     }
 
+    private function redirect($inputName, $path) {
+
+        if(submitted($inputName) === false || Csrf::validate(Csrf::token('get'), post('token')) === false ) { 
+            
+            redirect($path) . exit(); 
+        } 
+    }
+
     public function index() {
 
         $widget = new Widget();
@@ -56,33 +64,33 @@ class WidgetController extends Controller {
 
     public function store($request) {
 
-        if(submitted('submit') && Csrf::validate(Csrf::token('get'), post('token') ) === true) {
+        $id = $request['id'];
+        $this->redirect("submit", '/admin/widgets');
 
-            if(!empty($request['content']) ) { $hasContent = 1; } else { $hasContent = 0; }
+        if(!empty($request['content']) ) { $hasContent = 1; } else { $hasContent = 0; }
 
-            $rules = new Rules();
-            $uniqueTitle = DB::try()->select('title')->from('widgets')->where('title', '=', $request['title'])->fetch();
+        $rules = new Rules();
+        $widget = new Widget();
 
-            if($rules->create_widget($uniqueTitle)->validated()) {
+        if($rules->create_widget($widget->checkUniqueTitle($request['title']))->validated()) {
 
-                Widget::insert([
+            Widget::insert([
 
-                    'title' => $request['title'],
-                    'content'   => $request['content'],
-                    'has_content' => $hasContent,
-                    'author'    =>  Session::get('username'),
-                    'removed' => 0,
-                    'created_at' => date('Y-m-d H:i:s', $_SERVER['REQUEST_TIME']),
-                    'updated_at' => date('Y-m-d H:i:s', $_SERVER['REQUEST_TIME'])
-                ]);
+                'title' => $request['title'],
+                'content'   => $request['content'],
+                'has_content' => $hasContent,
+                'author'    =>  Session::get('username'),
+                'removed' => 0,
+                'created_at' => date('Y-m-d H:i:s', $_SERVER['REQUEST_TIME']),
+                'updated_at' => date('Y-m-d H:i:s', $_SERVER['REQUEST_TIME'])
+            ]);
 
-                Session::set('success', 'You have successfully created a new widget!');
-                redirect('/admin/widgets');
-            } else {
+            Session::set('success', 'You have successfully created a new widget!');
+            redirect('/admin/widgets');
+        } else {
 
-                $data['rules'] = $rules->errors;
-                return $this->view('admin/widgets/create', $data);
-            }
+            $data['rules'] = $rules->errors;
+            return $this->view('admin/widgets/create', $data);
         }
     }
 
@@ -110,55 +118,49 @@ class WidgetController extends Controller {
 
     public function update($request) {
 
-        if(submitted("submit") === true && Csrf::validate(Csrf::token('get'), post('token')) === true ) {
+        $id = $request['id'];
+        $this->ifExists($request['id']);
+        $this->redirect("submit", "/admin/widgets/$id/edit");
+        
+        $rules = new Rules();
+        $widget = new Widget();
+        
+        if($rules->edit_widget($widget->checkUniqueTitleId($request['title'], $id))->validated()) {
 
-            $id = $request['id'];
+            if(!empty($request['content']) ) { $hasContent = 1; } else { $hasContent = 0; }
 
-            $this->ifExists($request['id']);
+            Widget::update(['id' => $id], [
 
-            $rules = new Rules();
-            $uniqueTitle = DB::try()->select('title')->from('widgets')->where('title', '=', $request['title'])->and('id', '!=', $id)->fetch();
+                'title'     => $request['title'],
+                'content'   => $request['content'],
+                'has_content' => $hasContent, 
+                'updated_at' => date('Y-m-d H:i:s', $_SERVER['REQUEST_TIME'])
+            ]);
 
-            if($rules->edit_widget($uniqueTitle)->validated()) {
+            Session::set('success', 'You have successfully updated the widget!');
+            redirect("/admin/widgets/$id/edit");
+        } else {
 
-                if(!empty($request['content']) ) { $hasContent = 1; } else { $hasContent = 0; }
-
-                Widget::update(['id' => $id], [
-
-                    'title'     => $request['title'],
-                    'content'   => $request['content'],
-                    'has_content' => $hasContent, 
-                    'updated_at' => date('Y-m-d H:i:s', $_SERVER['REQUEST_TIME'])
-                ]);
-
-                Session::set('success', 'You have successfully updated the widget!');
-                redirect("/admin/widgets/$id/edit");
-            } else {
-
-                $data['widget'] = Widget::get($id);
-                $data['rules'] = $rules->errors;
-                return $this->view('/admin/widgets/edit', $data);
-            }
+            $data['widget'] = Widget::get($id);
+            $data['rules'] = $rules->errors;
+            return $this->view('/admin/widgets/edit', $data);
         }
     }
 
     public function recover($request) {
+        
+        $this->redirect("recoverIds", "/admin/widgets");
 
-        if(submitted('recoverIds') && Csrf::validate(Csrf::token('get'), post('token') ) === true) {
-
-            $recoverIds = explode(',', $request['recoverIds']);
+        $recoverIds = explode(',', $request['recoverIds']);
             
-            foreach($recoverIds as $request['id'] ) {
+        foreach($recoverIds as $id) {
 
-                $this->ifExists($request['id']);
+            $this->ifExists($id);
 
-                $widget = DB::try()->select('removed')->from('widgets')->where('id', '=', $request['id'])->first();
+            Widget::update(['id' => $id], [
 
-                Widget::update(['id' => $request['id']], [
-
-                    'removed'  => 0
-                ]);
-            }
+                'removed'  => 0
+            ]);
         }
 
         Session::set('success', 'You have successfully recovered the widget(s)!');
@@ -167,37 +169,35 @@ class WidgetController extends Controller {
 
     public function delete($request) {
 
-        if(submitted('deleteIds') && Csrf::validate(Csrf::token('get'), post('token') ) === true) {
+        $this->redirect("deleteIds", "/admin/widgets");
 
-            $deleteIds = explode(',', $request['deleteIds']);
+        $deleteIds = explode(',', $request['deleteIds']);
 
-            if(!empty($deleteIds) && !empty($deleteIds[0])) {
+        if(!empty($deleteIds) && !empty($deleteIds[0])) {
 
-                foreach($deleteIds as $request['id']) {
+            foreach($deleteIds as $id) {
 
-                    $this->ifExists($request['id']);
+                $this->ifExists($id);
+                $widget = new Widget();
 
-                    $widget = DB::try()->select('title, removed')->from('widgets')->where('id', '=', $request['id'])->first();
+                if($widget->getData($id, ['removed'])['removed'] !== 1) {
 
-                    if($widget['removed'] !== 1) {
+                    Widget::update(['id' => $id], [
 
-                        Widget::update(['id' => $request['id']], [
+                        'removed'  => 1
+                    ]);
 
-                            'removed'  => 1
-                        ]);
+                    PageWidget::delete('widget_id', $id);
+                    Session::set('success', 'You have successfully moved the widget(s) to the trashcan!');
 
-                        PageWidget::delete('widget_id', $request['id']);
-                        Session::set('success', 'You have successfully moved the widget(s) to the trashcan!');
+                } else if($widget->getData($id, ['removed'])['removed'] === 1) {
 
-                    } else if($widget['removed'] === 1) {
-
-                        Widget::delete("id", $request['id']);
-                        PageWidget::delete('widget_id', $request['id']);
-                        Session::set('success', 'You have successfully removed the widget(s)!');
-                    }
+                    Widget::delete("id", $id);
+                    PageWidget::delete('widget_id', $id);
+                    Session::set('success', 'You have successfully removed the widget(s)!');
                 }
             }
-            redirect("/admin/widgets");
         }
+        redirect("/admin/widgets");
     }
 }

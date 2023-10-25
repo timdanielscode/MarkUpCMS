@@ -6,6 +6,8 @@ use database\DB;
 
 class Widget extends Model {
 
+    private $_columns;
+
     public function __construct() {
 
         self::table('widgets');
@@ -14,6 +16,15 @@ class Widget extends Model {
     public function ifRowExists($id) {
 
         return DB::try()->select('id')->from('widgets')->where('id', '=', $id)->first();
+    }
+
+    public function getData($id, $columns) {
+
+        if(!empty($columns) && $columns !== null) {
+
+            $this->_columns = implode(',', $columns);
+            return DB::try()->select($this->_columns)->from('widgets')->where('id', '=', $id)->first();
+        }
     }
 
     public function allWidgetsButOrderedOnDate() {
@@ -58,5 +69,15 @@ class Widget extends Model {
 
             return DB::try()->delete('page_widget')->where('widget_id', '=', $widgetId)->and('page_id', '=', $postId)->run();
         }
+    }
+
+    public function checkUniqueTitle($title) {
+
+        return DB::try()->select('title')->from('widgets')->where('title', '=', $title)->fetch();
+    }
+
+    public function checkUniqueTitleId($title, $id) {
+
+        return DB::try()->select('title')->from('widgets')->where('title', '=', $title)->and('id', '!=', $id)->fetch();
     }
 }

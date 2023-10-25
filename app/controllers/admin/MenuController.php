@@ -128,7 +128,7 @@ class MenuController extends Controller {
         $rules = new Rules();
         $menu = new Menu();
         
-        if($rules->menu_update($menu->checkUniqueTitleId($request['title'], $request['id']))->validated()) {
+        if($rules->menu_update($menu->checkUniqueTitleId($request['title'], $id))->validated()) {
                     
             if(!empty($request['content']) ) { $hasContent = 1; } else { $hasContent = 0; }
 
@@ -186,16 +186,15 @@ class MenuController extends Controller {
 
     public function recover($request) {
 
-        $id = $request['id'];
         $this->redirect("recoverIds", "/admin/menus");
 
         $recoverIds = explode(',', $request['recoverIds']);
             
-        foreach($recoverIds as $request['id'] ) {
+        foreach($recoverIds as $id) {
 
-            $this->ifExists($request['id']);
+            $this->ifExists($id);
 
-            Menu::update(['id' => $request['id']], [
+            Menu::update(['id' => $id], [
 
                 'removed'  => 0
             ]);
