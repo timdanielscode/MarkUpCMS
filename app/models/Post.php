@@ -81,6 +81,11 @@ class Post extends Model {
         return DB::try()->select('page_id')->from('category_page')->where('page_id', '=', $id)->fetch();      
     }
 
+    public function checkUniqueSlugDetach($id, $lastPartSlug, $categoryId) {
+
+        return DB::try()->select('pages.slug')->from('pages')->join('category_page')->on('category_page.page_id', '=', 'pages.id')->where('category_page.category_id', '=', $categoryId)->and('slug', 'LIKE', '%'.$lastPartSlug)->and('id', '!=', $id)->first();
+    }
+
     public function getCategoryTitleSlug($postId) {
 
         return DB::try()->select('categories.title, categories.slug')->from('categories')->join('category_page')->on('category_page.category_id', '=', 'categories.id')->where('category_page.page_id', '=', $postId)->first();
@@ -203,5 +208,15 @@ class Post extends Model {
         } else {
             return DB::try()->select('id, title')->from('widgets')->where('removed', '!=', 1)->fetch();
         }
+    }
+
+    public function getAssignedSubCategoryIdSlug($categoryId) {
+
+        return DB::try()->select('id, slug')->from('pages')->join('category_page')->on("category_page.page_id",'=','pages.id')->join('category_sub')->on('category_sub.category_id', '=', 'category_page.category_id')->where('category_sub.sub_id', '=', $categoryId)->fetch();
+    }
+
+    public function getAssignedCategoryIdSlug($categoryId) {
+
+        return DB::try()->select('id, slug')->from('pages')->join('category_page')->on("category_page.page_id", '=', 'pages.id')->where('category_page.category_id', '=', $categoryId)->fetch();
     }
 }

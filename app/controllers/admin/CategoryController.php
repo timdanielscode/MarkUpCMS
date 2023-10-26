@@ -27,7 +27,23 @@ class CategoryController extends Controller {
         }
     }
 
+    private function redirect($inputName, $path, $csrf = null) {
+
+        if($csrf === true && Csrf::validate(Csrf::token('get'), post('token')) === false || submitted($inputName) === false) {
+
+            redirect($path) . exit(); 
+        }
+    }
+
     public function index() {
+
+        $category = new Category();
+
+        if(!empty($category->getSlugSub(35)) ){
+            
+            print_r($category->getSlugSub(35));
+        }
+        
 
         $category = new Category();
         $categories = $category->allCategoriesButOrdered();
@@ -54,57 +70,55 @@ class CategoryController extends Controller {
 
     public function store($request) {
 
-        if(submitted("submit") === true) {
+        $this->redirect("submit", "/admin/categories");
 
-            $rules = new Rules();
-            $uniqueTitle = DB::try()->select('title')->from('categories')->where('title', '=', $request['title'])->fetch();
+        $rules = new Rules();
+        $category = new Category();
+        
+        if($rules->create_category($category->checkUniqueTitle($request['title']))->validated()) {
 
-            if($rules->create_category($uniqueTitle)->validated()) {
+            Category::insert([
 
-                Category::insert([
+                'title' => $request['title'],
+                'slug'  => "/" . $request['title'],
+                'category_description'  => $request['description'],
+                'author'    => Session::get('username'),
+                'created_at' => date('Y-m-d H:i:s', $_SERVER['REQUEST_TIME']),
+                'updated_at' => date('Y-m-d H:i:s', $_SERVER['REQUEST_TIME'])
+            ]);
 
-                    'title' => $request['title'],
-                    'slug'  => "/" . $request['title'],
-                    'category_description'  => $request['description'],
-                    'author'    => Session::get('username'),
-                    'created_at' => date('Y-m-d H:i:s', $_SERVER['REQUEST_TIME']),
-                    'updated_at' => date('Y-m-d H:i:s', $_SERVER['REQUEST_TIME'])
-                ]);
-
-                Session::set('success', 'You have successfully created a new category!');
-            } else {
-                Session::set('failed', "Title can't be empty, must be unique, max 49 characters, no special characters! Description max 99 characters, no special characters!");
-            }
-
-            redirect('/admin/categories');
+            Session::set('success', 'You have successfully created a new category!');
+        } else {
+            Session::set('failed', "Title can't be empty, must be unique, max 49 characters, no special characters! Description max 99 characters, no special characters!");
         }
+
+        redirect('/admin/categories');
     }
 
     public function update($request) {
 
-        $this->ifExists($request['id']);
+        $id = $request['id'];
+        $this->ifExists($id);
+        $this->redirect("submit", "/admin/categories");
 
-        if(submitted("submit") === true) {
+        $rules = new Rules();
+        $category = new Category();
 
-            $rules = new Rules();
-            $uniqueTitle = DB::try()->select('title')->from('categories')->where('title', '=', $request['title'])->and('id', '!=', $request['id'])->fetch();
+        if($rules->edit_category($category->checkUniqueTitleId($request['title'], $id))->validated()) {
 
-            if($rules->edit_category($uniqueTitle)->validated()) {
+            Category::update(['id' => $request['id']], [
 
-                Category::update(['id' => $request['id']], [
+                'title'   => $request['title'],
+                'category_description' => $request['description'],
+                'updated_at' => date('Y-m-d H:i:s', $_SERVER['REQUEST_TIME'])
+            ]);
 
-                    'title'   => $request['title'],
-                    'category_description' => $request['description'],
-                    'updated_at' => date('Y-m-d H:i:s', $_SERVER['REQUEST_TIME'])
-                ]);
-
-                Session::set('success', 'You have successfully created a new category!');
-            } else {
-                Session::set('failed', "Title can't be empty, must be unique, max 49 characters, no special characters! Description max 99 characters, no special characters!");
-            }
-
-            redirect('/admin/categories');
+            Session::set('success', 'You have successfully created a new category!');
+        } else {
+            Session::set('failed', "Title can't be empty, must be unique, max 49 characters, no special characters! Description max 99 characters, no special characters!");
         }
+
+        redirect('/admin/categories');
     }
 
     public function SHOWADDABLE($request) {
@@ -113,13 +127,11 @@ class CategoryController extends Controller {
 
         $slug = DB::try()->select('slug')->from('categories')->where('id', '=', $request['id'])->first();
 
-        $assignedPages = DB::try()->select('id, title')->from('pages')->join('category_page')->on('pages.id', '=', 'category_page.page_id')->where('category_id', '=', $request['id'])->and('pages.removed', '!=', 1)->fetch();
-        $assingedSubCategories = DB::try()->select('categories.id, categories.title, categories.slug')->from('categories')->join('category_sub')->on('category_sub.sub_id', '=', 'categories.id')->where('category_id', '=', $request['id'])->fetch();
-        
-        $allAssingedPages = DB::try()->select('pages.id')->from('pages')->join('category_page')->on('category_page.page_id', '=', 'pages.id')->fetch();
-
-        $notAssignedPages = $this->getNotAssingedPages($allAssingedPages);
-        $notAssingedSubs = $this->getNotAssingedSubCategories($assingedSubCategories, $request['id']);
+        $category = new Category();
+        $assignedPages = $category->getPostAssignedIdTitle($request['id']);
+        $notAssignedPages = $category->getNotPostAssignedIdTitle($category->getPostAssignedIdTitle($request['id']));
+        $assingedSubCategories = $category->getSubIdTitleSlug($request['id']);
+        $notAssingedSubs = $category->getNotSubIdTitleSlug($category->getSubIdTitleSlug($request['id']), $request['id']);
 
         $data['id'] = $request['id'];
         $data['slug'] = $slug['slug'];
@@ -133,53 +145,6 @@ class CategoryController extends Controller {
         return $this->view('admin/categories/add', $data);
     }
 
-    public function getNotAssingedPages($assingedPages) {
-
-        $listAssingedPageIds = [];
-
-        foreach($assingedPages as $assignedPage) {
-    
-            array_push($listAssingedPageIds, $assignedPage['id']);
-        }
-    
-        $listAssingedPageIds = implode(',', $listAssingedPageIds);
-    
-        if(!empty($listAssingedPageIds) && $listAssingedPageIds !== null) {
-    
-            $notAssignedPages = DB::try()->select('id, title')->from('pages')->whereNotIn('id', $listAssingedPageIds)->and('removed', '!=', 1)->fetch();
-        } else {
-            $notAssignedPages = DB::try()->select('id, title')->from('pages')->where('removed', '!=', 1)->fetch();
-        }
-
-        return $notAssignedPages;
-    }
-
-    public function getNotAssingedSubCategories($assingedCategories, $id) {
-
-        if(!empty($assingedCategories) && $assingedCategories !== null) {
-
-            $listAssingedSubIds = [$id];
-
-            foreach($assingedCategories as $assingedSubCategory) {
-
-                array_push($listAssingedSubIds, $assingedSubCategory['id']);
-            }
-   
-            $listAssingedSubIds = implode(',', $listAssingedSubIds);
-
-            if(!empty($listAssingedSubIds) && $listAssingedSubIds !== null) {
-
-                $notAssingedSubs = DB::try()->select('id, title')->from('categories')->whereNotIn('id', $listAssingedSubIds)->fetch();
-            } 
-
-        } else {
-
-            $notAssingedSubs = DB::try()->select('id, title')->from('categories')->whereNot('id', '=', $id)->fetch();
-        }
-
-        return $notAssingedSubs;
-    }
-
     public function ADDPAGE($request) {
 
         $this->ifExists($request['id']);
@@ -188,52 +153,67 @@ class CategoryController extends Controller {
 
             foreach($request['pageid'] as $pageId) {
 
-                $ifAssingedOnCategory = DB::try()->select('*')->from('category_page')->where('category_id', '=', $request['id'])->and('page_id', '=', $pageId)->first();
-                $ifAlreadyAssinged = DB::try()->select('*')->from('category_page')->where('page_id', '=', $pageId)->first();
+                $category = new Category();
+                $post = new Post();
 
-                if(!empty($ifAssingedOnCategory) ) {
+                $pageSlug = $post->getData($pageId, ['slug']);
 
-                    $pageSlug = DB::try()->select('slug')->from('pages')->where('id', '=', $pageId)->first();
+                if(!empty($category->checkPostAssingedId($request['id'], $pageId)) ) {
 
                     $slugParts = explode('/', $pageSlug['slug']);
                     $lastPageSlugKey = array_key_last($slugParts);
                     $lastPageSlugValue = "/" . $slugParts[$lastPageSlugKey];
 
-                    $unique = DB::try()->select('slug')->from('pages')->where('slug', '=', $lastPageSlugValue)->and('id', '!=', $request['id'])->first();
+                    if(empty($post->checkUniqueSlug($lastPageSlugValue, $pageId)) ) {
 
-                    if(empty($unique) ) {
+                        Post::update(['id' => $pageId], [
 
-                        $this->updatePageSlugOnCategoryDetach($pageId, $request['id']);
+                            'slug'  => $lastPageSlugValue
+                        ]);
 
-                        DB::try()->delete('category_page')->where('page_id', '=', $pageId)->and('category_id', '=', $request['id'])->run();
+                        $category->deletePost($pageId, $request['id']);
 
                     } else { return; }
 
-                } else if(empty($ifAssingedOnCategory) && empty($ifAlreadyAssinged)) {
-
-                    $pageSlug = DB::try()->select('slug')->from('pages')->where('id', '=', $pageId)->first();
+                } else if(empty($category->checkPostAssingedId($request['id'], $pageId)) ) {
 
                     $slug = explode('/', $pageSlug['slug']);
                     $lastKey = array_key_last($slug);
-        
-                    $unique = DB::try()->select('pages.slug')->from('pages')->join('category_page')->on('category_page.page_id', '=', 'pages.id')->where('category_page.category_id', '=', $request['id'])->and('slug', 'LIKE', '%'.$slug[$lastKey])->and('id', '!=', $pageId)->first();
-                    
-                    if(empty($unique)) {
+      
+                    if(empty($post->checkUniqueSlugDetach($pageId, $slug[$lastKey], $request['id'])) ) {
 
                         CategoryPage::insert([
     
                             'page_id'   => $pageId,
                             'category_id'   => $request['id']
                         ]);
+
+                        if(!empty($category->getSlugSub($request['id'])) && $category->getSlugSub($request['id']) !== null) {
+                            
+                            $subSlugs = [];
+
+                            foreach($category->getSlugSub($request['id']) as $subSlug) {
+
+                                array_push($subSlugs, $subSlug['slug']);
+                            }
+
+                            $subSlugsString = implode('', $subSlugs);
+
+                            Post::update(['id' => $pageId], [
     
-                        $this->updatePageSlugOnCategoryAssign($pageId, $request['id']);
+                                'slug'  =>  $subSlugsString . $category->getSlug($request['id'])['slug'] . $pageSlug['slug']
+                            ]);
+
+                        } else {
+
+                            Post::update(['id' => $pageId], [
+    
+                                'slug'  =>  $category->getSlug($request['id'])['slug'] . $pageSlug['slug']
+                            ]);
+                        }
 
                     } else { return; }
-
-                } else if(!empty($ifAlreadyAssinged) ) {
-                    
-                    return;
-                }
+                } 
             }
         }
 
@@ -243,118 +223,30 @@ class CategoryController extends Controller {
         echo json_encode($DATA);
     }
 
-    public function updatePageSlugOnCategoryDetach($pageId, $categoryId) {
-
-        $postSlug = DB::try()->select('slug')->from('pages')->where('id', '=', $pageId)->first();
-        
-        $slugParts = explode('/', $postSlug['slug']);
-        $lastPageSlugKey = array_key_last($slugParts);
-        $lastPageSlugValue = "/" . $slugParts[$lastPageSlugKey];
-
-        Post::update(['id' => $pageId], [
-
-            'slug'  => $lastPageSlugValue
-        ]);
-    }
-
-    public function updatePageSlugOnCategoryAssign($pageId, $categoryId) {
-
-        $currentCategorySlug = DB::try()->select('categories.slug')->from('categories')->join('category_page')->on('category_page.category_id', '=', 'categories.id')->where('categories.id', '=', $categoryId)->first();
-        $currentSlugs = DB::try()->select('slug')->from('pages')->where('id', '=', $pageId)->fetch();
-
-        foreach($currentSlugs as $currentSlug) {
-
-            $subCategories = DB::try()->select('categories.slug')->from('categories')->join('category_sub')->on('categories.id', '=', 'category_sub.sub_id')->where('category_sub.category_id', '=', $categoryId)->fetch();
-
-            if(!empty($subCategories) ) {
-    
-                $subCategoriesArray = [];
-    
-                foreach($subCategories as $subCategory) {
-    
-                    array_push($subCategoriesArray, $subCategory['slug']);
-                }
-    
-                $subCategoriesSlug = implode('', $subCategoriesArray);
-    
-                Post::update(['id' => $pageId], [
-    
-                    'slug'  =>  $subCategoriesSlug . $currentCategorySlug['slug'] . $currentSlug['slug']
-                ]);
-    
-            } else {
-    
-                Post::update(['id' => $pageId], [
-    
-                    'slug'  =>  $currentCategorySlug['slug'] . $currentSlug['slug']
-                ]);
-            }
-        }
-    }
-
     public function ADDCATEGORY($request) {
 
         $this->ifExists($request['id']);
 
         if(!empty($request['subcategoryid']) && $request['subcategoryid'] !== null) {
 
+            $category = new Category();
+
+            if(!empty($category->checkPostAssinged($request['id'])) ) { return; }
+
             foreach($request['subcategoryid'] as $subCategoryId) {
 
-                $ifAlreadyAssinged = DB::try()->select('*')->from('category_sub')->where('sub_id', '=', $subCategoryId)->and('category_id', '=', $request['id'])->fetch();
-                $ifPageAlreadyAssinged = DB::try()->select('*')->from('category_page')->where('category_page.category_id', '=', $request['id'])->fetch();
-
-                if(!empty($ifAlreadyAssinged) && empty($ifPageAlreadyAssinged)) {
-
-                    $subCategorySlugs = DB::try()->select('slug')->from('categories')->join('category_sub')->on('categories.id', '=', 'category_sub.sub_id')->where('category_sub.sub_id', '=', $subCategoryId)->fetch();
-                    $postSlugs = DB::try()->select('pages.id, pages.slug')->from('pages')->join('category_page')->on('pages.id', '=', 'category_page.page_id')->where('category_page.category_id', '=', $request['id'])->fetch();
-
-                    foreach($postSlugs as $postSlug) {
-
-                        foreach($subCategorySlugs as $subCategorySlug) {
-
-                            $slugParts = explode('/', $postSlug['slug']);
-                            $subCategorySlugKey = array_search(substr($subCategorySlug['slug'], 1), $slugParts);
-                            unset($slugParts[$subCategorySlugKey]);
-                            $slugMinusSubCategorySlug = implode('/', $slugParts);
-                    
-                            Post::update(['id' => $postSlug['id']], [
-                    
-                                'slug'  => $slugMinusSubCategorySlug
-                            ]);
-                        }
-                    }
+                if(!empty($category->checkSubId($request['id'], $subCategoryId))) {
 
                     CategorySub::delete('sub_id', $subCategoryId);
 
-                } else if(empty($ifAlreadyAssinged) && empty($ifPageAlreadyAssinged) ) {
+                } else {
 
                     CategorySub::insert([
     
                         'sub_id'   => $subCategoryId,
                         'category_id'   => $request['id']
                     ]);
-
-                    $postSlugs = DB::try()->select('pages.id, pages.slug')->from('pages')->join('category_page')->on('pages.id', '=', 'category_page.page_id')->where('category_page.category_id', '=', $request['id'])->fetch();
-
-                    if(!empty($postSlugs) ) {
-
-                        foreach($postSlugs as $postSlug) {
-
-                            $assingedSubCategorySlugs = DB::try()->select('categories.slug')->from('categories')->join('category_sub')->on('categories.id', '=', 'category_sub.sub_id')->where('category_sub.category_id', '=', $request['id'])->fetch();
-
-                            foreach($assingedSubCategorySlugs as $assingedSubCategorySlug) {
-        
-                                Post::update(['id' => $postSlug['id']], [
-        
-                                    'slug'  => $assingedSubCategorySlug['slug'] . $postSlug['slug']
-                                ]);
-                            }
-                        }
-                    }
-                } else {
-
-                    return;
-                }
+                } 
             }
         }
 
@@ -374,17 +266,16 @@ class CategoryController extends Controller {
     
             if($rules->slug_category()->validated()) {
 
-                $currentSlug = Category::where('id', '=', $request['id'])[0];
+                $slug = Category::where('id', '=', $request['id'])[0];
+                $post = new Post();
+                
+                if(!empty($post->getAssignedCategoryIdSlug($request['id'])) && $post->getAssignedCategoryIdSlug($request['id']) !== null) {
 
-                $assingedSubCategorySlugsPages = DB::try()->select('id, slug')->from('pages')->join('category_page')->on("category_page.page_id",'=','pages.id')->join('category_sub')->on('category_sub.category_id', '=', 'category_page.category_id')->where('category_sub.sub_id', '=', $request['id'])->fetch();
-                $assingedCategorySlugsPages = DB::try()->select('id, slug')->from('pages')->join('category_page')->on("category_page.page_id", '=', 'pages.id')->where('category_page.category_id', '=', $request['id'])->fetch();
-
-                if(!empty($assingedCategorySlugsPages) && $assingedCategorySlugsPages !== null) {
-
-                    $this->updateCategoryInPostSlug($currentSlug, $request, $assingedCategorySlugsPages);
+                    $this->updateCategoriesPostSlug($slug, $request, $post->getAssignedCategoryIdSlug($request['id']));
                 } 
-                if(!empty($assingedSubCategorySlugsPages) && $assingedSubCategorySlugsPages !== null) {
-                    $this->updateSubCategoryInPostSlug($currentSlug, $request, $assingedSubCategorySlugsPages);
+                
+                if(!empty($post->getAssignedSubCategoryIdSlug($request['id'])) && $post->getAssignedSubCategoryIdSlug($request['id']) !== null) {
+                    $this->updateCategoriesPostSlug($slug, $request, $post->getAssignedSubCategoryIdSlug($request['id']));
                 }
 
                 Category::update(['id' => $request['id']], [
@@ -401,9 +292,9 @@ class CategoryController extends Controller {
         } 
     }
 
-    private function updateSubCategoryInPostSlug($currentSlug, $request, $assingedSubCategorySlugsPages) {
+    private function updateCategoriesPostSlug($currentSlug, $request, $pages) {
 
-        foreach($assingedSubCategorySlugsPages as $page) {
+        foreach($pages as $page) {
         
             $slugParts = explode('/', $page['slug']);
             $categorySlugKey = array_search(substr($currentSlug['slug'], 1), $slugParts);
@@ -413,7 +304,9 @@ class CategoryController extends Controller {
                 $slugParts[$categorySlugKey] = substr("/" . $request['slug'], 1);
                 $slug = implode('/', $slugParts);
 
-                $unique = DB::try()->select('id')->from('pages')->where('slug', '=', $slug)->and('id', '!=', $page['id'])->first();
+                $post = new Post();
+                $unique = $post->checkUniqueSlug($slug, $page['id']);
+
                 if(!empty($unique)) { exit(); }
         
                 Post::update(['id' => $page['id']], [
@@ -424,81 +317,55 @@ class CategoryController extends Controller {
         } 
     }
 
-    private function updateCategoryInPostSlug($currentSlug, $request, $assingedCategorySlugsPages) {
-
-        foreach($assingedCategorySlugsPages as $page) {
-        
-            $slugParts = explode('/', $page['slug']);
-            $categorySlugKey = array_search(substr($currentSlug['slug'], 1), $slugParts);
-            
-            if(!empty($categorySlugKey) && $categorySlugKey !== null) {
-
-                $slugParts[$categorySlugKey] = substr("/" . $request['slug'], 1);
-                $slug = implode('/', $slugParts);
-
-                $unique = DB::try()->select('id')->from('pages')->where('slug', '=', $slug)->and('id', '!=', $page['id'])->first();
-                if(!empty($unique)) { exit(); }
-
-                Post::update(['id' => $page['id']], [
-        
-                    'slug'  => $slug
-                ]);
-            }
-        } 
-    }
-    
     public function delete($request) {
 
-        if(submitted("deleteIds") === true && Csrf::validate(Csrf::token('get'), post('token')) === true ) {
+        $this->redirect("deleteIds", "/admin/categories", true);
 
-            $deleteIds = explode(',', $request['deleteIds']);
+        $deleteIds = explode(',', $request['deleteIds']);
 
-            foreach($deleteIds as $request['id']) {
+        foreach($deleteIds as $request['id']) {
 
-                $this->ifExists($request['id']);
+            $this->ifExists($request['id']);
 
-                $currentSlug = Category::where('id', '=', $request['id'])[0];
-        
-                $assingedSubCategorySlugsPages = DB::try()->select('id, slug')->from('pages')->join('category_page')->on("category_page.page_id",'=','pages.id')->join('category_sub')->on('category_sub.category_id', '=', 'category_page.category_id')->where('category_sub.sub_id', '=', $request['id'])->fetch();
-                $assingedCategorySlugsPages = DB::try()->select('id, slug')->from('pages')->join('category_page')->on("category_page.page_id", '=', 'pages.id')->where('category_page.category_id', '=', $request['id'])->fetch();
-        
-                if(!empty($assingedCategorySlugsPages) && $assingedCategorySlugsPages !== null) {
+            $currentSlug = Category::where('id', '=', $request['id'])[0];
+            $post = new Post();
+
+            if(!empty($post->getAssignedCategoryIdSlug($request['id'])) && $post->getAssignedCategoryIdSlug($request['id']) !== null) {
             
-                    foreach($assingedCategorySlugsPages as $page) {
+                foreach($post->getAssignedCategoryIdSlug($request['id']) as $page) {
         
-                        $slugParts = explode('/', $page['slug']);
-                        $lastPageSlugKey = array_key_last($slugParts);
-                        $lastPageSlugValue = "/" . $slugParts[$lastPageSlugKey];
+                    $slugParts = explode('/', $page['slug']);
+                    $lastPageSlugKey = array_key_last($slugParts);
+                    $lastPageSlugValue = "/" . $slugParts[$lastPageSlugKey];
         
-                        Post::update(['id' => $page['id']], [
+                    Post::update(['id' => $page['id']], [
                     
-                            'slug'  => $lastPageSlugValue
-                        ]);
-                    } 
-                }
-        
-                if(!empty($assingedSubCategorySlugsPages) && $assingedSubCategorySlugsPages !== null) {
-            
-                    foreach($assingedSubCategorySlugsPages as $page) {
-            
-                        $slugParts = explode('/', $page['slug']);
-                        $categorySlugKey = array_search(substr($currentSlug['slug'], 1), $slugParts);
-                        unset($slugParts[$categorySlugKey]);
-                        $slugMinusSubCategorySlug = implode('/', $slugParts);
-                    
-                        Post::update(['id' => $page['id']], [
-                    
-                            'slug'  => $slugMinusSubCategorySlug
-                        ]);
-                    } 
-                }
-        
-                Category::delete('id', $request['id']);
-                CategoryPage::delete('category_id', $request['id']);
-                CategorySub::delete('category_id', $request['id']);
-        
-                redirect("/admin/categories");
+                        'slug'  => $lastPageSlugValue
+                    ]);
+                } 
             }
+        
+            if(!empty($post->getAssignedSubCategoryIdSlug($request['id'])) && $post->getAssignedSubCategoryIdSlug($request['id']) !== null) {
+            
+                foreach($post->getAssignedSubCategoryIdSlug($request['id']) as $page) {
+            
+                    $slugParts = explode('/', $page['slug']);
+                    $categorySlugKey = array_search(substr($currentSlug['slug'], 1), $slugParts);
+                    unset($slugParts[$categorySlugKey]);
+                    $slugMinusSubCategorySlug = implode('/', $slugParts);
+                
+                    Post::update(['id' => $page['id']], [
+                    
+                        'slug'  => $slugMinusSubCategorySlug
+                    ]);
+                } 
+            }
+        
+            Category::delete('id', $request['id']);
+            CategoryPage::delete('category_id', $request['id']);
+            CategorySub::delete('category_id', $request['id']);
+        
+            redirect("/admin/categories");
         }
     }
 }
