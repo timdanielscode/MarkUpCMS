@@ -18,7 +18,7 @@
     $this->script('/assets/js/ajax.js');
     $this->script("/assets/js/fullscreen.js");
     $this->script("/assets/js/zoom.js");
-    $this->title("IndependentCMS");
+
     $this->include("headerClose");
     $this->include('navbar');
 ?>

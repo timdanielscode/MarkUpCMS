@@ -15,7 +15,7 @@
     $this->script("/assets/js/codemirror/codemirror.js");
     $this->script("/assets/js/codemirror/css.js");
     $this->script("/assets/js/codemirror/closebrackets.js");
-    $this->title("IndependentCMS");
+
     $this->include("headerClose");
     $this->include('navbar');
 ?>

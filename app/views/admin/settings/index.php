@@ -16,7 +16,6 @@
     $this->script("/assets/js/navbar/main.js", true);
     $this->script("/assets/js/sidebar.js", true);
 
-    $this->title("IndependentCMS");
     $this->include("headerClose");
 ?>
     <nav id="navbar">

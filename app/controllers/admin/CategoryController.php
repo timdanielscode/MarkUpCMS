@@ -361,6 +361,7 @@ class CategoryController extends Controller {
                 } 
             }
         
+            Session::set('success', 'You have successfully removed the catgory(s)!');
             Category::delete('id', $request['id']);
             CategoryPage::delete('category_id', $request['id']);
             CategorySub::delete('category_id', $request['id']);

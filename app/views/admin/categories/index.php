@@ -18,6 +18,7 @@
     $this->script('/assets/js/categories/add.js', true);
     $this->script('/assets/js/categories/slug.js', true);
     $this->script('/assets/js/categories/delete.js', true);
+    
     $this->include('headerClose');
     $this->include('navbar');
 ?>

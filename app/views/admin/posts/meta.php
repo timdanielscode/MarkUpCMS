@@ -5,7 +5,7 @@
 
 <?php 
     $this->include('headerOpen');  
-    $this->title("IndependentCMS");
+
     $this->include("headerClose");
     $this->include('navbar');
 ?>

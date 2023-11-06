@@ -15,7 +15,6 @@
     $this->script("/assets/js/codemirror/xml.js");
     $this->stylesheet("/assets/css/codemirror/monokai.css");
 
-    $this->title("IndependentCMS");
     $this->include("headerClose");
     $this->include('navbar');
 ?>

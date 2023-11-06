@@ -23,7 +23,6 @@
     $this->script('/assets/js/media/create/update/filename.js');
     $this->script('/assets/js/media/create/update/description.js');
 
-    $this->title("IndependentCMS");
     $this->include("headerClose");
     $this->include('navbar');
 ?>
