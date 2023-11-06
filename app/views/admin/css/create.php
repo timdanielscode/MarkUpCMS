@@ -57,7 +57,6 @@
         var editor = CodeMirror.fromTextArea(document.getElementById("code"), {
             theme: "monokai",
             lineNumbers: true,
-            matchBrackets: true,
             autoCloseBrackets: true,
             tabSize: 2
         });

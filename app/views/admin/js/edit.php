@@ -19,7 +19,6 @@
     $this->script("/assets/js/codemirror/codemirror.js");
     $this->script("/assets/js/codemirror/css.js");
     $this->script("/assets/js/codemirror/closebrackets.js");
-    $this->script("/assets/js/codemirror/htmlmixed.js");
 
     $this->include("headerClose");
     $this->include('navbar');

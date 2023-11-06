@@ -59,8 +59,6 @@
             mode: 'text/html',
             tabSize: 2
         });
-        editor.setSize('95%', "80vh");
-    
     </script>
 
     
