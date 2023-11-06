@@ -580,7 +580,7 @@ class PostController extends Controller {
                 $this->ifExists($id);
                 $post = new Post();
             
-                if($post->getData($id,['removed']) !== 1) {
+                if($post->getData($id,['removed'])[0] !== 1) {
             
                     Post::update(['id' => $id], [
             
@@ -590,7 +590,7 @@ class PostController extends Controller {
 
                     Session::set('success', 'You have successfully moved the page(s) to the trashcan!');
             
-                } else if($post->getData($id, ['removed']) === 1) {
+                } else if($post->getData($id, ['removed'])[0] === 1) {
             
                     Post::delete("id", $id);
                     CategoryPage::delete('page_id', $id);
