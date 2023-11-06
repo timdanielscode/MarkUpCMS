@@ -2,6 +2,8 @@
 <html lang="en">
     <head>
         <meta charset="UTF-8">
+        <title>MarkupCMS</title>
+        <link rel="icon" type="image/x-icon" href="/assets/img/logo.png">
         <meta name="viewport" content="width=device-width,initial-scale=1">
         <?php if(!empty($post[0]['metaTitle']) && $post[0]['metaTitle'] !== null) { ?><title><?php echo $post[0]['metaTitle']; ?></title><?php } ?>
         
