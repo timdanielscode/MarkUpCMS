@@ -117,6 +117,11 @@ class Post extends Model {
         }
     }
 
+    public function getJs($id) {
+
+        return DB::try()->select('id, file_name, extension')->from('js')->join('js_page')->on('js_page.js_id', '=', 'js.id')->where('js_page.page_id', '=', $id)->fetch();
+    }
+
     public function deleteJs($id, $jsId) {
 
         return DB::try()->delete('js_page')->where('page_id', '=', $id)->and('js_id', '=', $jsId)->run();        

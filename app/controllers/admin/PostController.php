@@ -116,7 +116,7 @@ class PostController extends Controller {
 
         $data['post'] = Post::get($request['id']);
         $data['cssFiles'] = $post->getCssIdFilenameExtension($request['id']);
-        $data['jsFiles'] = $js->getPostJs($request['id']);
+        $data['jsFiles'] = $post->getJs($request['id']);
         $data['menusTop'] = $menu->getTopMenus();
         $data['menusBottom'] =  $menu->getBottomMenus();
 
