@@ -16,9 +16,6 @@
     $this->script("/assets/js/codemirror/css.js");
     $this->script("/assets/js/codemirror/closebrackets.js");
 
-    $this->script('/assets/js/ajax.js');
-    $this->script('/assets/js/fullscreen.js');
-
     $this->include("headerClose");
     $this->include('navbar');
 ?>

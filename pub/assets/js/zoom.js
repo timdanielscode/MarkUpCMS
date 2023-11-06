@@ -1,16 +1,16 @@
-$(document).ready(function() {
+var editor = document.querySelector('.CodeMirror');
+editor.style.fontSize = "13px";
+var currentSize = editor.style.fontSize.replace('px','');
 
-    var editor = document.querySelector('.CodeMirror');
-    editor.style.fontSize = "13px";
-    var currentSize = editor.style.fontSize.replace('px','');
+var zoomInButton = document.getElementById('codeEditorZoomIn');
+var zoomOutButton = document.getElementById('codeEditorZoomOut');
 
-    $(document).on('click', '#codeEditorZoomIn', function() {
-        
-        editor.style.fontSize = currentSize++ + "px";
-    });
+zoomInButton.addEventListener("click", function() { 
 
-    $(document).on('click', '#codeEditorZoomOut', function() {
-        
-        editor.style.fontSize = currentSize-- + "px";
-    });
-});
+    editor.style.fontSize = currentSize++ + "px";
+}); 
+
+zoomOutButton.addEventListener("click", function() { 
+
+    editor.style.fontSize = currentSize-- + "px";
+}); 

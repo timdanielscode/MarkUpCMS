@@ -14,7 +14,6 @@
     $this->script("/assets/js/codemirror/codemirror.js");
     $this->script("/assets/js/codemirror/xml.js");
     $this->stylesheet("/assets/css/codemirror/monokai.css");
-    $this->script('/assets/js/ajax.js');
     
     $this->include("headerClose");
     $this->include('navbar');

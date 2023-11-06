@@ -11,15 +11,14 @@
     $this->stylesheet("/assets/css/css.css");
     $this->stylesheet("/assets/css/sidebar.css");
 
+    $this->script("/assets/js/fullscreen.js", true);
+    $this->script("/assets/js/zoom.js", true);
+
     $this->stylesheet("/assets/css/codemirror/codemirror.css");
     $this->stylesheet("/assets/css/codemirror/monokai.css");
     $this->script("/assets/js/codemirror/codemirror.js");
     $this->script("/assets/js/codemirror/css.js");
     $this->script("/assets/js/codemirror/closebrackets.js");
-
-    $this->script('/assets/js/ajax.js');
-    $this->script('/assets/js/fullscreen.js');
-    $this->script('/assets/js/zoom.js');
 
     $this->include("headerClose");
     $this->include('navbar');

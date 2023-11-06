@@ -15,7 +15,6 @@
     $this->script("/assets/js/dashboard/main.js", true);
     $this->script("/assets/js/navbar/Navbar.js", true);
     $this->script("/assets/js/navbar/main.js", true);
-    $this->script("/assets/js/dashboard/settings.js", true);
     $this->script("/assets/js/sidebar.js", true);
 
     $this->include("headerClose");

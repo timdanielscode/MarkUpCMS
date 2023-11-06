@@ -16,8 +16,6 @@
     $this->script("/assets/js/codemirror/xml.js");
     $this->stylesheet("/assets/css/codemirror/monokai.css"); //ayu-mirage, lesser-dark, railscasts, seti
     $this->script("/assets/js/codemirror/htmlmixed.js");
-    $this->script('/assets/js/ajax.js');
-    $this->script('/assets/js/fullscreen.js');
 
     $this->include("headerClose");
     $this->include('navbar');
