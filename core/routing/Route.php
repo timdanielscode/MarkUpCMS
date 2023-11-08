@@ -1,150 +1,204 @@
 <?php 
 /**
- * Route
+ * Setting routes
  * 
  * @author Tim Daniëls
  */
 namespace core\routing;
 
-use app\controllers\http\ResponseController;
 use core\http\Request;
 use core\http\Response;
 
-class Route extends Router {
+class Route {
 
-    private static $_response, $_request, $_routeKeys, $_middleware;
+    public $_path, $_pathParts, $_routeKeyValue, $_uriRouteKeyValue, $_class, $_request, $_response;
 
-    /**
-     * Declaring Request & Response
-     * 
-     * @return void 
-     */
-    public function __construct(Request $request, Response $response) {
+    public function __construct($path, $class) {
 
-        self::$_request = $request;
-        self::$_request->get();
-        self::$_response = $response;
-    } 
+        $this->_request = new Request();
+        $this->_response = new Response();
+
+        $this->checkType(key($path), $path[key($path)], $class);
+        $this->_response->getPath($this->_path);
+    }
 
     /**
-     * Setting route keys
+     * Checking type 
      * 
-     * @param string $keys optional
-     * @return void
-     */
-    public static function setRouteKeys($keys = null) {
-        
-        if($keys) {
-            self::$_routeKeys = $keys;
+     * @param string $type request method type
+     * @param string $path uri path name
+     * @param array $class class name, method name
+     */ 
+    private function checkType($type, $path, $class) {
+
+        if($type === $this->_request->getMethod() ) {
+
+            $this->checkPath($path, $class);
         }
     }
 
     /**
-     * Setting route path with type of request method get 
+     * Checking request uri path
      * 
-     * @param string $path route
-     * @return object Router Request Response 
-     */
-    public static function get($path) {
+     * @param array $path uri path name
+     * @param array $class class name, method name
+     */ 
+    private function checkPath($path, $class) {
 
-        $route = new Router(self::$_request, self::$_response);
-        if(self::$_request->getMethod() === 'GET') {
+        if($path === $this->_request->getUri()) {
 
-           return $route->getRequest($path, self::$_routeKeys);
+            $this->_path = $path;
+            $this->checkClass($class);
         } else {
-            return $route;
+            $this->checkRouteKeys($path, $class);
         }
     }
 
     /**
-     * Setting route path with type of request method post
+     * Checking route keys
      * 
-     * @param string $path route
-     * @return object Router Request Response
-     */
-    public static function post($path) {
+     * @param array $path uri path name
+     * @param array $class class name, method name
+     */ 
+    private function checkRouteKeys($path, $class) {
 
-        $route = new Router(self::$_request, self::$_response);
-        if(self::$_request->getMethod() === 'POST') {
+        $regex = "/\[.*\]/";
+        preg_match($regex, $path, $match);
 
-           return $route->postRequest($path, self::$_routeKeys);
-        } else {
-            return $route;
+        if(!empty($match) && $match !== null) {
+
+            $this->getRouteKeyKey($path, $match, $class);
         }
     }
 
     /**
-     * Setting crud route paths
+     * Getting route key key
      * 
-     * In routes
-     * Route::crud('path', '[routeKey]')->add('controller','crud');
-     * 
-     * Will handle following controller methods: index, create, store, read, edit, update and delete
-     * 
-     * @param string $path route
-     * @param string $routeKey preffered route key
-     * @return object Router Request Response
-     */
-    public static function crud($path, $routeKey) {
+     * @param string $path uri path name
+     * @param array $routeKey path uri key key
+     * @param array $class class name, method name
+     */ 
+    private function getRouteKeyKey($path, $routeKey, $class) {
 
-        $route = new Router(self::$_request, self::$_response);
-        if(self::$_request->getMethod() === 'GET') {
-            return $route->getRequestCrud($path, $routeKey, self::$_routeKeys);
+        $this->_pathParts = explode('/', $path);
 
-        } else if(self::$_request->getMethod() === 'POST') {
-            return $route->postRequestCrud($path, $routeKey, self::$_routeKeys);
-        } else {
-            return $route;
+        foreach($this->_pathParts as $key => $value) {
+           
+            if($value === $routeKey[0]) {
+
+                return $this->replaceRouteKey($key, $class);
+            }
         }
     }
 
     /**
-     * Setting route path and view with type of request method get 
+     * Replace route key key with uri key
      * 
-     * @param string $path route
-     * @param string $view path
-     * @return object Router Request Response
-     */    
-    public static function view($path, $view) {
+     * @param string $routeKeyKey uri path key key
+     * @param array $class class name, method name
+     */ 
+    private function replaceRouteKey($routeKeyKey, $class) {
 
-        $route = new Router(self::$_request, self::$_response);
-        if(self::$_request->getMethod() === 'GET') {
+        $uriParts = explode('/', $this->_request->getUri());
 
-           return $route->handleView($path, $view, self::$_routeKeys);
-        } else {
-            return $route;
+        foreach($uriParts as $key => $value) {
+
+            if($routeKeyKey === $key) {
+
+                $this->_uriRouteKeyValue = $uriParts[$key];
+                $this->setRouteKeyValue($this->_pathParts[$key]);
+                $this->_pathParts[$key] = $this->_uriRouteKeyValue;
+                $routePathUriKey = implode('/', $this->_pathParts);
+
+                return $this->checkPath($routePathUriKey, $class);
+            }
         }
     }
 
     /**
-     * Creating Router instance for setting up middlewares
+     * Setting route key value
      * 
-     * @return object Route Request Response
-    */
-    public static function middleware($middleware) {
+     * @param string $routeKey route key path value
+     */ 
+    private function setRouteKeyValue($routeKey) {
 
-        if(!empty($middleware) && $middleware !== null) {
-   
-            self::$_middleware = $middleware;
+        $this->_routeKeyValue = trim($routeKey, '[]');
+    }
 
-            $route = new Router(self::$_request, self::$_response, self::$_middleware);
-            return $route;
+    /**
+     * Checking if class exists
+     * 
+     * @param array $class class name, method name
+     */ 
+    private function checkClass($class) {
+
+        if(class_exists('app\controllers\\' . key($class) ) === true) {
+          
+            $this->_class = key($class);
+            $this->checkMethod($class[key($class)]);
+        }
+    }
+
+    /**
+     * Checking method exists
+     * 
+     * @param string $name method name
+     */ 
+    private function checkMethod($name) {
+
+        if(method_exists('app\controllers\\' . $this->_class, $name)) {
+
+            $this->instance('app\controllers\\' . $this->_class, $name);
         } 
     }
 
     /**
-     * Handling 404 status code
+     * Create instance
      * 
-     * @param mixed int|string $code
-     * @return void
-    */
-    public function uriNotFound($code) {
+     * @param string $class class name
+     * @param string $method method name
+     */
+    private function instance($class, $method) {
 
-        if(empty($this->_path)) {
+        $instance = new $class();
+    
+        if($this->_request->getMethod() === 'POST') {
 
-            self::$_response->set(404);
-            $controller = new ResponseController();
-            $controller->pageNotFound();
+            return $this->typeOfPost($instance, $method);
+        } else if($this->_request->getMethod() === 'GET') {
+            return $this->typeOfGet($instance, $method);
         } 
+    }
+
+    /**
+     * Running instance method type request of get
+     * 
+     * @param object $instance class instance
+     * @param string $method method name
+     */
+    private function typeOfGet($instance, $method) {
+
+        if(!empty($this->_uriRouteKeyValue) && $this->_uriRouteKeyValue !== null) {
+
+            return $instance->$method([$this->_routeKeyValue => $this->_uriRouteKeyValue]);
+        } 
+
+        return $instance->$method();
+    }
+
+    /**
+     * Running instance method type request of post
+     * 
+     * @param object $instance class instance
+     * @param string $method method name
+     */
+    private function typeOfPost($instance, $method) {
+
+        if(!empty($this->_uriRouteKeyValue) && $this->_uriRouteKeyValue !== null) {
+
+            return $instance->$method(array_merge($this->_request->get(), [$this->_routeKeyValue => $this->_uriRouteKeyValue]));
+        } 
+
+        return $instance->$method($this->_request->get());
     }
 }
