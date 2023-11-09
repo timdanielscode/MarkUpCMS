@@ -1,6 +1,6 @@
 <?php
 
-use core\routing\Route;
+use core\http\Route;
 use database\DB;
 use core\Session;
 use core\http\Middleware;
