@@ -13,11 +13,10 @@
     width: 40px;
 }
 #navbar .navbarItems {
-    display: inline-block;
     position: absolute;
-    left: 50%;
-    transform: translateX(-50%);
-    padding-left: 0;
+    top: 0;
+    width: 100%;
+    text-align: center;
 }
 #navbar .navbarItems li {
     list-style-type: none;

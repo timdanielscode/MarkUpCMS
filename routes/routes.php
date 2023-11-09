@@ -109,7 +109,7 @@ Middleware::route(['auth' => 'admin'], function() {
 
 Middleware::route('login', function() {
 
-    new Route(['GET' => '/admin/css/'], ['admin\CssController' => 'index']);
+    new Route(['GET' => '/admin/css'], ['admin\CssController' => 'index']);
     new Route(['GET' => '/admin/css/[id]/read'], ['admin\CssController' => 'read']);
 });
 

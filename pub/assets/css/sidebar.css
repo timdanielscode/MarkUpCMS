@@ -17,7 +17,7 @@
     overflow: hidden;
 }
 #navbar .navbarItems {
-    left: calc(50% - 8.33%) !important;
+    left: calc(0% - 8.33%) !important;
 }
 .mainButtonContainer {
     width: 100%;
