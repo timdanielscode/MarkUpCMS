@@ -38,14 +38,6 @@ class CategoryController extends Controller {
     public function index() {
 
         $category = new Category();
-
-        if(!empty($category->getSlugSub(35)) ){
-            
-            print_r($category->getSlugSub(35));
-        }
-        
-
-        $category = new Category();
         $categories = $category->allCategoriesButOrdered();
 
         $search = Get::validate([get('search')]);
@@ -121,24 +113,23 @@ class CategoryController extends Controller {
         redirect('/admin/categories');
     }
 
-    public function SHOWADDABLE($request) {
+    public function SHOWADDABLE() {
 
-        $this->ifExists($request['id']);
+        $id = Get::validate([get('id')]);
+        $this->ifExists($id);
 
-        $slug = DB::try()->select('slug')->from('categories')->where('id', '=', $request['id'])->first();
+        $slug = DB::try()->select('slug')->from('categories')->where('id', '=', $id)->first();
 
         $category = new Category();
-        $assignedPages = $category->getPostAssignedIdTitle($request['id']);
-        $notAssignedPages = $category->getNotPostAssignedIdTitle($category->getPostAssignedIdTitle($request['id']));
-        $assingedSubCategories = $category->getSubIdTitleSlug($request['id']);
-        $notAssingedSubs = $category->getNotSubIdTitleSlug($category->getSubIdTitleSlug($request['id']), $request['id']);
+        $assignedPages = $category->getPostAssignedIdTitle($id);
+        $notAssignedPages = $category->getNotPostAssignedIdTitle($category->getPostAssignedIdTitle($id));
+        $assingedSubCategories = $category->getSubIdTitleSlug($id);
+        $notAssingedSubs = $category->getNotSubIdTitleSlug($category->getSubIdTitleSlug($id), $id);
 
-        $data['id'] = $request['id'];
+        $data['id'] = $id;
         $data['slug'] = $slug['slug'];
-
         $data['assignedPages'] = $assignedPages;
         $data['notAssingedPages'] = $notAssignedPages;
-        
         $data['assingedSubCategories'] = $assingedSubCategories;
         $data['notAssingedSubs'] = $notAssingedSubs;
 

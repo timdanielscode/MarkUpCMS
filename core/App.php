@@ -22,6 +22,6 @@ class App {
         require_once '../routes/routes.php';
 
         $response = new Response();
-        $response->check(404);
+        //$response->check(404);
     }
 }
