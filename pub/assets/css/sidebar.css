@@ -26,3 +26,6 @@
     margin-top: 11px;
     margin-bottom: 20px;
 }
+.sidebarContainer .button {
+    padding: 0.3% 5% !important;
+}

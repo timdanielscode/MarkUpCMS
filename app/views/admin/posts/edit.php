@@ -46,7 +46,7 @@
             </div>
         </div>
         <div class="col2 col3-L">
-            <div id="sidebar" class="width-25-L">
+            <div id="sidebar" class="width-25">
                 <div class="sidebarContainer">
                     <div class="mainButtonContainer">
                         <label for="submit" class="button greenButton margin-r-10">Update</label>
@@ -59,32 +59,35 @@
                         <a href="#" id="codeEditorZoomOut" class="button darkButton">-</a>
                     </div>
                     <div class="buttonContainer">
-                        <a id="metaButton" class="button lightButton margin-r-10">Meta data</a>
-                        <a id="categoryButton" class="button lightButton">Categories</a>
+                        <a id="slugButton" class="button lightButton margin-r-10">Page slug</a>
+                        <a id="categoryButton" class="button lightButton ">Categories</a>
                     </div>
                     <div class="buttonContainer">
+                        <a id="cdnButton" class="button lightButton margin-r-10">Cdn</a>
+                        <a id="jsButton" class="button lightButton margin-r-10">Scripts</a>
                         <a id="cssButton" class="button lightButton margin-r-10">Css</a>
-                        <a id="jsButton" class="button lightButton margin-r-10">Js</a>
-                        <a id="cdnButton" class="button lightButton">Cdn</a>
                     </div>
                     <div class="buttonContainer">
-                        <a id="widgetButton" class="button lightButton">Widgets</a>
+                        <a id="widgetButton" class="button lightButton margin-r-10">Widgets</a>
+                        <a id="metaButton" class="button lightButton">Meta data</a>
                     </div>
-                    <span class="text">Slug:</span>
-                    <span class="fullSlug"><?php echo $data['slug']; ?></span>
-                    <form class="updateSlugForm" action="/admin/posts/<?php echo $data['id']; ?>/update-slug" method="POST">
-                        <div class="form-parts">
-                            <input type="text" name="postSlug" id="slug" value="<?php echo substr($data['postSlug'], 1); ?>">
-                            <?php if(!empty(Errors::get($rules, 'postSlug')) && Errors::get($rules, 'postSlug') !== null) { ?>
-                                <div class="error-messages">
-                                    <?php echo Errors::get($rules, 'postSlug'); ?>
-                                </div>   
-                            <?php } ?>
-                        </div>
-                        <input type="hidden" name="slug" value="<?php echo $data['slug']; ?>">
-                        <input class="button greenButton margin-t-10" type="submit" name="submit" value="Update"/>
-                        <input type="hidden" name="token" value="<?php Csrf::token('add'); ?>" />
-                    </form>
+                    <div id="slug" class="<?php if(Session::exists('slug') === false ) { echo 'display-none'; } ?>">
+                        <span class="text">Slug:</span>
+                        <span class="fullSlug"><?php echo $data['slug']; ?></span>
+                        <form class="updateSlugForm" action="/admin/posts/<?php echo $data['id']; ?>/update-slug" method="POST">
+                            <div class="form-parts">
+                                <input type="text" name="postSlug" id="slug" value="<?php echo substr($data['postSlug'], 1); ?>">
+                                <?php if(!empty(Errors::get($rules, 'postSlug')) && Errors::get($rules, 'postSlug') !== null) { ?>
+                                    <div class="error-messages">
+                                        <?php echo Errors::get($rules, 'postSlug'); ?>
+                                    </div>   
+                                <?php } ?>
+                            </div>
+                            <input type="hidden" name="slug" value="<?php echo $data['slug']; ?>">
+                            <input class="button greenButton margin-t-10" type="submit" name="submit" value="Update"/>
+                            <input type="hidden" name="token" value="<?php Csrf::token('add'); ?>" />
+                        </form>
+                    </div>
                     <div id="cdn" class="<?php if(Session::exists('cdn') === false ) { echo 'display-none'; } ?>">
                         <form action="/admin/posts/<?php echo $data['id']; ?>/export-cdns" method="POST" class="cdnForm margin-t-50">
                             <label>Import cdn: </label>

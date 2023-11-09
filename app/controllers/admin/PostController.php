@@ -126,6 +126,7 @@ class PostController extends Controller {
     public function edit($request) {
 
         $this->ifExists($request['id']);
+        $this->setDefaultSession('slug');
         
         $data = $this->getAllData($request['id']);
         $data['rules'] = [];
@@ -136,7 +137,7 @@ class PostController extends Controller {
     public function update($request) {
 
         $id = $request['id'];
-        $this->unsetSessions(['cdn', 'widget', 'category', 'css', 'js', 'js', 'meta']);
+        $this->unsetSessions(['cdn', 'widget', 'category', 'css', 'js', 'meta']);
         $this->ifExists($id);
         $this->redirect("submit", "/admin/posts/$id/edit");
 
@@ -176,6 +177,21 @@ class PostController extends Controller {
                 Session::delete($name);
             }
         }
+    }
+
+    private function setDefaultSession($slug) {
+
+        $names = ['cdn', 'widget', 'category', 'css', 'js', 'meta'];
+
+        foreach($names as $name) {
+
+            if(Session::exists($name)) {
+
+                return;
+            }
+        }
+
+        Session::set($slug, true);
     }
 
     private function getAllData($id, $requestData = null) {
@@ -218,7 +234,7 @@ class PostController extends Controller {
     public function importCdns($request) {
 
         $id = $request['id'];
-        $this->unsetSessions(['widget', 'category', 'css', 'js', 'meta']);
+        $this->unsetSessions(['slug', 'widget', 'category', 'css', 'js', 'meta']);
         Session::set('cdn', true);
 
         if(submitted("submit") === true && Csrf::validate(Csrf::token('get'), post('token')) === true ) {
@@ -241,7 +257,7 @@ class PostController extends Controller {
 
         $id = $request['id'];
         $this->redirect("submit", "/admin/posts/$id/edit");
-        $this->unsetSessions(['widget', 'category', 'css', 'js', 'meta']);
+        $this->unsetSessions(['slug', 'widget', 'category', 'css', 'js', 'meta']);
         Session::set('cdn', true);
 
         foreach($request['cdns'] as $cdnId) {
@@ -259,7 +275,7 @@ class PostController extends Controller {
         $id = $request['id'];
         $this->redirect("submit", "/admin/posts/$id/edit");
         $this->ifExists($id);
-        $this->unsetSessions(['cdn', 'category', 'css', 'js', 'meta']);
+        $this->unsetSessions(['slug', 'cdn', 'category', 'css', 'js', 'meta']);
         Session::set('widget', true);
 
         $widgetIds = $request['widgets'];
@@ -285,7 +301,7 @@ class PostController extends Controller {
         $id = $request['id'];
         $this->ifExists($id);
         $this->redirect("submit", "/admin/posts/$id/edit");
-        $this->unsetSessions(['cdn', 'category', 'css', 'js', 'meta']);
+        $this->unsetSessions(['slug', 'cdn', 'category', 'css', 'js', 'meta']);
         Session::set('widget', true);
 
         if(!empty($request['widgets']) && $request['widgets'] !== null) {
@@ -306,7 +322,7 @@ class PostController extends Controller {
         $id = $request['id'];
         $this->ifExists($id);
         $this->redirect("submit", "/admin/posts/$id/edit");
-        $this->unsetSessions(['widget', 'cdn', 'css', 'js', 'meta']);
+        $this->unsetSessions(['slug', 'widget', 'cdn', 'css', 'js', 'meta']);
         Session::set('category', true);
 
         $categoryId = $request['categories'];
@@ -371,7 +387,7 @@ class PostController extends Controller {
         $id = $request['id'];
         $this->ifExists($id);
         $this->redirect("submit", "/admin/posts/$id/edit");
-        $this->unsetSessions(['widget', 'cdn', 'category', 'css', 'meta']);
+        $this->unsetSessions(['slug', 'widget', 'cdn', 'category', 'css', 'meta']);
         Session::set('js', true);
 
         foreach($request['linkedJsFiles'] as $linkedJsId) {
@@ -389,7 +405,7 @@ class PostController extends Controller {
         $id = $request['id'];
         $this->ifExists($id);
         $this->redirect("submit", "/admin/posts/$id/edit");
-        $this->unsetSessions(['widget', 'cdn', 'category', 'css', 'meta']);
+        $this->unsetSessions(['slug', 'widget', 'cdn', 'category', 'css', 'meta']);
         Session::set('js', true);
 
         foreach($request['jsFiles'] as $jsId) {
@@ -407,7 +423,7 @@ class PostController extends Controller {
         $id = $request['id'];
         $this->ifExists($id);
         $this->redirect("submit", "/admin/posts/$id/edit");
-        $this->unsetSessions(['widget', 'cdn', 'category', 'js', 'meta']);
+        $this->unsetSessions(['slug', 'widget', 'cdn', 'category', 'js', 'meta']);
         Session::set('css', true);
 
         foreach($request['cssFiles'] as $cssId) {
@@ -425,7 +441,7 @@ class PostController extends Controller {
         $id = $request['id'];
         $this->ifExists($id);
         $this->redirect("submit", "/admin/posts/$id/edit");
-        $this->unsetSessions(['widget', 'cdn', 'category', 'js', 'meta']);
+        $this->unsetSessions(['slug', 'widget', 'cdn', 'category', 'js', 'meta']);
         Session::set('css', true);
 
         foreach($request['linkedCssFiles'] as $cssId) {
@@ -443,6 +459,8 @@ class PostController extends Controller {
         $id = $request['id'];
         $this->ifExists($id);
         $this->redirect("submit", "/admin/posts/$id/edit");
+        $this->unsetSessions(['widget', 'cdn', 'category', 'js', 'meta', 'css']);
+        Session::set('slug', true);
 
         $post = new Post();
         $rules = new Rules();
@@ -482,7 +500,7 @@ class PostController extends Controller {
         $id = $request['id'];
         $this->ifExists($id);
         $this->redirect("submit", "/admin/posts/$id/edit");
-        $this->unsetSessions(['widget', 'cdn', 'category', 'css', 'js']);
+        $this->unsetSessions(['slug', 'widget', 'cdn', 'category', 'css', 'js']);
         Session::set('meta', true);
 
         $rules = new Rules();
@@ -514,7 +532,7 @@ class PostController extends Controller {
         $id = $request['id'];
         $this->ifExists($request['id']);
         $this->redirect("submit", "/admin/posts/$id/edit");
-        $this->unsetSessions(['widget', 'cdn', 'css', 'js', 'meta']);
+        $this->unsetSessions(['slug', 'widget', 'cdn', 'css', 'js', 'meta']);
         Session::set('category', true);
 
         $post = new Post();
