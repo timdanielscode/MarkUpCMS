@@ -40,7 +40,7 @@ class MediaController extends Controller {
 
         $media = new Media();
         $allMedia = $media->allMediaButOrdered();
-        
+
         $search = Get::validate([get('search')]);
 
         if(!empty($search) ) {

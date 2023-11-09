@@ -167,19 +167,19 @@ Middleware::route(['auth' => 'admin'], function() {
 
 Middleware::route('login', function() {
 
-    new Route(['GET' => '/admin/menus/create'], ['admin\MediaController' => 'index']);
-    new Route(['GET' => '/admin/menus/create'], ['admin\MediaController' => 'create']);
+    new Route(['GET' => '/admin/media'], ['admin\MediaController' => 'index']);
+    new Route(['GET' => '/admin/media/create'], ['admin\MediaController' => 'create']);
 });
 
 Middleware::route(['auth' => 'admin'], function() {
 
-    new Route(['POST' => '/admin/media/create/update-filename'], ['admin\MenuController' => 'UPDATEFILENAME']);
-    new Route(['POST' => '/admin/media/create/update-description'], ['admin\MenuController' => 'UPDATEDESCRIPTION']);
-    new Route(['POST' => '/admin/media/create'], ['admin\MenuController' => 'store']);
-    new Route(['POST' => '/admin/media/update'], ['admin\MenuController' => 'UPDATE']);
-    new Route(['POST' => '/admin/media/update-filename'], ['admin\MenuController' => 'UPDATEFILENAME']);
-    new Route(['POST' => '/admin/media/update-description'], ['admin\MenuController' => 'UDPATEDESCRIPTION']);
-    new Route(['POST' => '/admin/media/delete'], ['admin\MenuController' => 'delete']);
+    new Route(['POST' => '/admin/media/create/update-filename'], ['admin\MediaController' => 'UPDATEFILENAME']);
+    new Route(['POST' => '/admin/media/create/update-description'], ['admin\MediaController' => 'UPDATEDESCRIPTION']);
+    new Route(['POST' => '/admin/media/create'], ['admin\MediaController' => 'store']);
+    new Route(['POST' => '/admin/media/update'], ['admin\MediaController' => 'UPDATE']);
+    new Route(['POST' => '/admin/media/update-filename'], ['admin\MediaController' => 'UPDATEFILENAME']);
+    new Route(['POST' => '/admin/media/update-description'], ['admin\MediaController' => 'UDPATEDESCRIPTION']);
+    new Route(['POST' => '/admin/media/delete'], ['admin\MediaController' => 'delete']);
 });   
 
 Middleware::route('login', function() {
