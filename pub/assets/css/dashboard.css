@@ -10,7 +10,7 @@
 }
 #navbar form {
     position: absolute;
-    left: 50%;
+    left: calc(50% - -8%);
     transform: translate(-50%, -50%);
     top: 50%;
 }
@@ -325,3 +325,30 @@ progress.lightBlue::-moz-progress-bar, progress.blue::-webkit-progress-value, pr
     background: rgba(0, 0, 0, 0.5);
     z-index: 99;
 }
+@media only screen and (max-width: 1250px) {
+    .col2-4 {
+        flex: 30% !important;
+    }
+    .col4, .col8 {
+        flex: 50% !important;
+    }
+    .cardProgressContainer {
+        overflow-y: auto !important;
+        margin-bottom: 50px;
+    }
+    #navbar form input[type="text"] {
+        width: 300px !important;
+    }
+} 
+@media only screen and (max-width: 1000px) {
+
+    #navbar form input[type="text"] {
+        width: 200px !important;
+    }
+} 
+@media only screen and (max-width: 750px) {
+
+    .cardProgressContainer, #sidebar {
+        display: none !important;
+    }
+} 

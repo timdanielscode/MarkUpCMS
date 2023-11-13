@@ -11,6 +11,8 @@
     margin-left: 5%;
     margin-top: 5px;
     width: 40px;
+    position: relative;
+    z-index: 9999999;
 }
 #navbar .navbarItems {
     position: absolute;

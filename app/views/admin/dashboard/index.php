@@ -21,7 +21,7 @@
 ?>
     <nav id="navbar">
         <a href="/admin/dashboard"><img id="logo" src="/assets/img/logo.png"></a>
-        <form target="_blank" action="/admin/posts/" method="GET">
+        <form target="_blank" action="/admin/posts" method="GET">
             <img id="searchIcon" src="/assets/img/search.png"/>
             <input type="text" name="search" placeholder="Pages" id="search">
             <input type="hidden" name="submit" value="search">
@@ -42,12 +42,12 @@
     </nav>
     <div id="progressInfoItem"></div>
     <div class="row">
-        <div class=" col2 col3-L">
+        <div class="col2 col2-L col3-L col4-S">
 
             <?php $this->include('leftSidebar'); ?>
 
         </div>
-        <div class="col10 col9-L">
+        <div class="col10 col10-L- col9-L col8-S">
             <div class="cardProgressContainer">
                 <div class="row">
                     <div class="col6">
