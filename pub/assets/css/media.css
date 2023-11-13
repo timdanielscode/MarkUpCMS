@@ -678,3 +678,10 @@ table td .button {
     height: 26px;
     font-size: 12px;
 }
+
+@media only screen and (max-width: 750px) {
+
+    .filesContainer, .folderForm, #sidebar, .crumPath, .readImageContainer {
+        display: none !important;
+    }
+} 

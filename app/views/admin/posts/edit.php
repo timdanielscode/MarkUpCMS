@@ -11,6 +11,7 @@
     $this->stylesheet("/assets/css/page.css");
     $this->stylesheet("/assets/css/sidebar.css");
     
+    $this->script("/assets/js/sidebar.js", true);
     $this->script("/assets/js/pages/pages.js", true);
     $this->script("/assets/js/fullscreen.js", true);
     $this->script("/assets/js/zoom.js", true);
@@ -25,7 +26,7 @@
     
 ?>
     <div class="row">
-        <div class="col10 col9-L">
+        <div class="col10 col10-L- col9-L col8-S">
             <div class="edit-container">
 
                 <?php Alert::message('success'); ?>
@@ -45,8 +46,8 @@
                 </form>
             </div>
         </div>
-        <div class="col2 col3-L">
-            <div id="sidebar" class="width-25">
+        <div class="col2 col2-L col3-L col4-S">
+            <div id="sidebar" class="right" class="width-25">
                 <div class="sidebarContainer">
                     <div class="mainButtonContainer">
                         <label for="submit" class="button greenButton margin-r-10">Update</label>
@@ -249,7 +250,7 @@
                             </select>
                         <input type="hidden" name="token" value="<?php Csrf::token('add'); ?>" />
                         <input type="submit" name="submit" class="button darkBlueButton margin-t-20" value="Include"/>
-                    </form>
+                    </form> 
                 </div>
             </div>
         </div>

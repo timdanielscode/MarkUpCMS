@@ -65,3 +65,10 @@
 .cdnForm select option {
     padding: 4px 0 4px 10px;
 }
+
+@media only screen and (max-width: 750px) {
+
+    .CodeMirror, #title, #sidebar {
+        display: none !important;
+    }
+} 

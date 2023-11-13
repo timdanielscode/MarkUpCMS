@@ -402,56 +402,42 @@ h3 {
     color: rgb(199, 48, 48);
 }
 
+@media only screen and (max-width: 1500px) {
 
+    /*
+        Column
+    */
+    .col10-L- {
 
-/* main color #0c172b ? */
+        flex: 80%;
+    }
+    .col2-L {
+        flex: 20%;
+    }
+} 
 
-
-
- /* Extra small devices (phones, 600px and down) */
- @media only screen and (max-width: 600px) {
-
-
-
- }
-
- /* Small devices (portrait tablets and large phones, 600px and up) */
- @media only screen and (max-width: 600px) {
-    
-
- }
- 
- /* Medium devices (landscape tablets, 768px and up) */
- @media only screen and (max-width: 768px) {
-
-
- }
- 
- /* Large devices (laptops/desktops, 992px and up) */
- @media only screen and (max-width: 992px) {
-
-
-
- }
- 
- /* Extra large devices (large laptops and desktops, 1200px and up) */
- @media only screen and (max-width: 1200px) {
+@media only screen and (max-width: 1250px) {
 
     /*
         Column
     */
     .col9-L {
-
         flex: 75%;
     }
     .col3-L {
         flex: 25%;
     }
+ } 
+
+ @media only screen and (max-width: 1000px) {
 
     /*
-        Width
+        Column
     */
-    .width-25-L {
-        width: 25% !important;
+    .col8-S {
+        flex: 66.66%;
+    }
+    .col4-S {
+        flex: 33.33%;
     }
  } 

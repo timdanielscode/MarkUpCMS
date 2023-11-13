@@ -17,7 +17,7 @@
     overflow: hidden;
 }
 #navbar .navbarItems {
-    left: calc(0% - 8.33%) !important;
+    left: calc(0% - 10%);
 }
 .mainButtonContainer {
     width: 100%;
@@ -26,6 +26,40 @@
     margin-top: 11px;
     margin-bottom: 20px;
 }
-.sidebarContainer .button {
-    padding: 0.3% 5% !important;
-}
+
+@media only screen and (max-width: 1500px) {
+
+    #navbar .navbarItems {
+        left: calc(0% - 12.5%) !important;
+    }
+} 
+@media only screen and (max-width: 1250px) {
+
+    #navbar .navbarItems {
+        left: calc(0% - 15%) !important;
+    }
+
+    #navbar .navbarItems li {
+        margin-right: 0 !important;
+        margin-left: 0 !important;
+    }
+} 
+@media only screen and (max-width: 1000px) {
+
+    #navbar .navbarItems {
+        left: calc(0% - 18%) !important;
+    }
+
+    #navbar .navbarItems li {
+        margin-left: 0 !important;
+    }
+    #navbar .navbarItems li a { 
+        padding-left: 0 !important;
+    }
+} 
+@media only screen and (max-width: 750px) {
+
+     #navbar {
+        display: none !important;
+    }
+} 

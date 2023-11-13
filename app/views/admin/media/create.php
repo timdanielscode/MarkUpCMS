@@ -29,7 +29,7 @@
  
 
         <div class="row">
-            <div class="col10 col9-L">
+            <div class="col10 col10-L- col9-L col8-S">
 
                     <?php if(!empty(Get::validate([get('folder')])) && Get::validate([get('folder')]) !== 'website/assets') {
 
@@ -133,8 +133,8 @@
                     <input type="range" min="50" max="500" value="100" id="ranger">
                 </div>
             </div>
-            <div class="col2 col3-L">
-                <div id="sidebar" class="width-25-L">
+            <div class="col2 col2-L col3-L col4-S">
+                <div id="sidebar" class="width-25">
                     <div class="sidebarContainer">
                         <div class="mainButtonContainer">
                             <label for="submit" class="button greenButton margin-r-10 <?php if(Session::get('user_role') === 'normal') { echo 'display-none-important'; } ?>">Upload</label>

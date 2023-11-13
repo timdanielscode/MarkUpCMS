@@ -99,3 +99,10 @@
     padding: 10px;
     font-size: 14px;
 }
+
+@media only screen and (max-width: 750px) {
+
+    .CodeMirror, #title, #sidebar {
+        display: none !important;
+    }
+}
