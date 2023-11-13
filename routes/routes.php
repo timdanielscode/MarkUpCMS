@@ -99,7 +99,7 @@ Middleware::route('login', function() {
 Middleware::route(['auth' => 'admin'], function() {
 
     new Route(['GET' => '/admin/users/create'], ['admin\UserController' => 'create']);
-    new Route(['POST' => '/admin/users/create'], ['admin\UserController' => 'store']);
+    new Route(['POST' => '/admin/users/store'], ['admin\UserController' => 'store']);
     new Route(['GET' => '/admin/users/[username]/edit'], ['admin\UserController' => 'edit']);
     new Route(['POST' => '/admin/users/[username]/update'], ['admin\UserController' => 'update']);
     new Route(['POST' => '/admin/users/[username]/update-role'], ['admin\UserController' => 'updateRole']);

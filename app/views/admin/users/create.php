@@ -15,7 +15,7 @@
 ?>
 
     <div class="row">
-        <div class="col10 col9-L">
+        <div class="col10 col10-L- col9-L col8-S">
             <div class="create-container">
             <h1 class="mb-5">Add a new user</h1>
                 <form action="store" method="POST" class="usersCreateForm">
@@ -64,8 +64,8 @@
                 </form>
             </div>
         </div>
-        <div class="col2 col3-L">
-            <div id="sidebar" class="width-25-L">
+        <div class="col2 col2-L col3-L col4-S">
+            <div id="sidebar" class="width-25">
                 <div class="sidebarContainer">
                     <div class="mainButtonContainer">
                         <label for="submit" class="button greenButton margin-r-10">Store</label>

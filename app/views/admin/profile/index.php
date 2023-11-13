@@ -17,7 +17,7 @@
     $this->include('navbar');
 ?>
     <div class="row">
-        <div class="col10 col9-L">
+        <div class="col10 col10-L- col9-L col8-S">
         <div class="edit-container">
             <?php Alert::message('success'); ?>
             <h1 class="margin-b-30">Update details</h1>
@@ -45,8 +45,8 @@
                 </form>
                 </div>
         </div>
-        <div class="col2 col3-L">
-            <div id="sidebar" class="width-25-L">
+        <div class="col2 col2-L col3-L col4-S">
+            <div id="sidebar" class="width-25">
                 <div class="sidebarContainer">
                     <div class="mainButtonContainer">
                         <label for="submit" class="button greenButton margin-r-10">Update</label>
