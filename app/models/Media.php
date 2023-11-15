@@ -6,10 +6,6 @@ use database\DB;
 
 class Media extends Model {
 
-    public function __construct() {
-
-        self::table('media');
-    }
 
     public function ifRowExists($id) {
 

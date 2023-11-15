@@ -8,11 +8,6 @@ class Css extends Model {
 
     private $_postIds = [];
 
-    public function __construct() {
-
-        self::table('css');
-    }
-
     public function ifRowExists($id) {
 
         return DB::try()->select('id')->from('css')->where('id', '=', $id)->first();

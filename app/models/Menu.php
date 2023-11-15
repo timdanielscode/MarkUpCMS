@@ -8,10 +8,6 @@ class Menu extends Model {
 
     private $_columns;
 
-    public function __construct() {
-
-        self::table('menus');
-    }
 
     public function ifRowExists($id) {
 

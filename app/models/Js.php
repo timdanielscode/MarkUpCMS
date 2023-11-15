@@ -8,11 +8,6 @@ class Js extends Model {
 
     private $_postIds = [];
 
-    public function __construct() {
-
-        self::table('js');
-    }
-
     public function ifRowExists($id) {
 
         return DB::try()->select('id')->from('js')->where('id', '=', $id)->first();

@@ -10,11 +10,6 @@ use core\Session;
    
 class User extends Model {
 
-    public function __construct() {
-
-        self::table("users");
-    }
-
     public function ifRowExists($value) {
 
         return DB::try()->select('username')->from('users')->where('username', '=', $value)->or('id', '=', $value)->first();

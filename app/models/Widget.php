@@ -8,11 +8,6 @@ class Widget extends Model {
 
     private $_columns;
 
-    public function __construct() {
-
-        self::table('widgets');
-    }
-
     public function ifRowExists($id) {
 
         return DB::try()->select('id')->from('widgets')->where('id', '=', $id)->first();

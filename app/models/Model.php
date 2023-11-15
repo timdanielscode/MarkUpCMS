@@ -8,31 +8,33 @@
 namespace app\models;
 
 use database\DB;
+use app\models\register\Tables;
 
 class Model {
 
-   private static $table;
+   private static $_table;
 
    /**
-    * Setting model table name
-    * 
-    * @param string $table model
-    * @return void
+    * Setting table
+    *
+    * @param object $model model
     */
-   public static function table($table) {
-
-      self::$table = $table;
+   public static function setTable($tables) {
+   
+      self::$_table = $tables->tables[self::checkModel(get_called_class())];
    }
 
    /**
-    * Fetching all rows from table
-    * 
-    * @return object DB
+    * Checking model
+    *
+    * @param object $model model
     */
-   public static function all() {
+   public static function checkModel($model) {
 
-      self::createInstance();
-      return DB::try()->select('*')->from(self::$table)->fetch();
+      if (class_exists($model)) {
+
+         return substr($model, strrpos($model, '\\') + 1);
+      }
    }
 
    /**
@@ -43,11 +45,8 @@ class Model {
     */
     public static function get($id) {
 
-      if($id !== null) {
-
-         self::createInstance();
-         return DB::try()->select('*')->from(self::$table)->where('id', '=', $id)->first();
-      }
+      self::setTable(new Tables());
+      return DB::try()->select('*')->from(self::$_table)->where('id', '=', $id)->first();
    }
 
    /**
@@ -59,12 +58,9 @@ class Model {
     * @return object DB
     */
     public static function where($column, $operator, $value) {
-     
-      if($column !== null && $value !== null) {
-         
-         self::createInstance();
-         return DB::try()->select('*')->from(self::$table)->where($column, $operator, $value)->fetch();
-      }
+
+      self::setTable(new Tables());
+      return DB::try()->select('*')->from(self::$_table)->where($column, $operator, $value)->first();
    }
 
    /**
@@ -74,12 +70,9 @@ class Model {
     * @return object DB
     */
     public static function insert($data) {
-     
-      if(!empty($data) && $data !== null) {
-         
-         self::createInstance();
-         return DB::try()->insert(self::$table, $data);
-      }
+
+      self::setTable(new Tables());
+      return DB::try()->insert(self::$_table, $data);
    }
 
    /**
@@ -90,14 +83,11 @@ class Model {
     * @return object DB
     */
     public static function update($where, $data) {
-     
-      if(!empty($where) && $where !== null && !empty($data) && $data !== null ) {
-         
-         foreach($where as $key => $value) {
 
-            self::createInstance();
-            return DB::try()->update(self::$table)->set($data)->where($key, '=', $value)->run();
-         }
+      foreach($where as $key => $value) {
+
+         self::setTable(new Tables());
+         return DB::try()->update(self::$_table)->set($data)->where($key, '=', $value)->run();
       }
    }
 
@@ -108,26 +98,12 @@ class Model {
     * @param string $value column
     * @return object DB
     */
-    public static function delete($column, $value) {
-     
+   public static function delete($column, $value) {
+
       if(!empty($column) && $column !== null && !empty($value) && $value !== null) {
 
-         self::createInstance();
-         return DB::try()->delete(self::$table)->where($column, '=', $value)->run();
-      }
-   }
-
-   /**
-    * Create model instance
-    *
-    * @return object model
-    */
-   public static function createInstance() {
-
-      $model = get_called_class();
-      if (class_exists($model)) {
-         
-         return new $model;
+         self::setTable(new Tables());
+         return DB::try()->delete(self::$_table)->where($column, '=', $value)->run();
       }
    }
 }

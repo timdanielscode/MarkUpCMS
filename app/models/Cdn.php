@@ -8,11 +8,6 @@ class Cdn extends Model {
 
     private $_postIds = [];
 
-    public function __construct() {
-
-        self::table('cdn');
-    }
-
     public function ifRowExists($id) {
 
         return DB::try()->select('id')->from('cdn')->where('id', '=', $id)->first();

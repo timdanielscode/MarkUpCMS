@@ -6,13 +6,9 @@ use database\DB;
 
 class Post extends Model {
 
+    public $_table = 'pages';
     private $_columns;
     private $_cdnIds = [], $_cssIds = [], $_jsIds = [], $_widgetIds = [];
-
-    public function __construct() {
-
-        self::table("pages");
-    }
 
     public function ifRowExists($id) {
 

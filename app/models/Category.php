@@ -9,11 +9,6 @@ class Category extends Model {
     private $_columns;
     private $_postIds = [], $_subIds = [];
 
-    public function __construct() {
-
-        self::table('categories');
-    }
-
     public function ifRowExists($id) {
 
         return DB::try()->select('id')->from('categories')->where('id', '=', $id)->first();
