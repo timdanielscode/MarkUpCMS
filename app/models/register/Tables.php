@@ -15,6 +15,6 @@ class Tables {
 
     public $tables = [
 
-        "Model"      =>      "table",
+        "Post"      =>      "pages"
     ];
 }
