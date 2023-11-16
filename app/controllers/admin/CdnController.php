@@ -4,6 +4,7 @@ namespace app\controllers\admin;
 
 use app\controllers\Controller;
 use app\models\Cdn;
+use app\models\Post;
 use database\DB;
 use extensions\Pagination;
 use app\models\CdnPage;
@@ -17,9 +18,7 @@ class CdnController extends Controller {
 
     private function ifExists($id) {
 
-        $cdn = new Cdn();
-
-        if(empty($cdn->ifRowExists($id)) ) {
+        if(empty(Cdn::ifRowExists($id)) ) {
 
             return Response::statusCode(404)->view("/404/404") . exit();
         }
@@ -35,14 +34,12 @@ class CdnController extends Controller {
 
     public function index() {
 
-        $cdn = new Cdn();
-        $cdns = $cdn->allCdnsButOrderedByDate();
-
+        $cdns = Cdn::allCdnsButOrderedByDate();
         $search = Get::validate([get('search')]);
 
         if(!empty($search) ) {
 
-            $cdns = $cdn->orderedCdnsOnSearch($search);
+            $cdns = Cdn::orderedCdnsOnSearch($search);
         }
 
         $count = count($cdns);
@@ -69,11 +66,10 @@ class CdnController extends Controller {
         $this->redirect("submit", '/admin/cdn');
 
         $rules = new Rules();
-        $cdn = new Cdn();
 
         if(!empty($request['content']) && $request['content'] !== null) { $hasContent = 1; } else { $hasContent = 0; }
 
-        if($rules->create_cdn($cdn->checkUniqueTitle($request['title']))->validated() ) {
+        if($rules->create_cdn(Cdn::whereColumns(['title'], ['title' => $request['title']]))->validated() ) {
 
             Cdn::insert([
 
@@ -110,11 +106,9 @@ class CdnController extends Controller {
 
         $this->ifExists($request['id']);
 
-        $cdn = new Cdn();
-
         $data['cdn'] = Cdn::get($request['id']);
-        $data['importedPages'] = $cdn->getPostImportedIdTitle($request['id']);
-        $data['pages'] = $cdn->getNotPostImportedIdTitle($cdn->getPostImportedIdTitle($request['id']));
+        $data['importedPages'] = Cdn::getPostImportedIdTitle($request['id']);
+        $data['pages'] = Cdn::getNotPostImportedIdTitle(Cdn::getPostImportedIdTitle($request['id']));
         $data['rules'] = [];
 
         return $this->view('admin/cdn/edit', $data);
@@ -127,11 +121,10 @@ class CdnController extends Controller {
         $this->redirect("submit", "/admin/cdn/$id/edit");
 
         $rules = new Rules();
-        $cdn = new Cdn();
         
         if(!empty($request['content']) && $request['content'] !== null) { $hasContent = 1; } else { $hasContent = 0; }
 
-        if($rules->edit_cdn($cdn->checkUniqueTitleId($request['title'], $id))->validated() ) {
+        if($rules->edit_cdn(Cdn::checkUniqueTitleId($request['title'], $id))->validated() ) {
 
             Cdn::update(['id' => $id], [
 
@@ -178,11 +171,9 @@ class CdnController extends Controller {
         $this->ifExists($request['id']);
         $this->redirect("submit", "/admin/cdn/$id/edit");
 
-        $pageIds = DB::try()->select('id')->from('pages')->fetch();
-
         CdnPage::delete('cdn_id', $id);
 
-        foreach($pageIds as $pageId ) {
+        foreach(Post::getAll(['id']) as $pageId ) {
 
             CdnPage::insert([
 
@@ -203,8 +194,7 @@ class CdnController extends Controller {
 
         foreach($request['pages'] as $pageId) {
 
-            $cdn = new Cdn();
-            $cdn->deleteIdPostId($id, $pageId);
+            Cdn::deleteIdPostId($id, $pageId);
         }
 
         Session::set('success', 'You have successfully removed the cdn on the page(s)!');
@@ -254,9 +244,8 @@ class CdnController extends Controller {
             foreach($deleteIds as $id) {
 
                 $this->ifExists($id);
-                $cdn = new Cdn();
     
-                if($cdn->getData($id, ['removed'])['removed'] !== 1) {
+                if(Cdn::getColumns(['removed'], $id)['removed'] !== 1) {
 
                     Cdn::update(['id' => $id], [
 
@@ -265,7 +254,7 @@ class CdnController extends Controller {
 
                     Session::set('success', 'You have successfully moved the cdn(s) to the trashcan!');
 
-                } else if($cdn->getData($id, ['removed'])['removed'] === 1) {
+                } else if(Cdn::getColumns(['removed'], $id)['removed'] === 1) {
 
                     Cdn::delete("id", $id);
                     Session::set('success', 'You have successfully removed the cdn(s)!');

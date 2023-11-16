@@ -25,6 +25,8 @@ class Tables {
         "Css"   => "css",
         "CssPage" => "css_page",
         "Js"    => "js",
-        "JsPage"    => "js_page"
+        "JsPage"    => "js_page",
+        "Cdn"   =>  "cdn",
+        "CdnPage"   => "cdn_page"
     ];
 }
