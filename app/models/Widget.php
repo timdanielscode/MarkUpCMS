@@ -58,12 +58,9 @@ class Widget extends Model {
         return DB::try()->select('id, title')->from('widgets')->where('removed', '!=', 1)->fetch();
     }
 
-    public function removePostWidget($postId, $widgetId) {
+    public static function removePostWidget($postId, $widgetId) {
 
-        if(!empty($postId) && $postId !== null && !empty($widgetId) && $widgetId !== null) {
-
-            return DB::try()->delete('page_widget')->where('widget_id', '=', $widgetId)->and('page_id', '=', $postId)->run();
-        }
+        return DB::try()->delete('page_widget')->where('widget_id', '=', $widgetId)->and('page_id', '=', $postId)->run();
     }
 
     public function checkUniqueTitle($title) {

@@ -41,12 +41,12 @@ class Menu extends Model {
         }
     }
 
-    public function getTopMenus() {
+    public static function getTopMenus() {
 
         return DB::try()->all('menus')->where('position', '=', 'top')->and('removed', '!=', 1)->order('ordering')->fetch();
     }
 
-    public function getBottomMenus() {
+    public static function getBottomMenus() {
 
         return DB::try()->all('menus')->where('position', '=', 'bottom')->and('removed', '!=', 1)->order('ordering')->fetch();
     }

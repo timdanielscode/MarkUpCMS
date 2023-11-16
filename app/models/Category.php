@@ -37,21 +37,21 @@ class Category extends Model {
         return DB::try()->select('pages.title', 'pages.id')->from('pages')->join('category_page')->on('category_page.page_id', '=', 'pages.id')->join('categories')->on('category_page.category_id', '=', 'categories.id')->where('categories.id', '=', $id)->fetch();
     }
 
-    public function getAll($columns) {
+    public static function getAll($columns) {
 
         if(!empty($columns) && $columns !== null) {
 
-            $this->_columns = implode(',', $columns);
-            return DB::try()->select($this->_columns)->from("categories")->fetch();
+            $columns = implode(',', $columns);
+            return DB::try()->select($columns)->from("categories")->fetch();
         }
     }
 
-    public function getSlug($id) {
+    public static function getSlug($id) {
 
         return DB::try()->select('categories.slug')->from('categories')->join('category_page')->on('category_page.category_id', '=', 'categories.id')->where('categories.id', '=', $id)->first();
     }
 
-    public function getSlugSub($id) {
+    public static function getSlugSub($id) {
 
         return DB::try()->select('slug')->from('categories')->join('category_sub')->on('categories.id', '=', 'category_sub.sub_id')->where('category_sub.category_id', '=', $id)->fetch();
     }

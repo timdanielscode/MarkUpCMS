@@ -6,69 +6,54 @@ use database\DB;
 
 class Post extends Model {
 
-    public $_table = 'pages';
-    private $_columns;
-    private $_cdnIds = [], $_cssIds = [], $_jsIds = [], $_widgetIds = [];
+    private static $_table = 'pages';
+    private static $_cdnIds = [], $_cssIds = [], $_jsIds = [], $_widgetIds = [];
 
-    public function ifRowExists($id) {
+    public static function ifRowExists($id) {
 
-        return DB::try()->select('id')->from('pages')->where('id', '=', $id)->first();
+        return DB::try()->select('id')->from(self::$_table)->where('id', '=', $id)->first();
     }
 
-    public function getData($id, $columns) {
-
-        if(!empty($columns) && $columns !== null) {
-
-            $this->_columns = implode(',', $columns);
-            return DB::try()->select($this->_columns)->from('pages')->where('id', '=', $id)->first();
-        }
-    }
-
-    public function getAll($columns) {
+    /*public function getAll($columns) {
 
         if(!empty($columns) && $columns !== null) {
 
             $this->_columns = implode(',', $columns);
             return DB::try()->select($this->_columns)->from('pages')->fetch();
         }
+    }*/
+
+    public static function allPostsWithCategories() {
+
+        return DB::try()->select('pages.id, pages.title, pages.slug, pages.author, pages.metaTitle, pages.metaDescription, pages.removed, pages.created_at, pages.updated_at, categories.title')->from(self::$_table)->joinLeft('category_page')->on('category_page.page_id', '=', 'pages.id')->joinLeft('categories')->on('categories.id', '=', 'category_page.category_id')->where('removed', '=', 0)->order('created_at')->desc()->fetch();
     }
 
-    public function allPostsWithCategories() {
-
-        return DB::try()->select('pages.id, pages.title, pages.slug, pages.author, pages.metaTitle, pages.metaDescription, pages.removed, pages.created_at, pages.updated_at, categories.title')->from('pages')->joinLeft('category_page')->on('category_page.page_id', '=', 'pages.id')->joinLeft('categories')->on('categories.id', '=', 'category_page.category_id')->where('removed', '=', 0)->order('created_at')->desc()->fetch();
-    }
-
-    public function allPostsWithCategoriesOnSearch($searchValue = null) {
+    public static function allPostsWithCategoriesOnSearch($searchValue = null) {
 
         if(!empty($searchValue) && $searchValue !== null) {
 
             if($searchValue == 'Thrashcan') {
                 
-                return DB::try()->select('pages.id, pages.title, pages.slug, pages.author, pages.metaTitle, pages.metaDescription, pages.removed, pages.created_at, pages.updated_at, categories.title')->from('pages')->joinLeft('category_page')->on('category_page.page_id', '=', 'pages.id')->joinLeft('categories')->on('categories.id', '=', 'category_page.category_id')->where('pages.removed', '=', 1)->order('created_at')->desc()->fetch();
+                return DB::try()->select('pages.id, pages.title, pages.slug, pages.author, pages.metaTitle, pages.metaDescription, pages.removed, pages.created_at, pages.updated_at, categories.title')->from(self::$_table)->joinLeft('category_page')->on('category_page.page_id', '=', 'pages.id')->joinLeft('categories')->on('categories.id', '=', 'category_page.category_id')->where('pages.removed', '=', 1)->order('created_at')->desc()->fetch();
             }
 
-            return DB::try()->select('pages.id, pages.title, pages.slug, pages.author, pages.metaTitle, pages.metaDescription, pages.removed, pages.created_at, pages.updated_at, categories.title')->from('pages')->joinLeft('category_page')->on('category_page.page_id', '=', 'pages.id')->joinLeft('categories')->on('categories.id', '=', 'category_page.category_id')->where('pages.removed', '=', 0)->and('pages.title', 'LIKE', '%'.$searchValue.'%')->or('pages.removed', '=', 0)->and('pages.author', 'LIKE', '%'.$searchValue.'%')->order('created_at')->desc()->fetch();
+            return DB::try()->select('pages.id, pages.title, pages.slug, pages.author, pages.metaTitle, pages.metaDescription, pages.removed, pages.created_at, pages.updated_at, categories.title')->from(self::$_table)->joinLeft('category_page')->on('category_page.page_id', '=', 'pages.id')->joinLeft('categories')->on('categories.id', '=', 'category_page.category_id')->where('pages.removed', '=', 0)->and('pages.title', 'LIKE', '%'.$searchValue.'%')->or('pages.removed', '=', 0)->and('pages.author', 'LIKE', '%'.$searchValue.'%')->order('created_at')->desc()->fetch();
         } 
     }
     
-    public function checkUniqueTitle($title) {
+    public static function checkUniqueTitleId($title, $id) {
 
-        return DB::try()->select('id, title')->from('pages')->where('title', '=', $title)->fetch();
-    }
-
-    public function checkUniqueTitleId($title, $id) {
-
-        return DB::try()->select('id, title')->from('pages')->where('title', '=', $title)->and('id', '!=', $id)->fetch();
+        return DB::try()->select('id, title')->from(self::$_table)->where('title', '=', $title)->and('id', '!=', $id)->fetch();
     } 
 
-    public function checkUniqueSlugCategory($id, $postSlug, $categoryId) {
+    public static function checkUniqueSlugCategory($id, $postSlug, $categoryId) {
 
-        return DB::try()->select('pages.slug')->from('pages')->join('category_page')->on('category_page.page_id', '=', 'pages.id')->where('slug', 'LIKE', '%'.$postSlug)->and('id', '!=', $id)->and('category_id', '=', $categoryId)->first();
+        return DB::try()->select('pages.slug')->from(self::$_table)->join('category_page')->on('category_page.page_id', '=', 'pages.id')->where('slug', 'LIKE', '%'.$postSlug)->and('id', '!=', $id)->and('category_id', '=', $categoryId)->first();
     }
 
-    public function checkUniqueSlug($slug, $id) {
+    public static function checkUniqueSlug($slug, $id) {
 
-        return DB::try()->select('id, slug')->from('pages')->where('slug', '=', $slug)->and('id', '!=', $id)->fetch();
+        return DB::try()->select('id, slug')->from(self::$_table)->where('slug', '=', $slug)->and('id', '!=', $id)->fetch();
     }
 
 
@@ -79,51 +64,51 @@ class Post extends Model {
 
     public function checkUniqueSlugDetach($id, $lastPartSlug, $categoryId) {
 
-        return DB::try()->select('pages.slug')->from('pages')->join('category_page')->on('category_page.page_id', '=', 'pages.id')->where('category_page.category_id', '=', $categoryId)->and('slug', 'LIKE', '%'.$lastPartSlug)->and('id', '!=', $id)->first();
+        return DB::try()->select('pages.slug')->from(self::$_table)->join('category_page')->on('category_page.page_id', '=', 'pages.id')->where('category_page.category_id', '=', $categoryId)->and('slug', 'LIKE', '%'.$lastPartSlug)->and('id', '!=', $id)->first();
     }
 
-    public function getCategoryTitleSlug($postId) {
+    public static function getCategoryTitleSlug($postId) {
 
         return DB::try()->select('categories.title, categories.slug')->from('categories')->join('category_page')->on('category_page.category_id', '=', 'categories.id')->where('category_page.page_id', '=', $postId)->first();
     }
 
-    public function deleteCss($id, $cssId) {
+    public static function deleteCss($id, $cssId) {
 
         return DB::try()->delete('css_page')->where('page_id', '=', $id)->and('css_id', '=', $cssId)->run();
     }
 
-    public function getCssIdFilenameExtension($postId) {
+    public static function getCssIdFilenameExtension($postId) {
 
         return DB::try()->select('id, file_name', 'extension')->from('css')->join('css_page')->on('css_page.css_id', '=', 'css.id')->where('css_page.page_id', '=', $postId)->and('removed', '!=', 1)->fetch();
     }
 
-    public function getNotCssIdFilenameExtension($cssIdFilenameExtension) {
+    public static function getNotCssIdFilenameExtension($cssIdFilenameExtension) {
 
         if(!empty($cssIdFilenameExtension) && $cssIdFilenameExtension !== null) {
 
             foreach($cssIdFilenameExtension as $css) {
 
-                array_push($this->_cssIds, $css['id']);
+                array_push(self::$_cssIds, $css['id']);
             }
 
-            $cssIdsString = implode(',', $this->_cssIds);
+            $cssIdsString = implode(',', self::$_cssIds);
             return DB::try()->select('id, file_name, extension')->from('css')->whereNotIn('id', $cssIdsString)->fetch();
         } else {
             return DB::try()->select('id, file_name, extension')->from('css')->where('removed', '!=', 1)->fetch();
         }
     }
 
-    public function getJs($id) {
+    public static function getJs($id) {
 
         return DB::try()->select('id, file_name, extension')->from('js')->join('js_page')->on('js_page.js_id', '=', 'js.id')->where('js_page.page_id', '=', $id)->fetch();
     }
 
-    public function deleteJs($id, $jsId) {
+    public static function deleteJs($id, $jsId) {
 
         return DB::try()->delete('js_page')->where('page_id', '=', $id)->and('js_id', '=', $jsId)->run();        
     }
 
-    public function insertJs($id, $jsId) {
+    public static function insertJs($id, $jsId) {
 
         return DB::try()->insert('js_page', [
 
@@ -133,28 +118,28 @@ class Post extends Model {
         ])->where('js_page', '=', $id)->and('js_id', '=', $jsId);
     }
 
-    public function getJsIdFilenameExtension($id) {
+    public static function getJsIdFilenameExtension($id) {
 
         return DB::try()->select('js.id, file_name', 'extension')->from('js')->join('js_page')->on('js_page.js_id', '=', 'js.id')->where('js_page.page_id', '=', $id)->and('removed', '!=', 1)->fetch();
     }
 
-    public function getNotJsIdFilenameExtension($jsIdFilenameExtension) {
+    public static function getNotJsIdFilenameExtension($jsIdFilenameExtension) {
 
         if(!empty($jsIdFilenameExtension) && $jsIdFilenameExtension !== null) {
 
             foreach($jsIdFilenameExtension as $js) {
 
-                array_push($this->_jsIds, $js['id']);
+                array_push(self::$_jsIds, $js['id']);
             }
 
-            $jsIdsString = implode(',', $this->_jsIds);
+            $jsIdsString = implode(',', self::$_jsIds);
             return DB::try()->select('id, file_name, extension')->from('js')->whereNotIn('id', $jsIdsString)->fetch();
         } else {
             return DB::try()->select('id, file_name, extension')->from('js')->where('removed', '!=', 1)->fetch();
         }
     }
 
-    public function insertCss($id, $cssId) {
+    public static function insertCss($id, $cssId) {
 
         return DB::try()->insert('css_page', [
 
@@ -164,47 +149,47 @@ class Post extends Model {
         ])->where('css_page', '=', $id)->and('css_id', '=', $cssId);
     }
 
-    public function getCdnIdTitle($id) {
+    public static function getCdnIdTitle($id) {
 
         return DB::try()->select('id, title')->from('cdn')->join('cdn_page')->on("cdn_page.cdn_id", '=', 'cdn.id')->where('cdn_page.page_id', '=', $id)->and('removed', '!=', 1)->fetch();
     }
 
-    public function getNotCdnIdTitle($cdnIdTitle) {
+    public static function getNotCdnIdTitle($cdnIdTitle) {
 
         if(!empty($cdnIdTitle) && $cdnIdTitle !== null) {
 
             foreach($cdnIdTitle as $cdn) {
 
-                array_push($this->_cdnIds, $cdn['id']);
+                array_push(self::$_cdnIds, $cdn['id']);
             }
 
-            $cdnIdsString = implode(',', $this->_cdnIds);
+            $cdnIdsString = implode(',', self::$_cdnIds);
             return DB::try()->select('id, title')->from('cdn')->whereNotIn('id', $cdnIdsString)->fetch();
         } else {
             return DB::try()->select('id, title')->from('cdn')->where('removed', '!=', 1)->fetch();
         }
     }
 
-    public function deleteCdn($postId, $cdnId) {
+    public static function deleteCdn($postId, $cdnId) {
 
         return DB::try()->delete('cdn_page')->where('page_id', '=', $postId)->and('cdn_id', '=', $cdnId)->run();
     }
 
-    public function getApplicableWidgetIdTitle($id) {
+    public static function getApplicableWidgetIdTitle($id) {
 
         return DB::try()->select('id, title')->from('widgets')->join('page_widget')->on('page_widget.widget_id', '=', 'widgets.id')->where('page_widget.page_id', '=', $id)->and('removed', '!=', 1)->fetch();
     }
 
-    public function getInapplicableWidgetIdTitle($applicableWidgetIdtitle) {
+    public static function getInapplicableWidgetIdTitle($applicableWidgetIdtitle) {
 
         if(!empty($applicableWidgetIdtitle) && $applicableWidgetIdtitle !== null) {
 
             foreach($applicableWidgetIdtitle as $widget) {
 
-                array_push($this->_widgetIds, $widget['id']);
+                array_push(self::$_widgetIds, $widget['id']);
             }
 
-            $widgetIdsString = implode(',', $this->_widgetIds);
+            $widgetIdsString = implode(',', self::$_widgetIds);
             return DB::try()->select('id, title')->from('widgets')->whereNotIn('id', $widgetIdsString)->fetch();
         } else {
             return DB::try()->select('id, title')->from('widgets')->where('removed', '!=', 1)->fetch();

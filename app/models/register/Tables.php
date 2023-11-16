@@ -16,6 +16,11 @@ class Tables {
     public $tables = [
 
         "Post"      =>      "pages",
-        "Menu"  =>      "menus"
+        "Menu"  =>      "menus",
+        "Category"  => "categories",
+        "CdnPage" => "cdn_page",
+        "PageWidget" => "page_widget",
+        "Widget"    => "widgets",
+        "CategoryPage" => "category_page"
     ];
 }
