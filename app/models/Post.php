@@ -7,6 +7,7 @@ use database\DB;
 class Post extends Model {
 
     private static $_table = 'pages';
+    private static $_columns = [];
     private static $_cdnIds = [], $_cssIds = [], $_jsIds = [], $_widgetIds = [];
 
     public static function ifRowExists($id) {
@@ -14,14 +15,11 @@ class Post extends Model {
         return DB::try()->select('id')->from(self::$_table)->where('id', '=', $id)->first();
     }
 
-    /*public function getAll($columns) {
+    public static function getAll($columns) {
 
-        if(!empty($columns) && $columns !== null) {
-
-            $this->_columns = implode(',', $columns);
-            return DB::try()->select($this->_columns)->from('pages')->fetch();
-        }
-    }*/
+        self::$_columns = implode(',', $columns);
+        return DB::try()->select(self::$_columns)->from('pages')->fetch();
+    }
 
     public static function allPostsWithCategories() {
 

@@ -21,6 +21,8 @@ class Tables {
         "CdnPage" => "cdn_page",
         "PageWidget" => "page_widget",
         "Widget"    => "widgets",
-        "CategoryPage" => "category_page"
+        "CategoryPage" => "category_page",
+        "Css"   => "css",
+        "CssPage" => "css_page"
     ];
 }

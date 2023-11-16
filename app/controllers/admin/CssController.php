@@ -21,9 +21,7 @@ class CssController extends Controller {
 
     private function ifExists($id) {
 
-        $css = new Css();
-
-        if(empty($css->ifRowExists($id)) ) {
+        if(empty(Css::ifRowExists($id)) ) {
 
             return Response::statusCode(404)->view("/404/404") . exit();
         }
@@ -39,14 +37,12 @@ class CssController extends Controller {
 
     public function index() {
 
-        $css = new Css();
-        $cssFiles = $css->allCssButOrderedOnDate();
-
+        $cssFiles = Css::allCssButOrderedOnDate();
         $search = Get::validate([get('search')]);
 
         if(!empty($search) ) {
 
-            $cssFiles = $css->cssFilesOnSearch($search);
+            $cssFiles = Css::cssFilesOnSearch($search);
         }
 
         $count = count($cssFiles);
@@ -72,9 +68,8 @@ class CssController extends Controller {
         $this->redirect("submit", '/admin/css');
 
         $rules = new Rules();
-        $css = new Css();
         
-        if($rules->css($css->checkUniqueFilename($request['filename']))->validated()) {
+        if($rules->css(Css::whereColumns(['file_name'], ['file_name' => $request['filename']]))->validated()) {
                     
             $filename = "/".$request['filename'];
             $filename = str_replace(" ", "-", $filename);
@@ -138,20 +133,17 @@ class CssController extends Controller {
 
         $this->ifExists($request['id']);
 
-        $cssFile = Css::where('id', '=', $request['id'])[0];
-        if($cssFile['removed'] === 1) { return Response::statusCode(404)->view("/404/404") . exit(); }
+        $cssFile = Css::get($request['id']);
+        //if($cssFile['removed'] === 1) { return Response::statusCode(404)->view("/404/404") . exit(); }
 
         $code = $this->getFileContent($cssFile['file_name']);
-
-        $css = new Css();
-        $assingedPages = $css->getPostAssignedIdTitle($request['id']);
-        $notAssignedPages = $css->getNotPostAssingedIdTitle($css->getPostAssignedIdTitle($request['id']));
+        $assingedPages = Css::getPostAssignedIdTitle($request['id']);
+        $notAssignedPages = Css::getNotPostAssingedIdTitle(Css::getPostAssignedIdTitle($request['id']));
 
         $data['data'] = $cssFile;
         $data['data']['code'] = $code;
         $data['data']['pages'] = $notAssignedPages;
         $data['data']['assingedPages'] = $assingedPages;
-        
         $data['rules'] = [];
 
         return $this->view('admin/css/edit', $data);
@@ -164,12 +156,11 @@ class CssController extends Controller {
         $this->redirect("submit", "/admin/css/$id/edit");
 
         $filename = str_replace(" ", "-", $request["filename"]);
-        $currentCssFileName = Css::where('id', '=', $id)[0]['file_name'];
+        $currentCssFileName = Css::getColumns(['file_name'], $id)['file_name'];
 
         $rules = new Rules();
-        $css = new Css();
         
-        if($rules->css($css->checkUniqueFilenameId($request['filename'], $id))->validated()) {
+        if($rules->css(Css::checkUniqueFilenameId($request['filename'], $id))->validated()) {
 
             rename($this->_folderLocation . $currentCssFileName . $this->_fileExtension, $this->_folderLocation . $filename . $this->_fileExtension);
 
@@ -194,9 +185,9 @@ class CssController extends Controller {
             $filePath = $this->_folderLocation . $currentCssFileName . $this->_fileExtension; 
             $code = file_get_contents($filePath);
 
-            $data['data'] = Css::where('id', '=', $id)[0];
-            $data['data']['assingedPages'] = $css->getPostAssignedIdTitle($request['id']);
-            $data['data']['pages'] = $css->getNotPostAssingedIdTitle($css->getPostAssignedIdTitle($request['id']));         
+            $data['data'] = Css::get($id);
+            $data['data']['assingedPages'] = Css::getPostAssignedIdTitle($request['id']);
+            $data['data']['pages'] = Css::getNotPostAssingedIdTitle(Css::getPostAssignedIdTitle($request['id']));         
             $data['data']['code'] = $code;
             $data['rules'] = $rules->errors;
                 
@@ -213,9 +204,9 @@ class CssController extends Controller {
         $post = new Post();
         CssPage::delete('css_id', $id);
 
-        if(!empty($post->getAll(['id'])) && $post->getAll(['id']) !== null) {
+        if(!empty(Post::getAll(['id'])) && Post::getAll(['id']) !== null) {
 
-            foreach($post->getAll(['id']) as $pageId) {
+            foreach(Post::getAll(['id']) as $pageId) {
 
                 CssPage::insert([
 
@@ -311,9 +302,8 @@ class CssController extends Controller {
             foreach($deleteIds as $id) {
 
                 $this->ifExists($id);
-                $css = new Css();
                 
-                if($css->getData($id, ['removed'])['removed']!== 1) {
+                if(Css::getColumns(['removed'], $id)['removed'] !== 1) {
 
                     Css::update(['id' => $id], [
 
@@ -322,10 +312,10 @@ class CssController extends Controller {
 
                     Session::set('success', 'You have successfully moved the css file(s) to the trashcan!');
 
-                } else if($css->getData($id, ['removed'])['removed'] === 1) {
+                } else if(Css::getColumns(['removed'], $id)['removed'] === 1) {
 
-                    $filename = Css::where('id', '=', $id)[0]['file_name'];
-                    $path = "website/assets/css/" . $filename . ".css";
+                    $filename = $filename = Css::getColumns(['file_name'], $id);
+                    $path = "website/assets/css/" . $filename['file_name'] . ".css";
             
                     unlink($path);
                     Css::delete("id", $id);
