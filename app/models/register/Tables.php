@@ -23,6 +23,8 @@ class Tables {
         "Widget"    => "widgets",
         "CategoryPage" => "category_page",
         "Css"   => "css",
-        "CssPage" => "css_page"
+        "CssPage" => "css_page",
+        "Js"    => "js",
+        "JsPage"    => "js_page"
     ];
 }

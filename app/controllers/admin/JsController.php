@@ -21,9 +21,7 @@ class JsController extends Controller {
 
     private function ifExists($id) {
 
-        $js = new Js();
-
-        if(empty($js->ifRowExists($id)) ) {
+        if(empty(Js::ifRowExists($id)) ) {
 
             return Response::statusCode(404)->view("/404/404") . exit();
         }
@@ -39,14 +37,12 @@ class JsController extends Controller {
 
     public function index() {
 
-        $js = new Js();
-        $jsFiles = $js->allJsButOrderedOnDate();
-        
+        $jsFiles = Js::allJsButOrderedOnDate();
         $search = Get::validate([get('search')]);
 
         if(!empty($search) ) {
 
-            $jsFiles = $js->jsFilesOnSearch($search);
+            $jsFiles = Js::jsFilesOnSearch($search);
         }
         
         $count = count($jsFiles);
@@ -85,9 +81,8 @@ class JsController extends Controller {
         $this->redirect("submit", '/admin/js');
 
         $rules = new Rules();
-        $js = new Js();
 
-        if($rules->js($js->checkUniqueFilename($request['filename']))->validated()) {
+        if($rules->js(Js::whereColumns(['file_name'], ['file_name' => $request['filename']]))->validated()) {
                     
             $filename = "/".$request['filename'];
             $filename = str_replace(" ", "-", $filename);
@@ -137,16 +132,14 @@ class JsController extends Controller {
 
         $this->ifExists($request['id']);
 
-        $file = Js::where('id', '=', $request['id'])[0];
+        $file = Js::get($request['id']);
         if($file['removed'] === 1) { return Response::statusCode(404)->view("/404/404") . exit(); }
 
         $code = $this->getFileContent($file['file_name']);
-
-        $js = new Js();
         
         $data['data'] = $file;
-        $data['data']['pages'] = $js->getNotPostAssingedIdTitle($js->getPostAssignedIdTitle($request['id']));
-        $data['data']['assingedPages'] = $js->getPostAssignedIdTitle($request['id']); 
+        $data['data']['pages'] = Js::getNotPostAssingedIdTitle(Js::getPostAssignedIdTitle($request['id']));
+        $data['data']['assingedPages'] = Js::getPostAssignedIdTitle($request['id']); 
         $data['data']['code'] = $code;
         $data['rules'] = [];
 
@@ -160,12 +153,11 @@ class JsController extends Controller {
         $this->redirect("submit", "/admin/js/$id/edit");
                 
         $filename = str_replace(" ", "-", $request["filename"]);
-        $currentJsFileName = Js::where('id', '=', $id)[0]['file_name'];
+        $currentJsFileName = Js::getColumns(['file_name'], $id);
 
         $rules = new Rules();
-        $js = new Js();
 
-        if($rules->Js($js->checkUniqueFilenameId($request['filename'], $id))->validated()) {
+        if($rules->Js(Js::checkUniqueFilenameId($request['filename'], $id))->validated()) {
 
             rename($this->_folderLocation . $currentJsFileName . $this->_fileExtension, $this->_folderLocation . $filename . $this->_fileExtension);
 
@@ -190,9 +182,9 @@ class JsController extends Controller {
             $filePath = $this->_folderLocation . $currentJsFileName . $this->_fileExtension; 
             $code = file_get_contents($filePath);
                 
-            $data['data'] = Js::where('id', '=', $id)[0];
-            $data['data']['assingedPages'] = $js->getPostAssignedIdTitle($request['id']); 
-            $data['data']['pages'] = $js->getNotPostAssingedIdTitle($js->getPostAssignedIdTitle($request['id']));
+            $data['data'] = Js::get($id);
+            $data['data']['assingedPages'] = Js::getPostAssignedIdTitle($request['id']); 
+            $data['data']['pages'] = Js::getNotPostAssingedIdTitle(Js::getPostAssignedIdTitle($request['id']));
             $data['data']['code'] = $code;
             $data['rules'] = $rules->errors;
                 
@@ -246,12 +238,11 @@ class JsController extends Controller {
         $this->ifExists($request['id']);
         $this->redirect("submit", "/admin/js/$id/edit");
 
-        $post = new Post();
         JsPage::delete('js_id', $id);
 
-        if(!empty($post->getAll(['id'])) && $post->getAll(['id']) !== null) {
+        if(!empty(Post::getAll(['id'])) && Post::getAll(['id']) !== null) {
 
-            foreach($post->getAll(['id']) as $pageId) {
+            foreach(Post::getAll(['id']) as $pageId) {
 
                 JsPage::insert([
 
@@ -308,9 +299,8 @@ class JsController extends Controller {
             foreach($deleteIds as $id) {
 
                 $this->ifExists($id);
-                $js = new Js();
             
-                if($js->getData($id, ['removed'])['removed'] !== 1) {
+                if(Js::getColumns(['removed'], $id)['removed'] !== 1) {
 
                     Js::update(['id' => $id], [
 
@@ -319,10 +309,9 @@ class JsController extends Controller {
 
                     Session::set('success', 'You have successfully moved the js file(s) to the trashcan!');
 
-                } else if($js->getData($id, ['removed'])['removed'] === 1) {
+                } else if(Js::getColumns(['removed'], $id)['removed'] === 1) {
 
-                    $filename = Js::where('id', '=', $id)[0]['file_name'];
-                    $path = "website/assets/js/" . $filename . ".js";
+                    $path = "website/assets/js/" . Js::getColumns(['file_name'], $id)['file_name'] . ".js";
                         
                     unlink($path);
 
