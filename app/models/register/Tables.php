@@ -15,6 +15,7 @@ class Tables {
 
     public $tables = [
 
-        "Post"      =>      "pages"
+        "Post"      =>      "pages",
+        "Menu"  =>      "menus"
     ];
 }

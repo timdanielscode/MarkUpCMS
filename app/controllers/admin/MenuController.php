@@ -99,7 +99,7 @@ class MenuController extends Controller {
 
         $this->ifExists($request['id']);
 
-        $menu = Menu::where('id', '=', $request['id'])[0];
+        $menu = Menu::where(['id' =>  $request['id']]);
         $data['menu'] = $menu;
 
         return $this->view('/admin/menus/read', $data);
@@ -109,7 +109,7 @@ class MenuController extends Controller {
 
         $this->ifExists($request['id']);
 
-        $menu = Menu::where('id', '=', $request['id'])[0];
+        $menu = Menu::where('id', '=', $request['id']);
 
         if($menu['removed'] === 1) { return Response::statusCode(404)->view("/404/404") . exit(); }
 
