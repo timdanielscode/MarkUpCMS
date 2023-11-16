@@ -17,9 +17,7 @@ class WidgetController extends Controller {
 
     private function ifExists($id) {
 
-        $widget = new Widget();
-
-        if(empty($widget->ifRowExists($id)) ) {
+        if(empty(Widget::ifRowExists($id)) ) {
 
             return Response::statusCode(404)->view("/404/404") . exit();
         }
@@ -35,13 +33,12 @@ class WidgetController extends Controller {
 
     public function index() {
 
-        $widget = new Widget();
-        $widgets = $widget->allWidgetsButOrderedOnDate();
+        $widgets = Widget::allWidgetsButOrderedOnDate();
         $search = Get::validate([get('search')]);
 
         if(!empty($search) ) {
 
-            $widgets = $widget->widgetsOnSearch($search);
+            $widgets = Widget::widgetsOnSearch($search);
         }
 
         $count = count($widgets);
@@ -64,15 +61,13 @@ class WidgetController extends Controller {
 
     public function store($request) {
 
-        $id = $request['id'];
         $this->redirect("submit", '/admin/widgets');
 
         if(!empty($request['content']) ) { $hasContent = 1; } else { $hasContent = 0; }
 
         $rules = new Rules();
-        $widget = new Widget();
 
-        if($rules->create_widget($widget->checkUniqueTitle($request['title']))->validated()) {
+        if($rules->create_widget(Widget::whereColumns(['title'], ['title' => $request['title']]))->validated()) {
 
             Widget::insert([
 
@@ -123,9 +118,8 @@ class WidgetController extends Controller {
         $this->redirect("submit", "/admin/widgets/$id/edit");
         
         $rules = new Rules();
-        $widget = new Widget();
         
-        if($rules->edit_widget($widget->checkUniqueTitleId($request['title'], $id))->validated()) {
+        if($rules->edit_widget(Widget::checkUniqueTitleId($request['title'], $id))->validated()) {
 
             if(!empty($request['content']) ) { $hasContent = 1; } else { $hasContent = 0; }
 
@@ -178,9 +172,8 @@ class WidgetController extends Controller {
             foreach($deleteIds as $id) {
 
                 $this->ifExists($id);
-                $widget = new Widget();
 
-                if($widget->getData($id, ['removed'])['removed'] !== 1) {
+                if(Widget::getColumns(['removed'], $id)['removed'] !== 1) {
 
                     Widget::update(['id' => $id], [
 
@@ -190,7 +183,7 @@ class WidgetController extends Controller {
                     PageWidget::delete('widget_id', $id);
                     Session::set('success', 'You have successfully moved the widget(s) to the trashcan!');
 
-                } else if($widget->getData($id, ['removed'])['removed'] === 1) {
+                } else if(Widget::getColumns(['removed'], $id)['removed'] === 1) {
 
                     Widget::delete("id", $id);
                     PageWidget::delete('widget_id', $id);
