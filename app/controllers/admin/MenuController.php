@@ -16,9 +16,7 @@ class MenuController extends Controller {
 
     private function ifExists($id) {
 
-        $menu = new Menu();
-
-        if(empty($menu->ifRowExists($id)) ) {
+        if(empty(Menu::ifRowExists($id)) ) {
 
             return Response::statusCode(404)->view("/404/404") . exit();
         }
@@ -34,14 +32,12 @@ class MenuController extends Controller {
 
     public function index() {
 
-        $menu = new Menu();
-        $menus = $menu->allMenusButOrderedOnDate();
-        
+        $menus = Menu::allMenusButOrderedOnDate();
         $search = Get::validate([get('search')]);
 
         if(!empty($search) ) {
 
-            $menus = $menu->menusOnSearch($search);
+            $menus = Menu::menusOnSearch($search);
         }
         $count = count($menus);
         
@@ -65,10 +61,9 @@ class MenuController extends Controller {
 
         $this->redirect("submit", '/admin/menus');
 
-        $rules = new Rules();
-        $menu = new Menu();
+        $rules = new Rules(); 
 
-        if($rules->create_menu($menu->checkUniqueTitle($request['title']))->validated()) {
+        if($rules->create_menu(Menu::whereColumns(['title'], ['title' => $request['title']]))->validated()) {
                     
             if(!empty($request['content']) ) { $hasContent = 1; } else { $hasContent = 0; }
 
@@ -99,8 +94,7 @@ class MenuController extends Controller {
 
         $this->ifExists($request['id']);
 
-        $menu = Menu::where(['id' =>  $request['id']]);
-        $data['menu'] = $menu;
+        $data['menu'] = Menu::get($request['id']);
 
         return $this->view('/admin/menus/read', $data);
     }
@@ -109,7 +103,7 @@ class MenuController extends Controller {
 
         $this->ifExists($request['id']);
 
-        $menu = Menu::where('id', '=', $request['id']);
+        $menu = Menu::get($request['id']);
 
         if($menu['removed'] === 1) { return Response::statusCode(404)->view("/404/404") . exit(); }
 
@@ -126,9 +120,8 @@ class MenuController extends Controller {
         $this->redirect("submit", "/admin/menus/$id/edit");
 
         $rules = new Rules();
-        $menu = new Menu();
         
-        if($rules->menu_update($menu->checkUniqueTitleId($request['title'], $id))->validated()) {
+        if($rules->menu_update(Menu::checkUniqueTitleId($request['title'], $id))->validated()) {
                     
             if(!empty($request['content']) ) { $hasContent = 1; } else { $hasContent = 0; }
 
@@ -146,7 +139,7 @@ class MenuController extends Controller {
         } else {
 
             $data['rules'] = $rules->errors;
-            $data['menu'] = Menu::where('id', '=', $request['id'])[0];
+            $data['menu'] = Menu::get($request['id']);
 
             return $this->view("/admin/menus/edit", $data);
         }
@@ -214,9 +207,8 @@ class MenuController extends Controller {
             foreach($deleteIds as $id) {
 
                 $this->ifExists($id);
-                $menu = new Menu();
 
-                if($menu->getData($id, ['removed'])['removed'] !== 1) {
+                if(Menu::getColumns(['removed'], $id)['removed'] !== 1) {
 
                     Menu::update(['id' => $id], [
 
@@ -227,7 +219,7 @@ class MenuController extends Controller {
 
                     Session::set('success', 'You have successfully moved the menu(s) to the trashcan!');
 
-                } else if($menu->getData($id, ['removed'])['removed'] === 1) {
+                } else if(Menu::getColumns(['removed'], $id)['removed'] === 1) {
 
                     Menu::delete("id", $id);
                     Session::set('success', 'You have successfully removed the menu(s)!');
