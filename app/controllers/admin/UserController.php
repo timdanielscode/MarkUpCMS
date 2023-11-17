@@ -16,24 +16,28 @@ class UserController extends Controller {
 
     private function ifExists($id) {
 
-        $user = new User();
-
-        if(empty($user->ifRowExists($id)) ) {
+        if(empty(User::ifRowExists($id)) ) {
 
             return Response::statusCode(404)->view("/404/404") . exit();
         }
     }
 
+    private function redirect($inputName, $path) {
+
+        if(submitted($inputName) === false || Csrf::validate(Csrf::token('get'), post('token')) === false ) { 
+            
+            redirect($path) . exit(); 
+        } 
+    }
+
     public function index() {
 
-        $user = new User();
-        
-        $allUsers = $user->allUsersWithRoles();
+        $allUsers = User::allUsersWithRoles();
         
         if(submitted('search')) {
 
             $search = get('search');
-            $allUsers = $user->allUsersWithRolesOnSearch($search);
+            $allUsers = User::allUsersWithRolesOnSearch($search);
         }
        
         $count = count($allUsers);
@@ -56,44 +60,37 @@ class UserController extends Controller {
 
     public function store($request) {
 
-        if(submitted("submit") === true && Csrf::validate(Csrf::token('get'), post('token')) === true ) {
+        $this->redirect("submit", '/admin/users');
 
-            $uniqueUsername = User::where('username', '=', $request['f_username']);
-            $uniqueEmail = User::where('email', '=', $request['email']);
-
-            $rules = new Rules();
+        $rules = new Rules();
             
-            if($rules->user_create($uniqueUsername, $uniqueEmail)->validated()) {
+        if($rules->user_create(User::where(['username' => $request['f_username']]), User::where(['email' => $request['email']]))->validated()) {
                     
-                User::insert([
+            User::insert([
 
-                    'username' => $request['f_username'],
-                    'email' => $request['email'],
-                    'password' => password_hash($request['password'], PASSWORD_DEFAULT),
-                    'removed'   => 0,
-                    'created_at' => date("Y-m-d H:i:s"),
-                    'updated_at' => date("Y-m-d H:i:s")
-                ]);
+                'username' => $request['f_username'],
+                'email' => $request['email'],
+                'password' => password_hash($request['password'], PASSWORD_DEFAULT),
+                'removed'   => 0,
+                'created_at' => date("Y-m-d H:i:s"),
+                'updated_at' => date("Y-m-d H:i:s")
+            ]);
 
-                $user = new User();
-                $lastRegisteredUser = $user->getLastRegisteredUserId();
+            if($request['role'] === 'Normal') { $roleId = 1; } else { $roleId = 2; }
 
-                if($request['role'] === 'Normal') { $roleId = 1; } else { $roleId = 2; }
+            UserRole::insert([
 
-                UserRole::insert([
+                'user_id' => User::getLastRegisteredUserId()['id'],
+                'role_id' => $roleId
+            ]);
 
-                    'user_id' => $lastRegisteredUser['id'],
-                    'role_id' => $roleId
-                ]);
+            Session::set('success', 'You have successfully created a new user!');           
+            redirect('/admin/users');
 
-                Session::set('success', 'You have successfully created a new user!');           
-                redirect('/admin/users');
+        } else {
 
-            } else {
-
-                $data['rules'] = $rules->errors;
-                return $this->view('admin/users/create', $data);
-            }
+            $data['rules'] = $rules->errors;
+            return $this->view('admin/users/create', $data);
         }
     }
 
@@ -101,141 +98,112 @@ class UserController extends Controller {
 
         $this->ifExists($request['username']);
 
-        $user = new User();
-        $user = $user->userAndRole($request['username']);
-
-        if(empty($user)) {
-            return Response::statusCode(404)->view("/404/404");
-        } else {
-            $data['current'] = $user;
-            return $this->view('admin/users/read', $data);
-        }
+        $data['current'] = User::userAndRole($request['username']);
+        return $this->view('admin/users/read', $data);
     }
 
     public function edit($request) {
 
         $this->ifExists($request['username']);
 
-        $userRole = DB::try()->select('roles.name')->from('roles')->join('user_role')->on('user_role.role_id', '=', 'roles.id')->join('users')->on('user_role.user_id', '=', 'users.id')->where('users.username', '=', $request['username'])->first();
-
-        $user = new User();
-        $user = $user->userAndRole($request['username']);
-       
-        $data['user'] = $user;
+        $data['user'] = User::userAndRole($request['username']);
         $data['rules'] = [];
 
-        if(empty($user) || $userRole['name'] === 'admin') {
-
-            return Response::statusCode(404)->view("/404/404");
-        } else {
-            return $this->view('admin/users/edit', $data);
-        }
+        return $this->view('admin/users/edit', $data);
     }
 
     public function update($request) {
 
-        $this->ifExists($request['username']);
+        $id = $request['id'];
+        $this->ifExists($id);
+        $this->redirect("submit", "/admin/users");
 
-        if(submitted("submit") === true && Csrf::validate(Csrf::token('get'), post('token')) === true ) {
+        $rules = new Rules();
 
-            $username = $request['f_username'];
-            $uniqueUsername = DB::try()->select('username')->from('users')->where('username', '=', $request['f_username'])->and('username', '!=', $request['username'])->fetch();
-            $uniqueEmail = DB::try()->select('email')->from('users')->where('email', '=', $request['email'])->and('username', '!=', $request['username'])->fetch();
+        if($rules->user_edit(User::checkUniqueUsername($request["f_username"], $id), User::checkUniqueEmail($request['email'], $id))->validated()) {
 
-            $rules = new Rules();
+            User::update(['id' => $id], [
 
-            if($rules->user_edit($uniqueUsername, $uniqueEmail)->validated()) {
+                'username'  =>  $request['f_username'],
+                'email' => $request['email']
+            ]);
 
-                User::update(['username' => $request['username']],[
+            redirect("/admin/users/" . $request['f_username'] . "/edit"); 
+            Session::set('success', 'You have successfully updated the user details!');
 
-                    'username'  =>  $username,
-                    'email' => $request['email']
-                ]);
+        } else {
 
-                redirect('/admin/users/' . $username . '/edit'); 
+            $data['user'] = User::userAndRole($request['f_username']);
+            $data['rules'] = $rules->errors;
 
-            } else {
-
-                $data['user'] = DB::try()->select('users.id, users.username, users.email, roles.name')->from('users')->join('user_role')->on('users.id', '=', 'user_role.user_id')->join('roles')->on('user_role.role_id', '=', 'roles.id')->where('users.username', '=', $request['username'])->first();
-                $data['rules'] = $rules->errors;
-
-                return $this->view('admin/users/edit', $data);
-            }
+            return $this->view('admin/users/edit', $data);
         }
     }
 
     public function updateRole($request) {
 
-        $this->ifExists($request['username']);
+        $id = $request['id'];
+        $this->ifExists($id);
+        $this->redirect("submit", "/admin/users");
 
-        if(submitted("submit") === true && Csrf::validate(Csrf::token('get'), post('token')) === true ) {
+        UserRole::update(['user_id' => $id], [
 
-            UserRole::update(['user_id' => $request['id']], [
-
-                'role_id'  =>  2,
-                'user_id' => $request['id']
-            ]);
+            'role_id'  =>  2,
+            'user_id' => $id
+        ]);
             
-            Session::set('success', 'You have successfully updateed the user role!'); 
-            redirect('/admin/users/'); 
-        }
+        Session::set('success', 'You have successfully updated the user role!');
+        redirect('/admin/users'); 
     }
 
     public function recover($request) {
 
-        if(submitted("recoverIds") === true && Csrf::validate(Csrf::token('get'), post('token')) === true ) {
+        $this->redirect("recoverIds", "/admin/users");
 
-            $recoverIds = explode(',', $request['recoverIds']);
+        $recoverIds = explode(',', $request['recoverIds']);
             
-            foreach($recoverIds as $request['id'] ) {
+        foreach($recoverIds as $id ) {
 
-                $this->ifExists($request['id']);
+            $this->ifExists($id);
 
-                $user = DB::try()->select('removed')->from('users')->join('user_role')->on('users.id', '=', 'user_role.user_id')->where('users.id', '=', $request['id'])->and('user_role.role_id', '=', 1)->first();
+            User::update(['id' => $id], [
 
-                User::update(['id' => $request['id']], [
-
-                    'removed'  => 0
-                ]);
-            }
+                'removed'  => 0
+            ]);
         }
-
+        
         Session::set('success', 'You have successfully recovered the user(s)!');
         redirect("/admin/users");
     }
 
     public function delete($request) {
 
-        if(submitted("deleteIds") === true && Csrf::validate(Csrf::token('get'), post('token')) === true ) {
+        $this->redirect("deleteIds", "/admin/users");
 
-            $deleteIds = explode(',', $request['deleteIds']);
+        $deleteIds = explode(',', $request['deleteIds']);
 
-            if(!empty($deleteIds) && !empty($deleteIds[0])) {
+        if(!empty($deleteIds) && !empty($deleteIds[0])) {
 
-                foreach($deleteIds as $request['id']) {
+            foreach($deleteIds as $id) {
 
-                    $this->ifExists($request['id']);
+                $this->ifExists($id);
 
-                    $user = DB::try()->select('removed')->from('users')->join('user_role')->on('users.id', '=', 'user_role.user_id')->where('users.id', '=', $request['id'])->and('user_role.role_id', '=', 1)->first();
+                if(User::getColumns(['removed'], $id)['removed'] !== 1) {
 
-                    if($user['removed'] !== 1) {
+                    User::update(['id' => $id], [
 
-                        User::update(['id' => $request['id']], [
+                        'removed'  => 1,
+                    ]);
 
-                            'removed'  => 1,
-                        ]);
+                    Session::set('success', 'You have successfully moved the user(s) to the trashcan!');
 
-                        Session::set('success', 'You have successfully moved the user(s) to the trashcan!');
+                } else if(User::getColumns(['removed'], $id)['removed'] === 1) {
 
-                    } else if($user['removed'] === 1) {
-
-                        User::delete("id", $request['id']);
-                        Session::set('success', 'You have successfully removed the user(s)!');
-                    }
+                    User::delete("id", $id);
+                    Session::set('success', 'You have successfully removed the user(s)!');
                 }
             }
-
-            redirect("/admin/users");
         }
+        redirect("/admin/users");
     }
 }

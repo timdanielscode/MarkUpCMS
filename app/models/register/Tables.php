@@ -29,6 +29,8 @@ class Tables {
         "Cdn"           =>      "cdn",
         "CdnPage"       =>      "cdn_page",
         "Media"         =>      "media",
-        "MediaFolder"   =>      "mediaFolders"
+        "MediaFolder"   =>      "mediaFolders",
+        "User"          =>      "users",
+        "UserRole"      =>      "user_role"
     ];
 }
