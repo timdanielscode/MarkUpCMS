@@ -5,6 +5,7 @@ namespace app\controllers\admin;
 use app\controllers\Controller;
 use database\DB;
 use app\models\Media;
+use app\models\MediaFolder;
 use core\Session;
 use core\Csrf;
 use extensions\Pagination;
@@ -28,24 +29,28 @@ class MediaController extends Controller {
 
     private function ifExists($id) {
 
-        $media = new Media();
-
-        if(empty($media->ifRowExists($id)) ) {
+        if(empty(Media::ifRowExists($id)) ) {
 
             return Response::statusCode(404)->view("/404/404") . exit();
         }
     }
 
+    private function redirect($inputName, $path) {
+
+        if(submitted($inputName) === false || Csrf::validate(Csrf::token('get'), post('token')) === false ) { 
+            
+            redirect($path) . exit(); 
+        } 
+    }
+
     public function index() {
 
-        $media = new Media();
-        $allMedia = $media->allMediaButOrdered();
-
+        $allMedia = Media::allMediaButOrdered();
         $search = Get::validate([get('search')]);
 
         if(!empty($search) ) {
 
-            $allMedia = $media->mediaFilesOnSearch($search);
+            $allMedia = Media::mediaFilesOnSearch($search);
         }
         
         $count = count($allMedia);
@@ -64,12 +69,13 @@ class MediaController extends Controller {
     public function create() {
 
         $folders = glob($this->_folderPath . '/*', GLOB_ONLYDIR);
-        $files = DB::try()->select('*')->from('media')->where('media_folder', '=', $this->_folderPath)->fetch();
+        $files = Media::where(['media_folder' => $this->_folderPath]);
 
         if(!empty(Get::validate([get('search')]))) {
 
             $searchValue = Get::validate([get('search')]);
-            $files = DB::try()->select('*')->from('media')->where('media_filename', 'LIKE', '%'.$searchValue.'%')->or('media_filetype', 'LIKE', '%'.$searchValue.'%')->or('updated_at', 'LIKE', '%'.$searchValue.'%')->or('created_at', 'LIKE', '%'.$searchValue.'%')->fetch();    
+            $files = Media::mediaFilesOnSearch($searchValue);
+
         } else if(!empty($_GET['type']) ) {
 
             $filesQuery = "SELECT * FROM media";
@@ -98,75 +104,50 @@ class MediaController extends Controller {
 
     public function store($request) {
 
-        if(submitted('submit') && Csrf::validate(Csrf::token('get'), post('token') ) === true) {
+        $this->redirect("submit", '/admin/media/create?folder=' . Get::validate([get('folder')]));
 
-            $filenames = $_FILES['file']['name'];
-            $tmps = $_FILES['file']['tmp_name'];
-            $sizes = $_FILES['file']['size'];
-            $types = $_FILES['file']['type'];
-            $errors = $_FILES['file']['error'];
+        $filenames = $_FILES['file']['name'];
+        $tmps = $_FILES['file']['tmp_name'];
+        $sizes = $_FILES['file']['size'];
+        $types = $_FILES['file']['type'];
+        $errors = $_FILES['file']['error'];
 
-            $rules = new Rules();
+        $rules = new Rules();
 
-            if($this->validation($filenames, $types, $errors, $rules) !== false) {
+        if($this->validation($filenames, $types, $errors, $rules) !== false) {
                       
-                foreach($filenames as $key => $filename) {
+            foreach($filenames as $key => $filename) {
                    
-                    move_uploaded_file($tmps[$key], $this->_folderPath . '/' . $filename);
+                move_uploaded_file($tmps[$key], $this->_folderPath . '/' . $filename);
 
-                    Media::insert([
+                Media::insert([
             
-                        'media_filename'    => $filename,
-                        'media_folder'      => $this->_folderPath,
-                        'media_filetype'    => $types[$key],
-                        'media_filesize'    => $sizes[$key],
-                        'media_description' => $request['media_description'],
-                        'created_at' => date('Y-m-d H:i:s', $_SERVER['REQUEST_TIME']),
-                        'updated_at' => date('Y-m-d H:i:s', $_SERVER['REQUEST_TIME'])
-                    ]);
-                }
+                    'media_filename'    => $filename,
+                    'media_folder'      => $this->_folderPath,
+                    'media_filetype'    => $types[$key],
+                    'media_filesize'    => $sizes[$key],
+                    'media_description' => $request['media_description'],
+                    'created_at' => date('Y-m-d H:i:s', $_SERVER['REQUEST_TIME']),
+                    'updated_at' => date('Y-m-d H:i:s', $_SERVER['REQUEST_TIME'])
+                ]);
+            }
                
-                Session::set('success', 'You have successfully uploaded new file(s)!');            
-                redirect('/admin/media/create?folder=' . Get::validate([get('folder')]));
-            } else {
-
-                $folders = glob($this->_folderPath . '/*', GLOB_ONLYDIR);
-                $files = DB::try()->select('*')->from('media')->where('media_folder', '=', $this->_folderPath)->fetch();
-
-                $data['folders'] = $folders;
-                $data['files'] = $files;
-                $data['rules'] = $rules->errors;
-
-                return $this->view('admin/media/create', $data);
-            }
-
-        } else if(submitted('submitFolder')) {
-
-            $this->folder($request);
-        } else if(submitted('submitDelete')) {
-            $this->deleteFiles($request);
-        }
-    }
-
-    private function deleteFiles($request) {
-
-        $fileIds = explode(',', $request['files']);
-
-        if(submitted('submitDelete') && Csrf::validate(Csrf::token('get'), post('token') ) === true) {
-
-            foreach($fileIds as $fileId) {
-
-                $filename = Media::where('id', '=', $fileId)[0]['media_filename'];
-                Media::delete('id', $fileId);
-                unlink($this->_folderPath . '/' . $filename);
-            }
-
-            Session::set('success', 'You have successfully deleted the file(s)!');  
+            Session::set('success', 'You have successfully uploaded new file(s)!');            
             redirect('/admin/media/create?folder=' . Get::validate([get('folder')]));
+        } else {
+
+            $folders = glob($this->_folderPath . '/*', GLOB_ONLYDIR);
+            $files = Media::where(['media_folder' => $this->_folderPath]);
+
+            $data['folders'] = $folders;
+            $data['files'] = $files;
+            $data['rules'] = $rules->errors;
+
+            return $this->view('admin/media/create', $data);
         }
     }
 
-    private function folder($request) {
+    public function folder($request) {
 
         if(file_exists($this->_folderPath . '/' . $request['P_folder']) === true) {
 
@@ -180,83 +161,112 @@ class MediaController extends Controller {
 
     private function deleteFolder($request) {
 
-        if(submitted("submitFolder") === true && Csrf::validate(Csrf::token('get'), post('token')) === true ) {
-
-            rmdir($this->_folderPath . '/' . $request['P_folder']);
-            DB::try()->delete('mediaFolders')->where('folder_name', '=', $request['P_folder'])->run();
-        }
+        $this->redirect("submitFolder", '/admin/media/create?folder=' . Get::validate([get('folder')]));
+        rmdir($this->_folderPath . '/' . $request['P_folder']);
     }
 
     private function addFolder($request) {
 
-        if(submitted("submitFolder") === true && Csrf::validate(Csrf::token('get'), post('token')) === true ) {
+        $this->redirect("submitFolder", '/admin/media/create?folder=' . Get::validate([get('folder')]));
 
-            $rules = new Rules();
+        $rules = new Rules();
 
-            if($rules->insert_media_folder()->validated() ) {
+        if($rules->insert_media_folder()->validated() ) {
 
-                $unique = DB::try()->select('id')->from('mediaFolders')->where('folder_name', '=', $request['P_folder'])->fetch();
+            $this->insertFolder($request['P_folder']);
+            Session::set('success', 'You have successfully added the folder!');
+            mkdir($this->_folderPath . '/' . $request['P_folder'], 0777, true); 
 
-                if(empty($unique) ) {
+        } else {
 
-                    DB::try()->insert("mediaFolders", [
-        
-                        "folder_name" => $request['P_folder']
-                    ]); 
-                }
+            $data['folders'] = glob($this->_folderPath . '/*', GLOB_ONLYDIR);
+            $data['files'] = Media::where(['media_folder' => $this->_folderPath]);
+            $data['rules'] = $rules->errors;
 
-                Session::set('success', 'You have successfully added the folder!');
-                mkdir($this->_folderPath . '/' . $request['P_folder'], 0777, true); 
+            return $this->view('admin/media/create', $data);
+        }
+    }
 
-            } else {
+    private function insertFolder($folder) {
 
-                $folders = glob($this->_folderPath . '/*', GLOB_ONLYDIR);
-                $files = DB::try()->select('*')->from('media')->where('media_folder', '=', $this->_folderPath)->fetch();
+        if(empty(MediaFolder::where(['folder_name' => $folder]) ) ) {
 
-                $data['folders'] = $folders;
-                $data['files'] = $files;
-                $data['rules'] = $rules->errors;
+            MediaFolder::insert([
 
-                return $this->view('admin/media/create', $data);
-            }
+                'folder_name' => $folder
+            ]);
         }
     }
 
     private function validation($filenames, $types, $errors, $rules) {
 
-        if(!empty($filenames) && $filenames !== null) {
+        foreach($filenames as $key => $value) {
 
-            foreach($filenames as $key => $value) {
+            $this->checkSelected($value, $rules);
+            $this->checkFilesize($errors, $key, $rules);
+            $this->checkExists($value, $rules);
+            $this->checkType($types, $key, $rules);
+            $this->checkSpecial($value, $rules);
+            $this->checkMax($value, $rules);
+        }
 
-                if(empty($value) || $value === null) {
+        return $this->checkErrors($rules);
+    }
 
-                    $rules->errors[] = ['file' => "No file selected."];
-                } else if($errors[$key] === 1) {
-                    $rules->errors[] = ["file" => "Filesize is to big."];
-                }
+    private function checkSelected($file, $rules) {
 
-                $unique = DB::try()->select('id')->from('media')->where('media_filename', '=', $value)->fetch();
+        if(empty($file) || $file === null) {
 
-                if(!empty($unique)) {
+            $rules->errors[] = ['file' => "No file selected."];
+         }
+    }
+
+    private function checkFilesize($errors, $error, $rules) {
+
+        if($errors[$error] === 1) {
+
+            $rules->errors[] = ["file" => "Filesize is to big."];
+        }
+    }
+
+    private function checkExists($file, $rules) {
+
+        if(!empty(Media::where(['media_filename' => $file]) )) {
     
-                    $rules->errors[] = ["file" => "File already exists."];
-                } else if(in_array($types[$key],['image/png', 'image/jpeg', 'image/gif', 'image/webp', 'image/svg+xml', 'application/pdf', 'video/mp4', 'video/quicktime']) === false) {
-                    
-                    $rules->errors[] = ["file" => "File mime type is not valid."];
-                } else if(preg_match('/[#$%^&*()+=\\[\]\';,\/{}|":<>?~\\\\]/', $value)) {
-                    
-                    $rules->errors[] = ["file" => "Filename cannot contains any special characters."];
-                } else if(strlen($value) > 49) {
-                    
-                    $rules->errors[] = ["file" => "Filename cannot contain more than 50 characters."];
-                }
-            }
-    
-            if(!empty($rules->errors)) {
+            $rules->errors[] = ["file" => "File already exists."];
+        }
+    }
 
-                return false;
-            }
+    private function checkType($types, $file, $rules) {
+
+        if(in_array($types[$file],['image/png', 'image/jpeg', 'image/gif', 'image/webp', 'image/svg+xml', 'application/pdf', 'video/mp4', 'video/quicktime']) === false) {
+                    
+            $rules->errors[] = ["file" => "File mime type is not valid."];
+        }
+    }
+
+    private function checkSpecial($file, $rules) {
+
+        if(preg_match('/[#$%^&*()+=\\[\]\';,\/{}|":<>?~\\\\]/', $file)) {
+                    
+            $rules->errors[] = ["file" => "Filename cannot contains any special characters."];
         } 
+    }
+
+    private function checkMax($file, $rules) {
+
+        if(strlen($file) > 49) {
+                    
+            $rules->errors[] = ["file" => "Filename cannot contain more than 50 characters."];
+        }
+    }
+
+    private function checkErrors($rules) {
+
+        if(!empty($rules->errors)) {
+
+            return false;
+        }
     }
 
     public function UPDATEFILENAME($request) {
@@ -266,11 +276,9 @@ class MediaController extends Controller {
 
         $rules = new Rules();
 
-        $uniqueFilename = DB::try()->select('media_filename')->from('media')->where('media_filename', '=', $request['filename'])->and('id', '!=', $request['id'])->fetch();
-
-        if($rules->update_media_filename($uniqueFilename)->validated()) {
+        if($rules->update_media_filename(Media::checkMediaFilenameOnId($request['filename'], $request['id']))->validated()) {
         
-            $currentFile = Media::where('id', '=', $request['id'])[0];
+            $currentFile = Media::get($request['id']);
             $currentFileName = $currentFile['media_filename'];
         
             rename($request['folder'] . '/' . $currentFileName, $request['folder'] . '/' . $request['filename']);
@@ -287,9 +295,7 @@ class MediaController extends Controller {
 
     private function checkIfFilenameIsFolderName($filename) {
 
-        $appliedFolders = DB::try()->select('folder_name')->from('mediaFolders')->fetch();
-
-        foreach($appliedFolders as $folder) { 
+        foreach(MediaFolder::getAll(['folder_name']) as $folder) { 
 
             if($folder['folder_name'] === $filename) {
 
@@ -318,22 +324,31 @@ class MediaController extends Controller {
 
     public function delete($request) {
 
-        if(submitted('deleteIds') && Csrf::validate(Csrf::token('get'), post('token') ) === true) {
+        $this->redirect("deleteIds", '/admin/media');
+        $this->deleteFiles($request);
 
-            $ids = explode(',', $request['deleteIds']);
+        redirect("/admin/media");
+    }
 
-            foreach($ids as $id) {
+    public function deleteCreate($request) {
 
-                $this->ifExists($id);
+        $this->redirect("deleteIds", '/admin/media/create?folder=' . Get::validate([get('folder')]));
+        $this->deleteFiles($request);
 
-                $file = Media::where('id', '=', $id)[0];
-                unlink($this->_folderPath . '/' . $file['media_filename']);
-                Media::delete('id', $id);
-                
-            }
+        redirect('/admin/media/create?folder=' . Get::validate([get('folder')]));
+    }
 
-            Session::set('success', 'You have successfully removed the file(s)!');
-            redirect("/admin/media");
+    private function deleteFiles($request) {
+
+        $ids = explode(',', $request['deleteIds']);
+
+        foreach($ids as $id) {
+
+            $file = Media::get($id);
+            unlink($this->_folderPath . '/' . $file['media_filename']);
+            Media::delete('id', $id);
         }
+
+        Session::set('success', 'You have successfully removed the file(s)!');
     }
 }

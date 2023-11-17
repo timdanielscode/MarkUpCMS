@@ -172,10 +172,12 @@ Middleware::route('login', function() {
 });
 
 Middleware::route(['auth' => 'admin'], function() {
-
+    
     new Route(['POST' => '/admin/media/create/update-filename'], ['admin\MediaController' => 'UPDATEFILENAME']);
     new Route(['POST' => '/admin/media/create/update-description'], ['admin\MediaController' => 'UPDATEDESCRIPTION']);
     new Route(['POST' => '/admin/media/create'], ['admin\MediaController' => 'store']);
+    new Route(['POST' => '/admin/media/create/delete'], ['admin\MediaController' => 'deleteCreate']);
+    new Route(['POST' => '/admin/media/create/folder'], ['admin\MediaController' => 'folder']);
     new Route(['POST' => '/admin/media/update'], ['admin\MediaController' => 'UPDATE']);
     new Route(['POST' => '/admin/media/update-filename'], ['admin\MediaController' => 'UPDATEFILENAME']);
     new Route(['POST' => '/admin/media/update-description'], ['admin\MediaController' => 'UDPATEDESCRIPTION']);

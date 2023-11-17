@@ -15,18 +15,20 @@ class Tables {
 
     public $tables = [
 
-        "Post"      =>      "pages",
-        "Menu"  =>      "menus",
-        "Category"  => "categories",
-        "CdnPage" => "cdn_page",
-        "PageWidget" => "page_widget",
-        "Widget"    => "widgets",
-        "CategoryPage" => "category_page",
-        "Css"   => "css",
-        "CssPage" => "css_page",
-        "Js"    => "js",
-        "JsPage"    => "js_page",
-        "Cdn"   =>  "cdn",
-        "CdnPage"   => "cdn_page"
+        "Post"          =>      "pages",
+        "Menu"          =>      "menus",
+        "Category"      =>      "categories",
+        "CdnPage"       =>      "cdn_page",
+        "PageWidget"    =>      "page_widget",
+        "Widget"        =>      "widgets",
+        "CategoryPage"  =>      "category_page",
+        "Css"           =>      "css",
+        "CssPage"       =>      "css_page",
+        "Js"            =>      "js",
+        "JsPage"        =>      "js_page",
+        "Cdn"           =>      "cdn",
+        "CdnPage"       =>      "cdn_page",
+        "Media"         =>      "media",
+        "MediaFolder"   =>      "mediaFolders"
     ];
 }
