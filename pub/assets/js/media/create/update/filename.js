@@ -10,7 +10,7 @@ $(document).ready(function() {
 
             $.ajax({
                 type: "POST",
-                url: "/admin/media/create/update-filename",
+                url: "/admin/media/update/filename",
                 dataType: "json",
                 data: {
                     id: id,

@@ -92,17 +92,10 @@
                 <?php if(Session::get('user_role') === 'admin') { ?><a data-role="update" data-folder="<?php echo $media['media_folder']; ?>" id="update" class="button" value="<?php echo $media['id']; ?>" data-folder="<?php echo $media['media_folder']; ?>">Update</a><?php } ?>
             </td>
             <td class="width-15">
-                <?php if(!empty($media['media_description']) && $media['media_description'] !== null) { ?>
-                    <?php if(Session::get('user_role') === 'admin') { ?>
+                <?php if(Session::get('user_role') === 'admin') { ?>
                     <textarea id="description-<?php echo $media['id']; ?>" class="updateDescription" value="<?php echo $media['media_description']; ?>"><?php echo $media['media_description']; ?></textarea>
-                    <?php } else { ?>
-                        <?php echo $media['media_description']; ?>
-                    <?php } ?>
                 <?php } else { ?>
-                    <?php if(Session::get('user_role') === 'admin') { ?>
-                    <?php } else { ?>
-                        -
-                    <?php } ?>
+                    <?php echo $media['media_description']; ?>
                 <?php } ?>
                 <div class="margin-t-10" id="MESSAGE-DESCRIPTION-<?php echo $media['id']; ?>"></div>
             </td>

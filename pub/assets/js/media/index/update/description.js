@@ -5,14 +5,14 @@ $(document).ready(function() {
         var description = $("#description-"+id).val();
         var message = $("#MESSAGE-DESCRIPTION-"+id); 
 
-            $.ajax({
-                type: "POST",
-                url: "/admin/media/create/update-description",
-                dataType: "json",
-                data: {
-                    id: id,
-                    description: description,
-            },
+        $.ajax({
+            type: "POST",
+            url: "/admin/media/update/description",
+            dataType: "json",
+            data: {
+                id: id,
+                description: description
+        },
 
                 success: function(data) {
 

@@ -8,7 +8,7 @@ $(document).ready(function() {
 
             $.ajax({
                 type: "POST",
-                url: "/admin/media/create/update-description",
+                url: "/admin/media/update/description",
                 dataType: "json",
                 data: {
                     id: id,
