@@ -34,4 +34,9 @@ class Media extends Model {
 
         return DB::try()->select('media_filename')->from(self::$_table)->where('media_filename', '=', $filename)->and('id', '!=', $id)->fetch();
     }
+
+    public static function getOnTypeSearch($sql) {
+
+        return DB::try()->raw($sql)->fetch();
+    }
 }

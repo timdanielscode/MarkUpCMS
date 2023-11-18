@@ -3,7 +3,6 @@
 namespace app\controllers\admin;
 
 use app\controllers\Controller;
-use database\DB;
 use app\models\Media;
 use app\models\MediaFolder;
 use core\Session;
@@ -91,7 +90,7 @@ class MediaController extends Controller {
                 }
             }
             
-            $files = DB::try()->raw($filesQuery)->fetch();  
+            $files = Media::getOnTypeSearch($filesQuery);  
         }
         
         $data['folders'] = $folders;
