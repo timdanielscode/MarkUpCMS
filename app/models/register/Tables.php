@@ -31,6 +31,7 @@ class Tables {
         "Media"         =>      "media",
         "MediaFolder"   =>      "mediaFolders",
         "User"          =>      "users",
-        "UserRole"      =>      "user_role"
+        "UserRole"      =>      "user_role",
+        "WebsiteSlug"   =>      "websiteSlug"
     ];
 }

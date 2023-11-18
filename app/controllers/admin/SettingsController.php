@@ -4,15 +4,25 @@ namespace app\controllers\admin;
 
 use app\controllers\Controller;
 use database\DB;
+use app\models\Post;
 use app\models\WebsiteSlug;
 use validation\Rules;
 use core\Session;
+use core\Csrf;
                     
 class SettingsController extends Controller {
+
+    private function redirect($inputName, $path) {
+
+        if(submitted($inputName) === false || Csrf::validate(Csrf::token('get'), post('token')) === false ) { 
+            
+            redirect($path) . exit(); 
+        } 
+    }
                 
     public function index() {    
 
-        $data['currentLoginSlug'] = DB::try()->select('slug')->from('websiteSlug')->first();
+        $data['currentLoginSlug'] = WebsiteSlug::getData(['slug']);
         $data['rules'] = [];
 
         return $this->view('/admin/settings/index', $data);
@@ -20,34 +30,14 @@ class SettingsController extends Controller {
 
     public function updateSlug($request) {
 
-        $currentWebsiteSlug = DB::try()->all('websiteSlug')->fetch();
+        $this->redirect("submit", '/admin/settings');
 
         $rules = new Rules();
-        $unique = DB::try()->select('slug')->from('pages')->where('slug', '=', "/" . $request['slug'])->fetch();
 
-        $slug = $request['slug'];
+        if($rules->update_website_slug(Post::whereColumns(['slug'], ['slug' => "/" . $request['slug']]))->validated()) {
 
-        if($rules->update_website_slug($unique)->validated()) {
+            $this->update($request);
 
-            if(!empty($currentWebsiteSlug) && $currentWebsiteSlug !== null) {
-
-                $currentWebsiteSlugId = DB::try()->select('id')->from('websiteSlug')->first();
-    
-                WebsiteSlug::update(['id' => $currentWebsiteSlugId[0]], [
-    
-                    'slug'     => "/" . $slug,
-                    'updated_at' => date('Y-m-d H:i:s', $_SERVER['REQUEST_TIME'])
-                ]);
-
-            } else {
-    
-                WebsiteSlug::insert([
-    
-                    'slug' => "/" . $slug,
-                    'created_at' => date('Y-m-d H:i:s', $_SERVER['REQUEST_TIME']),
-                    'updated_at' => date('Y-m-d H:i:s', $_SERVER['REQUEST_TIME'])
-                ]);
-            }
         } else {
 
             $data['rules'] = $rules->errors;
@@ -58,6 +48,27 @@ class SettingsController extends Controller {
         Session::delete("username");
         Session::delete('user_role');
 
-        redirect('/' . $slug);
+        redirect('/' . $request['slug']);
+    }
+
+    private function update($request) {
+
+        if(!empty(WebsiteSlug::getData(['id'])) && WebsiteSlug::getData(['id']) !== null) {
+
+            WebsiteSlug::update(['id' => WebsiteSlug::getData(['id'])['id']], [
+
+                'slug'     => "/" . $request['slug'],
+                'updated_at' => date('Y-m-d H:i:s', $_SERVER['REQUEST_TIME'])
+            ]);
+
+        } else {
+
+            WebsiteSlug::insert([
+
+                'slug' => "/" . $request['slug'],
+                'created_at' => date('Y-m-d H:i:s', $_SERVER['REQUEST_TIME']),
+                'updated_at' => date('Y-m-d H:i:s', $_SERVER['REQUEST_TIME'])
+            ]);
+        }
     }
 }  
