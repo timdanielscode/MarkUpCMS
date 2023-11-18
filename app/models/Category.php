@@ -34,14 +34,14 @@ class Category extends Model {
         return DB::try()->select('pages.title', 'pages.id')->from('pages')->join('category_page')->on('category_page.page_id', '=', 'pages.id')->join(self::$_table)->on('category_page.category_id', '=', 'categories.id')->where('categories.id', '=', $id)->fetch();
     }
 
-    /*public static function getAll($columns) {
+    public static function getAll($columns) {
 
         if(!empty($columns) && $columns !== null) {
 
             $columns = implode(',', $columns);
             return DB::try()->select($columns)->from("categories")->fetch();
         }
-    }*/
+    }
 
     public static function getSlug($id) {
 

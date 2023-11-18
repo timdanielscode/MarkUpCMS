@@ -7,8 +7,8 @@
 namespace extensions;
 
 use core\http\Request;
-use database\DB;
 use core\Session;
+use app\models\User;
 
 class Auth {
 
@@ -23,15 +23,13 @@ class Auth {
      */
     public static function authenticate($userRole = null) {
 
-        $request = new Request();
-
-        self::setUserCredentials($request);
+        self::setUserCredentials(new Request());
 
         if($userRole !== null) {
 
-            $sql = DB::try()->select('users.id', 'users.'.self::$_userCredentialInputName, 'users.password','roles.name')->from('users')->join('user_role')->on('users.id', '=','user_role.user_id')->join('roles')->on('user_role.role_id', '=', 'roles.id')->where('users'.'.'.self::$_userCredentialInputName, '=', self::$_userCredentialInputValue)->and('roles.name', '=', $userRole['role'])->first();
+            $sql = User::getCredentialsAndRole(self::$_userCredentialInputName, self::$_userCredentialInputValue, $userRole['role']);
         } else {
-            $sql = DB::try()->select('users.id', 'users.'.self::$_userCredentialInputName, 'users.password','roles.name')->from('users')->join('user_role')->on('users.id', '=','user_role.user_id')->join('roles')->on('user_role.role_id', '=', 'roles.id')->where('users'.'.'.self::$_userCredentialInputName, '=', self::$_userCredentialInputValue)->first();
+            $sql = User::getCredentials(self::$_userCredentialInputName, self::$_userCredentialInputValue);
         }
 
         return self::verifyPassword($sql);
@@ -82,8 +80,6 @@ class Auth {
 
     /**
      * Counting failded login attempts
-     * 
-     * @return string failed_login_attempt session value | failed_login_attempts_timestamp session value
      */
     public static function loginAttempt() {
 
