@@ -22,7 +22,7 @@ use validation\Get;
 
 class PostController extends Controller {
 
-    private $_count;
+    private $_count, $_data;
 
     private function ifExists($id) {
 
@@ -42,11 +42,11 @@ class PostController extends Controller {
 
     public function index() {
 
-        $data["posts"] = $this->getPosts(Get::validate([get('search')]));
-        $data["count"] = $this->_count;
-        $data['numberOfPages'] = Pagination::getPageNumbers();
+        $this->_data["posts"] = $this->getPosts(Get::validate([get('search')]));
+        $this->_data["count"] = $this->_count;
+        $this->_data['numberOfPages'] = Pagination::getPageNumbers();
 
-        return $this->view('admin/posts/index')->data($data);
+        return $this->view('admin/posts/index')->data($this->_data);
     }
 
     private function getPosts($search) {
@@ -64,8 +64,8 @@ class PostController extends Controller {
 
     public function create() {
         
-        $data['rules'] = [];
-        return $this->view('admin/posts/create', $data);
+        $this->_data['rules'] = [];
+        return $this->view('admin/posts/create')->data($this->_data);
     }
 
     public function store($request) {
@@ -97,8 +97,8 @@ class PostController extends Controller {
             redirect('/admin/posts');
         } else {
 
-            $data['rules'] = $rules->errors;
-            return $this->view('admin/posts/create', $data);
+            $this->_data['rules'] = $rules->errors;
+            return $this->view('admin/posts/create')->data($this->_data);
         }
     }
 
@@ -106,13 +106,13 @@ class PostController extends Controller {
 
         $this->ifExists($request['id']);
 
-        $data['post'] = Post::get($request['id']);
-        $data['cssFiles'] = Post::getCssIdFilenameExtension($request['id']);
-        $data['jsFiles'] = Post::getJs($request['id']);
-        $data['menusTop'] = Menu::getTopMenus();
-        $data['menusBottom'] =  Menu::getBottomMenus();
+        $this->_data['post'] = Post::get($request['id']);
+        $this->_data['cssFiles'] = Post::getCssIdFilenameExtension($request['id']);
+        $this->_data['jsFiles'] = Post::getJs($request['id']);
+        $this->_data['menusTop'] = Menu::getTopMenus();
+        $this->_data['menusBottom'] =  Menu::getBottomMenus();
 
-        return $this->view('/admin/posts/read', $data);
+        return $this->view('/admin/posts/read')->data($this->_data);
     }
 
     public function edit($request) {
@@ -120,10 +120,10 @@ class PostController extends Controller {
         $this->ifExists($request['id']);
         $this->setDefaultSession('slug');
         
-        $data = $this->getAllData($request['id']);
-        $data['rules'] = [];
+        $this->_data = $this->getAllData($request['id']);
+        $this->_data['rules'] = [];
 
-        return $this->view('admin/posts/edit', $data);
+        return $this->view('admin/posts/edit')->data($this->_data);
     }
 
     public function update($request) {
@@ -152,10 +152,10 @@ class PostController extends Controller {
                 
         } else {
 
-            $data = $this->getAllData($id, $request);
-            $data['rules'] = $rules->errors;
+            $this->_data = $this->getAllData($id, $request);
+            $this->_data['rules'] = $rules->errors;
 
-            return $this->view('admin/posts/edit', $data);
+            return $this->view('admin/posts/edit')->data($this->_data);
         }
     }
 
@@ -187,39 +187,36 @@ class PostController extends Controller {
 
     private function getAllData($id, $requestData = null) {
 
-        $post = new Post();
-        $category = new Category();
-
         $postData = Post::get($id);
         $postSlug = explode('/', $postData['slug']);
         $postSlug = "/" . $postSlug[array_key_last($postSlug)];
 
-        $data['data'] = $postData;
+        $this->_data['data'] = $postData;
 
         if(!empty($requestData['body']) && $requestData['body'] !== null) {
 
-            $data['data']['body'] = $requestData['body'];
+            $this->_data['data']['body'] = $requestData['body'];
         }
 
-        $data['data']['postSlug'] = $postSlug;
-        $data['data']['linkedCssFiles'] = Post::getCssIdFilenameExtension($id);
-        $data['data']['notLinkedCssFiles'] = Post::getNotCssIdFilenameExtension(Post::getCssIdFilenameExtension($id));
-        $data['data']['linkedJsFiles'] = Post::getJsIdFilenameExtension($id);
-        $data['data']['notLinkedJsFiles'] = Post::getNotJsIdFilenameExtension(Post::getJsIdFilenameExtension($id));
+        $this->_data['data']['postSlug'] = $postSlug;
+        $this->_data['data']['linkedCssFiles'] = Post::getCssIdFilenameExtension($id);
+        $this->_data['data']['notLinkedCssFiles'] = Post::getNotCssIdFilenameExtension(Post::getCssIdFilenameExtension($id));
+        $this->_data['data']['linkedJsFiles'] = Post::getJsIdFilenameExtension($id);
+        $this->_data['data']['notLinkedJsFiles'] = Post::getNotJsIdFilenameExtension(Post::getJsIdFilenameExtension($id));
 
-        if(empty($post->checkCategory($id))) {
+        if(empty(Post::checkCategory($id))) {
 
-            $data['data']['categories'] = Category::getAll(['id', 'title']);
+            $this->_data['data']['categories'] = Category::getAll(['id', 'title']);
         } else {
-            $data['data']['category'] = Post::getCategoryTitleSlug($id);
+            $this->_data['data']['category'] = Post::getCategoryTitleSlug($id);
         }
 
-        $data['data']['applicableWidgets'] = Post::getApplicableWidgetIdTitle($id);
-        $data['data']['inapplicableWidgets'] = Post::getInapplicableWidgetIdTitle(Post::getApplicableWidgetIdTitle($id));
-        $data['data']['exportCdns'] = Post::getCdnIdTitle($id);
-        $data['data']['importCdns'] = Post::getNotCdnIdTitle(Post::getCdnIdTitle($id));
+        $this->_data['data']['applicableWidgets'] = Post::getApplicableWidgetIdTitle($id);
+        $this->_data['data']['inapplicableWidgets'] = Post::getInapplicableWidgetIdTitle(Post::getApplicableWidgetIdTitle($id));
+        $this->_data['data']['exportCdns'] = Post::getCdnIdTitle($id);
+        $this->_data['data']['importCdns'] = Post::getNotCdnIdTitle(Post::getCdnIdTitle($id));
 
-        return $data;
+        return $this->_data;
     }
 
     public function importCdns($request) {
@@ -335,10 +332,10 @@ class PostController extends Controller {
 
         } else {
 
-            $data = $this->getAllData($id);
-            $data['rules'] = $rules->errors;
+            $this->_data = $this->getAllData($id);
+            $this->_data['rules'] = $rules->errors;
 
-            return $this->view('admin/posts/edit', $data);
+            return $this->view('admin/posts/edit')->data($this->_data);
         }
     }
 
@@ -499,10 +496,10 @@ class PostController extends Controller {
 
         } else {
 
-            $data = $this->getAllData($id);
-            $data['rules'] = $rules->errors;
+            $this->_data = $this->getAllData($id);
+            $this->_data['rules'] = $rules->errors;
 
-            return $this->view('admin/posts/edit', $data);
+            return $this->view('admin/posts/edit')->data($this->_data);
         }
 
         Session::set('success', 'You have successfully updated the meta data on this page!');
@@ -537,10 +534,10 @@ class PostController extends Controller {
 
         } else {
                 
-            $data = $this->getAllData($id);
-            $data['rules'] = $rules->errors;
+            $this->_data = $this->getAllData($id);
+            $this->_data['rules'] = $rules->errors;
 
-            return $this->view('admin/posts/edit', $data);
+            return $this->view('admin/posts/edit')->data($this->_data);
         }
     }
 

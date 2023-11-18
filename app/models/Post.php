@@ -55,7 +55,7 @@ class Post extends Model {
     }
 
 
-    public function checkCategory($id) {
+    public static function checkCategory($id) {
 
         return DB::try()->select('page_id')->from('category_page')->where('page_id', '=', $id)->fetch();      
     }
