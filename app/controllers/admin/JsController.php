@@ -6,7 +6,6 @@ use app\controllers\Controller;
 use app\models\Js;
 use app\models\JsPage;
 use app\models\Post;
-use database\DB;
 use core\Csrf;
 use validation\Rules;
 use core\Session;

@@ -7,7 +7,6 @@ use app\models\Category;
 use app\models\Post;
 use app\models\CategoryPage;
 use app\models\CategorySub;
-use database\DB;
 use core\Session;
 use extensions\Pagination;
 use core\Csrf;

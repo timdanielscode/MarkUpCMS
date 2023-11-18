@@ -7,7 +7,6 @@ use core\Csrf;
 use validation\Rules;
 use app\models\Menu;
 use core\Session;
-use database\DB;
 use extensions\Pagination;
 use core\http\Response;
 use validation\Get;

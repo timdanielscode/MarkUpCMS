@@ -8,7 +8,6 @@ use app\models\Widget;
 use app\models\PageWidget;
 use core\Session;
 use extensions\Pagination;
-use database\DB;
 use validation\Rules;
 use core\http\Response;
 use validation\Get;

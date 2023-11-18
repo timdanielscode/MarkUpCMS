@@ -5,7 +5,6 @@
   use app\controllers\Controller;
   use core\Session; 
   use core\http\Response;
-  use database\DB;
   use validation\Rules;
   use app\models\User;
   use app\models\UserRole;

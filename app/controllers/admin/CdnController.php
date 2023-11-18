@@ -5,7 +5,6 @@ namespace app\controllers\admin;
 use app\controllers\Controller;
 use app\models\Cdn;
 use app\models\Post;
-use database\DB;
 use extensions\Pagination;
 use app\models\CdnPage;
 use core\Csrf;

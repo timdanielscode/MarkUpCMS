@@ -3,7 +3,6 @@
 namespace app\controllers\admin;
 
 use app\controllers\Controller;
-use database\DB;
 use app\models\Post;
 use app\models\WebsiteSlug;
 use validation\Rules;
