@@ -11,29 +11,37 @@ use core\Session;
 
 class Controller {
 
+    private $_path;
+
     /**
-     * Require views
+     * Setting view path
      * 
      * @param string $path name view
-     * @param array $args optional view variables
-     * @return mixed object Controller
+     * @return object Controller
      */
-    public function view($path, $args = []) {
+    public function view($path) {
 
-        if($path) {
+        if(!empty($path) && $path !== null) {
 
-            if(!empty($args)) {
-                extract($args);
-            }
-            
-            if($path !== '/404/404') {
-                Session::set('view', $path);
-            }
-
-            include("../app/views/" . $path . ".php");
-            
+            $this->_path = $path;
         } 
+
         return $this;
+    }    
+
+    /**
+     * Extracting data on view
+     * 
+     * @param array $args optional view variables
+     */
+    public function data($args = null) {
+
+        if(!empty($args) && $args !== null) {
+
+            extract($args);
+        }
+
+        include("../app/views/" . $this->_path . ".php");
     }
 
     /**

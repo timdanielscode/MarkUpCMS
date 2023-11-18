@@ -39,7 +39,7 @@ class Response extends Controller {
                 }
             }
 
-            return $this->view('404/404');
+            return self::statusCode(404)->view('404/404')->data();
         }
     }
 

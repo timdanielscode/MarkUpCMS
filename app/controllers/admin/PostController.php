@@ -28,7 +28,7 @@ class PostController extends Controller {
 
         if(empty(Post::ifRowExists($id)) ) {
 
-            return Response::statusCode(404)->view("/404/404") . exit();
+            return Response::statusCode(404)->view("/404/404")->data() . exit();
         }
     }
 
@@ -46,7 +46,7 @@ class PostController extends Controller {
         $data["count"] = $this->_count;
         $data['numberOfPages'] = Pagination::getPageNumbers();
 
-        return $this->view('admin/posts/index', $data);
+        return $this->view('admin/posts/index')->data($data);
     }
 
     private function getPosts($search) {
