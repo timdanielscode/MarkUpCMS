@@ -51,4 +51,9 @@ class User extends Model {
 
         return DB::try()->select('email')->from(self::$_table)->where('email', '=', $email)->and('id', '!=', $id)->first();
     }
+
+    public static function getLoggedInUserAndRole($username) {
+
+        return DB::try()->select('users.id, users.username, users.email, roles.name')->from('users')->join('user_role')->on('user_role.user_id', '=', 'users.id')->join('roles')->on('roles.id', '=', 'user_role.role_id')->where('users.username', '=', $username)->first();
+    }
 }   

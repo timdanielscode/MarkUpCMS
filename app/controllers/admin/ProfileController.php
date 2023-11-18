@@ -13,82 +13,89 @@
   use extensions\Auth;
                 
   class ProfileController extends Controller {
+
+    private function ifExists($id) {
+
+        if(empty(Post::ifRowExists($id)) ) {
+
+            return Response::statusCode(404)->view("/404/404") . exit();
+        }
+    }
+
+    private function redirect($inputName, $path) {
+
+        if(submitted($inputName) === false || Csrf::validate(Csrf::token('get'), post('token')) === false ) { 
+            
+            redirect($path) . exit(); 
+        } 
+    }
     
     public function index() { 
-      
-        $user = DB::try()->select('users.id, users.username, users.email, roles.name')->from('users')->join('user_role')->on('user_role.user_id', '=', 'users.id')->join('roles')->on('roles.id', '=', 'user_role.role_id')->where('users.username', '=', Session::get('username'))->first();
-
+    
+        $data['user'] = User::getLoggedInUserAndRole(Session::get('username'));
         $data['rules'] = [];
-        $data['user'] = $user;
 
         return $this->view("/admin/profile/index", $data);    
     }      
 
     public function updateDetails($request) {
 
-        if(submitted("submit") === true && Csrf::validate(Csrf::token('get'), post('token')) === true ) {
+        $id = $request['id'];
+        $this->redirect("submit", '/admin/profile');
 
-            $uniqueUsername = DB::try()->select('username')->from('users')->where('username', '=', $request['f_username'])->and('username', '!=', Session::get('username'))->fetch();
-            $uniqueEmail = DB::try()->select('email')->from('users')->where('email', '=', $request['email'])->and('username', '!=', Session::get('username'))->fetch();
+        $rules = new Rules();
 
-            $rules = new Rules();
+        if($rules->user_edit(User::checkUniqueUsername($request["f_username"], $id), User::checkUniqueEmail($request['email'], $id))->validated()) {
 
-            if($rules->profile_edit_details($uniqueUsername, $uniqueEmail)->validated()) {
+            User::update(['id' => $id], [
 
-                User::update(['username' => Session::get('username')],[
+                'username'  =>  $request['f_username'],
+                'email' => $request['email']
+            ]);
 
-                    'username'  =>  $request['f_username'],
-                    'email' => $request['email']
-                ]);
+            Session::set('username', $request['f_username']);
+            Session::set('success', 'You have successfully updated your profile details!');
+            redirect('/admin/profile/' . $request['f_username']);
 
-                Session::set('username', $request['f_username']);
-                Session::set('success', 'You have successfully updated the your details!');
-                redirect('/admin/profile/' . $request['f_username']);
+        } else {
 
-            } else {
-
-                $data['user'] = DB::try()->select('users.id, users.username, users.email, roles.name')->from('users')->join('user_role')->on('users.id', '=', 'user_role.user_id')->join('roles')->on('user_role.role_id', '=', 'roles.id')->where('users.username', '=', Session::get('username'))->first();
-                $data['rules'] = $rules->errors;
+            $data['user'] = User::getLoggedInUserAndRole(Session::get('username'));
+            $data['rules'] = $rules->errors;
                 
-                return $this->view("/admin/profile/index", $data); 
-            }
+            return $this->view("/admin/profile/index", $data); 
         }
     }
 
     public function updateRole($request) {
 
-        if(submitted("submit") === true && Csrf::validate(Csrf::token('get'), post('token')) === true ) {
+        $this->redirect("submit", '/admin/profile');
 
-            $rules = new Rules();
-            $adminIds = UserRole::where('role_id', '=', 2);
+        $rules = new Rules();
 
-            if($rules->profile_edit_role($adminIds)->validated()) {
+        if($rules->profile_edit_role(UserRole::where(['role_id' => 2]))->validated()) {
 
-                UserRole::update(['user_id' => $request['id']], [
+            UserRole::update(['user_id' => $request['id']], [
 
-                    'role_id'  =>  1,
-                    'user_id' => $request['id']
-                ]);
+                'role_id'  =>  1,
+                'user_id' => $request['id']
+            ]);
             
-                Session::set('user_role', 'normal');
-                Session::set('success', 'You have successfully updated your user role!');
-                redirect('/admin/profile/' . Session::get('username'));
+            Session::set('user_role', 'normal');
+            Session::set('success', 'You have successfully updated your user role!');
+            redirect('/admin/profile/' . Session::get('username'));
 
-            } else {
+        } else {
 
-                $data['user'] = DB::try()->select('users.id, users.username, users.email, roles.name')->from('users')->join('user_role')->on('users.id', '=', 'user_role.user_id')->join('roles')->on('user_role.role_id', '=', 'roles.id')->where('users.username', '=', Session::get('username'))->first();
-                $data['rules'] = $rules->errors;
+            $data['user'] = User::getLoggedInUserAndRole(Session::get('username'));
+            $data['rules'] = $rules->errors;
 
-                return $this->view('/admin/profile/index', $data);
-            }
+            return $this->view('/admin/profile/index', $data);
         }
     }
 
     public function editPassword() {
 
-        $user = DB::try()->select('users.id, users.username, users.email, roles.name')->from('users')->join('user_role')->on('user_role.user_id', '=', 'users.id')->join('roles')->on('roles.id', '=', 'user_role.role_id')->where('users.username', '=', Session::get('username'))->first();
-
-        $data['user'] = $user;
+        $data['user'] = User::getLoggedInUserAndRole(Session::get('username'));
         $data['rules'] = [];
 
         return $this->view('/admin/profile/changePassword', $data);
@@ -103,7 +110,7 @@
             $this->authenticate($rules, $request['id'], $request['newPassword']);
         } else {
 
-            $data['user'] = DB::try()->select('users.id, users.username, users.email, roles.name')->from('users')->join('user_role')->on('users.id', '=', 'user_role.user_id')->join('roles')->on('user_role.role_id', '=', 'roles.id')->where('users.username', '=', Session::get('username'))->first();
+            $data['user'] = User::getLoggedInUserAndRole(Session::get('username'));
             $data['rules'] = $rules->errors;
 
             return $this->view('admin/profile/changePassword', $data);
@@ -117,7 +124,7 @@
             $this->updateCurrentPassword($id, $password);
         } else {
 
-            $data['user'] = DB::try()->select('users.id, users.username, users.email, roles.name')->from('users')->join('user_role')->on('users.id', '=', 'user_role.user_id')->join('roles')->on('user_role.role_id', '=', 'roles.id')->where('users.username', '=', Session::get('username'))->first();
+            $data['user'] = User::getLoggedInUserAndRole(Session::get('username'));
             $rules->errors[] = ['retypePassword' => $this->getFailedLoginAttemptMessages()];
             $data['rules'] = $rules->errors;
 
@@ -127,22 +134,21 @@
 
     private function updateCurrentPassword($id, $password) {
 
-        if(submitted("submit") === true && Csrf::validate(Csrf::token('get'), post('token')) === true ) {
+        $this->redirect("submit", '/admin/profile');
 
-            if(!empty($id) && $id !== null && !empty($password) && $password !== null) {
+        if(!empty($id) && $id !== null && !empty($password) && $password !== null) {
 
-                User::update(['id' => $id], [
+            User::update(['id' => $id], [
 
-                    'password' => password_hash($password, PASSWORD_DEFAULT)
-                ]);
-            }
-        
-            Session::delete('logged_in');
-            Session::delete('username');
-            Session::delete('user_role');
-            
-            $this->redirectLoginPage();
+                'password' => password_hash($password, PASSWORD_DEFAULT)
+            ]);
         }
+        
+        Session::delete('logged_in');
+        Session::delete('username');
+        Session::delete('user_role');
+            
+        $this->redirectLoginPage();
     }
 
     private function getFailedLoginAttemptMessages() {
@@ -173,16 +179,15 @@
 
     public function delete($request) {
 
-        if(submitted("delete") === true && Csrf::validate(Csrf::token('get'), post('token')) === true ) {
+        $this->redirect("submit", '/admin/profile');
 
-            User::delete('username', Session::get('username'));
-            UserRole::delete('user_id', $request['id']);
+        User::delete('username', Session::get('username'));
+        UserRole::delete('user_id', $request['id']);
 
-            Session::delete('username');
-            Session::delete('user_role');
-            Session::delete("logged_in");
+        Session::delete('username');
+        Session::delete('user_role');
+        Session::delete("logged_in");
 
-            redirect('/');
-        }
+        redirect('/');
     }
 }  

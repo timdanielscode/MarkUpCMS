@@ -80,18 +80,7 @@ class Rules {
                    
         $this->errors = $validation->errors;
         return $this;
-      }  
-
-    public function profile_edit_details($username, $email) {
-
-        $validation = new Validate();
-  
-        $validation->input('f_username')->as('Username')->rules(['required' => true, 'max' => 49, 'special' => true, 'unique' => $username]);
-        $validation->input('email')->as('Email')->rules(['required' => true, 'min' => 5, 'max' => 49, 'special' => true, 'unique' => $email]);
-  
-        $this->errors = $validation->errors;
-        return $this;
-    }
+    }  
 
     public function profile_edit_role($adminIds) {
 
