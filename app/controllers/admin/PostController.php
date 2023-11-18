@@ -23,6 +23,8 @@ use validation\Get;
 
 class PostController extends Controller {
 
+    private $_count;
+
     private function ifExists($id) {
 
         if(empty(Post::ifRowExists($id)) ) {
@@ -41,23 +43,24 @@ class PostController extends Controller {
 
     public function index() {
 
-        $posts = Post::allPostsWithCategories();
-        $search = Get::validate([get('search')]);
+        $data["posts"] = $this->getPosts(Get::validate([get('search')]));
+        $data["count"] = $this->_count;
+        $data['numberOfPages'] = Pagination::getPageNumbers();
 
-        if(!empty($search) ) {
+        return $this->view('admin/posts/index', $data);
+    }
+
+    private function getPosts($search) {
+
+        $posts = Post::allPostsWithCategories();
+
+        if(!empty($search)) {
 
             $posts = Post::allPostsWithCategoriesOnSearch($search);
         }
-        $count = count($posts);
 
-        $posts = Pagination::get($posts, 10);
-        $numberOfPages = Pagination::getPageNumbers();
-
-        $data["posts"] = $posts;
-        $data["count"] = $count;
-        $data['numberOfPages'] = $numberOfPages;
-
-        return $this->view('admin/posts/index', $data);
+        $this->_count = count($posts);
+        return Pagination::get($posts, 10);
     }
 
     public function create() {

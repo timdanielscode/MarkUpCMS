@@ -36,25 +36,25 @@ class JsController extends Controller {
     }
 
     public function index() {
-
-        $jsFiles = Js::allJsButOrderedOnDate();
-        $search = Get::validate([get('search')]);
-
-        if(!empty($search) ) {
-
-            $jsFiles = Js::jsFilesOnSearch($search);
-        }
         
-        $count = count($jsFiles);
-
-        $jsFiles = Pagination::get($jsFiles, 10);
-        $numberOfPages = Pagination::getPageNumbers();
-
-        $data['jsFiles'] = $jsFiles;
-        $data['count'] = $count;
-        $data['numberOfPages'] = $numberOfPages;
+        $data['jsFiles'] = $this->getJs(Get::validate([get('search')]));
+        $data['count'] = $this->_count;
+        $data['numberOfPages'] = Pagination::getPageNumbers();
 
         return $this->view('admin/js/index', $data);
+    }
+
+    private function getJs($search) {
+
+        $js = Js::allJsButOrderedOnDate();
+    
+        if(!empty($search)) {
+    
+            $js = Js::jsFilesOnSearch($search);
+        }
+    
+        $this->_count = count($js);
+        return Pagination::get($js, 10);
     }
 
     public function create() {

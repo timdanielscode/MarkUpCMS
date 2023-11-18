@@ -16,6 +16,8 @@ use validation\Get;
 
 class CdnController extends Controller {
 
+    private $_count;
+
     private function ifExists($id) {
 
         if(empty(Cdn::ifRowExists($id)) ) {
@@ -34,24 +36,24 @@ class CdnController extends Controller {
 
     public function index() {
 
-        $cdns = Cdn::allCdnsButOrderedByDate();
-        $search = Get::validate([get('search')]);
-
-        if(!empty($search) ) {
-
-            $cdns = Cdn::orderedCdnsOnSearch($search);
-        }
-
-        $count = count($cdns);
-
-        $cdns = Pagination::get($cdns, 10);
-        $numberOfPages = Pagination::getPageNumbers();
-
-        $data['count'] = $count;
-        $data['cdns'] = $cdns;
-        $data['numberOfPages'] = $numberOfPages;
+        $data['cdns'] = $this->getCdn(Get::validate([get('search')]));
+        $data['count'] = $this->_count;
+        $data['numberOfPages'] = Pagination::getPageNumbers();
 
         return $this->view('admin/cdn/index', $data);
+    }
+
+    private function getCdn($search) {
+
+        $cdn = Cdn::allCdnsButOrderedByDate();
+    
+        if(!empty($search)) {
+    
+            $cdn = Cdn::orderedCdnsOnSearch($search);
+        }
+    
+        $this->_count = count($cdn);
+        return Pagination::get($cdn, 10);
     }
 
     public function create() {

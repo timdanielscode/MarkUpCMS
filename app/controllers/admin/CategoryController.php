@@ -17,6 +17,8 @@ use validation\Get;
 
 class CategoryController extends Controller {
 
+    private $_count;
+
     private function ifExists($id) {
 
         if(empty(Category::ifRowExists($id)) ) {
@@ -35,25 +37,24 @@ class CategoryController extends Controller {
 
     public function index() {
 
-        $categories = Category::allCategoriesButOrdered();
-        $search = Get::validate([get('search')]);
+        $data['categories'] = $this->getCategories(Get::validate([get('search')]));
+        $data['numberOfPages'] = Pagination::getPageNumbers();
+        $data['count'] = $this->_count;
 
-        if(!empty($search) ) {
+        return $this->view('admin/categories/index', $data);
+    }
+
+    private function getCategories($search) {
+
+        $categories = Category::allCategoriesButOrdered();
+
+        if(!empty($search)) {
 
             $categories = Category::categoriesFilesOnSearch($search);
         }
 
-        $count = count($categories);
-
-        $categories = Pagination::get($categories, 10);
-        $numberOfPages = Pagination::getPageNumbers();
-
-        $data['categories'] = $categories;
-        $data['numberOfPages'] = $numberOfPages;
-        $data['search'] = $search;
-        $data['count'] = $count;
-
-        return $this->view('admin/categories/index', $data);
+        $this->_count = count($categories);
+        return Pagination::get($categories, 10);
     }
 
     public function store($request) {

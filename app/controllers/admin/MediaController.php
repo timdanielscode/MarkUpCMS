@@ -15,7 +15,7 @@ use core\http\Response;
 
 class MediaController extends Controller {
 
-    private $_folderPath = '';
+    private $_count, $_folderPath = '';
 
     public function __construct() {
 
@@ -45,25 +45,24 @@ class MediaController extends Controller {
 
     public function index() {
 
-        $allMedia = Media::allMediaButOrdered();
-        $search = Get::validate([get('search')]);
-
-        if(!empty($search) ) {
-
-            $allMedia = Media::mediaFilesOnSearch($search);
-        }
-        
-        $count = count($allMedia);
-
-        $allMedia = Pagination::get($allMedia, 8);
-        $numberOfPages = Pagination::getPageNumbers();
-
-        $data['count'] = $count;
-        $data["allMedia"] = $allMedia;
-        $data['numberOfPages'] = $numberOfPages;
-        $data['search'] = $search;
+        $data["allMedia"] = $this->getMedia(Get::validate([get('search')]));
+        $data['count'] = $this->_count;
+        $data['numberOfPages'] = Pagination::getPageNumbers();
 
         return $this->view('admin/media/index', $data);
+    }
+
+    private function getMedia($search) {
+
+        $media = Media::allMediaButOrdered();
+    
+        if(!empty($search)) {
+    
+            $media = Media::mediaFilesOnSearch($search);
+        }
+    
+        $this->_count = count($media);
+        return Pagination::get($media, 8);
     }
 
     public function create() {

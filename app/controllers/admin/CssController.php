@@ -16,6 +16,7 @@ use validation\Get;
 
 class CssController extends Controller {
 
+    private $_count;
     private $_fileExtension = ".css";
     private $_folderLocation = "website/assets/css/";
 
@@ -37,24 +38,24 @@ class CssController extends Controller {
 
     public function index() {
 
-        $cssFiles = Css::allCssButOrderedOnDate();
-        $search = Get::validate([get('search')]);
-
-        if(!empty($search) ) {
-
-            $cssFiles = Css::cssFilesOnSearch($search);
-        }
-
-        $count = count($cssFiles);
-
-        $cssFiles = Pagination::get($cssFiles, 10);
-        $numberOfPages = Pagination::getPageNumbers();
-
-        $data['count'] = $count;
-        $data['cssFiles'] = $cssFiles;
-        $data['numberOfPages'] = $numberOfPages;
+        $data['cssFiles'] = $this->getCss(Get::validate([get('search')]));
+        $data['count'] = $this->_count;
+        $data['numberOfPages'] = Pagination::getPageNumbers();
 
         return $this->view('admin/css/index', $data);
+    }
+
+    private function getCss($search) {
+
+        $css = Css::allCssButOrderedOnDate();
+
+        if(!empty($search)) {
+
+            $css = Css::cssFilesOnSearch($search);
+        }
+
+        $this->_count = count($css);
+        return Pagination::get($css, 10);
     }
 
     public function create() {

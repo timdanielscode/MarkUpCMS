@@ -14,6 +14,8 @@ use validation\Get;
 
 class MenuController extends Controller {
 
+    private $_count;
+
     private function ifExists($id) {
 
         if(empty(Menu::ifRowExists($id)) ) {
@@ -32,23 +34,24 @@ class MenuController extends Controller {
 
     public function index() {
 
-        $menus = Menu::allMenusButOrderedOnDate();
-        $search = Get::validate([get('search')]);
+        $data["menus"] = $this->getMenus(Get::validate([get('search')]));
+        $data["count"] = $this->_count;
+        $data['numberOfPages'] = Pagination::getPageNumbers();
 
-        if(!empty($search) ) {
+        return $this->view('admin/menus/index', $data);
+    }
+
+    private function getMenus($search) {
+
+        $menus = Menu::allMenusButOrderedOnDate();
+
+        if(!empty($search)) {
 
             $menus = Menu::menusOnSearch($search);
         }
-        $count = count($menus);
-        
-        $menus = Pagination::get($menus, 10);
-        $numberOfPages = Pagination::getPageNumbers();
 
-        $data["menus"] = $menus;
-        $data["count"] = $count;
-        $data['numberOfPages'] = $numberOfPages;
-
-        return $this->view('admin/menus/index', $data);
+        $this->_count = count($menus);
+        return Pagination::get($menus, 10);
     }
 
     public function create() {

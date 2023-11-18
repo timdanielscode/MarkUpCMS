@@ -11,8 +11,11 @@ use core\Csrf;
 use validation\Rules;
 use core\http\Response;
 use extensions\Pagination;
+use validation\Get;
 
 class UserController extends Controller {
+
+    private $_count;
 
     private function ifExists($id) {
 
@@ -32,24 +35,24 @@ class UserController extends Controller {
 
     public function index() {
 
-        $allUsers = User::allUsersWithRoles();
-        
-        if(submitted('search')) {
-
-            $search = get('search');
-            $allUsers = User::allUsersWithRolesOnSearch($search);
-        }
-       
-        $count = count($allUsers);
-
-        $allUsers = Pagination::get($allUsers, 10);
-        $numberOfPages = Pagination::getPageNumbers();
-
-        $data['allUsers'] = $allUsers;
-        $data['count'] = $count;
-        $data['numberOfPages'] = $numberOfPages;
+        $data['allUsers'] = $this->getUsers(Get::validate([get('search')]));
+        $data['count'] = $this->_count;
+        $data['numberOfPages'] = Pagination::getPageNumbers();
 
         return $this->view('admin/users/index', $data);
+    }
+
+    private function getUsers($search) {
+
+        $users = User::allUsersWithRoles();
+    
+        if(!empty($search)) {
+    
+            $users = User::allUsersWithRolesOnSearch($search);
+        }
+    
+        $this->_count = count($users);
+        return Pagination::get($users, 10);
     }
 
     public function create() {

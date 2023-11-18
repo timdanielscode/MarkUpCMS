@@ -15,6 +15,8 @@ use validation\Get;
 
 class WidgetController extends Controller {
 
+    private $_count;
+
     private function ifExists($id) {
 
         if(empty(Widget::ifRowExists($id)) ) {
@@ -33,24 +35,24 @@ class WidgetController extends Controller {
 
     public function index() {
 
-        $widgets = Widget::allWidgetsButOrderedOnDate();
-        $search = Get::validate([get('search')]);
+        $data["widgets"] = $this->getWidgets(Get::validate([get('search')]));
+        $data["count"] = $this->_count;
+        $data['numberOfPages'] = Pagination::getPageNumbers();
 
-        if(!empty($search) ) {
+        return $this->view('admin/widgets/index', $data);
+    }
+
+    private function getWidgets($search) {
+
+        $widgets = Widget::allWidgetsButOrderedOnDate();
+
+        if(!empty($search)) {
 
             $widgets = Widget::widgetsOnSearch($search);
         }
 
-        $count = count($widgets);
-        
-        $widgets = Pagination::get($widgets, 10);
-        $numberOfPages = Pagination::getPageNumbers();
-
-        $data["widgets"] = $widgets;
-        $data["count"] = $count;
-        $data['numberOfPages'] = $numberOfPages;
-
-        return $this->view('admin/widgets/index', $data);
+        $this->_count = count($widgets);
+        return  Pagination::get($widgets, 10);
     }
 
     public function create() {
