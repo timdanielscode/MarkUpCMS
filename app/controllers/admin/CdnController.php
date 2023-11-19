@@ -15,7 +15,7 @@ use validation\Get;
 
 class CdnController extends Controller {
 
-    private $_count;
+    private $_count, $_data;
 
     private function ifExists($id) {
 
@@ -35,11 +35,11 @@ class CdnController extends Controller {
 
     public function index() {
 
-        $data['cdns'] = $this->getCdn(Get::validate([get('search')]));
-        $data['count'] = $this->_count;
-        $data['numberOfPages'] = Pagination::getPageNumbers();
+        $this->_data['cdns'] = $this->getCdn(Get::validate([get('search')]));
+        $this->_data['count'] = $this->_count;
+        $this->_data['numberOfPages'] = Pagination::getPageNumbers();
 
-        return $this->view('admin/cdn/index', $data);
+        return $this->view('admin/cdn/index')->data($this->_data);
     }
 
     private function getCdn($search) {
@@ -57,9 +57,9 @@ class CdnController extends Controller {
 
     public function create() {
 
-        $data['rules'] = [];
+        $this->_data['rules'] = [];
 
-        return $this->view('admin/cdn/create', $data);
+        return $this->view('admin/cdn/create')->data($this->_data);
     }
 
     public function store($request) {
@@ -88,8 +88,8 @@ class CdnController extends Controller {
                
         } else {
 
-            $data['rules'] = $rules->errors;
-            return $this->view('admin/cdn/create', $data);
+            $this->_data['rules'] = $rules->errors;
+            return $this->view('admin/cdn/create')->data($this->_data);
         }
     }
 
@@ -97,22 +97,21 @@ class CdnController extends Controller {
 
         $this->ifExists($request['id']);
 
-        $cdn = Cdn::get($request['id']);
-        $data['cdn'] = $cdn;
+        $this->_data['cdn'] = Cdn::get($request['id']);
 
-        return $this->view('admin/cdn/read', $data);
+        return $this->view('admin/cdn/read')->data($this->_data);
     }
 
     public function edit($request) {
 
         $this->ifExists($request['id']);
 
-        $data['cdn'] = Cdn::get($request['id']);
-        $data['importedPages'] = Cdn::getPostImportedIdTitle($request['id']);
-        $data['pages'] = Cdn::getNotPostImportedIdTitle(Cdn::getPostImportedIdTitle($request['id']));
-        $data['rules'] = [];
+        $this->_data['cdn'] = Cdn::get($request['id']);
+        $this->_data['importedPages'] = Cdn::getPostImportedIdTitle($request['id']);
+        $this->_data['pages'] = Cdn::getNotPostImportedIdTitle(Cdn::getPostImportedIdTitle($request['id']));
+        $this->_data['rules'] = [];
 
-        return $this->view('admin/cdn/edit', $data);
+        return $this->view('admin/cdn/edit')->data($this->_data);
     }
 
     public function update($request) {
@@ -140,10 +139,10 @@ class CdnController extends Controller {
 
         } else {
 
-            $data['cdn'] = Cdn::get($request['id']);
-            $data['rules'] = $rules->errors;
+            $this->_data['cdn'] = Cdn::get($request['id']);
+            $this->_data['rules'] = $rules->errors;
 
-            return $this->view('admin/cdn/edit', $data);
+            return $this->view('admin/cdn/edit')->data($this->_data);
         }
     }
 

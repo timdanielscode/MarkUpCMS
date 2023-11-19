@@ -14,7 +14,7 @@ use validation\Get;
 
 class UserController extends Controller {
 
-    private $_count;
+    private $_count, $_data;
 
     private function ifExists($id) {
 
@@ -34,11 +34,11 @@ class UserController extends Controller {
 
     public function index() {
 
-        $data['allUsers'] = $this->getUsers(Get::validate([get('search')]));
-        $data['count'] = $this->_count;
-        $data['numberOfPages'] = Pagination::getPageNumbers();
+        $this->_data['allUsers'] = $this->getUsers(Get::validate([get('search')]));
+        $this->_data['count'] = $this->_count;
+        $this->_data['numberOfPages'] = Pagination::getPageNumbers();
 
-        return $this->view('admin/users/index', $data);
+        return $this->view('admin/users/index')->data($this->_data);
     }
 
     private function getUsers($search) {
@@ -56,8 +56,8 @@ class UserController extends Controller {
 
     public function create() {
 
-        $data["rules"] = [];
-        return $this->view('admin/users/create', $data);
+        $this->_data["rules"] = [];
+        return $this->view('admin/users/create')->data($this->_data);
     }
 
     public function store($request) {
@@ -91,8 +91,8 @@ class UserController extends Controller {
 
         } else {
 
-            $data['rules'] = $rules->errors;
-            return $this->view('admin/users/create', $data);
+            $this->_data['rules'] = $rules->errors;
+            return $this->view('admin/users/create')->data($this->_data);
         }
     }
 
@@ -100,18 +100,18 @@ class UserController extends Controller {
 
         $this->ifExists($request['username']);
 
-        $data['current'] = User::userAndRole($request['username']);
-        return $this->view('admin/users/read', $data);
+        $this->_data['current'] = User::userAndRole($request['username']);
+        return $this->view('admin/users/read')->data($this->_data);
     }
 
     public function edit($request) {
 
         $this->ifExists($request['username']);
 
-        $data['user'] = User::userAndRole($request['username']);
-        $data['rules'] = [];
+        $this->_data['user'] = User::userAndRole($request['username']);
+        $this->_data['rules'] = [];
 
-        return $this->view('admin/users/edit', $data);
+        return $this->view('admin/users/edit')->data($this->_data);
     }
 
     public function update($request) {
@@ -135,10 +135,10 @@ class UserController extends Controller {
 
         } else {
 
-            $data['user'] = User::userAndRole($request['f_username']);
-            $data['rules'] = $rules->errors;
+            $this->_data['user'] = User::userAndRole($request['f_username']);
+            $this->_data['rules'] = $rules->errors;
 
-            return $this->view('admin/users/edit', $data);
+            return $this->view('admin/users/edit')->data($this->_data);
         }
     }
 

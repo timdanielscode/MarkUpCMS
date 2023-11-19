@@ -14,7 +14,7 @@ use validation\Get;
 
 class WidgetController extends Controller {
 
-    private $_count;
+    private $_count, $_data;
 
     private function ifExists($id) {
 
@@ -34,11 +34,11 @@ class WidgetController extends Controller {
 
     public function index() {
 
-        $data["widgets"] = $this->getWidgets(Get::validate([get('search')]));
-        $data["count"] = $this->_count;
-        $data['numberOfPages'] = Pagination::getPageNumbers();
+        $this->_data["widgets"] = $this->getWidgets(Get::validate([get('search')]));
+        $this->_data["count"] = $this->_count;
+        $this->_data['numberOfPages'] = Pagination::getPageNumbers();
 
-        return $this->view('admin/widgets/index', $data);
+        return $this->view('admin/widgets/index')->data($this->_data);
     }
 
     private function getWidgets($search) {
@@ -56,8 +56,8 @@ class WidgetController extends Controller {
 
     public function create() {
 
-        $data['rules'] = [];
-        return $this->view('admin/widgets/create', $data);
+        $this->_data['rules'] = [];
+        return $this->view('admin/widgets/create')->data($this->_data);
     }
 
     public function store($request) {
@@ -85,8 +85,8 @@ class WidgetController extends Controller {
             redirect('/admin/widgets');
         } else {
 
-            $data['rules'] = $rules->errors;
-            return $this->view('admin/widgets/create', $data);
+            $this->_data['rules'] = $rules->errors;
+            return $this->view('admin/widgets/create')->data($this->_data);
         }
     }
 
@@ -94,22 +94,19 @@ class WidgetController extends Controller {
 
         $this->ifExists($request['id']);
 
-        $widget = Widget::get($request['id']);
-        $data['widget'] = $widget;
+        $this->_data['widget'] = Widget::get($request['id']);
 
-        return $this->view('admin/widgets/read', $data);
+        return $this->view('admin/widgets/read')->data($this->_data);
     }
 
     public function edit($request) {
 
         $this->ifExists($request['id']);
 
-        $widget = Widget::get($request['id']);
+        $this->_data['widget'] = Widget::get($request['id']);
+        $this->_data['rules'] = [];
 
-        $data['widget'] = $widget;
-        $data['rules'] = [];
-
-        return $this->view('admin/widgets/edit', $data);
+        return $this->view('admin/widgets/edit')->data($this->_data);
     }
 
     public function update($request) {
@@ -136,9 +133,9 @@ class WidgetController extends Controller {
             redirect("/admin/widgets/$id/edit");
         } else {
 
-            $data['widget'] = Widget::get($id);
-            $data['rules'] = $rules->errors;
-            return $this->view('/admin/widgets/edit', $data);
+            $this->_data['widget'] = Widget::get($id);
+            $this->_data['rules'] = $rules->errors;
+            return $this->view('/admin/widgets/edit')->data($this->_data);
         }
     }
 

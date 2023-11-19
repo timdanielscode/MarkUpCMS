@@ -11,6 +11,8 @@ use core\Csrf;
                     
 class SettingsController extends Controller {
 
+    private $_data;
+
     private function redirect($inputName, $path) {
 
         if(submitted($inputName) === false || Csrf::validate(Csrf::token('get'), post('token')) === false ) { 
@@ -21,10 +23,10 @@ class SettingsController extends Controller {
                 
     public function index() {    
 
-        $data['currentLoginSlug'] = WebsiteSlug::getData(['slug']);
-        $data['rules'] = [];
+        $this->_data['currentLoginSlug'] = WebsiteSlug::getData(['slug']);
+        $this->_data['rules'] = [];
 
-        return $this->view('/admin/settings/index', $data);
+        return $this->view('/admin/settings/index')->data($this->_data);
     }
 
     public function updateSlug($request) {
@@ -39,8 +41,8 @@ class SettingsController extends Controller {
 
         } else {
 
-            $data['rules'] = $rules->errors;
-            return $this->view('/admin/settings/index', $data);
+            $this->_data['rules'] = $rules->errors;
+            return $this->view('/admin/settings/index')->data($this->_data);
         }
 
         Session::delete("logged_in");

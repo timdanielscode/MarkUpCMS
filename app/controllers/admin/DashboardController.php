@@ -8,59 +8,61 @@ use app\models\WebsiteSlug;
 use validation\Rules;
                     
 class DashboardController extends Controller {
+
+    private $_data;
                 
     public function index() {    
 
-        $data['pages'] = DB::try()->select('id')->from('pages')->fetch();
-        $data['menus'] = DB::try()->select('id')->from('menus')->fetch();
-        $data['widgets'] = DB::try()->select('id')->from('widgets')->fetch();
-        $data['categories'] = DB::try()->select('id')->from('categories')->fetch();
-        $data['css'] = DB::try()->select('id')->from('css')->fetch();
-        $data['js'] = DB::try()->select('id')->from('js')->fetch();
-        $data['media'] = DB::try()->select('id')->from('media')->fetch();
-        $data['users'] = DB::try()->select('id')->from('users')->fetch();
+        $this->_data['pages'] = DB::try()->select('id')->from('pages')->fetch();
+        $this->_data['menus'] = DB::try()->select('id')->from('menus')->fetch();
+        $this->_data['widgets'] = DB::try()->select('id')->from('widgets')->fetch();
+        $this->_data['categories'] = DB::try()->select('id')->from('categories')->fetch();
+        $this->_data['css'] = DB::try()->select('id')->from('css')->fetch();
+        $this->_data['js'] = DB::try()->select('id')->from('js')->fetch();
+        $this->_data['media'] = DB::try()->select('id')->from('media')->fetch();
+        $this->_data['users'] = DB::try()->select('id')->from('users')->fetch();
 
-        $data['contentAppliedPages'] = DB::try()->select('id')->from('pages')->where('has_content', '=', 1)->fetch();
-        $data['removedPages'] = DB::try()->select('id')->from('pages')->where('removed', '=', 1)->fetch();
+        $this->_data['contentAppliedPages'] = DB::try()->select('id')->from('pages')->where('has_content', '=', 1)->fetch();
+        $this->_data['removedPages'] = DB::try()->select('id')->from('pages')->where('removed', '=', 1)->fetch();
 
-        $data['contentAppliedMenus'] = DB::try()->select('id')->from('menus')->where('has_content', '=', 1)->fetch();
-        $data['contentAppliedCss'] = DB::try()->select('id')->from('css')->where('has_content', '=', 1)->fetch();
-        $data['contentAppliedJs'] = DB::try()->select('id')->from('js')->where('has_content', '=', 1)->fetch();
+        $this->_data['contentAppliedMenus'] = DB::try()->select('id')->from('menus')->where('has_content', '=', 1)->fetch();
+        $this->_data['contentAppliedCss'] = DB::try()->select('id')->from('css')->where('has_content', '=', 1)->fetch();
+        $this->_data['contentAppliedJs'] = DB::try()->select('id')->from('js')->where('has_content', '=', 1)->fetch();
 
-        $data['positionAppliedMenus'] = DB::try()->select('id')->from('menus')->where('position', '!=', 'unset')->fetch();
-        $data['orderingAppliedMenus'] = DB::try()->select('id')->from('menus')->where('ordering', 'IS NOT', NULL)->fetch();
-        $data['removedMenus'] = DB::try()->select('id')->from('menus')->where('removed', '=', 1)->fetch();
+        $this->_data['positionAppliedMenus'] = DB::try()->select('id')->from('menus')->where('position', '!=', 'unset')->fetch();
+        $this->_data['orderingAppliedMenus'] = DB::try()->select('id')->from('menus')->where('ordering', 'IS NOT', NULL)->fetch();
+        $this->_data['removedMenus'] = DB::try()->select('id')->from('menus')->where('removed', '=', 1)->fetch();
 
-        $data['contentAppliedWidgets'] = DB::try()->select('id')->from('widgets')->where('has_content', '=', 1)->fetch();
-        $data['removedWidgets'] = DB::try()->select('id')->from('widgets')->where('removed', '=', 1)->fetch();
+        $this->_data['contentAppliedWidgets'] = DB::try()->select('id')->from('widgets')->where('has_content', '=', 1)->fetch();
+        $this->_data['removedWidgets'] = DB::try()->select('id')->from('widgets')->where('removed', '=', 1)->fetch();
 
-        $data['percentageOfNormalUsers'] = $this->getPercentageOfNormalRoles();
-        $data['percentageOfAdminUsers'] = $this->getPercentageOfAdminRoles();
-        $data['numberOfAdminUsers'] = $this->getNumberOfAdminRoles();
-        $data['numberOfNormalUsers'] = $this->getNumberOfNormalRoles();
+        $this->_data['percentageOfNormalUsers'] = $this->getPercentageOfNormalRoles();
+        $this->_data['percentageOfAdminUsers'] = $this->getPercentageOfAdminRoles();
+        $this->_data['numberOfAdminUsers'] = $this->getNumberOfAdminRoles();
+        $this->_data['numberOfNormalUsers'] = $this->getNumberOfNormalRoles();
 
-        $data['numberOfPages'] = $this->getNumberOfPages();
-        $data['numberOfAppliedMetaTitle'] = $this->getNumberOfNotAppliedMetaTitle();
-        $data['numberOfAppliedMetaDescription'] = $this->getNumberOfNotAppliedMetaDescription();
-        $data['numberOfAppliedMetaKeywords'] = $this->getNumberOfNotAppliedMetaKeywords();
+        $this->_data['numberOfPages'] = $this->getNumberOfPages();
+        $this->_data['numberOfAppliedMetaTitle'] = $this->getNumberOfNotAppliedMetaTitle();
+        $this->_data['numberOfAppliedMetaDescription'] = $this->getNumberOfNotAppliedMetaDescription();
+        $this->_data['numberOfAppliedMetaKeywords'] = $this->getNumberOfNotAppliedMetaKeywords();
 
-        $data['numberOfLinkedCss'] = $this->getNumberOfLinkedCss();
-        $data['removedCss'] = DB::try()->select('id')->from('css')->where('removed', '=', 1)->fetch();
+        $this->_data['numberOfLinkedCss'] = $this->getNumberOfLinkedCss();
+        $this->_data['removedCss'] = DB::try()->select('id')->from('css')->where('removed', '=', 1)->fetch();
 
-        $data['numberOfIncludedJs'] = $this->getNumberOfIncludedJs();
-        $data['removedJs'] = DB::try()->select('id')->from('js')->where('removed', '=', 1)->fetch();
+        $this->_data['numberOfIncludedJs'] = $this->getNumberOfIncludedJs();
+        $this->_data['removedJs'] = DB::try()->select('id')->from('js')->where('removed', '=', 1)->fetch();
 
-        $data['numberOfMediaFiletypePng'] = $this->getNumberOfMediaTypePng();
-        $data['numberOfMediaFiletypeJpg'] = $this->getNumberOfMediaTypeJpg();
-        $data['numberOfMediaFiletypeGif'] = $this->getNumberOfMediaTypeGif();
-        $data['numberOfMediaFiletypeWebp'] = $this->getNumberOfMediaTypeWebp();
-        $data['numberOfMediaFiletypeSvg'] = $this->getNumberOfMediaTypeSvg();
-        $data['numberOfMediaFiletypeMp4'] = $this->getNumberOfMediaTypeMp4();
-        $data['numberOfMediaFiletypePdf'] = $this->getNumberOfMediaTypePdf();
-        $data['numberOfMediaTotalUploadedSize'] = $this->getNumberOfMediaTotalUploadedSize();
-        $data['numberOfServerFreeSpace'] = $this->getNumberOfServerFreeSpace();
+        $this->_data['numberOfMediaFiletypePng'] = $this->getNumberOfMediaTypePng();
+        $this->_data['numberOfMediaFiletypeJpg'] = $this->getNumberOfMediaTypeJpg();
+        $this->_data['numberOfMediaFiletypeGif'] = $this->getNumberOfMediaTypeGif();
+        $this->_data['numberOfMediaFiletypeWebp'] = $this->getNumberOfMediaTypeWebp();
+        $this->_data['numberOfMediaFiletypeSvg'] = $this->getNumberOfMediaTypeSvg();
+        $this->_data['numberOfMediaFiletypeMp4'] = $this->getNumberOfMediaTypeMp4();
+        $this->_data['numberOfMediaFiletypePdf'] = $this->getNumberOfMediaTypePdf();
+        $this->_data['numberOfMediaTotalUploadedSize'] = $this->getNumberOfMediaTotalUploadedSize();
+        $this->_data['numberOfServerFreeSpace'] = $this->getNumberOfServerFreeSpace();
 
-        return $this->view("admin/dashboard/index", $data);     
+        return $this->view("admin/dashboard/index")->data($this->_data);     
     }
 
     private function getNumberOfServerFreeSpace() {

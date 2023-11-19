@@ -13,7 +13,7 @@ use validation\Get;
 
 class MenuController extends Controller {
 
-    private $_count;
+    private $_count, $_data;
 
     private function ifExists($id) {
 
@@ -33,11 +33,11 @@ class MenuController extends Controller {
 
     public function index() {
 
-        $data["menus"] = $this->getMenus(Get::validate([get('search')]));
-        $data["count"] = $this->_count;
-        $data['numberOfPages'] = Pagination::getPageNumbers();
+        $this->_data["menus"] = $this->getMenus(Get::validate([get('search')]));
+        $this->_data["count"] = $this->_count;
+        $this->_data['numberOfPages'] = Pagination::getPageNumbers();
 
-        return $this->view('admin/menus/index', $data);
+        return $this->view('admin/menus/index')->data($this->_data);
     }
 
     private function getMenus($search) {
@@ -55,8 +55,8 @@ class MenuController extends Controller {
 
     public function create() {
 
-        $data['rules'] = [];
-        return $this->view('admin/menus/create', $data);
+        $this->_data['rules'] = [];
+        return $this->view('admin/menus/create')->data($this->_data);
     }
 
     public function store($request) {
@@ -87,8 +87,8 @@ class MenuController extends Controller {
 
         } else {
 
-            $data['rules'] = $rules->errors;
-            return $this->view('admin/menus/create', $data);
+            $this->_data['rules'] = $rules->errors;
+            return $this->view('admin/menus/create')->data($this->_data);
         } 
     }
 
@@ -96,23 +96,21 @@ class MenuController extends Controller {
 
         $this->ifExists($request['id']);
 
-        $data['menu'] = Menu::get($request['id']);
+        $this->_data['menu'] = Menu::get($request['id']);
 
-        return $this->view('/admin/menus/read', $data);
+        return $this->view('/admin/menus/read')->data($this->_data);
     }
 
     public function edit($request) {
 
         $this->ifExists($request['id']);
 
-        $menu = Menu::get($request['id']);
+        //if($menu['removed'] === 1) { return Response::statusCode(404)->view("/404/404") . exit(); }
 
-        if($menu['removed'] === 1) { return Response::statusCode(404)->view("/404/404") . exit(); }
+        $this->_data['menu'] = Menu::get($request['id']);
+        $this->_data['rules'] = [];
 
-        $data['menu'] = $menu;
-        $data['rules'] = [];
-
-        return $this->view('admin/menus/edit', $data);
+        return $this->view('admin/menus/edit')->data($this->_data);
     }
 
     public function update($request) {
@@ -140,10 +138,10 @@ class MenuController extends Controller {
                     
         } else {
 
-            $data['rules'] = $rules->errors;
-            $data['menu'] = Menu::get($request['id']);
+            $this->_data['rules'] = $rules->errors;
+            $this->_data['menu'] = Menu::get($request['id']);
 
-            return $this->view("/admin/menus/edit", $data);
+            return $this->view("/admin/menus/edit")->data($this->_data);
         }
     }
 

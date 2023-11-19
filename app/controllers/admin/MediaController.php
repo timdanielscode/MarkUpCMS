@@ -14,7 +14,7 @@ use core\http\Response;
 
 class MediaController extends Controller {
 
-    private $_count, $_folderPath = '';
+    private $_count, $_data, $_folderPath = '';
 
     public function __construct() {
 
@@ -44,11 +44,11 @@ class MediaController extends Controller {
 
     public function index() {
 
-        $data["allMedia"] = $this->getMedia(Get::validate([get('search')]));
-        $data['count'] = $this->_count;
-        $data['numberOfPages'] = Pagination::getPageNumbers();
+        $this->_data["allMedia"] = $this->getMedia(Get::validate([get('search')]));
+        $this->_data['count'] = $this->_count;
+        $this->_data['numberOfPages'] = Pagination::getPageNumbers();
 
-        return $this->view('admin/media/index', $data);
+        return $this->view('admin/media/index')->data($this->_data);
     }
 
     private function getMedia($search) {
@@ -93,11 +93,11 @@ class MediaController extends Controller {
             $files = Media::getOnTypeSearch($filesQuery);  
         }
         
-        $data['folders'] = $folders;
-        $data['files'] = $files;
-        $data["rules"] = [];
+        $this->_data['folders'] = $folders;
+        $this->_data['files'] = $files;
+        $this->_data["rules"] = [];
 
-        return $this->view('admin/media/create', $data);
+        return $this->view('admin/media/create')->data($this->_data);
     }
 
     public function store($request) {
@@ -134,14 +134,11 @@ class MediaController extends Controller {
             redirect('/admin/media/create?folder=' . Get::validate([get('folder')]));
         } else {
 
-            $folders = glob($this->_folderPath . '/*', GLOB_ONLYDIR);
-            $files = Media::where(['media_folder' => $this->_folderPath]);
+            $this->_data['folders'] = glob($this->_folderPath . '/*', GLOB_ONLYDIR);
+            $this->_data['files'] = Media::where(['media_folder' => $this->_folderPath]);
+            $this->_data['rules'] = $rules->errors;
 
-            $data['folders'] = $folders;
-            $data['files'] = $files;
-            $data['rules'] = $rules->errors;
-
-            return $this->view('admin/media/create', $data);
+            return $this->view('admin/media/create')->data($this->_data);
         }
     }
 
@@ -177,11 +174,11 @@ class MediaController extends Controller {
 
         } else {
 
-            $data['folders'] = glob($this->_folderPath . '/*', GLOB_ONLYDIR);
-            $data['files'] = Media::where(['media_folder' => $this->_folderPath]);
-            $data['rules'] = $rules->errors;
+            $this->_data['folders'] = glob($this->_folderPath . '/*', GLOB_ONLYDIR);
+            $this->_data['files'] = Media::where(['media_folder' => $this->_folderPath]);
+            $this->_data['rules'] = $rules->errors;
 
-            return $this->view('admin/media/create', $data);
+            return $this->view('admin/media/create')->data($this->_data);
         }
     }
 

@@ -14,6 +14,8 @@ use ResponseController;
 
 class RenderPageController extends Controller {
 
+    private $_data;
+
     public function render() {
 
         $req = new Request();
@@ -43,15 +45,15 @@ class RenderPageController extends Controller {
                 }
             }
 
-            $data['cdns'] = DB::try()->select('content')->from('cdn')->join('cdn_page')->on('cdn.id', '=', 'cdn_page.cdn_id')->where('cdn_page.page_id', '=', $postId)->fetch();
+            $this->_data['cdns'] = DB::try()->select('content')->from('cdn')->join('cdn_page')->on('cdn.id', '=', 'cdn_page.cdn_id')->where('cdn_page.page_id', '=', $postId)->fetch();
 
-            $data['post'] = $post;
-            $data['cssFiles'] = $cssFiles;
-            $data['jsFiles'] = $jsFiles;
-            $data['menusTop'] = $menusTop;
-            $data['menusBottom'] = $menusBottom;
+            $this->_data['post'] = $post;
+            $this->_data['cssFiles'] = $cssFiles;
+            $this->_data['jsFiles'] = $jsFiles;
+            $this->_data['menusTop'] = $menusTop;
+            $this->_data['menusBottom'] = $menusBottom;
 
-            return $this->view('page', $data);
+            return $this->view('page')->data($this->_data);
         }
     }
 }

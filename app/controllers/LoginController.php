@@ -8,13 +8,15 @@
   use core\Session;
                 
   class LoginController extends Controller {
+
+    private $_data;
                 
     public function index() {    
 
-        $data['failedLoginMessage'] = "";
-        $data["rules"] = [];
+        $this->_data['failedLoginMessage'] = "";
+        $this->_data["rules"] = [];
 
-        return $this->view("login", $data);     
+        return $this->view("login")->data($this->_data);     
     }
                   
     public function authenticateUsers() {    
@@ -27,10 +29,10 @@
   
         } else {
               
-            $data['failedLoginMessage'] = $this->getFailedLoginAttemptMessages();
-            $data["rules"] = $rules->errors;
+            $this->_data['failedLoginMessage'] = $this->getFailedLoginAttemptMessages();
+            $this->_data["rules"] = $rules->errors;
 
-            return $this->view("login", $data);  
+            return $this->view("login")->data($this->_data);  
         }     
     }
 
@@ -42,10 +44,10 @@
            
         } else {
 
-            $data['failedLoginMessage'] = $this->getFailedLoginAttemptMessages();
-            $data["rules"] = [];
+            $this->_data['failedLoginMessage'] = $this->getFailedLoginAttemptMessages();
+            $this->_data["rules"] = [];
 
-            return $this->view("login", $data);       
+            return $this->view("login")->data($this->_data);       
         }
     }
 

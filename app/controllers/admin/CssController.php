@@ -15,7 +15,7 @@ use validation\Get;
 
 class CssController extends Controller {
 
-    private $_count;
+    private $_count, $_data;
     private $_fileExtension = ".css";
     private $_folderLocation = "website/assets/css/";
 
@@ -37,11 +37,11 @@ class CssController extends Controller {
 
     public function index() {
 
-        $data['cssFiles'] = $this->getCss(Get::validate([get('search')]));
-        $data['count'] = $this->_count;
-        $data['numberOfPages'] = Pagination::getPageNumbers();
+        $this->_data['cssFiles'] = $this->getCss(Get::validate([get('search')]));
+        $this->_data['count'] = $this->_count;
+        $this->_data['numberOfPages'] = Pagination::getPageNumbers();
 
-        return $this->view('admin/css/index', $data);
+        return $this->view('admin/css/index')->data($this->_data);
     }
 
     private function getCss($search) {
@@ -97,8 +97,8 @@ class CssController extends Controller {
 
         } else {
 
-            $data['rules'] = $rules->errors;
-            return $this->view('admin/css/create', $data);
+            $this->_data['rules'] = $rules->errors;
+            return $this->view('admin/css/create')->data($this->_data);
         }
     }
 
@@ -120,33 +120,25 @@ class CssController extends Controller {
 
         $this->ifExists($request['id']);
 
-        $file = Css::get($request['id']);
-        $code = $this->getFileContent($file['file_name']);
+        $this->_data['file'] = Css::get($request['id']);
+        $this->_data['code'] = $this->getFileContent(Css::get($request['id'])['file_name']);
 
-        $data['file'] = $file;
-        $data['code'] = $code;
-
-        return $this->view('admin/css/read', $data);
+        return $this->view('admin/css/read')->data($this->_data);
     }
 
     public function edit($request) {
 
         $this->ifExists($request['id']);
 
-        $cssFile = Css::get($request['id']);
         //if($cssFile['removed'] === 1) { return Response::statusCode(404)->view("/404/404") . exit(); }
 
-        $code = $this->getFileContent($cssFile['file_name']);
-        $assingedPages = Css::getPostAssignedIdTitle($request['id']);
-        $notAssignedPages = Css::getNotPostAssingedIdTitle(Css::getPostAssignedIdTitle($request['id']));
+        $this->_data['data'] = Css::get($request['id']);
+        $this->_data['data']['code'] = $this->getFileContent(Css::get($request['id'])['file_name']);
+        $this->_data['data']['pages'] = Css::getNotPostAssingedIdTitle(Css::getPostAssignedIdTitle($request['id']));
+        $this->_data['data']['assingedPages'] = Css::getPostAssignedIdTitle($request['id']);
+        $this->_data['rules'] = [];
 
-        $data['data'] = $cssFile;
-        $data['data']['code'] = $code;
-        $data['data']['pages'] = $notAssignedPages;
-        $data['data']['assingedPages'] = $assingedPages;
-        $data['rules'] = [];
-
-        return $this->view('admin/css/edit', $data);
+        return $this->view('admin/css/edit')->data($this->_data);
     }
 
     public function update($request) {
@@ -185,13 +177,13 @@ class CssController extends Controller {
             $filePath = $this->_folderLocation . $currentCssFileName . $this->_fileExtension; 
             $code = file_get_contents($filePath);
 
-            $data['data'] = Css::get($id);
-            $data['data']['assingedPages'] = Css::getPostAssignedIdTitle($request['id']);
-            $data['data']['pages'] = Css::getNotPostAssingedIdTitle(Css::getPostAssignedIdTitle($request['id']));         
-            $data['data']['code'] = $code;
-            $data['rules'] = $rules->errors;
+            $this->_data['data'] = Css::get($id);
+            $this->_data['data']['assingedPages'] = Css::getPostAssignedIdTitle($request['id']);
+            $this->_data['data']['pages'] = Css::getNotPostAssingedIdTitle(Css::getPostAssignedIdTitle($request['id']));         
+            $this->_data['data']['code'] = $code;
+            $this->_data['rules'] = $rules->errors;
                 
-            return $this->view("/admin/css/edit", $data);
+            return $this->view("/admin/css/edit")->data($this->_data);
         }
     }
 
@@ -201,7 +193,6 @@ class CssController extends Controller {
         $this->ifExists($request['id']);
         $this->redirect("submit", "/admin/css/$id/edit");
 
-        $post = new Post();
         CssPage::delete('css_id', $id);
 
         if(!empty(Post::getAll(['id'])) && Post::getAll(['id']) !== null) {

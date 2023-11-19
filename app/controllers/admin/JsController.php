@@ -15,6 +15,7 @@ use validation\Get;
 
 class JsController extends Controller {
 
+    private $_count, $_data;
     private $_fileExtension = ".js";
     private $_folderLocation = "website/assets/js/";
 
@@ -36,11 +37,11 @@ class JsController extends Controller {
 
     public function index() {
         
-        $data['jsFiles'] = $this->getJs(Get::validate([get('search')]));
-        $data['count'] = $this->_count;
-        $data['numberOfPages'] = Pagination::getPageNumbers();
+        $this->_data['jsFiles'] = $this->getJs(Get::validate([get('search')]));
+        $this->_data['count'] = $this->_count;
+        $this->_data['numberOfPages'] = Pagination::getPageNumbers();
 
-        return $this->view('admin/js/index', $data);
+        return $this->view('admin/js/index')->data($this->_data);
     }
 
     private function getJs($search) {
@@ -66,13 +67,10 @@ class JsController extends Controller {
 
         $this->ifExists($request['id']);
 
-        $file = Js::get($request['id']);
-        $code = $this->getFileContent($file['file_name']);
+        $this->_data['jsFile'] = Js::get($request['id']);
+        $this->_data['code'] = $this->getFileContent(Js::get($request['id'])['file_name']);
 
-        $data['jsFile'] = $file;
-        $data['code'] = $code;
-
-        return $this->view('admin/js/read', $data);
+        return $this->view('admin/js/read')->data($this->_data);
     }
 
     public function store($request) {
@@ -108,8 +106,8 @@ class JsController extends Controller {
 
         } else {
 
-            $data['rules'] = $rules->errors;
-            return $this->view('admin/js/create', $data);
+            $this->_data['rules'] = $rules->errors;
+            return $this->view('admin/js/create')->data($this->_data);
         }
     }
 
@@ -131,18 +129,15 @@ class JsController extends Controller {
 
         $this->ifExists($request['id']);
 
-        $file = Js::get($request['id']);
-        if($file['removed'] === 1) { return Response::statusCode(404)->view("/404/404") . exit(); }
-
-        $code = $this->getFileContent($file['file_name']);
+        //if($file['removed'] === 1) { return Response::statusCode(404)->view("/404/404") . exit(); 
         
-        $data['data'] = $file;
-        $data['data']['pages'] = Js::getNotPostAssingedIdTitle(Js::getPostAssignedIdTitle($request['id']));
-        $data['data']['assingedPages'] = Js::getPostAssignedIdTitle($request['id']); 
-        $data['data']['code'] = $code;
-        $data['rules'] = [];
+        $this->_data['data'] = Js::get($request['id']);
+        $this->_data['data']['pages'] = Js::getNotPostAssingedIdTitle(Js::getPostAssignedIdTitle($request['id']));
+        $this->_data['data']['assingedPages'] = Js::getPostAssignedIdTitle($request['id']); 
+        $this->_data['data']['code'] = $this->getFileContent(Js::get($request['id'])['file_name']);
+        $this->_data['rules'] = [];
 
-        return $this->view('admin/js/edit', $data);
+        return $this->view('admin/js/edit')->data($this->_data);
     }
 
     public function update($request) {
@@ -178,16 +173,13 @@ class JsController extends Controller {
                     
         } else {
                 
-            $filePath = $this->_folderLocation . $currentJsFileName . $this->_fileExtension; 
-            $code = file_get_contents($filePath);
+            $this->_data['data'] = Js::get($id);
+            $this->_data['data']['assingedPages'] = Js::getPostAssignedIdTitle($request['id']); 
+            $this->_data['data']['pages'] = Js::getNotPostAssingedIdTitle(Js::getPostAssignedIdTitle($request['id']));
+            $this->_data['data']['code'] = file_get_contents($this->_folderLocation . $currentJsFileName . $this->_fileExtension);
+            $this->_data['rules'] = $rules->errors;
                 
-            $data['data'] = Js::get($id);
-            $data['data']['assingedPages'] = Js::getPostAssignedIdTitle($request['id']); 
-            $data['data']['pages'] = Js::getNotPostAssingedIdTitle(Js::getPostAssignedIdTitle($request['id']));
-            $data['data']['code'] = $code;
-            $data['rules'] = $rules->errors;
-                
-            return $this->view("/admin/js/edit", $data);
+            return $this->view("/admin/js/edit")->data($this->_data);
         }
     }
 

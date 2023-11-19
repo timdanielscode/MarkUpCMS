@@ -16,7 +16,7 @@ use validation\Get;
 
 class CategoryController extends Controller {
 
-    private $_count;
+    private $_count, $_data;
 
     private function ifExists($id) {
 
@@ -36,11 +36,11 @@ class CategoryController extends Controller {
 
     public function index() {
 
-        $data['categories'] = $this->getCategories(Get::validate([get('search')]));
-        $data['numberOfPages'] = Pagination::getPageNumbers();
-        $data['count'] = $this->_count;
+        $this->_data['categories'] = $this->getCategories(Get::validate([get('search')]));
+        $this->_data['numberOfPages'] = Pagination::getPageNumbers();
+        $this->_data['count'] = $this->_count;
 
-        return $this->view('admin/categories/index', $data);
+        return $this->view('admin/categories/index')->data($this->_data);
     }
 
     private function getCategories($search) {
@@ -112,21 +112,14 @@ class CategoryController extends Controller {
         $id = Get::validate([get('id')]);
         $this->ifExists($id);
 
-        $slug = Category::getColumns(['slug'], $id);
+        $this->_data['id'] = $id;
+        $this->_data['slug'] = Category::getColumns(['slug'], $id)['slug'];
+        $this->_data['assignedPages'] = Category::getPostAssignedIdTitle($id);
+        $this->_data['notAssingedPages'] = Category::getNotPostAssignedIdTitle(Category::getPostAssignedIdTitle($id));
+        $this->_data['assingedSubCategories'] = Category::getSubIdTitleSlug($id);
+        $this->_data['notAssingedSubs'] = Category::getNotSubIdTitleSlug(Category::getSubIdTitleSlug($id), $id);
 
-        $assignedPages = Category::getPostAssignedIdTitle($id);
-        $notAssignedPages = Category::getNotPostAssignedIdTitle(Category::getPostAssignedIdTitle($id));
-        $assingedSubCategories = Category::getSubIdTitleSlug($id);
-        $notAssingedSubs = Category::getNotSubIdTitleSlug(Category::getSubIdTitleSlug($id), $id);
-
-        $data['id'] = $id;
-        $data['slug'] = $slug['slug'];
-        $data['assignedPages'] = $assignedPages;
-        $data['notAssingedPages'] = $notAssignedPages;
-        $data['assingedSubCategories'] = $assingedSubCategories;
-        $data['notAssingedSubs'] = $notAssingedSubs;
-
-        return $this->view('admin/categories/add', $data);
+        return $this->view('admin/categories/add')->data($this->_data);
     }
 
     public function ADDPAGE($request) {

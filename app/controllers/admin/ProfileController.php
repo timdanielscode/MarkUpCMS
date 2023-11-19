@@ -13,6 +13,8 @@
                 
   class ProfileController extends Controller {
 
+    private $_data;
+
     private function ifExists($id) {
 
         if(empty(Post::ifRowExists($id)) ) {
@@ -31,10 +33,10 @@
     
     public function index() { 
     
-        $data['user'] = User::getLoggedInUserAndRole(Session::get('username'));
-        $data['rules'] = [];
+        $this->_data['user'] = User::getLoggedInUserAndRole(Session::get('username'));
+        $this->_data['rules'] = [];
 
-        return $this->view("/admin/profile/index", $data);    
+        return $this->view("/admin/profile/index")->data($this->_data);    
     }      
 
     public function updateDetails($request) {
@@ -58,10 +60,10 @@
 
         } else {
 
-            $data['user'] = User::getLoggedInUserAndRole(Session::get('username'));
-            $data['rules'] = $rules->errors;
+            $this->_data['user'] = User::getLoggedInUserAndRole(Session::get('username'));
+            $this->_data['rules'] = $rules->errors;
                 
-            return $this->view("/admin/profile/index", $data); 
+            return $this->view("/admin/profile/index")->data($this->_data); 
         }
     }
 
@@ -85,19 +87,19 @@
 
         } else {
 
-            $data['user'] = User::getLoggedInUserAndRole(Session::get('username'));
-            $data['rules'] = $rules->errors;
+            $this->_data['user'] = User::getLoggedInUserAndRole(Session::get('username'));
+            $this->_data['rules'] = $rules->errors;
 
-            return $this->view('/admin/profile/index', $data);
+            return $this->view('/admin/profile/index')->data($this->_data);
         }
     }
 
     public function editPassword() {
 
-        $data['user'] = User::getLoggedInUserAndRole(Session::get('username'));
-        $data['rules'] = [];
+        $this->_data['user'] = User::getLoggedInUserAndRole(Session::get('username'));
+        $this->_data['rules'] = [];
 
-        return $this->view('/admin/profile/changePassword', $data);
+        return $this->view('/admin/profile/changePassword')->data($this->_data);
     }
 
     public function updatePassword($request) {
@@ -109,10 +111,10 @@
             $this->authenticate($rules, $request['id'], $request['newPassword']);
         } else {
 
-            $data['user'] = User::getLoggedInUserAndRole(Session::get('username'));
-            $data['rules'] = $rules->errors;
+            $this->_data['user'] = User::getLoggedInUserAndRole(Session::get('username'));
+            $this->_data['rules'] = $rules->errors;
 
-            return $this->view('admin/profile/changePassword', $data);
+            return $this->view('admin/profile/changePassword')->data($this->_data);
         }
     }
 
@@ -123,11 +125,11 @@
             $this->updateCurrentPassword($id, $password);
         } else {
 
-            $data['user'] = User::getLoggedInUserAndRole(Session::get('username'));
+            $this->_data['user'] = User::getLoggedInUserAndRole(Session::get('username'));
             $rules->errors[] = ['retypePassword' => $this->getFailedLoginAttemptMessages()];
-            $data['rules'] = $rules->errors;
+            $this->_data['rules'] = $rules->errors;
 
-            return $this->view('/admin/profile/changePassword', $data);
+            return $this->view('/admin/profile/changePassword')->data($this->_data);
         }
     }
 

@@ -12,13 +12,15 @@ use database\DB;
 
 class InstallationController extends Controller {
 
+    private $_data;
+
     private $_configDatabasePath = "../config/database/config.ini";
 
     public function createUser() {
 
-        $data['rules'] = [];
+        $this->_data['rules'] = [];
 
-        return $this->view('admin/installation/user', $data);
+        return $this->view('admin/installation/user')->data($this->_data);
     }
 
     public function storeUser($request) {
@@ -54,8 +56,8 @@ class InstallationController extends Controller {
 
             } else {
                          
-                $data["rules"] = $rules->errors;
-                return $this->view("admin/installation/user", $data);
+                $this->_data["rules"] = $rules->errors;
+                return $this->view("admin/installation/user")->data($this->_data);
             }
         }
     }
@@ -72,8 +74,8 @@ class InstallationController extends Controller {
 
     public function databaseSetup() {
 
-        $data['rules'] = [];
-        return $this->view('admin/installation/database', $data);
+        $this->_data['rules'] = [];
+        return $this->view('admin/installation/database')->data($this->_data);
     }
     
     public function createConnection($request) {
@@ -92,8 +94,8 @@ class InstallationController extends Controller {
                 redirect('/');
             } else {
 
-                $data['rules'] = $rules->errors;
-                return $this->view('admin/installation/database', $data);
+                $this->_data['rules'] = $rules->errors;
+                return $this->view('admin/installation/database')->data($this->_data);
             }
         }
     }
