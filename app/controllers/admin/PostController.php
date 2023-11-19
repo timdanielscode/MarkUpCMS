@@ -450,7 +450,7 @@ class PostController extends Controller {
         $slug[$lastKey] = $request['postSlug'];
         $fullPostSlug = implode('/', $slug);
 
-        if($rules->update_post_slug(Post::checkUniqueSlug($fullPostSlug, $id))->validated()) {
+        if($rules->update_post_slug(Post::checkUniqueSlug($fullPostSlug, $id)['slug'])->validated()) {
 
             $slug = explode('/', "/" . $request['slug']);
             $slug[array_key_last($slug)] = substr("/" . $request['postSlug'], 1);

@@ -34,6 +34,38 @@ class CategoryController extends Controller {
         }
     }
 
+    private function checkPostIsAssigned($id) {
+
+        if(!empty(Category::checkPostAssinged($id)) === true) { 
+            
+            exit();
+        }
+    }
+
+    private function checkUniqueSlugDetach($slug, $pageId) {
+
+        if(empty(Post::checkUniqueSlug($slug, $pageId)) === false) {
+
+            exit();
+        }
+    }
+
+    private function checkUniqueSlugAttach($pageId, $slug, $categoryId) {
+
+        if(empty(Post::checkUniqueSlugDetach($pageId, $slug, $categoryId)) === false) {
+
+            exit();
+        }
+    }
+
+    private function checkUniqueSlugUpdate($slug, $id) {
+
+        if(!empty(Post::checkUniqueSlug($slug, $id)) === true) { 
+            
+            exit(); 
+        }
+    }
+
     public function index() {
 
         $this->_data['categories'] = $this->getCategories(Get::validate([get('search')]));
@@ -130,63 +162,11 @@ class CategoryController extends Controller {
 
             foreach($request['pageid'] as $pageId) {
 
-                $pageSlug = Post::getColumns(['slug'], $pageId);
-
                 if(!empty(Category::checkPostAssingedId($request['id'], $pageId)) ) {
 
-                    $slugParts = explode('/', $pageSlug['slug']);
-                    $lastPageSlugKey = array_key_last($slugParts);
-                    $lastPageSlugValue = "/" . $slugParts[$lastPageSlugKey];
-
-                    if(empty(Post::checkUniqueSlug($lastPageSlugValue, $pageId)) ) {
-
-                        Post::update(['id' => $pageId], [
-
-                            'slug'  => $lastPageSlugValue
-                        ]);
-
-                        Category::deletePost($pageId, $request['id']);
-
-                    } else { return; }
-
+                    $this->detachPost($request['id'], Post::getColumns(['id, slug'], $pageId));
                 } else if(empty(Category::checkPostAssingedId($request['id'], $pageId)) ) {
-
-                    $slug = explode('/', $pageSlug['slug']);
-                    $lastKey = array_key_last($slug);
-      
-                    if(empty(Post::checkUniqueSlugDetach($pageId, $slug[$lastKey], $request['id'])) ) {
-
-                        CategoryPage::insert([
-    
-                            'page_id'   => $pageId,
-                            'category_id'   => $request['id']
-                        ]);
-
-                        if(!empty(Category::getSlugSub($request['id'])) && Category::getSlugSub($request['id']) !== null) {
-                            
-                            $subSlugs = [];
-
-                            foreach(Category::getSlugSub($request['id']) as $subSlug) {
-
-                                array_push($subSlugs, $subSlug['slug']);
-                            }
-
-                            $subSlugsString = implode('', $subSlugs);
-
-                            Post::update(['id' => $pageId], [
-    
-                                'slug'  =>  $subSlugsString . Category::getSlug($request['id'])['slug'] . $pageSlug['slug']
-                            ]);
-
-                        } else {
-
-                            Post::update(['id' => $pageId], [
-    
-                                'slug'  =>  Category::getSlug($request['id'])['slug'] . $pageSlug['slug']
-                            ]);
-                        }
-
-                    } else { return; }
+                    $this->attachPost($request['id'], Post::getColumns(['id', 'slug'], $pageId));
                 } 
             }
         }
@@ -197,13 +177,71 @@ class CategoryController extends Controller {
         echo json_encode($DATA);
     }
 
+    private function detachPost($id, $pageData) {
+
+        $slugParts = explode('/', $pageData['slug']);
+        $lastPageSlugKey = array_key_last($slugParts);
+        $lastPageSlugValue = "/" . $slugParts[$lastPageSlugKey];
+
+        $this->checkUniqueSlugDetach($lastPageSlugValue, $pageData['id']);
+
+        Post::update(['id' => $pageData['id']], [
+
+            'slug'  => $lastPageSlugValue
+        ]);
+
+        Category::deletePost($pageData['id'], $id);
+    }
+
+    private function attachPost($id, $pageData) {
+
+        $slug = explode('/', $pageData['slug']);
+        $lastKey = array_key_last($slug);
+
+        $this->checkUniqueSlugAttach($pageData['id'], $slug[$lastKey], $id);
+
+        CategoryPage::insert([
+
+            'page_id'   => $pageData['id'],
+            'category_id'   => $id
+        ]);
+
+        $this->updatePageSlugOnAttach($id, $pageData);
+    }
+
+    private function updatePageSlugOnAttach($id, $pageData) {
+
+        if(!empty(Category::getSlugSub($id)) && Category::getSlugSub($id) !== null) {
+                
+            $subSlugs = [];
+
+            foreach(Category::getSlugSub($id) as $subSlug) {
+
+                array_push($subSlugs, $subSlug['slug']);
+            }
+
+            $subSlugsString = implode('', $subSlugs);
+
+            Post::update(['id' => $pageData['id']], [
+
+                'slug'  =>  $subSlugsString . Category::getSlug($id)['slug'] . $pageData['slug']
+            ]);
+
+        } else {
+
+            Post::update(['id' => $pageData['id']], [
+
+                'slug'  =>  Category::getSlug($id)['slug'] . $pageData['slug']
+            ]);
+        }
+    }
+
     public function ADDCATEGORY($request) {
 
         $this->ifExists($request['id']);
+        $this->checkPostIsAssigned($request['id']);
 
         if(!empty($request['subcategoryid']) && $request['subcategoryid'] !== null) {
-
-            if(!empty(Category::checkPostAssinged($request['id'])) ) { return; }
 
             foreach($request['subcategoryid'] as $subCategoryId) {
 
@@ -270,12 +308,12 @@ class CategoryController extends Controller {
             $categorySlugKey = array_search(substr($currentSlug['slug'], 1), $slugParts);
             
             if(!empty($categorySlugKey) && $categorySlugKey !== null) {
-
+ 
                 $slugParts[$categorySlugKey] = substr("/" . $request['slug'], 1);
                 $slug = implode('/', $slugParts);
 
-                if(!empty(Post::checkUniqueSlug($slug, $page['id']))) { exit(); }
-        
+                $this->checkUniqueSlugUpdate($slug, $page['id']);
+
                 Post::update(['id' => $page['id']], [
         
                     'slug'  => $slug
@@ -290,49 +328,56 @@ class CategoryController extends Controller {
 
         $deleteIds = explode(',', $request['deleteIds']);
 
-        foreach($deleteIds as $request['id']) {
+        foreach($deleteIds as $id) {
 
-            $this->ifExists($request['id']);
+            $this->ifExists($id);
 
-            $currentSlug = Category::getColumns(['slug'], $request['id']);
+            $this->updateSlugAssingedCategory($id); 
+            $this->updateSlugAssingedSubCategories($id);
 
-            if(!empty(Post::getAssignedCategoryIdSlug($request['id'])) && Post::getAssignedCategoryIdSlug($request['id']) !== null) {
-            
-                foreach(Post::getAssignedCategoryIdSlug($request['id']) as $page) {
-        
-                    $slugParts = explode('/', $page['slug']);
-                    $lastPageSlugKey = array_key_last($slugParts);
-                    $lastPageSlugValue = "/" . $slugParts[$lastPageSlugKey];
-        
-                    Post::update(['id' => $page['id']], [
-                    
-                        'slug'  => $lastPageSlugValue
-                    ]);
-                } 
-            }
-        
-            if(!empty(Post::getAssignedSubCategoryIdSlug($request['id'])) && Post::getAssignedSubCategoryIdSlug($request['id']) !== null) {
-            
-                foreach(Post::getAssignedSubCategoryIdSlug($request['id']) as $page) {
-            
-                    $slugParts = explode('/', $page['slug']);
-                    $categorySlugKey = array_search(substr($currentSlug['slug'], 1), $slugParts);
-                    unset($slugParts[$categorySlugKey]);
-                    $slugMinusSubCategorySlug = implode('/', $slugParts);
-                
-                    Post::update(['id' => $page['id']], [
-                    
-                        'slug'  => $slugMinusSubCategorySlug
-                    ]);
-                } 
-            }
-        
             Session::set('success', 'You have successfully removed the catgory(s)!');
-            Category::delete('id', $request['id']);
-            CategoryPage::delete('category_id', $request['id']);
-            CategorySub::delete('category_id', $request['id']);
+            Category::delete('id', $id);
+            CategoryPage::delete('category_id', $id);
+            CategorySub::delete('category_id', $id);
         
             redirect("/admin/categories");
+        }
+    }
+
+    private function updateSlugAssingedCategory($categoryId) {
+
+        if(!empty(Post::getAssignedCategoryIdSlug($categoryId)) && Post::getAssignedCategoryIdSlug($categoryId) !== null) {
+            
+            foreach(Post::getAssignedCategoryIdSlug($categoryId) as $page) {
+    
+                $slugParts = explode('/', $page['slug']);
+                $lastPageSlugKey = array_key_last($slugParts);
+                $lastPageSlugValue = "/" . $slugParts[$lastPageSlugKey];
+    
+                Post::update(['id' => $page['id']], [
+                
+                    'slug'  => $lastPageSlugValue
+                ]);
+            } 
+        }
+    }
+
+    private function updateSlugAssingedSubCategories($categoryId) {
+
+        if(!empty(Post::getAssignedSubCategoryIdSlug($categoryId)) && Post::getAssignedSubCategoryIdSlug($categoryId) !== null) {
+
+            foreach(Post::getAssignedSubCategoryIdSlug($categoryId) as $page) {
+        
+                $slugParts = explode('/', $page['slug']);
+                $categorySlugKey = array_search(substr(Category::getColumns(['slug'], $categoryId)['slug'], 1), $slugParts);
+                unset($slugParts[$categorySlugKey]);
+                $slugMinusSubCategorySlug = implode('/', $slugParts);
+            
+                Post::update(['id' => $page['id']], [
+                
+                    'slug'  => $slugMinusSubCategorySlug
+                ]);
+            } 
         }
     }
 }
