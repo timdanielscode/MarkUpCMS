@@ -19,6 +19,11 @@ class Cdn extends Model {
         return DB::try()->select('id, title, content, has_content, removed, author, created_at, updated_at')->from(self::$_table)->where('removed', '=', 0)->order('created_at')->desc()->fetch();
     }
 
+    public static function getContent($postId) {
+
+        return DB::try()->select('content')->from('cdn')->join('cdn_page')->on('cdn.id', '=', 'cdn_page.cdn_id')->where('cdn_page.page_id', '=', $postId)->fetch();
+    }
+
     public static function orderedCdnsOnSearch($searchValue = null) {
 
         if(!empty($searchValue) && $searchValue !== null) {

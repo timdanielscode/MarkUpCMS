@@ -19,6 +19,11 @@ class Js extends Model {
         return DB::try()->select('id, file_name, extension, author, has_content, removed, updated_at, created_at')->from(self::$_table)->where('removed', '=', 0)->order('updated_at')->desc()->fetch();
     }
 
+    public static function getFilenameExtension($postId) {
+
+        return DB::try()->select('file_name', 'extension')->from('js')->join('js_page')->on('js_page.js_id', '=', 'js.id')->where('js_page.page_id', '=', $postId)->fetch();
+    }
+
     public static function jsFilesOnSearch($searchValue) {
 
         if(!empty($searchValue) && $searchValue !== null) {

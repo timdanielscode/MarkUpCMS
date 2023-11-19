@@ -22,6 +22,11 @@ class Widget extends Model {
         }
     }
 
+    public static function getPostWidgets($postId) {
+
+        return DB::try()->select('widget_id')->from('page_widget')->where('page_id', '=', $postId)->fetch();
+    }
+
     public static function allWidgetsButOrderedOnDate() {
 
         return DB::try()->select('id, title, author, has_content, removed, created_at, updated_at')->from(self::$_table)->where('removed', '=', 0)->order('updated_at')->desc()->fetch();

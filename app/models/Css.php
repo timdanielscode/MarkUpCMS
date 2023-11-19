@@ -23,6 +23,11 @@ class Css extends Model {
         }
     }
 
+    public static function getFilenameExtension($postId) {
+
+        return DB::try()->select('file_name', 'extension')->from('css')->join('css_page')->on('css_page.css_id', '=', 'css.id')->where('css_page.page_id', '=', $postId)->fetch();
+    }
+
     public static function allCssButOrderedOnDate() {
 
         return DB::try()->select('id, file_name, extension, author, has_content, removed, updated_at, created_at')->from(self::$_table)->where('removed', '=', 0)->order('created_at')->desc()->fetch();

@@ -7,53 +7,36 @@ use app\models\Post;
 use app\models\Css;
 use app\models\Js;
 use app\models\Menu;
-use database\DB;
+use app\models\Widget;
+use app\models\Cdn;
 use core\http\Request;
-use core\http\Response;
-use ResponseController;
 
 class RenderPageController extends Controller {
 
-    private $_data;
+    private $_data, $_postId;
 
     public function render() {
 
-        $req = new Request();
-        $post = Post::where('slug', '=', $req->getUri());
+        $request = new Request();
+        $this->_data['post'] = Post::where(['slug' => $request->getUri()]);
 
-        if(!empty($post) ) {
+        if(!empty(Widget::getPostWidgets($this->_data['post'][0]['id'])) ) {
 
-            $postId = $post[0]['id'];
+            foreach(Widget::getPostWidgets($this->_data['post'][0]['id']) as $widget) {
 
-            $cssFiles = DB::try()->select('file_name', 'extension')->from('css')->join('css_page')->on('css_page.css_id', '=', 'css.id')->where('css_page.page_id', '=', $postId)->fetch();
-            $jsFiles = DB::try()->select('file_name', 'extension')->from('js')->join('js_page')->on('js_page.js_id', '=', 'js.id')->where('js_page.page_id', '=', $postId)->fetch();
-
-            $menusTop = DB::try()->all('menus')->where('position', '=', 'top')->order('ordering')->fetch();
-            $menusBottom = DB::try()->all('menus')->where('position', '=', 'bottom')->order('ordering')->fetch();
-
-            $postWidgets = DB::try()->select('widget_id')->from('page_widget')->where('page_id', '=', $postId)->fetch();
-
-            if(!empty($postWidgets) && $postWidgets !== null) {
-
-                foreach($postWidgets as $postWidget) {
-
-                    $widgetId = $postWidget['widget_id'];
-                    $regex = '/@widget\[' . $widgetId . '\];/';
-
-                    $widgetContent = DB::try()->select('content')->from('widgets')->where('id', '=', $widgetId)->first();
-                    $post[0]['body'] = preg_replace($regex, $widgetContent[0], $post[0]['body']);
-                }
+                $widgetId = $widget['widget_id'];
+                $regex = '/@widget\[' . $widgetId . '\];/';
+                $content = Widget::whereColumns(['content'], ['id' => $widgetId]);
+                $this->_data['post'][0]['body'] = preg_replace($regex, $content[0]['content'], $this->_data['post'][0]['body']);
             }
-
-            $this->_data['cdns'] = DB::try()->select('content')->from('cdn')->join('cdn_page')->on('cdn.id', '=', 'cdn_page.cdn_id')->where('cdn_page.page_id', '=', $postId)->fetch();
-
-            $this->_data['post'] = $post;
-            $this->_data['cssFiles'] = $cssFiles;
-            $this->_data['jsFiles'] = $jsFiles;
-            $this->_data['menusTop'] = $menusTop;
-            $this->_data['menusBottom'] = $menusBottom;
-
-            return $this->view('page')->data($this->_data);
         }
+
+        $this->_data['cdns'] = Cdn::getContent($this->_data['post'][0]['id']);
+        $this->_data['cssFiles'] = Css::getFilenameExtension($this->_data['post'][0]['id']);
+        $this->_data['jsFiles'] = Js::getFilenameExtension($this->_data['post'][0]['id']);
+        $this->_data['menusTop'] = Menu::getTopMenus();
+        $this->_data['menusBottom'] = Menu::getBottomMenus();
+
+        return $this->view('page')->data($this->_data);
     }
 }

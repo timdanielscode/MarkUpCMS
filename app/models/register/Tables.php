@@ -18,6 +18,7 @@ class Tables {
         "Post"          =>      "pages",
         "Menu"          =>      "menus",
         "Category"      =>      "categories",
+        "CategorySub"   =>      "category_sub",
         "CdnPage"       =>      "cdn_page",
         "PageWidget"    =>      "page_widget",
         "Widget"        =>      "widgets",
