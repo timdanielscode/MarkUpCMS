@@ -7,6 +7,7 @@ use database\DB;
 class Category extends Model {
 
     private static $_table = "categories";
+    private static $_columns = [];
     private static $_postIds = [], $_subIds = [];
 
     public static function ifRowExists($id) {
@@ -36,11 +37,8 @@ class Category extends Model {
 
     public static function getAll($columns) {
 
-        if(!empty($columns) && $columns !== null) {
-
-            $columns = implode(',', $columns);
-            return DB::try()->select($columns)->from("categories")->fetch();
-        }
+        self::$_columns = implode(',', $columns);
+        return DB::try()->select(self::$_columns)->from(self::$_table)->fetch();
     }
 
     public static function getSlug($id) {

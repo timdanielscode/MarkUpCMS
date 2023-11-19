@@ -11,6 +11,7 @@ use core\Session;
 class User extends Model {
 
     private static $_table = "users";
+    private static $_columns = [];
 
     public static function getCredentials($inputType, $inputValue) {
 
@@ -25,6 +26,12 @@ class User extends Model {
     public static function ifRowExists($value) {
 
         return DB::try()->select('username')->from(self::$_table)->where('username', '=', $value)->or('id', '=', $value)->first();
+    }
+
+    public static function getAll($columns) {
+
+        self::$_columns = implode(',', $columns);
+        return DB::try()->select(self::$_columns)->from(self::$_table)->fetch();
     }
 
     public static function allUsersWithRoles() {
@@ -65,5 +72,15 @@ class User extends Model {
     public static function getLoggedInUserAndRole($username) {
 
         return DB::try()->select('users.id, users.username, users.email, roles.name')->from('users')->join('user_role')->on('user_role.user_id', '=', 'users.id')->join('roles')->on('roles.id', '=', 'user_role.role_id')->where('users.username', '=', $username)->first();
+    }
+
+    public static function getIdNormalRoles() {
+
+        return DB::try()->select('users.id')->from('users')->join('user_role')->on('user_role.user_id', '=', 'users.id')->join('roles')->on('user_role.role_id', '=', 'roles.id')->where('roles.name', '=', 'normal')->fetch();
+    }
+
+    public static function getIdAdminRoles() {
+
+        return DB::try()->select('users.id')->from('users')->join('user_role')->on('user_role.user_id', '=', 'users.id')->join('roles')->on('user_role.role_id', '=', 'roles.id')->where('roles.name', '=', 'admin')->fetch();
     }
 }   

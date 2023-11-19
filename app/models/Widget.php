@@ -7,6 +7,7 @@ use database\DB;
 class Widget extends Model {
 
     private static $_table = "widgets";
+    private static $_columns = [];
 
     public static function ifRowExists($id) {
 
@@ -20,6 +21,12 @@ class Widget extends Model {
             $this->_columns = implode(',', $columns);
             return DB::try()->select($this->_columns)->from(self::$_table)->where('id', '=', $id)->first();
         }
+    }
+
+    public static function getAll($columns) {
+
+        self::$_columns = implode(',', $columns);
+        return DB::try()->select(self::$_columns)->from(self::$_table)->fetch();
     }
 
     public static function getPostWidgets($postId) {

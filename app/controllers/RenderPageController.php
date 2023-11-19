@@ -13,7 +13,7 @@ use core\http\Request;
 
 class RenderPageController extends Controller {
 
-    private $_data, $_postId;
+    private $_data;
 
     public function render() {
 

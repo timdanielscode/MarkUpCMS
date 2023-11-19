@@ -7,6 +7,7 @@ use database\DB;
 class Css extends Model {
 
     private static $_table = "css";
+    private static $_columns = [];
     private static $_postIds = [];
 
     public static function ifRowExists($id) {
@@ -21,6 +22,12 @@ class Css extends Model {
             $this->_columns = implode(',', $columns);
             return DB::try()->select($this->_columns)->from(self::$_table)->where('id', '=', $id)->first();
         }
+    }
+
+    public static function getAll($columns) {
+
+        self::$_columns = implode(',', $columns);
+        return DB::try()->select(self::$_columns)->from(self::$_table)->fetch();
     }
 
     public static function getFilenameExtension($postId) {
@@ -81,6 +88,11 @@ class Css extends Model {
         } else {
             return DB::try()->select('id, title')->from('pages')->where('removed', '!=', 1)->fetch();
         }
+    }
+
+    public static function getIdLinkedNotNull() {
+
+        return DB::try()->select('id')->from('css')->joinLeft('css_page')->on("css_page.css_id", '=', 'css.id')->where('css_page.css_id', 'IS NOT', NULL)->fetch();
     }
 
 }

@@ -7,6 +7,7 @@ use database\DB;
 class Js extends Model {
 
     private static $_table = "js";
+    private static $_columns = [];
     private static $_postIds = [];
 
     public static function ifRowExists($id) {
@@ -17,6 +18,12 @@ class Js extends Model {
     public static function allJsButOrderedOnDate() {
 
         return DB::try()->select('id, file_name, extension, author, has_content, removed, updated_at, created_at')->from(self::$_table)->where('removed', '=', 0)->order('updated_at')->desc()->fetch();
+    }
+
+    public static function getAll($columns) {
+
+        self::$_columns = implode(',', $columns);
+        return DB::try()->select(self::$_columns)->from(self::$_table)->fetch();
     }
 
     public static function getFilenameExtension($postId) {
@@ -67,5 +74,10 @@ class Js extends Model {
         } else {
             return DB::try()->select('id, title')->from('pages')->where('pages.removed', '!=', 1)->fetch();
         }
+    }
+
+    public static function getIdIncludedNotNull() {
+
+        return DB::try()->select('id')->from('js')->joinLeft('js_page')->on("js_page.js_id", '=', 'js.id')->where('js_page.js_id', 'IS NOT', NULL)->fetch();
     }
 }

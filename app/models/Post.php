@@ -18,7 +18,7 @@ class Post extends Model {
     public static function getAll($columns) {
 
         self::$_columns = implode(',', $columns);
-        return DB::try()->select(self::$_columns)->from('pages')->fetch();
+        return DB::try()->select(self::$_columns)->from(self::$_table)->fetch();
     }
 
     public static function allPostsWithCategories() {
@@ -52,6 +52,21 @@ class Post extends Model {
     public static function checkUniqueSlug($slug, $id) {
 
         return DB::try()->select('id, slug')->from(self::$_table)->where('slug', '=', $slug)->and('id', '!=', $id)->fetch();
+    }
+
+    public static function getMetaTitleNotNullEmpty() {
+
+        return DB::try()->select('metaTitle')->from(self::$_table)->where('metaTitle', 'IS NOT', NULL)->and('metaTitle', '!=', '')->fetch();
+    }
+
+    public static function getMetaDescriptionNotNullEmpty() {
+
+        return DB::try()->select('metaDescription')->from('pages')->where('metaDescription', 'IS NOT', NULL)->and('metaDescription', '!=', '')->fetch();
+    }
+
+    public static function getMetaKeyWordsNotNullEmpty() {
+
+        return DB::try()->select('metaKeywords')->from('pages')->where('metaKeywords', 'IS NOT', NULL)->and('metaKeywords', '!=', '')->fetch();
     }
 
 

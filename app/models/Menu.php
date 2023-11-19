@@ -7,6 +7,7 @@ use database\DB;
 class Menu extends Model {
 
     private static $_table = "menus";
+    private static $_columns = [];
 
     public static function ifRowExists($id) {
 
@@ -16,6 +17,12 @@ class Menu extends Model {
     public static function allMenusButOrderedOnDate() {
 
         return DB::try()->select('id, title, has_content, position, ordering, author, removed, updated_at, created_at')->from(self::$_table)->where('removed', '=', 0)->order('updated_at')->desc()->fetch();
+    }
+
+    public static function getAll($columns) {
+
+        self::$_columns = implode(',', $columns);
+        return DB::try()->select(self::$_columns)->from(self::$_table)->fetch();
     }
 
     public static function menusOnSearch($searchValue) {
@@ -44,5 +51,15 @@ class Menu extends Model {
     public static function checkUniqueTitleId($title, $id) {
 
         return DB::try()->select('title')->from(self::$_table)->where('title', '=', $title)->and('id', '!=', $id)->fetch();
+    }
+
+    public static function getPositionNotUnset() {
+
+        return DB::try()->select('id')->from(self::$_table)->where('position', '!=', 'unset')->fetch();
+    }
+
+    public static function getOrderingIsNotNull() {
+
+        return DB::try()->select('id')->from(self::$_table)->where('ordering', 'IS NOT', NULL)->fetch();
     }
 }
