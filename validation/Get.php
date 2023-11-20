@@ -11,23 +11,21 @@ class Get {
     /**
      * Validating get values on special characters
      * 
-     * @param array $values get values
-     * @return string get value | empty string
+     * @param string $value get value
+     * @return string get value
      */ 
-    public static function validate($values) {
+    public static function validate($value) {
 
-        foreach($values as $value) {
+        if(!empty($value) && $value !== null) {
 
-            if(!empty($value) && $value !== null) {
+            $regex = '/[#$%^&*()+=\\[\]\';,{}|":<>?~\\\\]/';
 
-                $regex = '/[#$%^&*()+=\\[\]\';,{}|":<>?~\\\\]/';
-                if(preg_match($regex, $value)) {
+            if(preg_match($regex, $value)) {
         
-                    return '';
-                }
-        
-                return htmlspecialchars($value);
+                exit();
             }
+        
+            return $value;
         }
     }
 }

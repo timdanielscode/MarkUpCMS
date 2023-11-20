@@ -10,7 +10,7 @@ use validation\request\Rules;
 
 class Request {
 
-    private $_postData = [], $_getData = [];
+    private $_postData = [], $_getData = [], $_getValues = [];
 
     /** 
      * Getting REQUEST_METHOD
@@ -46,7 +46,7 @@ class Request {
     }
 
     /**
-     * Setting type of post superglobal
+     * Setting type of post superglobal values
      * 
      * @param array $post superglobal
      */
@@ -68,7 +68,7 @@ class Request {
     }
 
     /**
-     * Setting type of get superglobal
+     * Setting type of get superglobal values
      * 
      * @param array $get superglobal
      */
@@ -79,19 +79,59 @@ class Request {
             foreach($get as $name => $value) {
 
                 if(isset($get[$name]) === true) {
-    
-                    $name = htmlspecialchars($name);
-    
-                    if(gettype($value) === 'array') {
 
-                        $value = htmlspecialchars($value[0]);
-                    } else {
-                        $value = htmlspecialchars($value);
-                    }
-    
-                    $this->_getData[$name] = $value;
+                    $this->checkType($value, $name);
                 }
             }
         }
+    }
+
+    /**
+     * Checking type of get value
+     * 
+     * @param mixed $value array|string get value
+     * @param string $name name get 
+     */
+    private function checkType($value, $name) {
+
+        if(gettype($value) === 'array') {
+
+            return $this->setGetValues($value, $name);
+        }
+
+        $this->setGetValue($value, $name);
+    }
+
+    /**
+     * Setting type of get superglobal values after checking type of value
+     * 
+     * @param string $value get value
+     * @param string $name name get 
+     */
+    private function setGetValue($value, $name) {
+
+        $name = htmlspecialchars($name);
+        $value = htmlspecialchars($value);
+
+        $this->_getData[$name] = $value;
+    }
+
+    /**
+     * Setting type of get superglobal values after checking type of value
+     * 
+     * @param array $values get values
+     * @param string $name name get 
+     */
+    private function setGetValues($values, $name) {
+
+        $name = htmlspecialchars($name);
+
+        foreach($values as $value) {
+
+            $value = htmlspecialchars($value);
+            $this->_getValues[] = $value;
+        }
+
+        $this->_getData[$name] = $this->_getValues;
     }
 }

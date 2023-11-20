@@ -26,16 +26,15 @@
     $this->include("headerClose");
     $this->include('navbar');
 ?>
- 
 
         <div class="row">
             <div class="col10 col10-L- col9-L col8-S">
 
-                    <?php if(!empty(Get::validate([get('folder')])) && Get::validate([get('folder')]) !== 'website/assets') {
+                    <?php if(!empty(Get::validate(get('folder'))) && Get::validate(get('folder')) !== 'website/assets') {
 
                         echo '<div class="crumPath">';
 
-                        $folderParts = explode('/', Get::validate([get('folder')])); 
+                        $folderParts = explode('/', Get::validate(get('folder'))); 
                         unset($folderParts[0]);
                         $link = implode('/', $folderParts);
 
@@ -56,7 +55,7 @@
 
                     <?php } ?>
                 <?php if(Session::get('user_role') === 'admin') { ?>
-                    <form action="/admin/media/create/folder?<?php echo "folder=" . Get::validate([get('folder')]); ?>" method="POST" class="folderForm">
+                    <form action="/admin/media/create/folder?<?php echo "folder=" . Get::validate(get('folder')); ?>" method="POST" class="folderForm">
                         <input type="text" placeholder="Folder" name="P_folder">
                         <input type="submit" name="submitFolder" value="Folder &plusmn"/>
                         <?php if(!empty(Errors::get($rules, 'P_folder')) && Errors::get($rules, 'P_folder') !== null) { ?>
@@ -138,7 +137,7 @@
                     <div class="sidebarContainer">
                         <div class="mainButtonContainer">
                             <label for="submit" class="button greenButton margin-r-10 <?php if(Session::get('user_role') === 'normal') { echo 'display-none-important'; } ?>">Upload</label>
-                            <form action="/admin/media/create/delete<?php echo "?folder=" . Get::validate([get('folder')]); ?>" method="POST" class="deleteForm display-none">
+                            <form action="/admin/media/create/delete<?php echo "?folder=" . Get::validate(get('folder')); ?>" method="POST" class="deleteForm display-none">
                                 <input id="selectedFiles" type="hidden" name="deleteIds" value=""/>
                                 <input type="submit" name="submitDelete" class="button redButton margin-r-10" value="Delete"/>
                                 <input type="hidden" name="token" value="<?php Csrf::token('add'); ?>" />
