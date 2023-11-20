@@ -6,9 +6,11 @@
  */
 namespace core\http;
 
+use validation\request\Rules;
+
 class Request {
 
-    private $_data = [], $_postData = [], $_getData = [];
+    private $_postData = [], $_getData = [];
 
     /** 
      * Getting REQUEST_METHOD
@@ -37,26 +39,59 @@ class Request {
      */       
     public function get() {
 
-        $data = [];
+        $this->setPostData($_POST);
+        $this->setGetData($_GET);
 
-        if($this->getMethod() === 'POST') {
+        return array_merge($this->_getData, $this->_postData);
+    }
 
-            foreach($_POST as $key => $value) {
+    /**
+     * Setting type of post superglobal
+     * 
+     * @param array $post superglobal
+     */
+    private function setPostData($post) {
 
-                $key = htmlspecialchars($key);
-                $this->_postData[$key] = $value;
+        if(!empty($post) && $post !== null) {
+
+            foreach($post as $name => $value) {
+
+                if(isset($post[$name]) === true) {
+    
+                    $name = htmlspecialchars($name);
+                    $value = htmlspecialchars($value);
+    
+                    $this->_postData[$name] = $value;
+                }
             }
         }
-        if(!empty($_GET) && $_GET !== null) {
+    }
 
-            foreach($_GET as $key => $value) {
+    /**
+     * Setting type of get superglobal
+     * 
+     * @param array $get superglobal
+     */
+    private function setGetData($get) {
 
-                $key = htmlspecialchars($key);
-                $this->_getData[$key] = $value;
+        if(!empty($get) && $get !== null) {
+
+            foreach($get as $name => $value) {
+
+                if(isset($get[$name]) === true) {
+    
+                    $name = htmlspecialchars($name);
+    
+                    if(gettype($value) === 'array') {
+
+                        $value = htmlspecialchars($value[0]);
+                    } else {
+                        $value = htmlspecialchars($value);
+                    }
+    
+                    $this->_getData[$name] = $value;
+                }
             }
         }
-
-        $this->_data = array_merge($this->_postData, $this->_getData);
-        return $this->_data;
     }
 }

@@ -175,38 +175,6 @@ class Route {
 
         $instance = new $class();
     
-        if($this->_request->getMethod() === 'POST') {
-
-            return $this->typeOfPost($instance, $method);
-        } else if($this->_request->getMethod() === 'GET') {
-            return $this->typeOfGet($instance, $method);
-        } 
-    }
-
-    /**
-     * Running instance method type request of get
-     * 
-     * @param object $instance class instance
-     * @param string $method method name
-     */
-    private function typeOfGet($instance, $method) {
-
-        if(!empty($this->_uriRouteKeyValue) && $this->_uriRouteKeyValue !== null) {
-
-            return $instance->$method([$this->_routeKeyValue => $this->_uriRouteKeyValue]);
-        } 
-
-        return $instance->$method();
-    }
-
-    /**
-     * Running instance method type request of post
-     * 
-     * @param object $instance class instance
-     * @param string $method method name
-     */
-    private function typeOfPost($instance, $method) {
-
         if(!empty($this->_uriRouteKeyValue) && $this->_uriRouteKeyValue !== null) {
 
             return $instance->$method(array_merge($this->_request->get(), [$this->_routeKeyValue => $this->_uriRouteKeyValue]));
