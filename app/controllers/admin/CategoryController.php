@@ -16,7 +16,7 @@ use validation\Get;
 
 class CategoryController extends Controller {
 
-    private $_count, $_data;
+    private $_data;
 
     private function ifExists($id) {
 
@@ -66,35 +66,32 @@ class CategoryController extends Controller {
         }
     }
 
-    public function index() {
-
-        $this->_data['categories'] = $this->getCategories(Get::validate([get('search')]));
-        $this->_data['numberOfPages'] = Pagination::getPageNumbers();
-        $this->_data['count'] = $this->_count;
-
-        return $this->view('admin/categories/index')->data($this->_data);
-    }
-
-    private function getCategories($search) {
+    public function index($request) {
 
         $categories = Category::allCategoriesButOrdered();
 
-        if(!empty($search)) {
+        $this->_data['search'] = '';
 
-            $categories = Category::categoriesFilesOnSearch($search);
+        if(!empty($request['search'] ) ) {
+
+            $this->_data['search'] = Get::validate($request['search']);
+            $categories = Category::categoriesFilesOnSearch($this->_data['search']);
         }
 
-        $this->_count = count($categories);
-        return Pagination::get($categories, 10);
+        $this->_data['categories'] = Pagination::get($categories, 10);
+        $this->_data['count'] = count($categories);
+        $this->_data['numberOfPages'] = Pagination::getPageNumbers();
+       
+        return $this->view('admin/categories/index')->data($this->_data);
     }
 
     public function store($request) {
 
-        $this->redirect("submit", "/admin/categories");
+        //$this->redirect("submit", "/admin/categories");
 
         $rules = new Rules();
         
-        if($rules->create_category(Category::whereColumns(['title'], ['title' => $request['title']]))->validated()) {
+        if($rules->create_category($request['title'], $request['description'], Category::whereColumns(['title'], ['title' => $request['title']]))->validated()) {
 
             Category::insert([
 
@@ -118,11 +115,11 @@ class CategoryController extends Controller {
 
         $id = $request['id'];
         $this->ifExists($id);
-        $this->redirect("submit", "/admin/categories");
+        //$this->redirect("submit", "/admin/categories");
 
         $rules = new Rules();
 
-        if($rules->edit_category(Category::checkUniqueTitleId($request['title'], $id))->validated()) {
+        if($rules->edit_category($request['title'], $request['description'], Category::checkUniqueTitleId($request['title'], $id))->validated()) {
 
             Category::update(['id' => $request['id']], [
 
@@ -139,9 +136,9 @@ class CategoryController extends Controller {
         redirect('/admin/categories');
     }
 
-    public function SHOWADDABLE() {
+    public function SHOWADDABLE($request) {
 
-        $id = Get::validate([get('id')]);
+        $id = Get::validate($request['id']);
         $this->ifExists($id);
 
         $this->_data['id'] = $id;
@@ -274,7 +271,7 @@ class CategoryController extends Controller {
     
             $rules = new Rules();
 
-            if($rules->slug_category()->validated()) {
+            if($rules->slug_category($request['slug'])->validated()) {
 
                 if(!empty(Post::getAssignedCategoryIdSlug($request['id'])) && Post::getAssignedCategoryIdSlug($request['id']) !== null) {
 

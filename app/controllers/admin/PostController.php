@@ -49,7 +49,7 @@ class PostController extends Controller {
         if(!empty($request['search'] ) ) {
 
             $this->_data['search'] = Get::validate($request['search']);
-            $posts = Post::allPostsWithCategoriesOnSearch(Get::validate($request['search']));
+            $posts = Post::allPostsWithCategoriesOnSearch($this->_data['search']);
         }
 
         $this->_data["posts"] = Pagination::get($posts, 10);

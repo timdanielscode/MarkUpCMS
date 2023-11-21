@@ -279,33 +279,33 @@ class Rules {
         return $this;
     }
 
-    public function create_category($unique) {
+    public function create_category($title, $description, $unique) {
         
         $validation = new Validate();
         
-        $validation->input('title')->as('Title')->rules(['required' => true, 'max' => 49, 'special' => true, 'unique' => $unique]);
-        $validation->input('description')->as('Description')->rules(['max' => 99, 'special' => true]);
+        $validation->input(['title' => $title])->as('Title')->rules(['required' => true, 'max' => 49, 'special' => true, 'unique' => $unique]);
+        $validation->input(['description' => $description])->as('Description')->rules(['max' => 99, 'special' => true]);
         
         $this->errors = $validation->errors;
         return $this;
     }     
 
-    public function edit_category($unique) {
+    public function edit_category($title, $description, $unique) {
         
         $validation = new Validate();
         
-        $validation->input('title')->as('Title')->rules(['required' => true, 'max' => 49, 'special' => true, 'unique' => $unique]);
-        $validation->input('description')->as('Description')->rules(['max' => 99, 'special' => true]);
+        $validation->input(['title' => $title])->as('Title')->rules(['required' => true, 'max' => 49, 'special' => true, 'unique' => $unique]);
+        $validation->input(['description' => $description])->as('Description')->rules(['max' => 99, 'special' => true]);
         
         $this->errors = $validation->errors;
         return $this;
     }     
 
-    public function slug_category() {
+    public function slug_category($slug) {
         
         $validation = new Validate();
         
-        $validation->input('slug')->as('Slug')->rules(['required' => true, 'max' => 49, 'special' => true]);
+        $validation->input(['slug' => $slug])->as('Slug')->rules(['required' => true, 'max' => 49, 'special' => true]);
         
         $this->errors = $validation->errors;
         return $this;
