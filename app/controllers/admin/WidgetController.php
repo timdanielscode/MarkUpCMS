@@ -14,7 +14,7 @@ use validation\Get;
 
 class WidgetController extends Controller {
 
-    private $_count, $_data;
+    private $_data;
 
     private function ifExists($id) {
 
@@ -32,26 +32,23 @@ class WidgetController extends Controller {
         } 
     }
 
-    public function index() {
-
-        $this->_data["widgets"] = $this->getWidgets(Get::validate([get('search')]));
-        $this->_data["count"] = $this->_count;
-        $this->_data['numberOfPages'] = Pagination::getPageNumbers();
-
-        return $this->view('admin/widgets/index')->data($this->_data);
-    }
-
-    private function getWidgets($search) {
+    public function index($request) {
 
         $widgets = Widget::allWidgetsButOrderedOnDate();
 
-        if(!empty($search)) {
+        $this->_data['search'] = '';
 
-            $widgets = Widget::widgetsOnSearch($search);
+        if(!empty($request['search'] ) ) {
+
+            $this->_data['search'] = Get::validate($request['search']);
+            $widgets = Widget::widgetsOnSearch($this->_data['search']);
         }
 
-        $this->_count = count($widgets);
-        return  Pagination::get($widgets, 10);
+        $this->_data["widgets"] = Pagination::get($widgets, 10);
+        $this->_data["count"] = count($widgets);
+        $this->_data['numberOfPages'] = Pagination::getPageNumbers();
+
+        return $this->view('admin/widgets/index')->data($this->_data);
     }
 
     public function create() {
@@ -62,13 +59,13 @@ class WidgetController extends Controller {
 
     public function store($request) {
 
-        $this->redirect("submit", '/admin/widgets');
+        //$this->redirect("submit", '/admin/widgets');
 
         if(!empty($request['content']) ) { $hasContent = 1; } else { $hasContent = 0; }
 
         $rules = new Rules();
 
-        if($rules->create_widget(Widget::whereColumns(['title'], ['title' => $request['title']]))->validated()) {
+        if($rules->create_widget($request['title'], Widget::whereColumns(['title'], ['title' => $request['title']]))->validated()) {
 
             Widget::insert([
 
@@ -86,6 +83,8 @@ class WidgetController extends Controller {
         } else {
 
             $this->_data['rules'] = $rules->errors;
+            $this->_data['title'] = $request['title'];
+
             return $this->view('admin/widgets/create')->data($this->_data);
         }
     }
@@ -113,11 +112,11 @@ class WidgetController extends Controller {
 
         $id = $request['id'];
         $this->ifExists($request['id']);
-        $this->redirect("submit", "/admin/widgets/$id/edit");
+        //$this->redirect("submit", "/admin/widgets/$id/edit");
         
         $rules = new Rules();
         
-        if($rules->edit_widget(Widget::checkUniqueTitleId($request['title'], $id))->validated()) {
+        if($rules->edit_widget($request['title'], Widget::checkUniqueTitleId($request['title'], $id))->validated()) {
 
             if(!empty($request['content']) ) { $hasContent = 1; } else { $hasContent = 0; }
 
@@ -135,13 +134,14 @@ class WidgetController extends Controller {
 
             $this->_data['widget'] = Widget::get($id);
             $this->_data['rules'] = $rules->errors;
+
             return $this->view('/admin/widgets/edit')->data($this->_data);
         }
     }
 
     public function recover($request) {
         
-        $this->redirect("recoverIds", "/admin/widgets");
+       // $this->redirect("recoverIds", "/admin/widgets");
 
         $recoverIds = explode(',', $request['recoverIds']);
             
@@ -161,7 +161,7 @@ class WidgetController extends Controller {
 
     public function delete($request) {
 
-        $this->redirect("deleteIds", "/admin/widgets");
+       // $this->redirect("deleteIds", "/admin/widgets");
 
         $deleteIds = explode(',', $request['deleteIds']);
 

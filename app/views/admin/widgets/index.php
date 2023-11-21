@@ -24,7 +24,7 @@
     <div class="headerContainer">
         <h1>Widgets</h1><span class="badge widgets"><?php echo $count; ?></span>
     </div>
-    <?php if(Session::get('user_role') === 'admin') { ?><a href="/admin/widgets/create" class="create">Create</a> <span class="deleteSeparator">|</span> <form action="/admin/widgets/delete" method="POST" class="indexDeleteForm"><input type="submit" class="delete" value="<?php if(Get::validate([get('search')]) === 'Thrashcan') { echo 'Delete permanently'; } else { echo 'Delete'; } ?>" <?php if(Get::validate([get('search')]) === 'Thrashcan') { echo 'onclick="return confirm(' . "'Are you sure?'" . ');"'; } ?>/><input type="hidden" name="deleteIds" id="deleteIds"/><input type="hidden" name="token" value="<?php Csrf::token('add'); ?>" /></form> | <?php } ?><form action="" method="GET" class="thrashcanForm"><input type="submit" name="search" value="Thrashcan"/></form><?php if(Get::validate([get('search')]) === 'Thrashcan') { ?><?php if(Session::get('user_role') === 'admin') { ?> | <form action="/admin/widgets/recover" method="POST" class="recoverForm"><input type="submit" class="recover" value="Recover"/><input type="hidden" name="recoverIds" id="recoverIds" value=""/><input type="hidden" name="token" value="<?php Csrf::token('add'); ?>" /></form> <?php } } ?>
+    <?php if(Session::get('user_role') === 'admin') { ?><a href="/admin/widgets/create" class="create">Create</a> <span class="deleteSeparator">|</span> <form action="/admin/widgets/delete" method="POST" class="indexDeleteForm"><input type="submit" class="delete" value="<?php if($search === 'Thrashcan') { echo 'Delete permanently'; } else { echo 'Delete'; } ?>" <?php if($search === 'Thrashcan') { echo 'onclick="return confirm(' . "'Are you sure?'" . ');"'; } ?>/><input type="hidden" name="deleteIds" id="deleteIds"/><input type="hidden" name="token" value="<?php Csrf::token('add'); ?>" /></form> | <?php } ?><form action="" method="GET" class="thrashcanForm"><input type="submit" name="search" value="Thrashcan"/></form><?php if($search === 'Thrashcan') { ?><?php if(Session::get('user_role') === 'admin') { ?> | <form action="/admin/widgets/recover" method="POST" class="recoverForm"><input type="submit" class="recover" value="Recover"/><input type="hidden" name="recoverIds" id="recoverIds" value=""/><input type="hidden" name="token" value="<?php Csrf::token('add'); ?>" /></form> <?php } } ?>
     <form action="" method="GET" class="searchForm">
         <input type="text" name="search" placeholder="Search" id="search">
         <input type="submit" name="submit" value="Search" class="button">
@@ -92,9 +92,9 @@
                 
                     foreach($numberOfPages as $page) {
 
-                        if(!empty(Get::validate([get('search')])) ) {
+                        if(!empty($search) ) {
 
-                            echo '<li class="page-item"><a href="/admin/widgets?search=' . Get::validate([get('search')]) . '&page='.$page.'">'.$page.'</a></li>';
+                            echo '<li class="page-item"><a href="/admin/widgets?search=' . $search . '&page='.$page.'">'.$page.'</a></li>';
                         } else {
                             echo '<li class="page-item"><a href="/admin/widgets?page='.$page.'">'.$page.'</a></li>';
                         }
