@@ -15,7 +15,7 @@ use validation\Get;
 
 class CdnController extends Controller {
 
-    private $_count, $_data;
+    private $_data;
 
     private function ifExists($id) {
 
@@ -33,26 +33,23 @@ class CdnController extends Controller {
         } 
     }
 
-    public function index() {
+    public function index($request) {
 
-        $this->_data['cdns'] = $this->getCdn(Get::validate([get('search')]));
-        $this->_data['count'] = $this->_count;
+        $cdn = Cdn::allCdnsButOrderedByDate();
+
+        $this->_data['search'] = '';
+
+        if(!empty($request['search'] ) ) {
+
+            $this->_data['search'] = Get::validate($request['search']);
+            $cdn = Cdn::orderedCdnsOnSearch($this->_data['search']);
+        }
+
+        $this->_data['cdns'] = Pagination::get($cdn, 10);
+        $this->_data['count'] = count($cdn);
         $this->_data['numberOfPages'] = Pagination::getPageNumbers();
 
         return $this->view('admin/cdn/index')->data($this->_data);
-    }
-
-    private function getCdn($search) {
-
-        $cdn = Cdn::allCdnsButOrderedByDate();
-    
-        if(!empty($search)) {
-    
-            $cdn = Cdn::orderedCdnsOnSearch($search);
-        }
-    
-        $this->_count = count($cdn);
-        return Pagination::get($cdn, 10);
     }
 
     public function create() {
@@ -64,13 +61,13 @@ class CdnController extends Controller {
 
     public function store($request) {
 
-        $this->redirect("submit", '/admin/cdn');
+        //$this->redirect("submit", '/admin/cdn');
 
         $rules = new Rules();
 
         if(!empty($request['content']) && $request['content'] !== null) { $hasContent = 1; } else { $hasContent = 0; }
 
-        if($rules->create_cdn(Cdn::whereColumns(['title'], ['title' => $request['title']]))->validated() ) {
+        if($rules->create_cdn($request['title'], Cdn::whereColumns(['title'], ['title' => $request['title']]))->validated() ) {
 
             Cdn::insert([
 
@@ -89,6 +86,8 @@ class CdnController extends Controller {
         } else {
 
             $this->_data['rules'] = $rules->errors;
+            $this->_data['title'] = $request['title'];
+
             return $this->view('admin/cdn/create')->data($this->_data);
         }
     }
@@ -118,13 +117,13 @@ class CdnController extends Controller {
         
         $id = $request['id'];
         $this->ifExists($request['id']);
-        $this->redirect("submit", "/admin/cdn/$id/edit");
+        //$this->redirect("submit", "/admin/cdn/$id/edit");
 
         $rules = new Rules();
         
         if(!empty($request['content']) && $request['content'] !== null) { $hasContent = 1; } else { $hasContent = 0; }
 
-        if($rules->edit_cdn(Cdn::checkUniqueTitleId($request['title'], $id))->validated() ) {
+        if($rules->edit_cdn($request['title'], Cdn::checkUniqueTitleId($request['title'], $id))->validated() ) {
 
             Cdn::update(['id' => $id], [
 
@@ -140,6 +139,8 @@ class CdnController extends Controller {
         } else {
 
             $this->_data['cdn'] = Cdn::get($request['id']);
+            $this->_data['importedPages'] = Cdn::getPostImportedIdTitle($request['id']);
+            $this->_data['pages'] = Cdn::getNotPostImportedIdTitle(Cdn::getPostImportedIdTitle($request['id']));
             $this->_data['rules'] = $rules->errors;
 
             return $this->view('admin/cdn/edit')->data($this->_data);
@@ -150,7 +151,7 @@ class CdnController extends Controller {
 
         $id = $request['id'];
         $this->ifExists($request['id']);
-        $this->redirect("submit", "/admin/cdn/$id/edit");
+        //$this->redirect("submit", "/admin/cdn/$id/edit");
 
         foreach($request['pages'] as $pageId) {
 
@@ -169,7 +170,7 @@ class CdnController extends Controller {
 
         $id = $request['id'];
         $this->ifExists($request['id']);
-        $this->redirect("submit", "/admin/cdn/$id/edit");
+        //$this->redirect("submit", "/admin/cdn/$id/edit");
 
         CdnPage::delete('cdn_id', $id);
 
@@ -190,7 +191,7 @@ class CdnController extends Controller {
 
         $id = $request['id'];
         $this->ifExists($request['id']);
-        $this->redirect("submit", "/admin/cdn/$id/edit");
+        //$this->redirect("submit", "/admin/cdn/$id/edit");
 
         foreach($request['pages'] as $pageId) {
 
@@ -205,7 +206,7 @@ class CdnController extends Controller {
 
         $id = $request['id'];
         $this->ifExists($request['id']);
-        $this->redirect("submit", "/admin/cdn/$id/edit");
+        //$this->redirect("submit", "/admin/cdn/$id/edit");
   
         CdnPage::delete('cdn_id', $request['id']);
 
@@ -215,7 +216,7 @@ class CdnController extends Controller {
 
     public function recover($request) {
 
-        $this->redirect("recoverIds", "/admin/cdn");
+        //$this->redirect("recoverIds", "/admin/cdn");
 
         $recoverIds = explode(',', $request['recoverIds']);
             
@@ -235,7 +236,7 @@ class CdnController extends Controller {
 
     public function delete($request) {
 
-        $this->redirect("deleteIds", "/admin/cdn");
+        //$this->redirect("deleteIds", "/admin/cdn");
 
         $deleteIds = explode(',', $request['deleteIds']);
 

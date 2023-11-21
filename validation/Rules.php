@@ -341,21 +341,21 @@ class Rules {
         return $this;
     }
 
-    public function create_cdn($unique) {
+    public function create_cdn($title, $unique) {
 
         $validation = new Validate();
         
-        $validation->input('title')->as('Title')->rules(['required' => true, 'max' => 49, 'special' => true, 'unique' => $unique]);
+        $validation->input(['title' => $title])->as('Title')->rules(['required' => true, 'max' => 49, 'special' => true, 'unique' => $unique]);
         
         $this->errors = $validation->errors;
         return $this;
     }
 
-    public function edit_cdn($unique) {
+    public function edit_cdn($title, $unique) {
 
         $validation = new Validate();
         
-        $validation->input('title')->as('Title')->rules(['required' => true, 'max' => 49, 'special' => true, 'unique' => $unique]);
+        $validation->input(['title' => $title])->as('Title')->rules(['required' => true, 'max' => 49, 'special' => true, 'unique' => $unique]);
         
         $this->errors = $validation->errors;
         return $this;
