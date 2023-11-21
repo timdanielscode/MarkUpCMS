@@ -22,7 +22,7 @@ use validation\Get;
 
 class PostController extends Controller {
 
-    private $_count, $_data;
+    private $_data;
 
     private function ifExists($id) {
 
@@ -34,32 +34,29 @@ class PostController extends Controller {
 
     private function redirect($inputName, $path) {
 
-        if(submitted($inputName) === false || Csrf::validate(Csrf::token('get'), post('token')) === false ) { 
+        //if(submitted($inputName) === false || Csrf::validate(Csrf::token('get'), post('token')) === false ) { 
             
-            redirect($path) . exit(); 
-        } 
+        //    redirect($path) . exit(); 
+        //} 
     }
 
-    public function index() {
-
-        $this->_data["posts"] = $this->getPosts(Get::validate([get('search')]));
-        $this->_data["count"] = $this->_count;
-        $this->_data['numberOfPages'] = Pagination::getPageNumbers();
-
-        return $this->view('admin/posts/index')->data($this->_data);
-    }
-
-    private function getPosts($search) {
+    public function index($request) {
 
         $posts = Post::allPostsWithCategories();
 
-        if(!empty($search)) {
+        $this->_data['search'] = '';
 
-            $posts = Post::allPostsWithCategoriesOnSearch($search);
+        if(!empty($request['search'] ) ) {
+
+            $this->_data['search'] = Get::validate($request['search']);
+            $posts = Post::allPostsWithCategoriesOnSearch(Get::validate($request['search']));
         }
 
-        $this->_count = count($posts);
-        return Pagination::get($posts, 10);
+        $this->_data["posts"] = Pagination::get($posts, 10);
+        $this->_data["count"] = count($posts);
+        $this->_data['numberOfPages'] = Pagination::getPageNumbers();
+
+        return $this->view('admin/posts/index')->data($this->_data);
     }
 
     public function create() {
@@ -70,13 +67,14 @@ class PostController extends Controller {
 
     public function store($request) {
 
-        $this->redirect("submit", '/admin/posts/create');
+
+        //$this->redirect("submit", '/admin/posts/create');
 
         $rules = new Rules();
     
-        if($rules->create_post(Post::whereColumns(['id', 'title'], ['title' => $request['title']]))->validated()) {
+        if($rules->create_post($request['title'], Post::whereColumns(['id', 'title'], ['title' => $request['title']]))->validated()) {
                         
-            $slug = "/".post('title');
+            $slug = "/" . $request['title'];
             $slug = str_replace(" ", "-", $slug);
 
             if(!empty($request['body']) ) { $hasContent = 1; } else { $hasContent = 0; }
@@ -97,7 +95,9 @@ class PostController extends Controller {
             redirect('/admin/posts');
         } else {
 
+            $this->_data['title'] = $request['title'];
             $this->_data['rules'] = $rules->errors;
+
             return $this->view('admin/posts/create')->data($this->_data);
         }
     }
@@ -131,11 +131,11 @@ class PostController extends Controller {
         $id = $request['id'];
         $this->unsetSessions(['cdn', 'widget', 'category', 'css', 'js', 'meta']);
         $this->ifExists($id);
-        $this->redirect("submit", "/admin/posts/$id/edit");
+        //$this->redirect("submit", "/admin/posts/$id/edit");
 
         $rules = new Rules();
 
-        if($rules->update_post(Post::checkUniqueTitleId($request['title'], $id))->validated()) {
+        if($rules->update_post($request['title'], Post::checkUniqueTitleId($request['title'], $id))->validated()) {
                 
             if(!empty($request['body']) ) { $hasContent = 1; } else { $hasContent = 0; }
 
@@ -225,7 +225,7 @@ class PostController extends Controller {
         $this->unsetSessions(['slug', 'widget', 'category', 'css', 'js', 'meta']);
         Session::set('cdn', true);
 
-        if(submitted("submit") === true && Csrf::validate(Csrf::token('get'), post('token')) === true ) {
+        //if(submitted("submit") === true && Csrf::validate(Csrf::token('get'), post('token')) === true ) {
 
             foreach($request['cdns'] as $cdnId) {
 
@@ -238,13 +238,13 @@ class PostController extends Controller {
 
             Session::set('success', 'You have successfully imported the cdn(s) on this page!'); 
             redirect("/admin/posts/$id/edit");
-        }
+       // }
     }
 
     public function exportCdns($request) {
 
         $id = $request['id'];
-        $this->redirect("submit", "/admin/posts/$id/edit");
+        ///$this->redirect("submit", "/admin/posts/$id/edit");
         $this->unsetSessions(['slug', 'widget', 'category', 'css', 'js', 'meta']);
         Session::set('cdn', true);
 
@@ -260,7 +260,7 @@ class PostController extends Controller {
     public function addWidget($request) {
 
         $id = $request['id'];
-        $this->redirect("submit", "/admin/posts/$id/edit");
+        //$this->redirect("submit", "/admin/posts/$id/edit");
         $this->ifExists($id);
         $this->unsetSessions(['slug', 'cdn', 'category', 'css', 'js', 'meta']);
         Session::set('widget', true);
@@ -287,7 +287,7 @@ class PostController extends Controller {
 
         $id = $request['id'];
         $this->ifExists($id);
-        $this->redirect("submit", "/admin/posts/$id/edit");
+        //$this->redirect("submit", "/admin/posts/$id/edit");
         $this->unsetSessions(['slug', 'cdn', 'category', 'css', 'js', 'meta']);
         Session::set('widget', true);
 
@@ -307,7 +307,7 @@ class PostController extends Controller {
 
         $id = $request['id'];
         $this->ifExists($id);
-        $this->redirect("submit", "/admin/posts/$id/edit");
+        //$this->redirect("submit", "/admin/posts/$id/edit");
         $this->unsetSessions(['slug', 'widget', 'cdn', 'css', 'js', 'meta']);
         Session::set('category', true);
 
@@ -317,7 +317,7 @@ class PostController extends Controller {
         $lastKey = array_key_last($slug);
         $categoryId = $request['categories'];
 
-        if($rules->update_post_category(Post::checkUniqueSlugCategory($id, $slug[$lastKey], $categoryId))->validated()) {
+        if($rules->update_post_category($categoryId, Post::checkUniqueSlugCategory($id, $slug[$lastKey], $categoryId))->validated()) {
 
             CategoryPage::insert([
 
@@ -370,7 +370,7 @@ class PostController extends Controller {
 
         $id = $request['id'];
         $this->ifExists($id);
-        $this->redirect("submit", "/admin/posts/$id/edit");
+        //$this->redirect("submit", "/admin/posts/$id/edit");
         $this->unsetSessions(['slug', 'widget', 'cdn', 'category', 'css', 'meta']);
         Session::set('js', true);
 
@@ -387,7 +387,7 @@ class PostController extends Controller {
 
         $id = $request['id'];
         $this->ifExists($id);
-        $this->redirect("submit", "/admin/posts/$id/edit");
+        //$this->redirect("submit", "/admin/posts/$id/edit");
         $this->unsetSessions(['slug', 'widget', 'cdn', 'category', 'css', 'meta']);
         Session::set('js', true);
 
@@ -404,7 +404,7 @@ class PostController extends Controller {
 
         $id = $request['id'];
         $this->ifExists($id);
-        $this->redirect("submit", "/admin/posts/$id/edit");
+       // $this->redirect("submit", "/admin/posts/$id/edit");
         $this->unsetSessions(['slug', 'widget', 'cdn', 'category', 'js', 'meta']);
         Session::set('css', true);
 
@@ -421,7 +421,7 @@ class PostController extends Controller {
 
         $id = $request['id'];
         $this->ifExists($id);
-        $this->redirect("submit", "/admin/posts/$id/edit");
+        //$this->redirect("submit", "/admin/posts/$id/edit");
         $this->unsetSessions(['slug', 'widget', 'cdn', 'category', 'js', 'meta']);
         Session::set('css', true);
 
@@ -438,7 +438,7 @@ class PostController extends Controller {
 
         $id = $request['id'];
         $this->ifExists($id);
-        $this->redirect("submit", "/admin/posts/$id/edit");
+        //$this->redirect("submit", "/admin/posts/$id/edit");
         $this->unsetSessions(['widget', 'cdn', 'category', 'js', 'meta', 'css']);
         Session::set('slug', true);
 
@@ -450,7 +450,7 @@ class PostController extends Controller {
         $slug[$lastKey] = $request['postSlug'];
         $fullPostSlug = implode('/', $slug);
 
-        if($rules->update_post_slug(Post::checkUniqueSlug($fullPostSlug, $id)['slug'])->validated()) {
+        if($rules->update_post_slug($request['postSlug'], Post::checkUniqueSlug($fullPostSlug, $id))->validated()) {
 
             $slug = explode('/', "/" . $request['slug']);
             $slug[array_key_last($slug)] = substr("/" . $request['postSlug'], 1);
@@ -464,10 +464,10 @@ class PostController extends Controller {
 
         } else {
 
-            $data = $this->getAllData($id);
-            $data['rules'] = $rules->errors;
+            $this->_data = $this->getAllData($id);
+            $this->_data['rules'] = $rules->errors;
 
-            return $this->view('admin/posts/edit', $data);
+            return $this->view('admin/posts/edit')->data($this->_data);
         }
 
         Session::set('success', 'You have successfully updated the slug on this page!');
@@ -478,13 +478,13 @@ class PostController extends Controller {
 
         $id = $request['id'];
         $this->ifExists($id);
-        $this->redirect("submit", "/admin/posts/$id/edit");
+        //$this->redirect("submit", "/admin/posts/$id/edit");
         $this->unsetSessions(['slug', 'widget', 'cdn', 'category', 'css', 'js']);
         Session::set('meta', true);
 
         $rules = new Rules();
 
-        if($rules->update_metadata()->validated()) {
+        if($rules->update_metadata($request['metaTitle'], $request['metaDescription'], $request['metaKeywords'])->validated()) {
 
             Post::update(['id' => $id], [
 
@@ -510,7 +510,7 @@ class PostController extends Controller {
 
         $id = $request['id'];
         $this->ifExists($request['id']);
-        $this->redirect("submit", "/admin/posts/$id/edit");
+        //$this->redirect("submit", "/admin/posts/$id/edit");
         $this->unsetSessions(['slug', 'widget', 'cdn', 'css', 'js', 'meta']);
         Session::set('category', true);
 
@@ -520,7 +520,7 @@ class PostController extends Controller {
         $lastPageSlugKey = array_key_last($slugParts);
         $lastPageSlugValue = "/" . $slugParts[$lastPageSlugKey];
             
-        if($rules->remove_post_category(Post::checkUniqueSlug($lastPageSlugValue, $id ))->validated()) {
+        if($rules->remove_post_category($request['submit'], Post::checkUniqueSlug($lastPageSlugValue, $id))->validated()) {
             
             Post::update(['id' => $id], [
 
@@ -544,7 +544,7 @@ class PostController extends Controller {
     public function recover($request) {
 
         $id = $request['id'];
-        $this->redirect("recoverIds", "/admin/posts");
+        //$this->redirect("recoverIds", "/admin/posts");
         $recoverIds = explode(',', $request['recoverIds']);
                 
         foreach($recoverIds as $request['id'] ) {
@@ -564,7 +564,7 @@ class PostController extends Controller {
 
     public function delete($request) {
 
-        $this->redirect("deleteIds", "/admin/posts");
+       // $this->redirect("deleteIds", "/admin/posts");
         $deleteIds = explode(',', $request['deleteIds']);
 
         if(!empty($deleteIds) && !empty($deleteIds[0])) {

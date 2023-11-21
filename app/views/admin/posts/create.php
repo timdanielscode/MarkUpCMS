@@ -25,7 +25,7 @@
                 <div class="edit-container">
                     <form action="store" method="POST" class="form-code" id="editorForm">
                         <div class="form-parts">
-                            <input type="text" name="title" type="title" id="title" value="<?php echo post('title'); ?>" placeholder="Title" autofocus>
+                            <input type="text" name="title" type="title" id="title" value="<?php if(!empty($title)) { echo $title; } ?>" placeholder="Title" autofocus>
                             <?php if(!empty(Errors::get($rules, 'title')) && Errors::get($rules, 'title') !== null) { ?>
                                 <div class="error-messages margin-b-10 margin-tm-10 font-size-14">
                                     <span><?php echo Errors::get($rules, 'title'); ?></span>

@@ -101,63 +101,63 @@ class Rules {
 
     }
 
-    public function create_post($uniqueTitle) {
+    public function create_post($title, $uniqueTitle) {
         
         $validation = new Validate();
         
-        $validation->input('title')->as('Title')->rules(['required' => true, 'max' => 49, 'special' => true, 'unique' => $uniqueTitle]);
+        $validation->input(['title' => $title])->as('Title')->rules(['required' => true, 'max' => 49, 'special' => true, 'unique' => $uniqueTitle]);
         
         $this->errors = $validation->errors;
         return $this;
     }
 
-    public function update_post($uniqueTitle) {
+    public function update_post($title, $uniqueTitle) {
         
         $validation = new Validate();
         
-        $validation->input('title')->as('Title')->rules(['required' => true, 'max' => 49, 'special' => true, 'unique' => $uniqueTitle]);
+        $validation->input(['title' => $title])->as('Title')->rules(['required' => true, 'max' => 49, 'special' => true, 'unique' => $uniqueTitle]);
         
         $this->errors = $validation->errors;
         return $this;
     }
 
-    public function update_metadata() {
+    public function update_metadata($title, $description, $keywords) {
 
         $validation = new Validate();
 
-        $validation->input('metaTitle')->as('Title')->rules(['max' => 60, 'special' => true]);
-        $validation->input('metaDescription')->as('Description')->rules(['max' => 160, 'special' => true]);
-        $validation->input('metaKeywords')->as('Keywords')->rules(['max' => 500]);
+        $validation->input(['metaTitle' => $title])->as('Title')->rules(['max' => 60, 'special' => true]);
+        $validation->input(['metaDescription' => $description])->as('Description')->rules(['max' => 160, 'special' => true]);
+        $validation->input(['metaKeywords' => $keywords])->as('Keywords')->rules(['max' => 500]);
 
         $this->errors = $validation->errors;
         return $this;
     }
 
-    public function update_post_slug($unique) {
+    public function update_post_slug($slug, $unique) {
 
       $validation = new Validate();
 
-      $validation->input('postSlug')->as('Slug')->rules(['max' => 49, 'special' => true, 'unique' => $unique]);
+      $validation->input(['postSlug' => $slug])->as('Slug')->rules(['max' => 49, 'special' => true, 'unique' => $unique]);
 
       $this->errors = $validation->errors;
       return $this;
     }
 
-    public function update_post_category($unique) {
+    public function update_post_category($categories, $unique) {
 
         $validation = new Validate();
 
-        $validation->input('categories')->as('With category assigned slug')->rules(['required' => true, 'unique' => $unique]);
+        $validation->input(['categories' => $categories])->as('With category assigned slug')->rules(['required' => true, 'unique' => $unique]);
   
         $this->errors = $validation->errors;
         return $this;
     }
 
-    public function remove_post_category($unique) {
+    public function remove_post_category($submit, $unique) {
 
         $validation = new Validate();
 
-        $validation->input('submit')->as('Without category assigned slug')->rules(['required' => true, 'unique' => $unique]);
+        $validation->input(['submit' => $submit])->as('Without category assigned slug')->rules(['required' => true, 'unique' => $unique]);
   
         $this->errors = $validation->errors;
         return $this;
