@@ -9,43 +9,24 @@ namespace core\validation;
 
 class Validate {
 
-    private $_inputName, $_inputNames, $_alias, $_inputValue, $_error;
+    private $_name, $_value, $_alias;
     public $errors;
 
     /**
-     * Setting html input names and values
+     * Setting input values
      * 
-     * @param string $inputName html input name
-     * @return mixed object Validate
+     * @param string $values html input name and value
+     * @return Object $this Validate
      */    
-    public function input($inputName) {
+    public function input($values) {
 
-        if(!empty($inputName)) {
+        if(!empty($values) && $values !== null) {
 
-            $this->_inputNames[] = $inputName;
-            $doubles = [];
+            $this->_name = key($values);
+            $this->_value = $values[key($values)];
+        }
 
-            foreach(array_count_values($this->_inputNames) as $values => $count) {
-                if($count > 1) {
-                    $doubles[] = $values;
-                    
-                } 
-            }
-            if(empty($doubles)) {
-
-                if(post($inputName) !== null) {
-
-                    $this->_inputName = $inputName;
-                    $this->_inputValue = post($this->_inputName);
-
-                } else if ($_FILES[$inputName] !== null) {
-
-                    $this->_inputName = $inputName;
-                    $this->_inputValue = $_FILES[$this->_inputName];
-                } 
-            } 
-            return $this;
-        } 
+        return $this;
     }
 
     /**
@@ -57,7 +38,7 @@ class Validate {
      */ 
     public function as($alias) {
 
-        if(!empty($alias)) {
+        if(!empty($alias) && $alias !== null) {
 
             $this->_alias = $alias;
             return $this;
@@ -67,10 +48,9 @@ class Validate {
     /**
      * Creating the validation rules and setting error messages
      * 
-     * @param string $rules optional
-     * @return void
+     * @param string $rules type of rules
      */     
-    public function rules($rules = null) {
+    public function rules($rules) {
 
         if(!empty($rules) && $rules !== null) {
 
@@ -79,69 +59,69 @@ class Validate {
                 switch($rule) {
     
                     case 'required':
-                        if(empty($this->_inputValue) && $value === true) {
+                        if(empty($this->_value) && $value === true) {
 
-                            $this->message($this->_inputName, "$this->_alias is required.");
-                        }
+                            $this->message($this->_name, "$this->_alias is required.");
+                        } 
                     break;
                     case 'min':
-                        $count_str = strlen($this->_inputValue);
+                        $count_str = strlen($this->_value);
                         if($count_str < $value) {
 
-                            $this->message($this->_inputName, "$this->_alias must be at least $value characters.");
+                            $this->message($this->_name, "$this->_alias must be at least $value characters.");
                         }
                     break;
                     case 'max':
-                        $count_str = strlen($this->_inputValue);
+                        $count_str = strlen($this->_value);
                         if($count_str > $value) {
 
-                            $this->message($this->_inputName, "$this->_alias can not be more than $value characters.");
+                            $this->message($this->_name, "$this->_alias can not be more than $value characters.");
                         }
                     break;
                     case 'match':
                         $compare_value = post($value);
-                        if($compare_value !== $this->_inputValue) {
+                        if($compare_value !== $this->_value) {
 
-                            $this->message($this->_inputName, "$this->_alias does not match.");
+                            $this->message($this->_name, "$this->_alias does not match.");
                         }
                     break;
                     case 'unique':
                         if(!empty($value)) {
                                 
-                            $this->message($this->_inputName, "$this->_alias already exists.");
+                            $this->message($this->_name, "$this->_alias already exists.");
                         }
                     break;
                     case 'special':
                         $regex = '/[#$%^&*()+=\\[\]\';,\/{}|":<>?~\\\\]/';
-                        if(preg_match($regex, $this->_inputValue)) {
+                        if(preg_match($regex, $this->_value)) {
 
-                            $this->message($this->_inputName, "$this->_alias contains special characters.");  
-                            $_POST[$this->_inputName] = "";
+                            $this->message($this->_name, "$this->_alias contains special characters.");  
+                            $_POST[$this->_name] = "";
                         }
                     break;
                     case 'special-ini':
                         $regex = '/[?{}|&~![()^"]/';
-                        if(preg_match($regex, $this->_inputValue)) {
-                            $this->message($this->_inputName, "$this->_alias contains one of the following special characters: ?{}|&~![()^" . '"');  
-                            $_POST[$this->_inputName] = "";
+                        if(preg_match($regex, $this->_value)) {
+                            $this->message($this->_name, "$this->_alias contains one of the following special characters: ?{}|&~![()^" . '"');  
+                            $_POST[$this->_name] = "";
                         }
                     break;
                     case 'first':
-                        if($this->_inputValue[0] !== $value) {
+                        if($this->_value[0] !== $value) {
 
-                            $this->message($this->_inputName, "$this->_alias does not start with a $value.");
+                            $this->message($this->_name, "$this->_alias does not start with a $value.");
                         }
                     break;
                     case 'selected':
 
-                        if(empty($_FILES[$this->_inputName]['name']) && $value === true) {
+                        if(empty($_FILES[$this->_name]['name']) && $value === true) {
 
-                            $this->message($this->_inputName, "No file is selected.");
+                            $this->message($this->_name, "No file is selected.");
                         }
                     break;
                     case 'mimes':
 
-                        foreach($_FILES[$this->_inputName]['type'] as $type) {
+                        foreach($_FILES[$this->_name]['type'] as $type) {
 
                             if(gettype($value) !== 'array') {
                                 
@@ -151,23 +131,23 @@ class Validate {
                             if(!in_array($type, $value) ) {
 
                                 $value = implode(', ', $value);
-                                $this->message($this->_inputName, "Type of file must be one of the following: $value.");
+                                $this->message($this->_name, "Type of file must be one of the following: $value.");
                             }
                         }
                     break;
                     case 'error':
-                        foreach($_FILES[$this->_inputName]['error'] as $error) {
+                        foreach($_FILES[$this->_name]['error'] as $error) {
 
                             if($error === 1 && $value === true) {
 
                                 $maxUploadSize = ini_get('upload_max_filesize');
-                                $this->message($this->_inputName, "File size cannot be bigger than " . $maxUploadSize . '.');
+                                $this->message($this->_name, "File size cannot be bigger than " . $maxUploadSize . '.');
                             }
                         }
                     break;
                     case 'size':
 
-                        foreach($_FILES[$this->_inputName]['size'] as $size) {
+                        foreach($_FILES[$this->_name]['size'] as $size) {
 
                             if($size > $value) {
 
@@ -176,7 +156,7 @@ class Validate {
                                 $filesizeInMbs = $size / 1000000;
                                 $filesizeInMbs = number_format((float)$filesizeInMbs, 1, '.', '');
     
-                                $this->message($this->_inputName, "$filesizeInMbs mb is to big to upload, filesize can't be bigger than $mbs mb.");
+                                $this->message($this->_name, "$filesizeInMbs mb is to big to upload, filesize can't be bigger than $mbs mb.");
                             }
                         }
                     break;
@@ -184,14 +164,12 @@ class Validate {
                         
                         if(count($value) < 2) {
 
-                            $this->message($this->_inputName,"There should be at least one admin.");
+                            $this->message($this->_name,"There should be at least one admin.");
                         }
                     break;
                 }
             }
-        } else {
-            $rules = [];
-        }
+        } 
     }
 
     /**

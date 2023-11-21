@@ -201,7 +201,7 @@
                                     <span class="infoText">File:</span>
                                     <span class="infoData" id="currentFolderFilename"></span>
                                     <span id="currentFolder"></span>
-                                    <input id="currentFilename" type="text" name="filename" value=""/>
+                                    <input id="currentFilename" type="text" name="filename"/>
                                     <div id="MESSAGE"></div>
                                     <?php if(Session::get('user_role') === 'admin') { ?><a data-role="update" id="update" class="button greenButton margin-t-10 width-50-px">Update</a><?php } ?>
                                 </div>

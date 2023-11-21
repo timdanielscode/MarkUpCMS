@@ -8,9 +8,6 @@ namespace validation;
 
 use core\validation\Validate;
 
-use app\controllers\Controller;
-use core\http\Request;
-use core\Session;
 
 class Rules {
 
@@ -241,11 +238,11 @@ class Rules {
         return $this;
     }
 
-    public function insert_media_folder() {
+    public function insert_media_folder($folder) {
 
         $validation = new Validate();
         
-        $validation->input('P_folder')->as('Folder')->rules(['required' => true, 'max' => 49, 'special' => true]);
+        $validation->input(['P_folder' => $folder])->as('Folder')->rules(['required' => true, 'max' => 49, 'special' => true]);
         
         $this->errors = $validation->errors;
         return $this;
@@ -262,21 +259,21 @@ class Rules {
         return $this;
     }
 
-    public function update_media_filename($unique) {
+    public function update_media_filename($filename, $unique) {
 
         $validation = new Validate();
         
-        $validation->input('filename')->as('Filename')->rules(['required' => true, 'max' => 49, 'special' => true, 'unique' => $unique]);
+        $validation->input(['filename' => $filename])->as('Filename')->rules(['required' => true, 'max' => 49, 'special' => true, 'unique' => $unique]);
         
         $this->errors = $validation->errors;
         return $this;
     }
 
-    public function update_media_description() {
+    public function update_media_description($description) {
 
         $validation = new Validate();
         
-        $validation->input('description')->as('Description')->rules(['required' => true, 'special' => true, 'max' => 99]);
+        $validation->input(['description' => $description])->as('Description')->rules(['required' => true, 'special' => true, 'max' => 99]);
         
         $this->errors = $validation->errors;
         return $this;
@@ -378,8 +375,7 @@ class Rules {
     }
 
     /**
-     * Validating validation rules
-     * On fail, returning view with extracted validation error rules and if exists request data
+     * Checking if empty errors
      * 
      * @return mixed bool | void
      */

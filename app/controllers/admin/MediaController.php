@@ -26,10 +26,10 @@ class MediaController extends Controller {
 
     private function redirect($inputName, $path) {
 
-        if(submitted($inputName) === false || Csrf::validate(Csrf::token('get'), post('token')) === false ) { 
+    //    if(submitted($inputName) === false || Csrf::validate(Csrf::token('get'), post('token')) === false ) { 
             
-            redirect($path) . exit(); 
-        } 
+    //        redirect($path) . exit(); 
+    //    } 
     }
 
     private function getFolderPath($request) {
@@ -193,7 +193,7 @@ class MediaController extends Controller {
 
         $rules = new Rules();
 
-        if($rules->insert_media_folder()->validated() ) {
+        if($rules->insert_media_folder($request['P_folder'])->validated() ) {
 
             $this->insertFolder($request['P_folder']);
             Session::set('success', 'You have successfully added the folder!');
@@ -298,12 +298,9 @@ class MediaController extends Controller {
 
         $rules = new Rules();
 
-        if($rules->update_media_filename(Media::checkMediaFilenameOnId($request['filename'], $request['id']))->validated()) {
+        if($rules->update_media_filename($request['filename'], Media::checkMediaFilenameOnId($request['filename'], $request['id']))->validated()) {
         
-            $currentFile = Media::get($request['id']);
-            $currentFileName = $currentFile['media_filename'];
-        
-            rename($request['folder'] . '/' . $currentFileName, $request['folder'] . '/' . $request['filename']);
+            rename($request['folder'] . '/' . Media::get($request['id'])['media_filename'], $request['folder'] . '/' . $request['filename']);
         
             Media::update(['id' => $request['id']], [
                             
@@ -332,7 +329,7 @@ class MediaController extends Controller {
 
         $rules = new Rules();
 
-        if($rules->update_media_description()->validated()) {
+        if($rules->update_media_description($request['description'])->validated()) {
 
             Media::update(['id' => $request['id']], [
                     
@@ -361,7 +358,6 @@ class MediaController extends Controller {
     }
 
     private function deleteFiles($request) {
-
 
         $ids = explode(',', $request['deleteIds']);
 

@@ -18,8 +18,8 @@
     $this->script('/assets/js/ajax.js');
     $this->script('/assets/js/media/index/read.js');
     $this->script('/assets/js/media/index/delete.js', true);
-    $this->script('/assets/js/media/index/update/filename.js');
-    $this->script('/assets/js/media/index/update/description.js');
+    $this->script('/assets/js/media/index/update/filename.js', true);
+    $this->script('/assets/js/media/index/update/description.js', true);
 
     $this->include('headerClose');
     $this->include('navbar');
@@ -80,7 +80,7 @@
                         <?php } ?>
                 </span>
                 <?php if(Session::get('user_role') === 'admin') { ?>
-                <form>
+                <form action="/admin/media/update/filename" method="POST">
                     <input class="mediaFilename" name="filename" id="filename-<?php echo $media['id']; ?>" type="text" value="<?php echo $media["media_filename"]; ?>"/>
                     <div class="margin-t-10" id="MESSAGE-<?php echo $media['id'] ?>"></div>
                 </form>
@@ -158,9 +158,9 @@
                 
                     foreach($numberOfPages as $page) {
 
-                        if(!empty(Get::validate([get('search')])) ) {
+                        if(!empty($search) ) {
 
-                            echo '<li class="page-item"><a href="/admin/media?search=' . Get::validate([get('search')]) . '&page='.$page.'">'.$page.'</a></li>';
+                            echo '<li class="page-item"><a href="/admin/media?search=' . $search . '&page='.$page.'">'.$page.'</a></li>';
                         } else {
                             echo '<li class="page-item"><a href="/admin/media?page='.$page.'">'.$page.'</a></li>';
                         }
