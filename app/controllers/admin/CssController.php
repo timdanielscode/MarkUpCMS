@@ -15,7 +15,7 @@ use validation\Get;
 
 class CssController extends Controller {
 
-    private $_count, $_data;
+    private $_data;
     private $_fileExtension = ".css";
     private $_folderLocation = "website/assets/css/";
 
@@ -35,41 +35,38 @@ class CssController extends Controller {
         } 
     }
 
-    public function index() {
+    public function index($request) {
 
-        $this->_data['cssFiles'] = $this->getCss(Get::validate([get('search')]));
-        $this->_data['count'] = $this->_count;
+        $css = Css::allCssButOrderedOnDate();
+
+        $this->_data['search'] = '';
+
+        if(!empty($request['search'] ) ) {
+
+            $this->_data['search'] = Get::validate($request['search']);
+            $css = Css::cssFilesOnSearch($this->_data['search']);
+        }
+
+        $this->_data['cssFiles'] = Pagination::get($css, 10);
+        $this->_data['count'] = count($css);
         $this->_data['numberOfPages'] = Pagination::getPageNumbers();
 
         return $this->view('admin/css/index')->data($this->_data);
     }
 
-    private function getCss($search) {
-
-        $css = Css::allCssButOrderedOnDate();
-
-        if(!empty($search)) {
-
-            $css = Css::cssFilesOnSearch($search);
-        }
-
-        $this->_count = count($css);
-        return Pagination::get($css, 10);
-    }
-
     public function create() {
 
-        $data['rules'] = [];
-        return $this->view('admin/css/create', $data);
+        $this->_data['rules'] = [];
+        return $this->view('admin/css/create')->data($this->_data);
     }
 
     public function store($request) {
 
-        $this->redirect("submit", '/admin/css');
+        ///$this->redirect("submit", '/admin/css');
 
         $rules = new Rules();
         
-        if($rules->css(Css::whereColumns(['file_name'], ['file_name' => $request['filename']]))->validated()) {
+        if($rules->css($request['filename'], Css::whereColumns(['file_name'], ['file_name' => $request['filename']]))->validated()) {
                     
             $filename = "/".$request['filename'];
             $filename = str_replace(" ", "-", $filename);
@@ -98,6 +95,8 @@ class CssController extends Controller {
         } else {
 
             $this->_data['rules'] = $rules->errors;
+            $this->_data['filename'] = $request['filename'];
+
             return $this->view('admin/css/create')->data($this->_data);
         }
     }
@@ -145,14 +144,14 @@ class CssController extends Controller {
 
         $id = $request['id'];
         $this->ifExists($id);
-        $this->redirect("submit", "/admin/css/$id/edit");
+        ///$this->redirect("submit", "/admin/css/$id/edit");
 
         $filename = str_replace(" ", "-", $request["filename"]);
         $currentCssFileName = Css::getColumns(['file_name'], $id)['file_name'];
 
         $rules = new Rules();
         
-        if($rules->css(Css::checkUniqueFilenameId($request['filename'], $id))->validated()) {
+        if($rules->css($request['filename'], Css::checkUniqueFilenameId($request['filename'], $id))->validated()) {
 
             rename($this->_folderLocation . $currentCssFileName . $this->_fileExtension, $this->_folderLocation . $filename . $this->_fileExtension);
 
@@ -191,7 +190,7 @@ class CssController extends Controller {
 
         $id = $request['id'];
         $this->ifExists($request['id']);
-        $this->redirect("submit", "/admin/css/$id/edit");
+        //$this->redirect("submit", "/admin/css/$id/edit");
 
         CssPage::delete('css_id', $id);
 
@@ -215,7 +214,7 @@ class CssController extends Controller {
 
         $id = $request['id'];
         $this->ifExists($id);
-        $this->redirect("submit", "/admin/css/$id/edit");
+        //$this->redirect("submit", "/admin/css/$id/edit");
 
         CssPage::delete('css_id', $id);
 
@@ -227,7 +226,7 @@ class CssController extends Controller {
 
         $id = $request['id'];
         $this->ifExists($id);
-        $this->redirect("submit", "/admin/css/$id/edit");
+        //$this->redirect("submit", "/admin/css/$id/edit");
 
         if(!empty($request['pages']) && $request['pages'] !== null) {
 
@@ -245,7 +244,7 @@ class CssController extends Controller {
 
         $id = $request['id'];
         $this->ifExists($id);
-        $this->redirect("submit", "/admin/css/$id/edit");
+        //$this->redirect("submit", "/admin/css/$id/edit");
 
         if(!empty($request['pages']) && $request['pages'] !== null) {
 
@@ -265,7 +264,7 @@ class CssController extends Controller {
 
     public function recover($request) {
 
-        $this->redirect("recoverIds", "/admin/css");
+        //$this->redirect("recoverIds", "/admin/css");
 
         $recoverIds = explode(',', $request['recoverIds']);
             
@@ -285,7 +284,7 @@ class CssController extends Controller {
 
     public function delete($request) {
 
-        $this->redirect("deleteIds", "/admin/css");
+        //$this->redirect("deleteIds", "/admin/css");
         $deleteIds = explode(',', $request['deleteIds']);
 
         if(!empty($deleteIds) && !empty($deleteIds[0])) {

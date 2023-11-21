@@ -188,11 +188,11 @@ class Rules {
       return $this;
     }
 
-    public function css($unique) {
+    public function css($filename, $unique) {
         
         $validation = new Validate();
         
-        $validation->input('filename')->as('Filename')->rules(['required' => true, 'max' => 29, 'special' => true, 'unique' => $unique]);
+        $validation->input(['filename' => $filename])->as('Filename')->rules(['required' => true, 'max' => 29, 'special' => true, 'unique' => $unique]);
         
         $this->errors = $validation->errors;
         return $this;

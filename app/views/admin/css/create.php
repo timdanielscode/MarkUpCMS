@@ -26,7 +26,7 @@
                 <div class="create-container">
                     <form action="store" method="POST" class="form-code" id="editorForm">
                         <div class="form-parts">
-                            <input name="filename" type="text" id="filename" placeholder="Filename without extension" autofocus>
+                            <input name="filename" type="text" id="filename" value="<?php if(!empty($filename)) { echo $filename; } ?>" placeholder="Filename without extension" autofocus>
                             <?php if(!empty(Errors::get($rules, 'filename')) && Errors::get($rules, 'filename') !== null) { ?>
                                 <div class="error-messages margin-b-10 margin-tm-10 font-size-14">
                                     <span><?php echo Errors::get($rules, 'filename'); ?></span>
