@@ -208,21 +208,21 @@ class Rules {
         return $this;
     }
 
-    public function create_menu($unique) {
+    public function create_menu($title, $unique) {
         
         $validation = new Validate();
         
-        $validation->input('title')->as('Title')->rules(['required' => true, 'max' => 49, 'special' => true, 'unique' => $unique]);
+        $validation->input(['title' => $title])->as('Title')->rules(['required' => true, 'max' => 49, 'special' => true, 'unique' => $unique]);
         
         $this->errors = $validation->errors;
         return $this;
     }
 
-    public function menu_update($unique) {
+    public function menu_update($title, $unique) {
 
         $validation = new Validate();
         
-        $validation->input('title')->as('Title')->rules(['required' => true, 'max' => 49, 'special' => true, 'unique' => $unique]);
+        $validation->input(['title' => $title])->as('Title')->rules(['required' => true, 'max' => 49, 'special' => true, 'unique' => $unique]);
         
         $this->errors = $validation->errors;
         return $this;

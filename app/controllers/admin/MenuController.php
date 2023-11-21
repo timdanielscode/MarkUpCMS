@@ -13,7 +13,7 @@ use validation\Get;
 
 class MenuController extends Controller {
 
-    private $_count, $_data;
+    private $_data;
 
     private function ifExists($id) {
 
@@ -31,26 +31,23 @@ class MenuController extends Controller {
         } 
     }
 
-    public function index() {
-
-        $this->_data["menus"] = $this->getMenus(Get::validate([get('search')]));
-        $this->_data["count"] = $this->_count;
-        $this->_data['numberOfPages'] = Pagination::getPageNumbers();
-
-        return $this->view('admin/menus/index')->data($this->_data);
-    }
-
-    private function getMenus($search) {
+    public function index($request) {
 
         $menus = Menu::allMenusButOrderedOnDate();
 
-        if(!empty($search)) {
+        $this->_data['search'] = '';
 
-            $menus = Menu::menusOnSearch($search);
+        if(!empty($request['search'] ) ) {
+
+            $this->_data['search'] = Get::validate($request['search']);
+            $menus = Menu::menusOnSearch($this->_data['search']);
         }
 
-        $this->_count = count($menus);
-        return Pagination::get($menus, 10);
+        $this->_data["menus"] = Pagination::get($menus, 10);
+        $this->_data["count"] = count($menus);
+        $this->_data['numberOfPages'] = Pagination::getPageNumbers();
+
+        return $this->view('admin/menus/index')->data($this->_data);
     }
 
     public function create() {
@@ -61,11 +58,11 @@ class MenuController extends Controller {
 
     public function store($request) {
 
-        $this->redirect("submit", '/admin/menus');
+        //$this->redirect("submit", '/admin/menus');
 
         $rules = new Rules(); 
 
-        if($rules->create_menu(Menu::whereColumns(['title'], ['title' => $request['title']]))->validated()) {
+        if($rules->create_menu($request['title'], Menu::whereColumns(['title'], ['title' => $request['title']]))->validated()) {
                     
             if(!empty($request['content']) ) { $hasContent = 1; } else { $hasContent = 0; }
 
@@ -87,7 +84,9 @@ class MenuController extends Controller {
 
         } else {
 
+            $this->_data['title'] = $request['title'];
             $this->_data['rules'] = $rules->errors;
+
             return $this->view('admin/menus/create')->data($this->_data);
         } 
     }
@@ -117,11 +116,11 @@ class MenuController extends Controller {
 
         $id = $request['id'];
         $this->ifExists($id);
-        $this->redirect("submit", "/admin/menus/$id/edit");
+        //$this->redirect("submit", "/admin/menus/$id/edit");
 
         $rules = new Rules();
         
-        if($rules->menu_update(Menu::checkUniqueTitleId($request['title'], $id))->validated()) {
+        if($rules->menu_update($request['title'], Menu::checkUniqueTitleId($request['title'], $id))->validated()) {
                     
             if(!empty($request['content']) ) { $hasContent = 1; } else { $hasContent = 0; }
 
@@ -149,7 +148,7 @@ class MenuController extends Controller {
 
         $id = $request['id'];
         $this->ifExists($id);
-        $this->redirect("submit", "/admin/menus/$id/edit");
+        //$this->redirect("submit", "/admin/menus/$id/edit");
 
         Menu::update(['id' => $id], [
 
@@ -165,7 +164,7 @@ class MenuController extends Controller {
 
         $id = $request['id'];
         $this->ifExists($id);
-        $this->redirect("submit", "/admin/menus/$id/edit");
+        //$this->redirect("submit", "/admin/menus/$id/edit");
 
         Menu::update(['id' => $id], [
 
@@ -199,7 +198,7 @@ class MenuController extends Controller {
 
     public function delete($request) {
 
-        $this->redirect("deleteIds", "/admin/menus");
+        //$this->redirect("deleteIds", "/admin/menus");
         $deleteIds = explode(',', $request['deleteIds']);
 
         if(!empty($deleteIds) && !empty($deleteIds[0])) {
