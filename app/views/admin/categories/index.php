@@ -116,9 +116,9 @@
                 
                     foreach($numberOfPages as $page) {
 
-                        if(!empty(Get::validate([get('search')])) ) {
+                        if(!empty($search) ) {
 
-                            echo '<li class="page-item"><a href="/admin/categories?search=' . Get::validate([get('search')]) . '&page='.$page.'">'.$page.'</a></li>';
+                            echo '<li class="page-item"><a href="/admin/categories?search=' . $search . '&page='.$page.'">'.$page.'</a></li>';
                         } else {
                             echo '<li class="page-item"><a href="/admin/categories?page='.$page.'">'.$page.'</a></li>';
                         }
