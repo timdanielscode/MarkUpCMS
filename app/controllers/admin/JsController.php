@@ -15,7 +15,7 @@ use validation\Get;
 
 class JsController extends Controller {
 
-    private $_count, $_data;
+    private $_data;
     private $_fileExtension = ".js";
     private $_folderLocation = "website/assets/js/";
 
@@ -35,32 +35,29 @@ class JsController extends Controller {
         } 
     }
 
-    public function index() {
-        
-        $this->_data['jsFiles'] = $this->getJs(Get::validate([get('search')]));
-        $this->_data['count'] = $this->_count;
+    public function index($request) {
+
+        $js = Js::allJsButOrderedOnDate();
+
+        $this->_data['search'] = '';
+
+        if(!empty($request['search'] ) ) {
+
+            $this->_data['search'] = Get::validate($request['search']);
+            $js = Js::jsFilesOnSearch($this->_data['search']);
+        }
+
+        $this->_data['jsFiles'] = Pagination::get($js, 10);
+        $this->_data['count'] = count($js);
         $this->_data['numberOfPages'] = Pagination::getPageNumbers();
 
         return $this->view('admin/js/index')->data($this->_data);
     }
 
-    private function getJs($search) {
-
-        $js = Js::allJsButOrderedOnDate();
-    
-        if(!empty($search)) {
-    
-            $js = Js::jsFilesOnSearch($search);
-        }
-    
-        $this->_count = count($js);
-        return Pagination::get($js, 10);
-    }
-
     public function create() {
 
-        $data['rules'] = [];
-        return $this->view('admin/js/create', $data);
+        $this->_data['rules'] = [];
+        return $this->view('admin/js/create')->data($this->_data);
     }
 
     public function read($request) {
@@ -75,11 +72,11 @@ class JsController extends Controller {
 
     public function store($request) {
 
-        $this->redirect("submit", '/admin/js');
+        //$this->redirect("submit", '/admin/js');
 
         $rules = new Rules();
 
-        if($rules->js(Js::whereColumns(['file_name'], ['file_name' => $request['filename']]))->validated()) {
+        if($rules->js($request['filename'], Js::whereColumns(['file_name'], ['file_name' => $request['filename']]))->validated()) {
                     
             $filename = "/".$request['filename'];
             $filename = str_replace(" ", "-", $filename);
@@ -107,6 +104,8 @@ class JsController extends Controller {
         } else {
 
             $this->_data['rules'] = $rules->errors;
+            $this->_data['filename'] = $request['filename'];
+
             return $this->view('admin/js/create')->data($this->_data);
         }
     }
@@ -144,14 +143,14 @@ class JsController extends Controller {
 
         $id = $request['id'];
         $this->ifExists($id);
-        $this->redirect("submit", "/admin/js/$id/edit");
+        //$this->redirect("submit", "/admin/js/$id/edit");
                 
         $filename = str_replace(" ", "-", $request["filename"]);
         $currentJsFileName = Js::getColumns(['file_name'], $id);
 
         $rules = new Rules();
 
-        if($rules->Js(Js::checkUniqueFilenameId($request['filename'], $id))->validated()) {
+        if($rules->Js($request['filename'], Js::checkUniqueFilenameId($request['filename'], $id))->validated()) {
 
             rename($this->_folderLocation . $currentJsFileName . $this->_fileExtension, $this->_folderLocation . $filename . $this->_fileExtension);
 
@@ -187,7 +186,7 @@ class JsController extends Controller {
 
         $id = $request['id'];
         $this->ifExists($id);
-        $this->redirect("submit", "/admin/js/$id/edit");
+        //$this->redirect("submit", "/admin/js/$id/edit");
             
         if(!empty($request['pages']) && $request['pages'] !== null) {
 
@@ -209,7 +208,7 @@ class JsController extends Controller {
 
         $id = $request['id'];
         $this->ifExists($request['id']);
-        $this->redirect("submit", "/admin/js/$id/edit");
+        //$this->redirect("submit", "/admin/js/$id/edit");
 
         if(!empty($request['pages']) && $request['pages'] !== null) {
 
@@ -227,7 +226,7 @@ class JsController extends Controller {
 
         $id = $request['id'];
         $this->ifExists($request['id']);
-        $this->redirect("submit", "/admin/js/$id/edit");
+        //$this->redirect("submit", "/admin/js/$id/edit");
 
         JsPage::delete('js_id', $id);
 
@@ -251,7 +250,7 @@ class JsController extends Controller {
 
         $id = $request['id'];
         $this->ifExists($request['id']);
-        $this->redirect("submit", "/admin/js/$id/edit");
+       //$this->redirect("submit", "/admin/js/$id/edit");
 
         JsPage::delete('js_id', $id);
 
@@ -261,7 +260,7 @@ class JsController extends Controller {
 
     public function recover($request) {
 
-        $this->redirect("recoverIds", "/admin/js");
+        //$this->redirect("recoverIds", "/admin/js");
 
         $recoverIds = explode(',', $request['recoverIds']);
             
@@ -281,7 +280,7 @@ class JsController extends Controller {
 
     public function delete($request) {
 
-        $this->redirect("deleteIds", "/admin/js");
+       // $this->redirect("deleteIds", "/admin/js");
 
         $deleteIds = explode(',', $request['deleteIds']);
 
