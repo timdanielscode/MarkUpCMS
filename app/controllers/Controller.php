@@ -52,7 +52,7 @@ class Controller {
      */
     public function include($file) {
 
-        involve("../app/views/includes/" . $file . ".php");
+        require "../app/views/includes/" . $file . ".php";
     }
 
     /**

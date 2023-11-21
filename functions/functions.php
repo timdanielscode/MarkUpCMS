@@ -29,21 +29,8 @@ function submitted($name) {
 }
 
 /** 
- * @param string $name optional
- * @return global _POST
- */  
-function post($name = null) {
-
-    if(!empty($name) && isset($_POST[$name])) {
-
-        $post = htmlspecialchars($_POST[$name]);
-        return $post;
-    } 
-}
-
-/** 
- * @param string $name optional
- * @return global _GET
+ * @param string $name
+ * @return global _GET value
  */  
 function get($name) {
 
@@ -52,14 +39,5 @@ function get($name) {
         $get = htmlspecialchars($_GET[$name]);
         return $get;
     } 
-}
-
-/** 
- * @param string $path file
- * @return void
- */
-function involve($path) {
-
-    require_once $path;
 }
 
