@@ -90,7 +90,7 @@ class UserController extends Controller {
 
         $this->ifExists($request['username']);
 
-        $this->_data['current'] = User::userAndRole($request['username']);
+        $this->_data['current'] = User::userAndRole('username', $request['username']);
         return $this->view('admin/users/read')->data($this->_data);
     }
 
@@ -98,7 +98,7 @@ class UserController extends Controller {
 
         $this->ifExists($request['username']);
 
-        $this->_data['user'] = User::userAndRole($request['username']);
+        $this->_data['user'] = User::userAndRole('username', $request['username']);
         $this->_data['rules'] = [];
 
         return $this->view('admin/users/edit')->data($this->_data);
@@ -111,7 +111,7 @@ class UserController extends Controller {
 
         $rules = new Rules();
 
-        if($rules->user_edit(User::checkUniqueUsername($request["f_username"], $id), User::checkUniqueEmail($request['email'], $id))->validated()) {
+        if($rules->user_edit($request['f_username'], $request['email'], User::checkUniqueUsername($request["f_username"], $id), User::checkUniqueEmail($request['email'], $id))->validated()) {
 
             User::update(['id' => $id], [
 
@@ -124,7 +124,7 @@ class UserController extends Controller {
 
         } else {
 
-            $this->_data['user'] = User::userAndRole($request['f_username']);
+            $this->_data['user'] = User::userAndRole('id', $request['id']);
             $this->_data['rules'] = $rules->errors;
 
             return $this->view('admin/users/edit')->data($this->_data);

@@ -53,9 +53,9 @@ class User extends Model {
         }
     }
 
-    public static function userAndRole($username) {
+    public static function userAndRole($column, $value) {
 
-        return DB::try()->select('users.*', 'roles.name')->from(self::$_table)->join('user_role')->on('user_id', '=', 'users.id')->join('roles')->on('role_id', '=', 'roles.id')->where('users.username', '=', $username)->first();
+        return DB::try()->select('users.*', 'roles.name')->from(self::$_table)->join('user_role')->on('user_id', '=', 'users.id')->join('roles')->on('role_id', '=', 'roles.id')->where('users.' . $column, '=', $value)->first();
     }
 
     public static function getLastRegisteredUserId() {

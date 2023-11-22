@@ -180,12 +180,12 @@ class Rules {
         return $this;
     }
 
-    public function user_edit($username, $email) {
+    public function user_edit($username, $email, $uniqueUsername, $uniqueEmail) {
 
       $validation = new Validate();
 
-      $validation->input('f_username')->as('Username')->rules(['required' => true, 'max' => 49, 'special' => true, 'unique' => $username]);
-      $validation->input('email')->as('Email')->rules(['required' => true, 'min' => 5, 'max' => 49, 'special' => true, 'unique' => $email]);
+      $validation->input(['f_username' => $username])->as('Username')->rules(['required' => true, 'max' => 49, 'special' => true, 'unique' => $uniqueUsername]);
+      $validation->input(['email' => $email])->as('Email')->rules(['required' => true, 'min' => 5, 'max' => 49, 'special' => true, 'unique' => $uniqueEmail]);
 
       $this->errors = $validation->errors;
       return $this;
