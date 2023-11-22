@@ -166,15 +166,15 @@ class Rules {
         return $this;
     }
 
-    public function user_create($username, $email) {
+    public function user_create($username, $email, $password, $passwordConfirm, $role, $uniqueUsername, $uniqueEmail) {
         
         $validation = new Validate();
         
-        $validation->input('f_username')->as('Username')->rules(['required' => true, 'max' => 49, 'special' => true, 'unique' => $username]);
-        $validation->input('email')->as('Email')->rules(['required' => true, 'min' => 5, 'max' => 49, 'special' => true, 'unique' => $email]);
-        $validation->input('password')->as('Password')->rules(['required' => true, 'min' => 16, 'max' => 249]);
-        $validation->input('password_confirm')->as('Password')->rules(['required' => true, 'match' => 'password']);
-        $validation->input('role')->as('User role')->rules(['required' => true]);
+        $validation->input(['f_username' => $username])->as('Username')->rules(['required' => true, 'max' => 49, 'special' => true, 'unique' => $uniqueUsername]);
+        $validation->input(['email' => $email])->as('Email')->rules(['required' => true, 'min' => 5, 'max' => 49, 'special' => true, 'unique' => $uniqueEmail]);
+        $validation->input(['password' => $password])->as('Password')->rules(['required' => true, 'min' => 16, 'max' => 249]);
+        $validation->input(['password_confirm' => $passwordConfirm])->as('Password')->rules(['required' => true, 'match' => $password]);
+        $validation->input(['role' => $role])->as('User role')->rules(['required' => true]);
         
         $this->errors = $validation->errors;
         return $this;

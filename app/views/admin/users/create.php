@@ -20,28 +20,28 @@
                 <form action="store" method="POST" class="usersCreateForm">
                     <div class="form-parts">
                         <label for="username">Username:</label>
-                        <input name="f_username" type="username" id="username" value="<?php echo post('f_username'); ?>">
+                        <input name="f_username" type="username" id="username" value="<?php if(!empty($username) ) { echo $username; } ?>">
                         <div class="error-messages">
                             <?php echo Errors::get($rules, 'f_username'); ?>
                         </div>
                     </div>
                     <div class="form-parts">
                         <label for="email">Email:</label>
-                        <input name="email" type="email" id="email" value="<?php echo post('email'); ?>">
+                        <input name="email" type="email" id="email" value="<?php if(!empty($email) ) { echo $email; } ?>">
                         <div class="error-messages">
                             <?php echo Errors::get($rules, 'email'); ?>
                         </div>
                     </div>
                     <div class="form-parts">
                         <label for="password">Password:</label>
-                        <input name="password" type="password" id="password" value="<?php echo post('password'); ?>">
+                        <input name="password" type="password" id="password">
                         <div class="error-messages">
                             <?php echo Errors::get($rules, 'password'); ?>
                         </div>
                     </div>
                     <div class="form-parts">
                         <label for="password_confirm">Retype password:</label>
-                        <input name="password_confirm" type="password" id="password_confirm" value="<?php echo post('password_confirm'); ?>">
+                        <input name="password_confirm" type="password" id="password_confirm">
                         <div class="error-messages">
                             <?php echo Errors::get($rules, 'password_confirm'); ?>
                         </div>

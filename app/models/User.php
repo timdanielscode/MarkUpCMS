@@ -6,7 +6,6 @@
 namespace app\models;
 
 use database\DB;
-use core\Session;
    
 class User extends Model {
 
@@ -39,18 +38,18 @@ class User extends Model {
         return DB::try()->select(self::$_columns)->from(self::$_table)->fetch();
     }
 
-    public static function allUsersWithRoles() {
+    public static function allUsersWithRoles($username) {
 
-        return DB::try()->select('users.*', 'roles.name')->from(self::$_table)->join('user_role')->on('users.id', '=', 'user_role.user_id')->join('roles')->on('user_role.role_id', '=', 'roles.id')->where('users.username','!=', Session::get('username'))->and('removed', '=', 0)->order('roles.name')->fetch();
+        return DB::try()->select('users.*', 'roles.name')->from(self::$_table)->join('user_role')->on('users.id', '=', 'user_role.user_id')->join('roles')->on('user_role.role_id', '=', 'roles.id')->where('users.username','!=', $username)->and('removed', '=', 0)->order('roles.name')->fetch();
     }
                 
-    public static function allUsersWithRolesOnSearch($searchValue = null) {
+    public static function allUsersWithRolesOnSearch($searchValue, $username) {
 
         if($searchValue == 'Thrashcan') {
 
-            return DB::try()->select('users.*', 'roles.name')->from(self::$_table)->join('user_role')->on('users.id', '=', 'user_role.user_id')->join('roles')->on('user_role.role_id', '=', 'roles.id')->where('removed', '=', 1)->fetch();
+            return DB::try()->select('users.*', 'roles.name')->from(self::$_table)->join('user_role')->on('users.id', '=', 'user_role.user_id')->join('roles')->on('user_role.role_id', '=', 'roles.id')->where('removed', '=', 1)->and('username', '!=', $username)->fetch();
         } else {
-            return DB::try()->select('users.*', 'roles.name')->from(self::$_table)->join('user_role')->on('users.id', '=', 'user_role.user_id')->join('roles')->on('user_role.role_id', '=', 'roles.id')->where('users.username', 'LIKE', '%'.$searchValue.'%')->and('removed', '=', 0)->or('users.email', 'LIKE', '%'.$searchValue.'%')->and('removed', '=', 0)->or('roles.name', 'LIKE', '%'.$searchValue.'%')->and('users.username','!=', Session::get('username'))->and('removed', '=', 0)->fetch();
+            return DB::try()->select('users.*', 'roles.name')->from(self::$_table)->join('user_role')->on('users.id', '=', 'user_role.user_id')->join('roles')->on('user_role.role_id', '=', 'roles.id')->where('users.username', 'LIKE', '%'.$searchValue.'%')->and('removed', '=', 0)->and('users.username','!=', $username)->or('users.email', 'LIKE', '%'.$searchValue.'%')->and('removed', '=', 0)->and('users.username','!=', $username)->or('roles.name', 'LIKE', '%'.$searchValue.'%')->and('users.username','!=', $username)->and('removed', '=', 0)->fetch();
         }
     }
 

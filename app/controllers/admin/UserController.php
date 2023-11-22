@@ -14,7 +14,7 @@ use validation\Get;
 
 class UserController extends Controller {
 
-    private $_count, $_data;
+    private $_data;
 
     private function ifExists($id) {
 
@@ -24,26 +24,23 @@ class UserController extends Controller {
         }
     }
 
-    public function index() {
+    public function index($request) {
 
-        $this->_data['allUsers'] = $this->getUsers(Get::validate([get('search')]));
-        $this->_data['count'] = $this->_count;
+        $users = User::allUsersWithRoles(Session::get('username'));
+
+        $this->_data['search'] = '';
+
+        if(!empty($request['search'] ) ) {
+
+            $this->_data['search'] = Get::validate($request['search']);
+            $users = User::allUsersWithRolesOnSearch($this->_data['search'], Session::get('username'));
+        }
+
+        $this->_data['allUsers'] = Pagination::get($request, $users, 10);
+        $this->_data['count'] = count($users);
         $this->_data['numberOfPages'] = Pagination::getPageNumbers();
 
         return $this->view('admin/users/index')->data($this->_data);
-    }
-
-    private function getUsers($search) {
-
-        $users = User::allUsersWithRoles();
-    
-        if(!empty($search)) {
-    
-            $users = User::allUsersWithRolesOnSearch($search);
-        }
-    
-        $this->_count = count($users);
-        return Pagination::get($request, $users, 10);
     }
 
     public function create() {
@@ -56,7 +53,7 @@ class UserController extends Controller {
 
         $rules = new Rules();
             
-        if($rules->user_create(User::where(['username' => $request['f_username']]), User::where(['email' => $request['email']]))->validated()) {
+        if($rules->user_create($request['f_username'], $request['email'], $request['password'], $request['password_confirm'], $request['role'], User::where(['username' => $request['f_username']]), User::where(['email' => $request['email']]))->validated()) {
                     
             User::insert([
 
@@ -81,7 +78,10 @@ class UserController extends Controller {
 
         } else {
 
+            $this->_data['username'] = $request['f_username'];
+            $this->_data['email'] = $request['email'];
             $this->_data['rules'] = $rules->errors;
+
             return $this->view('admin/users/create')->data($this->_data);
         }
     }
