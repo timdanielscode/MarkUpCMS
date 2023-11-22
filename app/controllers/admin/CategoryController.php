@@ -70,7 +70,7 @@ class CategoryController extends Controller {
             $categories = Category::categoriesFilesOnSearch($this->_data['search']);
         }
 
-        $this->_data['categories'] = Pagination::get($categories, 10);
+        $this->_data['categories'] = Pagination::get($request, $categories, 10);
         $this->_data['count'] = count($categories);
         $this->_data['numberOfPages'] = Pagination::getPageNumbers();
        

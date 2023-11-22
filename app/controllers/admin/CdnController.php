@@ -37,7 +37,7 @@ class CdnController extends Controller {
             $cdn = Cdn::orderedCdnsOnSearch($this->_data['search']);
         }
 
-        $this->_data['cdns'] = Pagination::get($cdn, 10);
+        $this->_data['cdns'] = Pagination::get($request, $cdn, 10);
         $this->_data['count'] = count($cdn);
         $this->_data['numberOfPages'] = Pagination::getPageNumbers();
 

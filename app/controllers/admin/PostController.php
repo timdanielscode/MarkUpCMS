@@ -44,7 +44,7 @@ class PostController extends Controller {
             $posts = Post::allPostsWithCategoriesOnSearch($this->_data['search']);
         }
 
-        $this->_data["posts"] = Pagination::get($posts, 10);
+        $this->_data["posts"] = Pagination::get($request, $posts, 10);
         $this->_data["count"] = count($posts);
         $this->_data['numberOfPages'] = Pagination::getPageNumbers();
 

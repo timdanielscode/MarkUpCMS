@@ -35,7 +35,7 @@ class MenuController extends Controller {
             $menus = Menu::menusOnSearch($this->_data['search']);
         }
 
-        $this->_data["menus"] = Pagination::get($menus, 10);
+        $this->_data["menus"] = Pagination::get($request, $menus, 10);
         $this->_data["count"] = count($menus);
         $this->_data['numberOfPages'] = Pagination::getPageNumbers();
 

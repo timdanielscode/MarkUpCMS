@@ -43,7 +43,7 @@ class UserController extends Controller {
         }
     
         $this->_count = count($users);
-        return Pagination::get($users, 10);
+        return Pagination::get($request, $users, 10);
     }
 
     public function create() {

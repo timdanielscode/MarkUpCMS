@@ -36,7 +36,7 @@ class WidgetController extends Controller {
             $widgets = Widget::widgetsOnSearch($this->_data['search']);
         }
 
-        $this->_data["widgets"] = Pagination::get($widgets, 10);
+        $this->_data["widgets"] = Pagination::get($request, $widgets, 10);
         $this->_data["count"] = count($widgets);
         $this->_data['numberOfPages'] = Pagination::getPageNumbers();
 

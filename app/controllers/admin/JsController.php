@@ -39,7 +39,7 @@ class JsController extends Controller {
             $js = Js::jsFilesOnSearch($this->_data['search']);
         }
 
-        $this->_data['jsFiles'] = Pagination::get($js, 10);
+        $this->_data['jsFiles'] = Pagination::get($request, $js, 10);
         $this->_data['count'] = count($js);
         $this->_data['numberOfPages'] = Pagination::getPageNumbers();
 

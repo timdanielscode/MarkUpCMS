@@ -15,7 +15,7 @@ class Pagination {
      * @param array $maxNumberArrayItems number of pages to paginate
      * @return array $_page paginated data
      */ 
-    public static function get($paginationArray, $maxNumberArrayItems) {
+    public static function get($request, $paginationArray, $maxNumberArrayItems) {
 
         self::$_pagenationAllArrayItems = $paginationArray;
         self::$_maxNumberOfArrayItems = $maxNumberArrayItems;
@@ -31,7 +31,7 @@ class Pagination {
             }
         }
 
-        self::getNumberedArrayItems();
+        self::getNumberedArrayItems($request);
         return self::$_paginatedArrayItems;
     }
 
@@ -40,11 +40,11 @@ class Pagination {
      * 
      * @return void
      */ 
-    public static function getNumberedArrayItems() {
+    public static function getNumberedArrayItems($request) {
 
-        if(get('page') !== null) {
+        if(!empty($request['page']) ) {
 
-            $pageValue = get('page');
+            $pageValue = $request['page'];
             Session::set('page', $pageValue);
         } else {
             $pageValue = 1;

@@ -35,7 +35,7 @@ class MediaController extends Controller {
         }
 
         $this->_data['search'] = $this->_search;
-        $this->_data["allMedia"] = Pagination::get($media, 8);
+        $this->_data["allMedia"] = Pagination::get($request, $media, 8);
         $this->_data['count'] = count($media);
         $this->_data['numberOfPages'] = Pagination::getPageNumbers();
 
