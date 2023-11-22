@@ -6,7 +6,7 @@ use database\DB;
 
 class Table {
 
-    public function create() {
+    public static function create() {
 
         DB::try()->raw('CREATE TABLE IF NOT EXISTS users (
             
@@ -22,7 +22,7 @@ class Table {
 
         DB::try()->raw('CREATE TABLE IF NOT EXISTS roles (
                             
-            id INT(11) NOT NULL,
+            id INT(11) NOT NULL AUTO_INCREMENT PRIMARY KEY,
             name VARCHAR(30) NOT NULL
 
         )')->run();

@@ -25,51 +25,36 @@ class InstallationController extends Controller {
 
     public function storeUser($request) {
 
-        if(submitted("submit") && Csrf::validate(Csrf::token("get"), post("token")) ) {
-                
-            $rules = new Rules();  
+        $rules = new Rules();  
                     
-            if($rules->installationStoreUser()->validated() ) {
+        if($rules->installationStoreUser($request['username'], $request['email'], $request['password'], $request['retypePassword'], $request['token'], Csrf::get())->validated() ) {
 
-                $this->insertRoles(1, 'normal');
-                $this->insertRoles(2, 'admin');
-
-                User::insert([
+            User::insert([
                     
-                    'username' => $request["username"], 
-                    'email' => $request["email"], 
-                    'password' => password_hash($request["password"], PASSWORD_DEFAULT),
-                    'removed'   => 0,
-                    'created_at' => date("Y-m-d H:i:s"), 
-                    'updated_at' => date("Y-m-d H:i:s")
-                ]); 
+                'username' => $request["username"], 
+                'email' => $request["email"], 
+                'password' => password_hash($request["password"], PASSWORD_DEFAULT),
+                'removed'   => 0,
+                'created_at' => date("Y-m-d H:i:s"), 
+                'updated_at' => date("Y-m-d H:i:s")
+            ]); 
 
-                $lastId = DB::try()->getLastId('users')->first();
-
-                UserRole::insert([
+            UserRole::insert([
     
-                    'user_id' => $lastId['id'],
-                    'role_id' => 2
-                ]);
+                'user_id' => User::getLastUserId()['id'],
+                'role_id' => 2
+            ]);
 
-                redirect('/login');
+            Roles::insert(['name'  => 'normal']);
+            Roles::insert(['name'  => 'admin']);
 
-            } else {
+            redirect('/login');
+
+        } else {
                          
-                $this->_data["rules"] = $rules->errors;
-                return $this->view("admin/installation/user")->data($this->_data);
-            }
+            $this->_data["rules"] = $rules->errors;
+            return $this->view("admin/installation/user")->data($this->_data);
         }
-    }
-
-    private function insertRoles($id, $roleType) {
-
-        $role = DB::try()->select('id')->from('roles')->where('id', '=', $id)->and('name', '=', $roleType)->first();
-
-        if(empty($role)) {
-
-            Roles::insert(['id' => $id, 'name'  =>  $roleType]);
-        } 
     }
 
     public function databaseSetup() {
@@ -80,23 +65,19 @@ class InstallationController extends Controller {
     
     public function createConnection($request) {
 
-        if(submitted("submit") && Csrf::validate(Csrf::token("get"), post("token")) ) {
-
-            $rules = new Rules();  
+        $rules = new Rules();  
                     
-            if($rules->installationDatabase()->validated() ) {
+        if($rules->installationDatabase($request['host'], $request['database'], $request['username'], $request['password'], $request['retypePassword'], $request['token'], Csrf::get())->validated() ) {
 
-                $this->databaseConfigFile($request);
+            $this->databaseConfigFile($request);
                 
-                $table = new Table();
-                $table->create();
+            Table::create();
     
-                redirect('/');
-            } else {
+            redirect('/');
+        } else {
 
-                $this->_data['rules'] = $rules->errors;
-                return $this->view('admin/installation/database')->data($this->_data);
-            }
+            $this->_data['rules'] = $rules->errors;
+            return $this->view('admin/installation/database')->data($this->_data);
         }
     }
 

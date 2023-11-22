@@ -23,6 +23,11 @@ class User extends Model {
         return DB::try()->select('users.id', 'users.'.$inputType, 'users.password','roles.name')->from('users')->join('user_role')->on('users.id', '=','user_role.user_id')->join('roles')->on('user_role.role_id', '=', 'roles.id')->where('users'.'.'.$inputType, '=', $inputValue)->and('roles.name', '=', $role)->first();
     }
 
+    public static function getLastUserId() {
+
+        return DB::try()->getLastId(self::$_table)->first();
+    }
+
     public static function ifRowExists($value) {
 
         return DB::try()->select('username')->from(self::$_table)->where('username', '=', $value)->or('id', '=', $value)->first();

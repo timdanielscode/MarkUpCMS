@@ -28,28 +28,30 @@ class Rules {
      * return $this
      */
 
-    public function installationDatabase() {    
+    public function installationDatabase($host, $database, $username, $password, $retypePassword, $addedToken, $csrf) {    
                 
         $validation = new Validate();
                     
-        $validation->input("host")->as("Host")->rules(["required" => true, "min" => "1", "max" => "99"]);         
-        $validation->input("database")->as("Database name")->rules(["required" => true, "min" => "1", "max" => "99"]);         
-        $validation->input("username")->as("Database username")->rules(["required" => true, "min" => "1", "max" => "99", "special-ini" => true]); 
-        $validation->input("password")->as("Password")->rules(["required" => true, "min" => "10", "max" => "200", "special-ini" => true]);          
-        $validation->input("retypePassword")->as("Password")->rules(["required" => true, "match" => "password"]);
+        $validation->input(['host' => $host])->as("Host")->rules(["required" => true, "min" => "1", "max" => "99"]);         
+        $validation->input(['database' => $database])->as("Database name")->rules(["required" => true, "min" => "1", "max" => "99"]);         
+        $validation->input(['username' => $username])->as("Database username")->rules(["required" => true, "min" => "1", "max" => "99", "special-ini" => true]); 
+        $validation->input(['password' => $password])->as("Password")->rules(["required" => true, "min" => "10", "max" => "200", "special-ini" => true]);          
+        $validation->input(['retypePassword' => $retypePassword])->as("Password")->rules(["required" => true, "match" => $password]);
+        $validation->input(['token' => $addedToken])->as('Token')->rules(['csrf' => $csrf]);
                     
         $this->errors = $validation->errors;
         return $this;
     }
 
-    public function installationStoreUser() {    
+    public function installationStoreUser($username, $email, $password, $retypePassword, $addedToken, $csrf) {    
                 
         $validation = new Validate();
                     
-        $validation->input("username")->as("Username")->rules(["required" => true, "min" => "6", "max" => "30", "special" => true]);         
-        $validation->input("email")->as("Email")->rules(["required" => true, "min" => "6", "max" => "30", "special" => true]);         
-        $validation->input("password")->as("Password")->rules(["required" => true, "min" => "16", "max" => "200"]);          
-        $validation->input("retypePassword")->as("Password")->rules(["required" => true, "match" => "password"]);
+        $validation->input(['username' => $username])->as("Username")->rules(["required" => true, "min" => "6", "max" => "30", "special" => true]);         
+        $validation->input(['email' => $email])->as("Email")->rules(["required" => true, "min" => "6", "max" => "30", "special" => true]);         
+        $validation->input(['password' => $password])->as("Password")->rules(["required" => true, "min" => "16", "max" => "200"]);          
+        $validation->input(['retypePassword' => $retypePassword])->as("Password")->rules(["required" => true, "match" => $password]);
+        $validation->input(['token' => $addedToken])->as('Token')->rules(['csrf' => $csrf]);
                     
         $this->errors = $validation->errors;
         return $this;
