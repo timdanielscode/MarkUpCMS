@@ -26,14 +26,6 @@ class CategoryController extends Controller {
         }
     }
 
-    private function redirect($inputName, $path, $csrf = null) {
-
-        if($csrf === true && Csrf::validate(Csrf::token('get'), post('token')) === false || submitted($inputName) === false) {
-
-            redirect($path) . exit(); 
-        }
-    }
-
     private function checkPostIsAssigned($id) {
 
         if(!empty(Category::checkPostAssinged($id)) === true) { 
@@ -87,8 +79,6 @@ class CategoryController extends Controller {
 
     public function store($request) {
 
-        //$this->redirect("submit", "/admin/categories");
-
         $rules = new Rules();
         
         if($rules->create_category($request['title'], $request['description'], Category::whereColumns(['title'], ['title' => $request['title']]))->validated()) {
@@ -115,7 +105,6 @@ class CategoryController extends Controller {
 
         $id = $request['id'];
         $this->ifExists($id);
-        //$this->redirect("submit", "/admin/categories");
 
         $rules = new Rules();
 
@@ -320,8 +309,6 @@ class CategoryController extends Controller {
     }
 
     public function delete($request) {
-
-        $this->redirect("deleteIds", "/admin/categories", true);
 
         $deleteIds = explode(',', $request['deleteIds']);
 

@@ -1,4 +1,3 @@
-<?php use core\Csrf; ?>
 <?php use core\Session; ?>
 <?php use validation\Errors; ?>
 <?php use core\Alert; ?>
@@ -38,7 +37,6 @@
                     <div class="form-parts">
                         <button name="submit" type="submit" id="submit" class="display-none">Update</button>
                         <input type="hidden" name="id" value="<?php echo $user['id']; ?>"/>
-                        <input type="hidden" name="token" value="<?php echo Csrf::token('add');?>" />
                     </div>
                 </form>
                 </div>
@@ -66,7 +64,6 @@
                         <div class="form-parts">
                             <button name="submit" type="submit" class="button greenButton margin-t-10" onclick="return confirm('Are you sure?');">Update</button>
                             <input type="hidden" name="id" value="<?php echo $user['id']; ?>"/>
-                            <input type="hidden" name="token" value="<?php echo Csrf::token('add');?>" />
                         </div>
                     </form>
                 </div>

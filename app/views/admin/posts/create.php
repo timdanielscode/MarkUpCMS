@@ -1,5 +1,4 @@
 <?php use validation\Errors; ?>
-<?php use core\Csrf; ?>
 <?php use core\Session; ?>
 
 <?php 
@@ -35,7 +34,6 @@
                         <textarea type="text" name="body" type="body" id="code"></textarea>
                         <div class="form-parts">
                             <button name="submit" id="submit" type="submit" class="display-none">Create</button>
-                            <input type="hidden" name="token" value="<?php Csrf::token(); ?>" />
                         </div>
                     </form>
                 </div>

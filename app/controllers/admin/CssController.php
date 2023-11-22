@@ -27,14 +27,6 @@ class CssController extends Controller {
         }
     }
 
-    private function redirect($inputName, $path) {
-
-        if(submitted($inputName) === false || Csrf::validate(Csrf::token('get'), post('token')) === false ) { 
-            
-            redirect($path) . exit(); 
-        } 
-    }
-
     public function index($request) {
 
         $css = Css::allCssButOrderedOnDate();
@@ -61,8 +53,6 @@ class CssController extends Controller {
     }
 
     public function store($request) {
-
-        ///$this->redirect("submit", '/admin/css');
 
         $rules = new Rules();
         
@@ -144,7 +134,6 @@ class CssController extends Controller {
 
         $id = $request['id'];
         $this->ifExists($id);
-        ///$this->redirect("submit", "/admin/css/$id/edit");
 
         $filename = str_replace(" ", "-", $request["filename"]);
         $currentCssFileName = Css::getColumns(['file_name'], $id)['file_name'];
@@ -190,7 +179,6 @@ class CssController extends Controller {
 
         $id = $request['id'];
         $this->ifExists($request['id']);
-        //$this->redirect("submit", "/admin/css/$id/edit");
 
         CssPage::delete('css_id', $id);
 
@@ -214,7 +202,6 @@ class CssController extends Controller {
 
         $id = $request['id'];
         $this->ifExists($id);
-        //$this->redirect("submit", "/admin/css/$id/edit");
 
         CssPage::delete('css_id', $id);
 
@@ -226,7 +213,6 @@ class CssController extends Controller {
 
         $id = $request['id'];
         $this->ifExists($id);
-        //$this->redirect("submit", "/admin/css/$id/edit");
 
         if(!empty($request['pages']) && $request['pages'] !== null) {
 
@@ -244,7 +230,6 @@ class CssController extends Controller {
 
         $id = $request['id'];
         $this->ifExists($id);
-        //$this->redirect("submit", "/admin/css/$id/edit");
 
         if(!empty($request['pages']) && $request['pages'] !== null) {
 
@@ -264,8 +249,6 @@ class CssController extends Controller {
 
     public function recover($request) {
 
-        //$this->redirect("recoverIds", "/admin/css");
-
         $recoverIds = explode(',', $request['recoverIds']);
             
         foreach($recoverIds as $request['id'] ) {
@@ -284,7 +267,6 @@ class CssController extends Controller {
 
     public function delete($request) {
 
-        //$this->redirect("deleteIds", "/admin/css");
         $deleteIds = explode(',', $request['deleteIds']);
 
         if(!empty($deleteIds) && !empty($deleteIds[0])) {

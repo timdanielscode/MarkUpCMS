@@ -24,14 +24,6 @@ class WidgetController extends Controller {
         }
     }
 
-    private function redirect($inputName, $path) {
-
-        if(submitted($inputName) === false || Csrf::validate(Csrf::token('get'), post('token')) === false ) { 
-            
-            redirect($path) . exit(); 
-        } 
-    }
-
     public function index($request) {
 
         $widgets = Widget::allWidgetsButOrderedOnDate();
@@ -58,8 +50,6 @@ class WidgetController extends Controller {
     }
 
     public function store($request) {
-
-        //$this->redirect("submit", '/admin/widgets');
 
         if(!empty($request['content']) ) { $hasContent = 1; } else { $hasContent = 0; }
 
@@ -112,7 +102,6 @@ class WidgetController extends Controller {
 
         $id = $request['id'];
         $this->ifExists($request['id']);
-        //$this->redirect("submit", "/admin/widgets/$id/edit");
         
         $rules = new Rules();
         
@@ -140,8 +129,6 @@ class WidgetController extends Controller {
     }
 
     public function recover($request) {
-        
-       // $this->redirect("recoverIds", "/admin/widgets");
 
         $recoverIds = explode(',', $request['recoverIds']);
             
@@ -160,8 +147,6 @@ class WidgetController extends Controller {
     }
 
     public function delete($request) {
-
-       // $this->redirect("deleteIds", "/admin/widgets");
 
         $deleteIds = explode(',', $request['deleteIds']);
 

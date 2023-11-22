@@ -1,5 +1,4 @@
 <?php use validation\Errors; ?>
-<?php use core\Csrf; ?>
 <?php use core\Session; ?>
 <?php use extensions\Pagination; ?>
 <?php use validation\Get; ?>
@@ -29,7 +28,7 @@
     <div class="headerContainer">
         <h1>Media</h1><span class="badge media"><?php echo $count; ?></span>
     </div>
-    <a href="/admin/media/create" class="create">Switch layout</a> <?php if(Session::get('user_role') === 'admin') { ?><span class="deleteSeparator">|</span> <form action="/admin/media/delete" method="POST" class="indexDeleteForm"><input type="submit" class="delete" value="Delete"/><input type="hidden" name="deleteIds" id="deleteIds" value=""/><input type="hidden" name="token" value="<?php Csrf::token('add'); ?>" /></form><?php } ?>
+    <a href="/admin/media/create" class="create">Switch layout</a> <?php if(Session::get('user_role') === 'admin') { ?><span class="deleteSeparator">|</span> <form action="/admin/media/delete" method="POST" class="indexDeleteForm"><input type="submit" class="delete" value="Delete"/><input type="hidden" name="deleteIds" id="deleteIds" value=""/></form><?php } ?>
     <form action="" method="GET" class="searchForm">
         <input type="text" name="search" placeholder="Search" id="search">
         <input id="searchValue" type="hidden" name="submit" value="<?php if(!empty($search) && $search !== null) { echo $search; } ?>">

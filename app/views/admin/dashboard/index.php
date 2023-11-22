@@ -1,5 +1,4 @@
 <?php use validation\Errors; ?>
-<?php use core\Csrf; ?>
 <?php use core\Session; ?>
 
 <?php 

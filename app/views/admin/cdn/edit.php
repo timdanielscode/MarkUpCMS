@@ -1,5 +1,4 @@
 <?php use validation\Errors; ?>
-<?php use core\Csrf; ?>
 <?php use core\Session; ?>
 <?php use core\Alert; ?>
 
@@ -39,7 +38,6 @@
                         </div>
                         <div class="form-parts">
                             <button name="submit" id="submit" type="submit" class="display-none" value="submit">Create</button>
-                            <input type="hidden" name="token" value="<?php Csrf::token('add');?>" />
                         </div>
                     </form>
                 </div>
@@ -59,11 +57,9 @@
                         <div class="buttonContainer">
                             <form action="/admin/cdn/<?php echo $cdn['id']; ?>/import-all" method="POST">
                                 <input type="submit" name="submit" value="Import all" class="button lightButton margin-t-10 margin-r-10" onclick="return confirm('Are you sure?');"/>
-                                <input type="hidden" name="token" value="<?php Csrf::token('add');?>" />
                             </form>
                             <form action="/admin/cdn/<?php echo $cdn['id']; ?>/export-all" method="POST">
                                 <input type="submit" name="submit" value="Export all" class="button lightButton margin-t-10" onclick="return confirm('Are you sure?');"/>
-                                <input type="hidden" name="token" value="<?php Csrf::token('add');?>" />
                             </form>
                         </div>
                         <form class="cdnForm" action="/admin/cdn/<?php echo $cdn['id']; ?>/export-pages" method="POST">
@@ -73,7 +69,6 @@
                                 <?php } ?>
                             </select>
                             <input type="submit" name="submit" value="Export" class="button blueButton"/>
-                            <input type="hidden" name="token" value="<?php Csrf::token('add');?>" />
                         </form>
                         <form class="cdnForm" action="/admin/cdn/<?php echo $cdn['id']; ?>/import-pages" method="POST">
                             <select name="pages[]" multiple>
@@ -82,7 +77,6 @@
                                 <?php } ?>
                             </select>
                             <input type="submit" name="submit" value="Import" class="button greenButton"/>
-                            <input type="hidden" name="token" value="<?php Csrf::token('add');?>" />
                         </form>
                     </div>
                 </div>

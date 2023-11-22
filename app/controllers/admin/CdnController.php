@@ -25,14 +25,6 @@ class CdnController extends Controller {
         }
     }
 
-    private function redirect($inputName, $path) {
-
-        if(submitted($inputName) === false || Csrf::validate(Csrf::token('get'), post('token')) === false ) { 
-            
-            redirect($path) . exit(); 
-        } 
-    }
-
     public function index($request) {
 
         $cdn = Cdn::allCdnsButOrderedByDate();
@@ -60,8 +52,6 @@ class CdnController extends Controller {
     }
 
     public function store($request) {
-
-        //$this->redirect("submit", '/admin/cdn');
 
         $rules = new Rules();
 
@@ -117,7 +107,6 @@ class CdnController extends Controller {
         
         $id = $request['id'];
         $this->ifExists($request['id']);
-        //$this->redirect("submit", "/admin/cdn/$id/edit");
 
         $rules = new Rules();
         
@@ -151,7 +140,6 @@ class CdnController extends Controller {
 
         $id = $request['id'];
         $this->ifExists($request['id']);
-        //$this->redirect("submit", "/admin/cdn/$id/edit");
 
         foreach($request['pages'] as $pageId) {
 
@@ -170,7 +158,6 @@ class CdnController extends Controller {
 
         $id = $request['id'];
         $this->ifExists($request['id']);
-        //$this->redirect("submit", "/admin/cdn/$id/edit");
 
         CdnPage::delete('cdn_id', $id);
 
@@ -191,7 +178,6 @@ class CdnController extends Controller {
 
         $id = $request['id'];
         $this->ifExists($request['id']);
-        //$this->redirect("submit", "/admin/cdn/$id/edit");
 
         foreach($request['pages'] as $pageId) {
 
@@ -206,7 +192,6 @@ class CdnController extends Controller {
 
         $id = $request['id'];
         $this->ifExists($request['id']);
-        //$this->redirect("submit", "/admin/cdn/$id/edit");
   
         CdnPage::delete('cdn_id', $request['id']);
 
@@ -215,8 +200,6 @@ class CdnController extends Controller {
     }
 
     public function recover($request) {
-
-        //$this->redirect("recoverIds", "/admin/cdn");
 
         $recoverIds = explode(',', $request['recoverIds']);
             
@@ -235,8 +218,6 @@ class CdnController extends Controller {
     }
 
     public function delete($request) {
-
-        //$this->redirect("deleteIds", "/admin/cdn");
 
         $deleteIds = explode(',', $request['deleteIds']);
 

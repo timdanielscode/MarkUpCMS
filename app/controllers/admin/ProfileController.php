@@ -23,14 +23,6 @@
         }
     }
 
-    private function redirect($inputName, $path) {
-
-        if(submitted($inputName) === false || Csrf::validate(Csrf::token('get'), post('token')) === false ) { 
-            
-            redirect($path) . exit(); 
-        } 
-    }
-    
     public function index() { 
     
         $this->_data['user'] = User::getLoggedInUserAndRole(Session::get('username'));
@@ -42,7 +34,6 @@
     public function updateDetails($request) {
 
         $id = $request['id'];
-        $this->redirect("submit", '/admin/profile');
 
         $rules = new Rules();
 
@@ -68,8 +59,6 @@
     }
 
     public function updateRole($request) {
-
-        $this->redirect("submit", '/admin/profile');
 
         $rules = new Rules();
 
@@ -135,8 +124,6 @@
 
     private function updateCurrentPassword($id, $password) {
 
-        $this->redirect("submit", '/admin/profile');
-
         if(!empty($id) && $id !== null && !empty($password) && $password !== null) {
 
             User::update(['id' => $id], [
@@ -179,8 +166,6 @@
     }
 
     public function delete($request) {
-
-        $this->redirect("submit", '/admin/profile');
 
         User::delete('username', Session::get('username'));
         UserRole::delete('user_id', $request['id']);

@@ -23,14 +23,6 @@ class MenuController extends Controller {
         }
     }
 
-    private function redirect($inputName, $path) {
-
-        if(submitted($inputName) === false || Csrf::validate(Csrf::token('get'), post('token')) === false ) { 
-            
-            redirect($path) . exit(); 
-        } 
-    }
-
     public function index($request) {
 
         $menus = Menu::allMenusButOrderedOnDate();
@@ -57,8 +49,6 @@ class MenuController extends Controller {
     }
 
     public function store($request) {
-
-        //$this->redirect("submit", '/admin/menus');
 
         $rules = new Rules(); 
 
@@ -116,7 +106,6 @@ class MenuController extends Controller {
 
         $id = $request['id'];
         $this->ifExists($id);
-        //$this->redirect("submit", "/admin/menus/$id/edit");
 
         $rules = new Rules();
         
@@ -148,7 +137,6 @@ class MenuController extends Controller {
 
         $id = $request['id'];
         $this->ifExists($id);
-        //$this->redirect("submit", "/admin/menus/$id/edit");
 
         Menu::update(['id' => $id], [
 
@@ -164,7 +152,6 @@ class MenuController extends Controller {
 
         $id = $request['id'];
         $this->ifExists($id);
-        //$this->redirect("submit", "/admin/menus/$id/edit");
 
         Menu::update(['id' => $id], [
 
@@ -177,8 +164,6 @@ class MenuController extends Controller {
     }
 
     public function recover($request) {
-
-        $this->redirect("recoverIds", "/admin/menus");
 
         $recoverIds = explode(',', $request['recoverIds']);
             
@@ -198,7 +183,6 @@ class MenuController extends Controller {
 
     public function delete($request) {
 
-        //$this->redirect("deleteIds", "/admin/menus");
         $deleteIds = explode(',', $request['deleteIds']);
 
         if(!empty($deleteIds) && !empty($deleteIds[0])) {

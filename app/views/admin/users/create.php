@@ -1,5 +1,4 @@
 <?php use validation\Errors; ?>
-<?php use core\Csrf; ?>
 <?php use core\Session; ?>
 
 <?php 
@@ -59,7 +58,6 @@
                     </div>
                     <div class="form-parts">
                         <button id="submit" name="submit" type="submit" class="display-none"></button>
-                        <input type="hidden" name="token" value="<?php Csrf::token('add');?>" />
                     </div>
                 </form>
             </div>

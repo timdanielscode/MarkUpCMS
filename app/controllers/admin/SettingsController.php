@@ -12,15 +12,7 @@ use core\Csrf;
 class SettingsController extends Controller {
 
     private $_data;
-
-    private function redirect($inputName, $path) {
-
-        if(submitted($inputName) === false || Csrf::validate(Csrf::token('get'), post('token')) === false ) { 
-            
-            redirect($path) . exit(); 
-        } 
-    }
-                
+         
     public function index() {    
 
         $this->_data['currentLoginSlug'] = WebsiteSlug::getData(['slug']);
@@ -30,8 +22,6 @@ class SettingsController extends Controller {
     }
 
     public function updateSlug($request) {
-
-        $this->redirect("submit", '/admin/settings');
 
         $rules = new Rules();
 

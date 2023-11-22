@@ -1,5 +1,4 @@
 <?php use validation\Errors; ?>
-<?php use core\Csrf; ?>
 <?php use core\Session; ?>
 <?php use core\Alert; ?>
 
@@ -38,7 +37,6 @@
                     </div>
                     <textarea name="content" type="content" id="code"><?php echo htmlentities($menu['content']); ?></textarea>
                     <button name="submit" id="submit" type="submit" class="display-none">Create</button>
-                    <input type="hidden" name="token" value="<?php Csrf::token('add'); ?>" />
                 </form>
             </div>
         </div>
@@ -65,7 +63,6 @@
                             <option value="unset">Unset</option>
                         </select>
                         <input type="submit" name="submit" class="button greenButton" value="Update"/>
-                        <input type="hidden" name="token" value="<?php Csrf::token('add'); ?>" />
                     </form>
                     <span class="text margin-t-50">Current ordering: </span>
                     <span class="data"><?php if(!empty($menu['ordering']) && $menu['ordering'] !== null) { echo $menu['ordering']; } else { echo 'Unset'; } ?></span>
@@ -73,7 +70,6 @@
                     <form action="/admin/menus/<?php echo $menu['id']; ?>/update-ordering" method="POST" class="updateNumberForm">
                         <input dir="rtl" type="number" name="ordering" min="1" max="99" value="1">
                         <input type="submit" name="submit" class="button blueButton" value="Update"/>
-                        <input type="hidden" name="token" value="<?php Csrf::token('add'); ?>" />
                     </form>
                 </div>
             </div>

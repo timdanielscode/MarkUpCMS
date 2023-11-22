@@ -231,7 +231,6 @@ class PostController extends Controller {
     public function exportCdns($request) {
 
         $id = $request['id'];
-        ///$this->redirect("submit", "/admin/posts/$id/edit");
         $this->unsetSessions(['slug', 'widget', 'category', 'css', 'js', 'meta']);
         Session::set('cdn', true);
 
@@ -247,7 +246,6 @@ class PostController extends Controller {
     public function addWidget($request) {
 
         $id = $request['id'];
-        //$this->redirect("submit", "/admin/posts/$id/edit");
         $this->ifExists($id);
         $this->unsetSessions(['slug', 'cdn', 'category', 'css', 'js', 'meta']);
         Session::set('widget', true);
@@ -274,7 +272,6 @@ class PostController extends Controller {
 
         $id = $request['id'];
         $this->ifExists($id);
-        //$this->redirect("submit", "/admin/posts/$id/edit");
         $this->unsetSessions(['slug', 'cdn', 'category', 'css', 'js', 'meta']);
         Session::set('widget', true);
 
@@ -294,7 +291,6 @@ class PostController extends Controller {
 
         $id = $request['id'];
         $this->ifExists($id);
-        //$this->redirect("submit", "/admin/posts/$id/edit");
         $this->unsetSessions(['slug', 'widget', 'cdn', 'css', 'js', 'meta']);
         Session::set('category', true);
 
@@ -357,7 +353,6 @@ class PostController extends Controller {
 
         $id = $request['id'];
         $this->ifExists($id);
-        //$this->redirect("submit", "/admin/posts/$id/edit");
         $this->unsetSessions(['slug', 'widget', 'cdn', 'category', 'css', 'meta']);
         Session::set('js', true);
 
@@ -374,7 +369,6 @@ class PostController extends Controller {
 
         $id = $request['id'];
         $this->ifExists($id);
-        //$this->redirect("submit", "/admin/posts/$id/edit");
         $this->unsetSessions(['slug', 'widget', 'cdn', 'category', 'css', 'meta']);
         Session::set('js', true);
 
@@ -391,7 +385,6 @@ class PostController extends Controller {
 
         $id = $request['id'];
         $this->ifExists($id);
-       // $this->redirect("submit", "/admin/posts/$id/edit");
         $this->unsetSessions(['slug', 'widget', 'cdn', 'category', 'js', 'meta']);
         Session::set('css', true);
 
@@ -408,7 +401,6 @@ class PostController extends Controller {
 
         $id = $request['id'];
         $this->ifExists($id);
-        //$this->redirect("submit", "/admin/posts/$id/edit");
         $this->unsetSessions(['slug', 'widget', 'cdn', 'category', 'js', 'meta']);
         Session::set('css', true);
 
@@ -425,7 +417,6 @@ class PostController extends Controller {
 
         $id = $request['id'];
         $this->ifExists($id);
-        //$this->redirect("submit", "/admin/posts/$id/edit");
         $this->unsetSessions(['widget', 'cdn', 'category', 'js', 'meta', 'css']);
         Session::set('slug', true);
 
@@ -465,7 +456,6 @@ class PostController extends Controller {
 
         $id = $request['id'];
         $this->ifExists($id);
-        //$this->redirect("submit", "/admin/posts/$id/edit");
         $this->unsetSessions(['slug', 'widget', 'cdn', 'category', 'css', 'js']);
         Session::set('meta', true);
 
@@ -497,7 +487,6 @@ class PostController extends Controller {
 
         $id = $request['id'];
         $this->ifExists($request['id']);
-        //$this->redirect("submit", "/admin/posts/$id/edit");
         $this->unsetSessions(['slug', 'widget', 'cdn', 'css', 'js', 'meta']);
         Session::set('category', true);
 
@@ -531,7 +520,6 @@ class PostController extends Controller {
     public function recover($request) {
 
         $id = $request['id'];
-        //$this->redirect("recoverIds", "/admin/posts");
         $recoverIds = explode(',', $request['recoverIds']);
                 
         foreach($recoverIds as $request['id'] ) {
@@ -551,7 +539,6 @@ class PostController extends Controller {
 
     public function delete($request) {
 
-       // $this->redirect("deleteIds", "/admin/posts");
         $deleteIds = explode(',', $request['deleteIds']);
 
         if(!empty($deleteIds) && !empty($deleteIds[0])) {

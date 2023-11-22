@@ -1,5 +1,4 @@
 <?php use validation\Errors; ?>
-<?php use core\Csrf; ?>
 <?php use core\Session; ?>
 <?php use validation\Get; ?>
 <?php use core\Alert; ?>
@@ -63,7 +62,6 @@
                                 <span><?php echo Errors::get($rules, 'P_folder'); ?></span>
                             </div>    
                         <?php } ?> 
-                        <input type="hidden" name="token" value="<?php Csrf::token('add'); ?>" />
                     </form>
                 <?php } ?>
                 <?php Alert::message('success'); ?>
@@ -140,7 +138,6 @@
                             <form action="/admin/media/create/delete?<?php echo "folder=" . $folder; ?>" method="POST" class="deleteForm display-none">
                                 <input id="selectedFiles" type="hidden" name="deleteIds" value=""/>
                                 <input type="submit" name="submitDelete" class="button redButton margin-r-10" value="Delete"/>
-                                <input type="hidden" name="token" value="<?php Csrf::token('add'); ?>" />
                             </form>
                             <a href="#" class="button read blueButton display-none-important">Read</a>
                             <a href="#" class="button close blueButton display-none-important">Close</a>
@@ -166,7 +163,6 @@
                                 </div>
                                 <div class="form-parts">
                                     <button name="submit" id="submit" type="submit" class="display-none <?php if(Session::get('user_role') === 'normal') { echo 'display-none-important'; } ?>">Upload</button>
-                                    <input type="hidden" name="token" value="<?php Csrf::token('add');?>" />
                                 </div>
                             </form>
                         

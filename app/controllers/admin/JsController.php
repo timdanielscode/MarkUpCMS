@@ -27,14 +27,6 @@ class JsController extends Controller {
         }
     }
 
-    private function redirect($inputName, $path) {
-
-        if(submitted($inputName) === false || Csrf::validate(Csrf::token('get'), post('token')) === false ) { 
-            
-            redirect($path) . exit(); 
-        } 
-    }
-
     public function index($request) {
 
         $js = Js::allJsButOrderedOnDate();
@@ -71,8 +63,6 @@ class JsController extends Controller {
     }
 
     public function store($request) {
-
-        //$this->redirect("submit", '/admin/js');
 
         $rules = new Rules();
 
@@ -143,7 +133,6 @@ class JsController extends Controller {
 
         $id = $request['id'];
         $this->ifExists($id);
-        //$this->redirect("submit", "/admin/js/$id/edit");
                 
         $filename = str_replace(" ", "-", $request["filename"]);
         $currentJsFileName = Js::getColumns(['file_name'], $id);
@@ -186,7 +175,6 @@ class JsController extends Controller {
 
         $id = $request['id'];
         $this->ifExists($id);
-        //$this->redirect("submit", "/admin/js/$id/edit");
             
         if(!empty($request['pages']) && $request['pages'] !== null) {
 
@@ -208,7 +196,6 @@ class JsController extends Controller {
 
         $id = $request['id'];
         $this->ifExists($request['id']);
-        //$this->redirect("submit", "/admin/js/$id/edit");
 
         if(!empty($request['pages']) && $request['pages'] !== null) {
 
@@ -226,7 +213,6 @@ class JsController extends Controller {
 
         $id = $request['id'];
         $this->ifExists($request['id']);
-        //$this->redirect("submit", "/admin/js/$id/edit");
 
         JsPage::delete('js_id', $id);
 
@@ -250,7 +236,6 @@ class JsController extends Controller {
 
         $id = $request['id'];
         $this->ifExists($request['id']);
-       //$this->redirect("submit", "/admin/js/$id/edit");
 
         JsPage::delete('js_id', $id);
 
@@ -259,8 +244,6 @@ class JsController extends Controller {
     }
 
     public function recover($request) {
-
-        //$this->redirect("recoverIds", "/admin/js");
 
         $recoverIds = explode(',', $request['recoverIds']);
             
@@ -279,8 +262,6 @@ class JsController extends Controller {
     }
 
     public function delete($request) {
-
-       // $this->redirect("deleteIds", "/admin/js");
 
         $deleteIds = explode(',', $request['deleteIds']);
 

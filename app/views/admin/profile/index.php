@@ -1,4 +1,3 @@
-<?php use core\Csrf; ?>
 <?php use core\Session; ?>
 <?php use validation\Errors; ?>
 <?php use core\Alert; ?>
@@ -40,7 +39,6 @@
                     <div class="form-parts">
                         <input type="hidden" name="id" value="<?php echo $user["id"]; ?>"> 
                         <button name="submit" type="submit" class="display-none" id="submit"></button>
-                        <input type="hidden" name="token" value="<?php echo Csrf::token('add');?>" />
                     </div>
                 </form>
                 </div>
@@ -57,7 +55,6 @@
                         <form action="/admin/profile/<?php echo Session::get('username'); ?>/delete" method="POST" class="deleteAccountForm">
                             <input type="hidden" name="id" value="<?php echo $user["id"]; ?>"> 
                             <input type="submit" name="delete" class="button lightButton" value="Delete account" onclick="return confirm('Are you sure?');"/>
-                            <input type="hidden" name="token" value="<?php echo Csrf::token('add');?>" />
                         </form>
                     </div>
                     <span class="text">Username:</span>
@@ -80,7 +77,6 @@
                             <div class="form-parts">
                                 <input name="submit" type="submit" id="submit" class="button darkBlueButton margin-t-10" value="Update" onclick="return confirm('Are you sure?');">
                                 <input type="hidden" name="id" value="<?php echo $user['id']; ?>"/>
-                                <input type="hidden" name="token" value="<?php echo Csrf::token('add');?>" />
                             </div>
                         </form>
                     <?php } ?>

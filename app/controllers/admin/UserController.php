@@ -24,14 +24,6 @@ class UserController extends Controller {
         }
     }
 
-    private function redirect($inputName, $path) {
-
-        if(submitted($inputName) === false || Csrf::validate(Csrf::token('get'), post('token')) === false ) { 
-            
-            redirect($path) . exit(); 
-        } 
-    }
-
     public function index() {
 
         $this->_data['allUsers'] = $this->getUsers(Get::validate([get('search')]));
@@ -61,8 +53,6 @@ class UserController extends Controller {
     }
 
     public function store($request) {
-
-        $this->redirect("submit", '/admin/users');
 
         $rules = new Rules();
             
@@ -118,7 +108,6 @@ class UserController extends Controller {
 
         $id = $request['id'];
         $this->ifExists($id);
-        $this->redirect("submit", "/admin/users");
 
         $rules = new Rules();
 
@@ -146,7 +135,6 @@ class UserController extends Controller {
 
         $id = $request['id'];
         $this->ifExists($id);
-        $this->redirect("submit", "/admin/users");
 
         UserRole::update(['user_id' => $id], [
 
@@ -159,8 +147,6 @@ class UserController extends Controller {
     }
 
     public function recover($request) {
-
-        $this->redirect("recoverIds", "/admin/users");
 
         $recoverIds = explode(',', $request['recoverIds']);
             
@@ -179,8 +165,6 @@ class UserController extends Controller {
     }
 
     public function delete($request) {
-
-        $this->redirect("deleteIds", "/admin/users");
 
         $deleteIds = explode(',', $request['deleteIds']);
 
