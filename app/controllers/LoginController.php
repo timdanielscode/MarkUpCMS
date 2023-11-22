@@ -19,11 +19,11 @@
         return $this->view("login")->data($this->_data);     
     }
                   
-    public function authenticateUsers() {    
+    public function authenticateUsers($request) {    
                            
         $rules = new Rules();  
-                  
-        if($rules->loginRules()->validated()) {
+  
+        if($rules->loginRules($request['username'], $request['password'])->validated()) {
   
             $this->authentication();
   

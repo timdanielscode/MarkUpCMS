@@ -14,7 +14,7 @@ use core\http\Response;
 
 class MediaController extends Controller {
 
-    private $_count, $_data;
+    private $_data, $_search = '',$_type = false, $_folder = 'website/assets';
 
     private function ifExists($id) {
 
@@ -24,83 +24,74 @@ class MediaController extends Controller {
         }
     }
 
-    private function redirect($inputName, $path) {
-
-    //    if(submitted($inputName) === false || Csrf::validate(Csrf::token('get'), post('token')) === false ) { 
-            
-    //        redirect($path) . exit(); 
-    //    } 
-    }
-
-    private function getFolderPath($request) {
-
-        if(empty($request['folder']) === true) {
-
-            return 'website/assets';
-        } 
-
-        return Get::validate($request['folder']);
-    }
-
-    private function getSearch($request) {
-
-        if(!empty($request['search']) === true) {
-
-            return Get::validate($request['search']);
-        }
-
-        return '';
-    }
- 
     public function index($request) {
 
-        $this->_data['search'] = $this->getSearch($request);
-        $this->_data["allMedia"] = $this->getMedia($request);
-        $this->_data['count'] = $this->_count;
+        $media = Media::allMediaButOrdered();
+
+        if(!empty($request['search'] ) ) {
+
+            $this->_search = Get::validate($request['search']);
+            $media = Media::mediaFilesOnSearch($this->_search);
+        }
+
+        $this->_data['search'] = $this->_search;
+        $this->_data["allMedia"] = Pagination::get($media, 8);
+        $this->_data['count'] = count($media);
         $this->_data['numberOfPages'] = Pagination::getPageNumbers();
 
         return $this->view('admin/media/index')->data($this->_data);
     }
 
-    private function getMedia($request) {
+    private function getFolder($request) {
 
-        $media = Media::allMediaButOrdered();
-    
-        if(!empty($request['search'])) {
-    
-            $media = Media::mediaFilesOnSearch(Get::validate($request['search']));
+        if(!empty($request['folder']) ) {
+
+            $this->_folder = Get::validate($request['folder']);
         }
-    
-        $this->_count = count($media);
-        return Pagination::get($media, 8);
+
+        return $this->_folder;
     }
 
-    private function getFolders($request) {
+    private function getSearch($request) {
 
-        if(!empty($request['folder'])) {
+        if(!empty($request['search'])) {
 
-            glob($this->getFolderPath($request) . '/*', GLOB_ONLYDIR);
+            $this->_search = Get::validate($request['search']);
         }
 
-        return glob($this->getFolderPath($request) . '/*', GLOB_ONLYDIR);
+        return $this->_search;
+    }
+
+    private function getTypes($request) {
+
+        if(!empty($request['type']) ) {
+
+            $this->_type = true;
+        }
+
+        return $this->_type;
     }
 
     public function create($request) {
 
-        $folders = $this->getFolders($request);
-        $files = Media::where(['media_folder' => $this->getFolderPath($request)]);
-        
-        if(!empty($request['search'])) {
+        $folders = glob($this->getFolder($request) . '/*', GLOB_ONLYDIR);
+        $files = Media::where(['media_folder' => $this->getFolder($request)]);
 
-            $files = Media::mediaFilesOnSearch(Get::validate($request['search']));
+        if(!empty($request['search'] ) ) {
 
-        } else if(!empty($request['type']) ) {
+            $files = Media::mediaFilesOnSearch($this->getSearch($request));
+        }
+
+        if(!empty($request['type']) ) {
 
             $files = $this->getOnType($request['type']);
         }
 
+        $this->_data['search'] = $this->getSearch($request);
+        $this->_data['folder'] = $this->getFolder($request);
         $this->_data['folders'] = $folders;
         $this->_data['files'] = $files;
+        $this->_data['types'] = $this->getTypes($request);
         $this->_data["rules"] = [];
 
         return $this->view('admin/media/create')->data($this->_data);
@@ -128,7 +119,7 @@ class MediaController extends Controller {
 
     public function store($request) {
 
-        $this->redirect("submit", '/admin/media');
+
 
         $filenames = $_FILES['file']['name'];
         $tmps = $_FILES['file']['tmp_name'];
@@ -142,12 +133,12 @@ class MediaController extends Controller {
                       
             foreach($filenames as $key => $filename) {
                    
-                move_uploaded_file($tmps[$key], $this->getFolderPath($request) . '/' . $filename);
+                move_uploaded_file($tmps[$key], $this->getFolder($request) . '/' . $filename);
 
                 Media::insert([
             
                     'media_filename'    => $filename,
-                    'media_folder'      => $this->getFolderPath($request),
+                    'media_folder'      => $this->getFolder($request),
                     'media_filetype'    => $types[$key],
                     'media_filesize'    => $sizes[$key],
                     'media_description' => $request['media_description'],
@@ -157,11 +148,12 @@ class MediaController extends Controller {
             }
                
             Session::set('success', 'You have successfully uploaded new file(s)!');            
-            redirect('/admin/media/create?folder=' . $this->getFolderPath($request));
+            redirect('/admin/media/create?folder=' . $this->getFolder($request));
         } else {
 
-            $this->_data['folders'] = glob($this->getFolderPath($request) . '/*', GLOB_ONLYDIR);
-            $this->_data['files'] = Media::where(['media_folder' => $this->getFolderPath($request)]);
+            $this->_data['types'] = $this->getTypes($request);
+            $this->_data['folders'] = glob($this->getFolder($request) . '/*', GLOB_ONLYDIR);
+            $this->_data['files'] = Media::where(['media_folder' => $this->getFolder($request)]);
             $this->_data['rules'] = $rules->errors;
 
             return $this->view('admin/media/create')->data($this->_data);
@@ -170,26 +162,23 @@ class MediaController extends Controller {
 
     public function folder($request) {
 
-        if(file_exists($this->getFolderPath($request) . '/' . $request['P_folder']) === true) {
+        if(file_exists($this->getFolder($request) . '/' . $request['P_folder']) === true) {
 
             $this->deleteFolder($request);
         } else {
             $this->addFolder($request);
         }   
   
-        redirect('/admin/media/create?folder=' . $this->getFolderPath($request));
+        redirect('/admin/media/create?folder=' . $this->getFolder($request));
     }
 
     private function deleteFolder($request) {
 
-        $this->redirect("submitFolder", '/admin/media');
         Session::set('success', 'You have successfully removed the folder!');
-        rmdir($this->getFolderPath($request) . '/' . $request['P_folder']);
+        rmdir($this->getFolder($request) . '/' . $request['P_folder']);
     }
 
     private function addFolder($request) {
-
-        $this->redirect("submitFolder", '/admin/media/create');
 
         $rules = new Rules();
 
@@ -197,12 +186,12 @@ class MediaController extends Controller {
 
             $this->insertFolder($request['P_folder']);
             Session::set('success', 'You have successfully added the folder!');
-            mkdir($this->getFolderPath($request) . '/' . $request['P_folder'], 0777, true); 
+            mkdir($this->getFolder($request) . '/' . $request['P_folder'], 0777, true); 
 
         } else {
 
-            $this->_data['folders'] = glob($this->getFolderPath($request) . '/*', GLOB_ONLYDIR);
-            $this->_data['files'] = Media::where(['media_folder' => $this->getFolderPath($request)]);
+            $this->_data['folders'] = glob($this->getFolder($request) . '/*', GLOB_ONLYDIR);
+            $this->_data['files'] = Media::where(['media_folder' => $this->getFolder($request)]);
             $this->_data['rules'] = $rules->errors;
 
             return $this->view('admin/media/create')->data($this->_data);
@@ -343,28 +332,24 @@ class MediaController extends Controller {
 
     public function delete($request) {
 
-        $this->redirect("deleteIds", '/admin/media');
-        $this->deleteFiles($request);
-
+        $this->deleteFiles($request['deleteIds']);
         redirect("/admin/media");
     }
 
     public function deleteCreate($request) {
 
-        $this->redirect("deleteIds", '/admin/media');
-        $this->deleteFiles($request);
-
-        redirect('/admin/media/create?folder=' . $this->getFolderPath($request));
+        $this->deleteFiles($request['deleteIds']);
+        redirect('/admin/media/create?folder=' . Media::get(substr($request['deleteIds'], 0, strpos($request['deleteIds'], ",")))['media_folder']);
     }
 
-    private function deleteFiles($request) {
+    private function deleteFiles($ids) {
 
-        $ids = explode(',', $request['deleteIds']);
+        $ids = explode(',', $ids);
 
-        foreach($ids as $id) {
+        foreach(array_filter($ids) as $id) {
 
-            $file = Media::get($id);
-            unlink($this->getFolderPath($request) . '/' . $file['media_filename']);
+            $file = Media::whereColumns(['media_folder', 'media_filename'], ['id' => $id]);
+            unlink($file[0]['media_folder'] . '/' . $file[0]['media_filename']);
             Media::delete('id', $id);
         }
 

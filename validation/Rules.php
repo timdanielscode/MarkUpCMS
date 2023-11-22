@@ -68,12 +68,12 @@ class Rules {
         return $this;
       }
 
-    public function loginRules() {    
+    public function loginRules($username, $password) {    
                     
         $validation = new Validate();
                   
-        $validation->input("username")->as("Username")->rules(["required" => true, "min" => "6", "max" => "30", "special" => true]);       
-        $validation->input("password")->as("Password")->rules(["required" => true, "min" => "2", "max" => "200"]);
+        $validation->input(['username' => $username])->as("Username")->rules(["required" => true, "min" => "6", "max" => "30", "special" => true]);       
+        $validation->input(['password' => $password])->as("Password")->rules(["required" => true, "min" => "2", "max" => "200"]);
                    
         $this->errors = $validation->errors;
         return $this;
