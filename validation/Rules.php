@@ -68,12 +68,13 @@ class Rules {
         return $this;
       }
 
-    public function loginRules($username, $password) {    
+    public function loginRules($username, $password, $addedToken, $csrf) {    
                     
         $validation = new Validate();
                   
         $validation->input(['username' => $username])->as("Username")->rules(["required" => true, "min" => "6", "max" => "30", "special" => true]);       
         $validation->input(['password' => $password])->as("Password")->rules(["required" => true, "min" => "2", "max" => "200"]);
+        $validation->input(['token' => $addedToken])->as('Token')->rules(['csrf' => $csrf]);
                    
         $this->errors = $validation->errors;
         return $this;
@@ -111,7 +112,7 @@ class Rules {
         return $this;
     }
 
-    public function update_post($title, $uniqueTitle) {
+    public function update_post($title, $addedToken, $csrf, $uniqueTitle) {
         
         $validation = new Validate();
         

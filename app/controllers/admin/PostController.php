@@ -32,14 +32,6 @@ class PostController extends Controller {
         }
     }
 
-    private function redirect($inputName, $path) {
-
-        //if(submitted($inputName) === false || Csrf::validate(Csrf::token('get'), post('token')) === false ) { 
-            
-        //    redirect($path) . exit(); 
-        //} 
-    }
-
     public function index($request) {
 
         $posts = Post::allPostsWithCategories();
@@ -66,9 +58,6 @@ class PostController extends Controller {
     }
 
     public function store($request) {
-
-
-        //$this->redirect("submit", '/admin/posts/create');
 
         $rules = new Rules();
     
@@ -131,7 +120,6 @@ class PostController extends Controller {
         $id = $request['id'];
         $this->unsetSessions(['cdn', 'widget', 'category', 'css', 'js', 'meta']);
         $this->ifExists($id);
-        //$this->redirect("submit", "/admin/posts/$id/edit");
 
         $rules = new Rules();
 
@@ -223,22 +211,21 @@ class PostController extends Controller {
 
         $id = $request['id'];
         $this->unsetSessions(['slug', 'widget', 'category', 'css', 'js', 'meta']);
-        Session::set('cdn', true);
+        Session::set('cdn', true); 
 
-        //if(submitted("submit") === true && Csrf::validate(Csrf::token('get'), post('token')) === true ) {
+        $rules = new Rules();
 
-            foreach($request['cdns'] as $cdnId) {
+        foreach($request['cdns'] as $cdnId) {
 
-                CdnPage::insert([
+            CdnPage::insert([
 
-                    'page_id' => $id,
-                    'cdn_id' => $cdnId
-                ]);
-            }
+                'page_id' => $id,
+                'cdn_id' => $cdnId
+            ]);
+        }
 
-            Session::set('success', 'You have successfully imported the cdn(s) on this page!'); 
-            redirect("/admin/posts/$id/edit");
-       // }
+        Session::set('success', 'You have successfully imported the cdn(s) on this page!'); 
+        redirect("/admin/posts/$id/edit");
     }
 
     public function exportCdns($request) {

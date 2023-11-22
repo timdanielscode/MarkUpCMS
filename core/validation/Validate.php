@@ -7,6 +7,8 @@
 
 namespace core\validation;
 
+use core\Session;
+
 class Validate {
 
     private $_name, $_value, $_alias;
@@ -78,9 +80,18 @@ class Validate {
                             $this->message($this->_name, "$this->_alias can not be more than $value characters.");
                         }
                     break;
+                    case 'csrf':
+
+                        if($this->_value !== $value) {
+
+                            redirect('/') . exit();
+                        }
+
+                        Session::delete('csrf');
+                    break;
                     case 'match':
-                        $compare_value = post($value);
-                        if($compare_value !== $this->_value) {
+
+                        if($this->_value !== $value) {
 
                             $this->message($this->_name, "$this->_alias does not match.");
                         }

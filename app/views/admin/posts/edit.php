@@ -42,7 +42,7 @@
                     </div>
                     <textarea name="body" id="code"><?php echo htmlentities($data['body']); ?></textarea>
                     <button name="submit" id="submit" type="submit" class="hiddenButton" value="submit">Update</button>
-                    <input type="hidden" name="token" value="<?php Csrf::token('add'); ?>" />
+                    <input type="hidden" name="token" value="<?php Csrf::token(); ?>" />
                 </form>
             </div>
         </div>
@@ -86,7 +86,7 @@
                             </div>
                             <input type="hidden" name="slug" value="<?php echo $data['slug']; ?>">
                             <input class="button greenButton margin-t-10" type="submit" name="submit" value="Update"/>
-                            <input type="hidden" name="token" value="<?php Csrf::token('add'); ?>" />
+                            <input type="hidden" name="token" value="<?php Csrf::token(); ?>" />
                         </form>
                     </div>
                     <div id="cdn" class="<?php if(Session::exists('cdn') === false ) { echo 'display-none'; } ?>">
@@ -99,7 +99,7 @@
                                 </option>
                                 <?php } ?>
                                 <input type="submit" name="submit" value="Export" class="button blueButton margin-t-20"/>
-                                <input type="hidden" name="token" value="<?php Csrf::token('add'); ?>" />
+                                <input type="hidden" name="token" value="<?php Csrf::token(); ?>" />
                             </select>
                         </form>
                         <form action="/admin/posts/<?php echo $data['id']; ?>/import-cdns" method="POST" class="cdnForm margin-t-20">
@@ -111,7 +111,7 @@
                                 </option>
                                 <?php } ?>
                                 <input type="submit" name="submit" value="Import" class="button darkBlueButton margin-t-20"/>
-                                <input type="hidden" name="token" value="<?php Csrf::token('add'); ?>" />
+                                <input type="hidden" name="token" value="<?php Csrf::token(); ?>" />
                             </select>
                         </form>
                     </div>
@@ -127,7 +127,7 @@
                                 <?php } ?>
                             </select>
                             <input class="button blueButton margin-t-20" type="submit" name="submit" value="Make it inapplicable"/>
-                            <input type="hidden" name="token" value="<?php Csrf::token('add'); ?>" />
+                            <input type="hidden" name="token" value="<?php Csrf::token(); ?>" />
                         </form>
                         <form class="widgetForm margin-t-20" action="/admin/posts/<?php echo $data['id']; ?>/add-widget" method="POST">
                             <label>Other widgets: </label>
@@ -139,7 +139,7 @@
                                 <?php } ?>
                             </select>
                             <input class="button darkBlueButton margin-t-20" type="submit" name="submit" value="Make it applicable"/>
-                            <input type="hidden" name="token" value="<?php Csrf::token('add'); ?>" />
+                            <input type="hidden" name="token" value="<?php Csrf::token(); ?>" />
                         </form>
                     </div>
                     <div id="category" class="<?php if(Session::exists('category') === false ) { echo 'display-none'; } ?>">
@@ -159,7 +159,7 @@
                                     <div class="AssingCategoryContainer">
                                         <input class="button blueButton margin-t-20" type="submit" name="submit" value="Assign"/>
                                     </div> 
-                                    <input type="hidden" name="token" value="<?php Csrf::token('add'); ?>" />
+                                    <input type="hidden" name="token" value="<?php Csrf::token(); ?>" />
                                 </form>
                             <?php } else { ?>
                                 <span class="categoryTitle"><?php echo $data['category']['title']; ?></span>
@@ -168,7 +168,7 @@
                                         <?php echo Errors::get($rules, 'submit'); ?>
                                     </div>   
                                     <input class="button blueButton margin-t-10" type="submit" name="submit" value="Detach" onclick="return confirm('Are you sure?');"/>
-                                    <input type="hidden" name="token" value="<?php Csrf::token('add'); ?>" />
+                                    <input type="hidden" name="token" value="<?php Csrf::token(); ?>" />
                                 </form>
                         <?php } ?>
                     </div>
@@ -201,7 +201,7 @@
                             <?php } ?>  
                         </div>
                         <input type="submit" name="submit" class="button blueButton margin-t-10" value="Update"/>
-                        <input type="hidden" name="token" value="<?php Csrf::token('add'); ?>" />
+                        <input type="hidden" name="token" value="<?php Csrf::token(); ?>" />
                     </form>
                     <form id="linkedCssFiles" class="linkedCssFilesForm <?php if(Session::exists('css') === false ) { echo 'display-none'; } ?>" action="/admin/posts/<?php echo $data['id']; ?>/unlink-css" method="POST">
                         <label for="linkedFiles">Linked css files:</label>
@@ -213,7 +213,7 @@
                             <?php } ?>
                         </select>
                         <input type="submit" name="submit" class="button blueButton margin-y-20" value="Unlink"/>
-                        <input type="hidden" name="token" value="<?php Csrf::token('add'); ?>" />
+                        <input type="hidden" name="token" value="<?php Csrf::token(); ?>" />
                     </form>
                     <form id="cssFiles" class="cssFilesForm <?php if(Session::exists('css') === false ) { echo 'display-none'; } ?>" action="/admin/posts/<?php echo $data['id']; ?>/link-css" method="POST">
                         <label for="cssFilesSelect">Other css files:</label>
@@ -224,7 +224,7 @@
                                 </option>
                             <?php } ?>
                         </select>
-                        <input type="hidden" name="token" value="<?php Csrf::token('add'); ?>" />
+                        <input type="hidden" name="token" value="<?php Csrf::token(); ?>" />
                         <input type="submit" class="button darkBlueButton margin-t-20" name="submit" value="Link"/>
                     </form>
                     <form id="linkedJsFiles" class="linkedJsFilesForm margin-t-50 <?php if(Session::exists('js') === false ) { echo 'display-none'; } ?>" action="/admin/posts/<?php echo $data['id'] ?>/remove-js" method="POST">
@@ -236,7 +236,7 @@
                                 </option>
                             <?php } ?>
                         </select>
-                        <input type="hidden" name="token" value="<?php Csrf::token('add'); ?>" />
+                        <input type="hidden" name="token" value="<?php Csrf::token(); ?>" />
                         <input type="submit" name="submit" class="button blueButton margin-t-20" value="Exclude"/>
                     </form>
                     <form id="jsFiles" class="jsFilesForm margin-t-20 <?php if(Session::exists('js') === false ) { echo 'display-none'; } ?>" action="/admin/posts/<?php echo $data['id']; ?>/include-js" method="POST">
@@ -248,7 +248,7 @@
                                     </option>
                                 <?php } ?>
                             </select>
-                        <input type="hidden" name="token" value="<?php Csrf::token('add'); ?>" />
+                        <input type="hidden" name="token" value="<?php Csrf::token(); ?>" />
                         <input type="submit" name="submit" class="button darkBlueButton margin-t-20" value="Include"/>
                     </form> 
                 </div>

@@ -23,7 +23,7 @@
                            
         $rules = new Rules();  
   
-        if($rules->loginRules($request['username'], $request['password'])->validated()) {
+        if($rules->loginRules($request['username'], $request['password'], $request['token'], Session::get('csrf'),)->validated()) {
   
             $this->authentication();
   

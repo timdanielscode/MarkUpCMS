@@ -31,7 +31,7 @@
     </div>                
     <div class="form-parts">                
       <button type="submit" name="submit">Sign in</button>                 
-      <input type="hidden" name="token" value="<?php Csrf::token("add"); ?>"/>
+      <input type="hidden" name="token" value="<?php Csrf::token(); ?>"/>
     </div>                
   </form>    
 </div>
