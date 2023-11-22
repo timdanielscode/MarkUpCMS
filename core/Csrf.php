@@ -22,4 +22,12 @@ class Csrf {
 
         echo Session::get('csrf');
     }
+
+    /**
+     * Getting token
+     */
+    public static function get() {
+
+        return Session::get('csrf');
+    }
 }
