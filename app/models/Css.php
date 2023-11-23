@@ -37,7 +37,7 @@ class Css extends Model {
 
     public static function allCssButOrderedOnDate() {
 
-        return DB::try()->select('id, file_name, extension, author, has_content, removed, updated_at, created_at')->from(self::$_table)->where('removed', '=', 0)->order('created_at')->desc()->fetch();
+        return DB::try()->select('id, file_name, extension, author, has_content, removed, updated_at, created_at')->from(self::$_table)->where('removed', '=', 0)->order('updated_at')->desc()->fetch();
     }
 
     public static function cssFilesOnSearch($searchValue) {

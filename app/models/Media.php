@@ -16,12 +16,12 @@ class Media extends Model {
 
     public static function allMediaButOrdered() {
 
-        return DB::try()->all(self::$_table)->order('created_at')->desc()->fetch();
+        return DB::try()->all(self::$_table)->order('updated_at')->desc()->fetch();
     }
     
     public static function mediaFilesOnSearch($searchValue) {
 
-        return DB::try()->all(self::$_table)->where('updated_at', 'LIKE', '%'.$searchValue.'%')->or('media_filetype', 'LIKE', '%'.$searchValue.'%')->or('media_filename', 'LIKE', '%'.$searchValue.'%')->or('media_description', 'LIKE', '%'.$searchValue.'%')->or('media_filesize', 'LIKE', '%'.$searchValue.'%')->order('created_at')->desc()->fetch();
+        return DB::try()->all(self::$_table)->where('media_filetype', 'LIKE', '%'.$searchValue.'%')->or('media_filename', 'LIKE', '%'.$searchValue.'%')->or('media_description', 'LIKE', '%'.$searchValue.'%')->order('created_at')->desc()->fetch();
     }
 
     public static function getAll($columns) {

@@ -17,12 +17,12 @@ class Category extends Model {
 
     public static function allCategoriesButOrdered() {
 
-        return DB::try()->all(self::$_table)->order('created_at')->desc()->fetch();
+        return DB::try()->all(self::$_table)->order('updated_at')->desc()->fetch();
     }
 
     public static function categoriesFilesOnSearch($searchValue) {
 
-        return DB::try()->all(self::$_table)->where('title', 'LIKE', '%'.$searchValue.'%')->order('created_at')->desc()->fetch();
+        return DB::try()->all(self::$_table)->where('title', 'LIKE', '%'.$searchValue.'%')->or('slug', 'LIKE', '%'.$searchValue.'%')->or('author', 'LIKE', '%'.$searchValue.'%')->order('created_at')->desc()->fetch();
     }
 
     public function getLastRegisteredCategoryId() {

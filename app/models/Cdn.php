@@ -16,7 +16,7 @@ class Cdn extends Model {
 
     public static function allCdnsButOrderedByDate() {
 
-        return DB::try()->select('id, title, content, has_content, removed, author, created_at, updated_at')->from(self::$_table)->where('removed', '=', 0)->order('created_at')->desc()->fetch();
+        return DB::try()->select('id, title, content, has_content, removed, author, created_at, updated_at')->from(self::$_table)->where('removed', '=', 0)->order('updated_at')->desc()->fetch();
     }
 
     public static function getContent($postId) {

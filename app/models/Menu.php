@@ -31,10 +31,10 @@ class Menu extends Model {
 
             if($searchValue == 'Thrashcan') {
                 
-                return DB::try()->select('id, title, has_content, position, ordering, author, removed, updated_at, created_at')->from(self::$_table)->where('removed', '=', 1)->order('updated_at')->desc()->fetch();
+                return DB::try()->select('id, title, has_content, position, ordering, author, removed, updated_at, created_at')->from(self::$_table)->where('removed', '=', 1)->order('created_at')->desc()->fetch();
             }
 
-            return DB::try()->select('id, title, has_content, position, ordering, author, removed, updated_at, created_at')->from(self::$_table)->where('removed', '=', 0)->and('title', 'LIKE', '%'.$searchValue.'%')->or('author', 'LIKE', '%'.$searchValue.'%')->and('removed', '=', 0)->or('ordering', 'LIKE', '%'.$searchValue.'%')->and('removed', '=', 0)->or('position', 'LIKE', '%'.$searchValue.'%')->and('removed', '=', 0)->order('updated_at')->desc()->fetch();
+            return DB::try()->select('id, title, has_content, position, ordering, author, removed, updated_at, created_at')->from(self::$_table)->where('removed', '=', 0)->and('title', 'LIKE', '%'.$searchValue.'%')->or('author', 'LIKE', '%'.$searchValue.'%')->and('removed', '=', 0)->or('ordering', 'LIKE', '%'.$searchValue.'%')->and('removed', '=', 0)->or('position', 'LIKE', '%'.$searchValue.'%')->and('removed', '=', 0)->order('created_at')->desc()->fetch();
         }
     }
 

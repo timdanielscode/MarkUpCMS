@@ -5,7 +5,7 @@ use database\DB;
 use core\Session;
 use core\http\Middleware;
 
-Middleware::route('hasNotDBConn', function() { 
+/*Middleware::route('hasNotDBConn', function() { 
 
     new Route(['GET' => '/'], ['InstallationController' => 'databaseSetup']);
     new Route(['POST' => '/'], ['InstallationController' => 'createConnection']);
@@ -28,7 +28,7 @@ Middleware::route('hasDBConn', function() {
             new Route(['GET' => $postPath['slug']], ['RenderPageController' => 'render']);
         }
     } 
-});
+});*/
 
 Middleware::route('notLoggedIn', function() { 
 
