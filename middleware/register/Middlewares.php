@@ -15,14 +15,15 @@ class Middlewares {
 
     public $middlewares = [
 
-        "Installation" => "InstallationMiddleware"
     ];
 
     public $routeMiddlewares = [
 
         "login"     =>      "LoginMiddleware",
         "notLoggedIn"   =>      "NoLoginMiddleware",
-        "auth"      =>      "AuthMiddleware"
+        "auth"      =>      "AuthMiddleware",
+        "user"  => "UserMiddleware",
+        "hasNotDBConn"  => "HasNotDBConnectionMiddleware"
     ];
 }
 

@@ -2,17 +2,21 @@
                 
 namespace middleware;
                 
+use core\Session; 
 use database\DB;
 
 class UserMiddleware {
                 
     public function __construct($run) {   
 
-        $users = DB::try()->select("*")->from("users")->fetch();
+        if(file_exists("../config/database/config.ini") === true) {
 
-        if(empty($users) ) {
+            $users = DB::try()->select("*")->from("users")->fetch();
 
-           return $run();
-        } 
+            if(empty($users) ) {
+    
+                return $run();
+            }
+        }
     }          
 }  

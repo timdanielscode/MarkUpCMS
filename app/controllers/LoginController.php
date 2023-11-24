@@ -26,6 +26,7 @@
         if($rules->loginRules($request['username'], $request['password'], $request['token'], Csrf::get())->validated()) {
   
             $this->authentication();
+            redirect('/admin/dashboard');
   
         } else {
               

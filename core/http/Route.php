@@ -177,9 +177,9 @@ class Route {
     
         if(!empty($this->_uriRouteKeyValue) && $this->_uriRouteKeyValue !== null) {
 
-            return $instance->$method(array_merge($this->_request->get(), [$this->_routeKeyValue => $this->_uriRouteKeyValue]));
+            return $instance->$method(array_merge($this->_request->get(), [$this->_routeKeyValue => $this->_uriRouteKeyValue])) . exit();
         } 
 
-        return $instance->$method($this->_request->get());
+        return $instance->$method($this->_request->get()) . exit();
     }
 }

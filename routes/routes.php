@@ -5,6 +5,18 @@ use database\DB;
 use core\Session;
 use core\http\Middleware;
 
+Middleware::route('hasNotDBConn', function() { 
+
+    new Route(['GET' => '/'], ['InstallationController' => 'databaseSetup']);
+    new Route(['POST' => '/'], ['InstallationController' => 'createConnection']);
+});
+
+Middleware::route('user', function() { 
+
+    new Route(['GET' => '/'], ['InstallationController' => 'createUser']);
+    new Route(['POST' => '/'], ['InstallationController' => 'storeUser']);
+});
+
 $postPaths = DB::try()->select('slug')->from('pages')->fetch();
 
 if(!empty($postPaths) && $postPaths !== null) {
