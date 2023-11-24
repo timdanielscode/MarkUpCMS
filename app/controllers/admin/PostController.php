@@ -186,6 +186,7 @@ class PostController extends Controller {
         }
 
         $this->_data['data']['postSlug'] = $postSlug;
+        $this->_data['data']['body'] = htmlspecialchars_decode($this->_data['data']['body']);
         $this->_data['data']['linkedCssFiles'] = Post::getCssIdFilenameExtension($id);
         $this->_data['data']['notLinkedCssFiles'] = Post::getNotCssIdFilenameExtension(Post::getCssIdFilenameExtension($id));
         $this->_data['data']['linkedJsFiles'] = Post::getJsIdFilenameExtension($id);
