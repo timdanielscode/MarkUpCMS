@@ -21,7 +21,7 @@ class CdnController extends Controller {
 
         if(empty(Cdn::ifRowExists($id)) ) {
 
-            return Response::statusCode(404)->view("/404/404") . exit();
+            return Response::statusCode(404)->view("/404/404")->data() . exit();
         }
     }
 

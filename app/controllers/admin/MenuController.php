@@ -19,7 +19,7 @@ class MenuController extends Controller {
 
         if(empty(Menu::ifRowExists($id)) ) {
 
-            return Response::statusCode(404)->view("/404/404") . exit();
+            return Response::statusCode(404)->view("/404/404")->data() . exit();
         }
     }
 
@@ -93,8 +93,6 @@ class MenuController extends Controller {
     public function edit($request) {
 
         $this->ifExists($request['id']);
-
-        //if($menu['removed'] === 1) { return Response::statusCode(404)->view("/404/404") . exit(); }
 
         $this->_data['menu'] = Menu::get($request['id']);
         $this->_data['rules'] = [];

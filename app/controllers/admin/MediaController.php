@@ -20,7 +20,7 @@ class MediaController extends Controller {
 
         if(empty(Media::ifRowExists($id)) ) {
 
-            return Response::statusCode(404)->view("/404/404") . exit();
+            return Response::statusCode(404)->view("/404/404")->data() . exit();
         }
     }
 
