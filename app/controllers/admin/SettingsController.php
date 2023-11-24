@@ -25,26 +25,7 @@ class SettingsController extends Controller {
 
         $rules = new Rules();
 
-        if($rules->update_website_slug(Post::whereColumns(['slug'], ['slug' => "/" . $request['slug']]))->validated()) {
-
-            $this->update($request);
-
-        } else {
-
-            $this->_data['rules'] = $rules->errors;
-            return $this->view('/admin/settings/index')->data($this->_data);
-        }
-
-        Session::delete("logged_in");
-        Session::delete("username");
-        Session::delete('user_role');
-
-        redirect('/' . $request['slug']);
-    }
-
-    private function update($request) {
-
-        if(!empty(WebsiteSlug::getData(['id'])) && WebsiteSlug::getData(['id']) !== null) {
+        if($rules->update_website_slug($request['slug'], Post::whereColumns(['slug'], ['slug' => "/" . $request['slug']]))->validated()) {
 
             WebsiteSlug::update(['id' => WebsiteSlug::getData(['id'])['id']], [
 
@@ -52,14 +33,16 @@ class SettingsController extends Controller {
                 'updated_at' => date('Y-m-d H:i:s', $_SERVER['REQUEST_TIME'])
             ]);
 
+            Session::delete("logged_in");
+            Session::delete("username");
+            Session::delete('user_role');
+    
+            redirect('/' . $request['slug']);
+
         } else {
 
-            WebsiteSlug::insert([
-
-                'slug' => "/" . $request['slug'],
-                'created_at' => date('Y-m-d H:i:s', $_SERVER['REQUEST_TIME']),
-                'updated_at' => date('Y-m-d H:i:s', $_SERVER['REQUEST_TIME'])
-            ]);
+            $this->_data['rules'] = $rules->errors;
+            return $this->view('/admin/settings/index')->data($this->_data);
         }
     }
 }  

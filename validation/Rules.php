@@ -334,11 +334,11 @@ class Rules {
         return $this;
     }
 
-    public function update_website_slug($unique) {
+    public function update_website_slug($slug, $unique) {
 
         $validation = new Validate();
         
-        $validation->input('slug')->as('Slug')->rules(['required' => true, 'max' => 49, 'special' => true, 'unique' => $unique]);
+        $validation->input(['slug' => $slug])->as('Slug')->rules(['required' => true, 'max' => 49, 'special' => true, 'unique' => $unique]);
         
         $this->errors = $validation->errors;
         return $this;
