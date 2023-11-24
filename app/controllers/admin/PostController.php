@@ -61,7 +61,7 @@ class PostController extends Controller {
 
         $rules = new Rules();
     
-        if($rules->create_post($request['title'], Post::whereColumns(['id', 'title'], ['title' => $request['title']]))->validated()) {
+        if($rules->post($request['title'], Post::whereColumns(['id', 'title'], ['title' => $request['title']]))->validated()) {
                         
             $slug = "/" . $request['title'];
             $slug = str_replace(" ", "-", $slug);
@@ -123,7 +123,7 @@ class PostController extends Controller {
 
         $rules = new Rules();
 
-        if($rules->update_post($request['title'], Post::checkUniqueTitleId($request['title'], $id))->validated()) {
+        if($rules->post($request['title'], Post::checkUniqueTitleId($request['title'], $id))->validated()) {
                 
             if(!empty($request['body']) ) { $hasContent = 1; } else { $hasContent = 0; }
 
@@ -300,7 +300,7 @@ class PostController extends Controller {
         $lastKey = array_key_last($slug);
         $categoryId = $request['categories'];
 
-        if($rules->update_post_category($categoryId, Post::checkUniqueSlugCategory($id, $slug[$lastKey], $categoryId))->validated()) {
+        if($rules->post_update_category($categoryId, Post::checkUniqueSlugCategory($id, $slug[$lastKey], $categoryId))->validated()) {
 
             CategoryPage::insert([
 
@@ -428,7 +428,7 @@ class PostController extends Controller {
         $slug[$lastKey] = $request['postSlug'];
         $fullPostSlug = implode('/', $slug);
 
-        if($rules->update_post_slug($request['postSlug'], Post::checkUniqueSlug($fullPostSlug, $id))->validated()) {
+        if($rules->post_slug($request['postSlug'], Post::checkUniqueSlug($fullPostSlug, $id))->validated()) {
 
             $slug = explode('/', "/" . $request['slug']);
             $slug[array_key_last($slug)] = substr("/" . $request['postSlug'], 1);
@@ -461,7 +461,7 @@ class PostController extends Controller {
 
         $rules = new Rules();
 
-        if($rules->update_metadata($request['metaTitle'], $request['metaDescription'], $request['metaKeywords'])->validated()) {
+        if($rules->meta($request['metaTitle'], $request['metaDescription'], $request['metaKeywords'])->validated()) {
 
             Post::update(['id' => $id], [
 
@@ -495,8 +495,8 @@ class PostController extends Controller {
         $slugParts = explode('/', Post::getColumns(['slug'], $id)['slug']);
         $lastPageSlugKey = array_key_last($slugParts);
         $lastPageSlugValue = "/" . $slugParts[$lastPageSlugKey];
-            
-        if($rules->remove_post_category($request['submit'], Post::checkUniqueSlug($lastPageSlugValue, $id))->validated()) {
+
+        if($rules->post_remove_category($request['slug'], Post::checkUniqueSlug($lastPageSlugValue, $id))->validated()) {
             
             Post::update(['id' => $id], [
 

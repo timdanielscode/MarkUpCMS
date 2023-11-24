@@ -52,7 +52,7 @@ class MenuController extends Controller {
 
         $rules = new Rules(); 
 
-        if($rules->create_menu($request['title'], Menu::whereColumns(['title'], ['title' => $request['title']]))->validated()) {
+        if($rules->menu($request['title'], Menu::whereColumns(['title'], ['title' => $request['title']]))->validated()) {
                     
             if(!empty($request['content']) ) { $hasContent = 1; } else { $hasContent = 0; }
 
@@ -107,7 +107,7 @@ class MenuController extends Controller {
 
         $rules = new Rules();
         
-        if($rules->menu_update($request['title'], Menu::checkUniqueTitleId($request['title'], $id))->validated()) {
+        if($rules->menu($request['title'], Menu::checkUniqueTitleId($request['title'], $id))->validated()) {
                     
             if(!empty($request['content']) ) { $hasContent = 1; } else { $hasContent = 0; }
 

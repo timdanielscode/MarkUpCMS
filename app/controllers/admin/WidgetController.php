@@ -55,7 +55,7 @@ class WidgetController extends Controller {
 
         $rules = new Rules();
 
-        if($rules->create_widget($request['title'], Widget::whereColumns(['title'], ['title' => $request['title']]))->validated()) {
+        if($rules->widget($request['title'], Widget::whereColumns(['title'], ['title' => $request['title']]))->validated()) {
 
             Widget::insert([
 
@@ -105,7 +105,7 @@ class WidgetController extends Controller {
         
         $rules = new Rules();
         
-        if($rules->edit_widget($request['title'], Widget::checkUniqueTitleId($request['title'], $id))->validated()) {
+        if($rules->widget($request['title'], Widget::checkUniqueTitleId($request['title'], $id))->validated()) {
 
             if(!empty($request['content']) ) { $hasContent = 1; } else { $hasContent = 0; }
 

@@ -28,7 +28,7 @@ class InstallationController extends Controller {
 
         $rules = new Rules();  
                     
-        if($rules->installationStoreUser($request['username'], $request['email'], $request['password'], $request['retypePassword'], $request['token'], Csrf::get())->validated() ) {
+        if($rules->installation_user($request['username'], $request['email'], $request['password'], $request['retypePassword'], $request['token'], Csrf::get())->validated() ) {
 
             User::insert([
                     
@@ -68,7 +68,7 @@ class InstallationController extends Controller {
 
         $rules = new Rules();  
                     
-        if($rules->installationDatabase($request['host'], $request['database'], $request['username'], $request['password'], $request['retypePassword'], $request['token'], Csrf::get())->validated() ) {
+        if($rules->installation_database($request['host'], $request['database'], $request['username'], $request['password'], $request['retypePassword'], $request['token'], Csrf::get())->validated() ) {
 
             $this->databaseConfigFile($request);
                 

@@ -28,7 +28,7 @@ class Rules {
      * return $this
      */
 
-    public function installationDatabase($host, $database, $username, $password, $retypePassword, $addedToken, $csrf) {    
+    public function installation_database($host, $database, $username, $password, $retypePassword, $addedToken, $csrf) {    
                 
         $validation = new Validate();
                     
@@ -43,7 +43,7 @@ class Rules {
         return $this;
     }
 
-    public function installationStoreUser($username, $email, $password, $retypePassword, $addedToken, $csrf) {    
+    public function installation_user($username, $email, $password, $retypePassword, $addedToken, $csrf) {    
                 
         $validation = new Validate();
                     
@@ -57,20 +57,7 @@ class Rules {
         return $this;
     }
 
-    public function registerRules() {    
-                
-        $validation = new Validate();
-                  
-        $validation->input("username")->as("Username")->rules(["required" => true, "min" => "6", "max" => "30", "special" => true]);         
-        $validation->input("email")->as("Email")->rules(["required" => true, "min" => "6", "max" => "30", "special" => true]);        
-        $validation->input("password")->as("Password")->rules(["required" => true, "min" => "16", "max" => "200"]);   
-        $validation->input("retypePassword")->as("Password")->rules(["required" => true, "match" => "password"]);
-                   
-        $this->errors = $validation->errors;
-        return $this;
-      }
-
-    public function loginRules($username, $password, $addedToken, $csrf) {    
+    public function login($username, $password, $addedToken, $csrf) {    
                     
         $validation = new Validate();
                   
@@ -82,91 +69,41 @@ class Rules {
         return $this;
     }  
 
-    public function profile_edit_role($adminIds) {
+    public function profile_edit($username, $email, $uniqueUsername, $uniqueEmail) {
 
         $validation = new Validate();
   
-        $validation->input('role')->as('Role')->rules(['required' => true, 'min-one-admin' => $adminIds]);
-  
-        $this->errors = $validation->errors;
-        return $this;
-    }
-
-    public function change_password() {
-
-        $validation = new Validate();
-  
-        $validation->input("password")->as("Password")->rules(["required" => true, "min" => "16", "max" => "60"]);   
-        $validation->input("retypePassword")->as("Password")->rules(["required" => true, "match" => "password"]);
-  
-        $this->errors = $validation->errors;
-        return $this;
-
-    }
-
-    public function create_post($title, $uniqueTitle) {
-        
-        $validation = new Validate();
-        
-        $validation->input(['title' => $title])->as('Title')->rules(['required' => true, 'max' => 49, 'special' => true, 'unique' => $uniqueTitle]);
-        
-        $this->errors = $validation->errors;
-        return $this;
-    }
-
-    public function update_post($title, $addedToken, $csrf, $uniqueTitle) {
-        
-        $validation = new Validate();
-        
-        $validation->input(['title' => $title])->as('Title')->rules(['required' => true, 'max' => 49, 'special' => true, 'unique' => $uniqueTitle]);
-        
-        $this->errors = $validation->errors;
-        return $this;
-    }
-
-    public function update_metadata($title, $description, $keywords) {
-
-        $validation = new Validate();
-
-        $validation->input(['metaTitle' => $title])->as('Title')->rules(['max' => 60, 'special' => true]);
-        $validation->input(['metaDescription' => $description])->as('Description')->rules(['max' => 160, 'special' => true]);
-        $validation->input(['metaKeywords' => $keywords])->as('Keywords')->rules(['max' => 500]);
-
-        $this->errors = $validation->errors;
-        return $this;
-    }
-
-    public function update_post_slug($slug, $unique) {
-
-      $validation = new Validate();
-
-      $validation->input(['postSlug' => $slug])->as('Slug')->rules(['max' => 49, 'special' => true, 'unique' => $unique]);
-
-      $this->errors = $validation->errors;
-      return $this;
-    }
-
-    public function update_post_category($categories, $unique) {
-
-        $validation = new Validate();
-
-        $validation->input(['categories' => $categories])->as('With category assigned slug')->rules(['required' => true, 'unique' => $unique]);
+        $validation->input(['f_username' => $username])->as('Username')->rules(['required' => true, 'max' => 49, 'special' => true, 'unique' => $uniqueUsername]);
+        $validation->input(['email' => $email])->as('Email')->rules(['required' => true, 'min' => 5, 'max' => 49, 'special' => true, 'unique' => $uniqueEmail]);
   
         $this->errors = $validation->errors;
         return $this;
     }
 
-    public function remove_post_category($submit, $unique) {
+    public function profile_edit_role($role, $adminIds) {
 
         $validation = new Validate();
-
-        $validation->input(['submit' => $submit])->as('Without category assigned slug')->rules(['required' => true, 'unique' => $unique]);
+  
+        $validation->input(['role' => $role])->as('Role')->rules(['required' => true, 'min-one-admin' => $adminIds]);
   
         $this->errors = $validation->errors;
         return $this;
     }
 
-    public function user_create($username, $email, $password, $passwordConfirm, $role, $uniqueUsername, $uniqueEmail) {
+    public function profile_password($password, $newPassword, $retypePassword) {
+
+        $validation = new Validate();
+
+        $validation->input(['password' => $password])->as('Password')->rules(['required' => true, 'min' => 5]);
+        $validation->input(['newPassword' => $newPassword])->as('New passoword')->rules(['required' => true, 'min' => 5]);
+        $validation->input(['retypePassword' => $retypePassword])->as('Retype password and new password')->rules(['match' => $newPassword]);
+
+        $this->errors = $validation->errors;
+
+        return $this;
+    }
+
+    public function user($username, $email, $password, $passwordConfirm, $role, $uniqueUsername, $uniqueEmail) {
         
         $validation = new Validate();
         
@@ -180,15 +117,97 @@ class Rules {
         return $this;
     }
 
-    public function user_edit($username, $email, $uniqueUsername, $uniqueEmail) {
+    public function post($title, $uniqueTitle) {
+        
+        $validation = new Validate();
+        
+        $validation->input(['title' => $title])->as('Title')->rules(['required' => true, 'max' => 49, 'special' => true, 'unique' => $uniqueTitle]);
+        
+        $this->errors = $validation->errors;
+        return $this;
+    }
 
-      $validation = new Validate();
+    public function post_slug($slug, $unique) {
 
-      $validation->input(['f_username' => $username])->as('Username')->rules(['required' => true, 'max' => 49, 'special' => true, 'unique' => $uniqueUsername]);
-      $validation->input(['email' => $email])->as('Email')->rules(['required' => true, 'min' => 5, 'max' => 49, 'special' => true, 'unique' => $uniqueEmail]);
+        $validation = new Validate();
+  
+        $validation->input(['postSlug' => $slug])->as('Slug')->rules(['max' => 49, 'special' => true, 'unique' => $unique]);
+  
+        $this->errors = $validation->errors;
+        return $this;
+    }
 
-      $this->errors = $validation->errors;
-      return $this;
+    public function meta($title, $description, $keywords) {
+
+        $validation = new Validate();
+
+        $validation->input(['metaTitle' => $title])->as('Title')->rules(['max' => 60, 'special' => true]);
+        $validation->input(['metaDescription' => $description])->as('Description')->rules(['max' => 160, 'special' => true]);
+        $validation->input(['metaKeywords' => $keywords])->as('Keywords')->rules(['max' => 500]);
+
+        $this->errors = $validation->errors;
+        return $this;
+    }
+
+    public function post_update_category($categories, $unique) {
+
+        $validation = new Validate();
+
+        $validation->input(['categories' => $categories])->as('With category assigned slug')->rules(['required' => true, 'unique' => $unique]);
+  
+        $this->errors = $validation->errors;
+        return $this;
+    }
+
+    public function post_remove_category($submit, $unique) {
+
+        $validation = new Validate();
+
+        $validation->input(['submit' => $submit])->as('Without category assigned slug')->rules(['required' => true, 'unique' => $unique]);
+  
+        $this->errors = $validation->errors;
+        return $this;
+    }
+
+    public function category($title, $description, $unique) {
+        
+        $validation = new Validate();
+        
+        $validation->input(['title' => $title])->as('Title')->rules(['required' => true, 'max' => 49, 'special' => true, 'unique' => $unique]);
+        $validation->input(['description' => $description])->as('Description')->rules(['max' => 99, 'special' => true]);
+        
+        $this->errors = $validation->errors;
+        return $this;
+    }     
+
+    public function category_slug($slug) {
+        
+        $validation = new Validate();
+        
+        $validation->input(['slug' => $slug])->as('Slug')->rules(['required' => true, 'max' => 49, 'special' => true]);
+        
+        $this->errors = $validation->errors;
+        return $this;
+    } 
+
+    public function menu($title, $unique) {
+        
+        $validation = new Validate();
+        
+        $validation->input(['title' => $title])->as('Title')->rules(['required' => true, 'max' => 49, 'special' => true, 'unique' => $unique]);
+        
+        $this->errors = $validation->errors;
+        return $this;
+    }
+
+    public function widget($title, $unique) {
+        
+        $validation = new Validate();
+        
+        $validation->input(['title' => $title])->as('Title')->rules(['required' => true, 'max' => 49, 'special' => true, 'unique' => $unique]);
+        
+        $this->errors = $validation->errors;
+        return $this;
     }
 
     public function css($filename, $unique) {
@@ -211,17 +230,7 @@ class Rules {
         return $this;
     }
 
-    public function create_menu($title, $unique) {
-        
-        $validation = new Validate();
-        
-        $validation->input(['title' => $title])->as('Title')->rules(['required' => true, 'max' => 49, 'special' => true, 'unique' => $unique]);
-        
-        $this->errors = $validation->errors;
-        return $this;
-    }
-
-    public function menu_update($title, $unique) {
+    public function cdn($title, $unique) {
 
         $validation = new Validate();
         
@@ -231,38 +240,7 @@ class Rules {
         return $this;
     }
 
-    public function media($uniqueFilename) {
-
-        $validation = new Validate();
-        
-        $validation->input('media_description')->as('Description')->rules(['max' => 99, 'special' => true]);
-        
-        $this->errors = $validation->errors;
-        return $this;
-    }
-
-    public function insert_media_folder($folder) {
-
-        $validation = new Validate();
-        
-        $validation->input(['P_folder' => $folder])->as('Folder')->rules(['required' => true, 'max' => 49, 'special' => true]);
-        
-        $this->errors = $validation->errors;
-        return $this;
-    }
-
-    public function media_update_title_description() {
-
-        $validation = new Validate();
-        
-        $validation->input('title')->as('Title')->rules(['required' => true, 'max' => 49, 'special' => true]);
-        $validation->input('description')->as('Description')->rules(['max' => 99, 'special' => true]);
-
-        $this->errors = $validation->errors;
-        return $this;
-    }
-
-    public function update_media_filename($filename, $unique) {
+    public function media_filename($filename, $unique) {
 
         $validation = new Validate();
         
@@ -272,7 +250,7 @@ class Rules {
         return $this;
     }
 
-    public function update_media_description($description) {
+    public function media_description($description) {
 
         $validation = new Validate();
         
@@ -282,98 +260,23 @@ class Rules {
         return $this;
     }
 
-    public function create_category($title, $description, $unique) {
-        
-        $validation = new Validate();
-        
-        $validation->input(['title' => $title])->as('Title')->rules(['required' => true, 'max' => 49, 'special' => true, 'unique' => $unique]);
-        $validation->input(['description' => $description])->as('Description')->rules(['max' => 99, 'special' => true]);
-        
-        $this->errors = $validation->errors;
-        return $this;
-    }     
+    public function media_folder($folder) {
 
-    public function edit_category($title, $description, $unique) {
-        
         $validation = new Validate();
         
-        $validation->input(['title' => $title])->as('Title')->rules(['required' => true, 'max' => 49, 'special' => true, 'unique' => $unique]);
-        $validation->input(['description' => $description])->as('Description')->rules(['max' => 99, 'special' => true]);
-        
-        $this->errors = $validation->errors;
-        return $this;
-    }     
-
-    public function slug_category($slug) {
-        
-        $validation = new Validate();
-        
-        $validation->input(['slug' => $slug])->as('Slug')->rules(['required' => true, 'max' => 49, 'special' => true]);
-        
-        $this->errors = $validation->errors;
-        return $this;
-    } 
-
-    public function create_widget($title, $unique) {
-        
-        $validation = new Validate();
-        
-        $validation->input(['title' => $title])->as('Title')->rules(['required' => true, 'max' => 49, 'special' => true, 'unique' => $unique]);
+        $validation->input(['P_folder' => $folder])->as('Folder')->rules(['required' => true, 'max' => 49, 'special' => true]);
         
         $this->errors = $validation->errors;
         return $this;
     }
 
-    public function edit_widget($title, $unique) {
-
-        $validation = new Validate();
-        
-        $validation->input(['title' => $title])->as('Title')->rules(['required' => true, 'max' => 49, 'special' => true, 'unique' => $unique]);
-        
-        $this->errors = $validation->errors;
-        return $this;
-    }
-
-    public function update_website_slug($slug, $unique) {
+    public function settings_slug($slug, $unique) {
 
         $validation = new Validate();
         
         $validation->input(['slug' => $slug])->as('Slug')->rules(['required' => true, 'max' => 49, 'special' => true, 'unique' => $unique]);
         
         $this->errors = $validation->errors;
-        return $this;
-    }
-
-    public function create_cdn($title, $unique) {
-
-        $validation = new Validate();
-        
-        $validation->input(['title' => $title])->as('Title')->rules(['required' => true, 'max' => 49, 'special' => true, 'unique' => $unique]);
-        
-        $this->errors = $validation->errors;
-        return $this;
-    }
-
-    public function edit_cdn($title, $unique) {
-
-        $validation = new Validate();
-        
-        $validation->input(['title' => $title])->as('Title')->rules(['required' => true, 'max' => 49, 'special' => true, 'unique' => $unique]);
-        
-        $this->errors = $validation->errors;
-        return $this;
-    }
-
-    public function updatePassword() {
-
-        $validation = new Validate();
-
-        $validation->input('password')->as('Password')->rules(['required' => true, 'min' => 5]);
-        $validation->input('newPassword')->as('New passoword')->rules(['required' => true, 'min' => 5]);
-        $validation->input('retypePassword')->as('Retype password and new password')->rules(['match' => 'newPassword']);
-
-        $this->errors = $validation->errors;
-
         return $this;
     }
 

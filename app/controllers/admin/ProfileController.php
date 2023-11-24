@@ -10,6 +10,7 @@
   use app\models\UserRole;
   use core\Csrf;
   use extensions\Auth;
+  use app\models\WebsiteSlug;
                 
   class ProfileController extends Controller {
 
@@ -62,7 +63,7 @@
 
         $rules = new Rules();
 
-        if($rules->profile_edit_role(UserRole::where(['role_id' => 2]))->validated()) {
+        if($rules->profile_edit_role($request['role'], UserRole::where(['role_id' => 2]))->validated()) {
 
             UserRole::update(['user_id' => $request['id']], [
 
@@ -95,7 +96,7 @@
 
         $rules = new Rules();
 
-        if($rules->updatePassword()->validated() === true) {
+        if($rules->profile_password($request['password'], $request['newPassword'], $request['retypePassword'])->validated() === true) {
 
             $this->authenticate($rules, $request['id'], $request['newPassword']);
         } else {
@@ -155,7 +156,7 @@
 
     private function redirectLoginPage() {
 
-        $websiteSlug = DB::try()->select('slug')->from('websiteSlug')->first();
+        $websiteSlug = WebsiteSlug::getColumns(['slug'], 1);
 
         if(!empty($websiteSlug) && $websiteSlug !== null) {
 

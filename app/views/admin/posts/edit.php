@@ -156,6 +156,7 @@
                             <?php } else { ?>
                                 <span class="categoryTitle"><?php echo $data['category']['title']; ?></span>
                                 <form action="/admin/posts/<?php echo $data['id']; ?>/detach-category" method="POST">
+                                    <input type="hidden" name="slug" value="<?php echo $data['slug']; ?>"/>
                                     <div class="error-messages">
                                         <?php echo Errors::get($rules, 'submit'); ?>
                                     </div>   

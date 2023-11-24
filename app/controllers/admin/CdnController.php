@@ -57,7 +57,7 @@ class CdnController extends Controller {
 
         if(!empty($request['content']) && $request['content'] !== null) { $hasContent = 1; } else { $hasContent = 0; }
 
-        if($rules->create_cdn($request['title'], Cdn::whereColumns(['title'], ['title' => $request['title']]))->validated() ) {
+        if($rules->cdn($request['title'], Cdn::whereColumns(['title'], ['title' => $request['title']]))->validated() ) {
 
             Cdn::insert([
 
@@ -112,7 +112,7 @@ class CdnController extends Controller {
         
         if(!empty($request['content']) && $request['content'] !== null) { $hasContent = 1; } else { $hasContent = 0; }
 
-        if($rules->edit_cdn($request['title'], Cdn::checkUniqueTitleId($request['title'], $id))->validated() ) {
+        if($rules->cdn($request['title'], Cdn::checkUniqueTitleId($request['title'], $id))->validated() ) {
 
             Cdn::update(['id' => $id], [
 

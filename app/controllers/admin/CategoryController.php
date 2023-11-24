@@ -81,7 +81,7 @@ class CategoryController extends Controller {
 
         $rules = new Rules();
         
-        if($rules->create_category($request['title'], $request['description'], Category::whereColumns(['title'], ['title' => $request['title']]))->validated()) {
+        if($rules->category($request['title'], $request['description'], Category::whereColumns(['title'], ['title' => $request['title']]))->validated()) {
 
             Category::insert([
 
@@ -108,7 +108,7 @@ class CategoryController extends Controller {
 
         $rules = new Rules();
 
-        if($rules->edit_category($request['title'], $request['description'], Category::checkUniqueTitleId($request['title'], $id))->validated()) {
+        if($rules->category($request['title'], $request['description'], Category::checkUniqueTitleId($request['title'], $id))->validated()) {
 
             Category::update(['id' => $request['id']], [
 
@@ -260,7 +260,7 @@ class CategoryController extends Controller {
     
             $rules = new Rules();
 
-            if($rules->slug_category($request['slug'])->validated()) {
+            if($rules->category_slug($request['slug'])->validated()) {
 
                 if(!empty(Post::getAssignedCategoryIdSlug($request['id'])) && Post::getAssignedCategoryIdSlug($request['id']) !== null) {
 

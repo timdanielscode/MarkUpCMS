@@ -182,7 +182,7 @@ class MediaController extends Controller {
 
         $rules = new Rules();
 
-        if($rules->insert_media_folder($request['P_folder'])->validated() ) {
+        if($rules->media_folder($request['P_folder'])->validated() ) {
 
             $this->insertFolder($request['P_folder']);
             Session::set('success', 'You have successfully added the folder!');
@@ -287,7 +287,7 @@ class MediaController extends Controller {
 
         $rules = new Rules();
 
-        if($rules->update_media_filename($request['filename'], Media::checkMediaFilenameOnId($request['filename'], $request['id']))->validated()) {
+        if($rules->media_filename($request['filename'], Media::checkMediaFilenameOnId($request['filename'], $request['id']))->validated()) {
         
             rename($request['folder'] . '/' . Media::get($request['id'])['media_filename'], $request['folder'] . '/' . $request['filename']);
         
@@ -318,7 +318,7 @@ class MediaController extends Controller {
 
         $rules = new Rules();
 
-        if($rules->update_media_description($request['description'])->validated()) {
+        if($rules->media_description($request['description'])->validated()) {
 
             Media::update(['id' => $request['id']], [
                     

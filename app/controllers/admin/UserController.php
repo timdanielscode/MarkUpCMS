@@ -20,7 +20,7 @@ class UserController extends Controller {
 
         if(empty(User::ifRowExists($id)) ) {
 
-            return Response::statusCode(404)->view("/404/404")->data() . exit();
+            return Response::statusCode(404)->view("/404/404")->data . exit();
         }
     }
 
@@ -53,7 +53,7 @@ class UserController extends Controller {
 
         $rules = new Rules();
             
-        if($rules->user_create($request['f_username'], $request['email'], $request['password'], $request['password_confirm'], $request['role'], User::where(['username' => $request['f_username']]), User::where(['email' => $request['email']]))->validated()) {
+        if($rules->user($request['f_username'], $request['email'], $request['password'], $request['password_confirm'], $request['role'], User::where(['username' => $request['f_username']]), User::where(['email' => $request['email']]))->validated()) {
                     
             User::insert([
 

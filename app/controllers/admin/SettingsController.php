@@ -25,7 +25,7 @@ class SettingsController extends Controller {
 
         $rules = new Rules();
 
-        if($rules->update_website_slug($request['slug'], Post::whereColumns(['slug'], ['slug' => "/" . $request['slug']]))->validated()) {
+        if($rules->settings_slug($request['slug'], Post::whereColumns(['slug'], ['slug' => "/" . $request['slug']]))->validated()) {
 
             WebsiteSlug::update(['id' => WebsiteSlug::getData(['id'])['id']], [
 
