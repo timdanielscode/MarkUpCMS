@@ -15,8 +15,6 @@ class Middlewares {
 
     public $middlewares = [
 
-        "test"      =>      "TestMiddleware",
-        "test2"     =>      "TestMiddleware2"
     
     ];
 
