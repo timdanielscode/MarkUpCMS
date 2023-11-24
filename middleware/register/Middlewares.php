@@ -15,7 +15,7 @@ class Middlewares {
 
     public $middlewares = [
 
-    
+        "Installation" => "InstallationMiddleware"
     ];
 
     public $routeMiddlewares = [
