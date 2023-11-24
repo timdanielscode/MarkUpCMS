@@ -35,9 +35,6 @@ Middleware::route('notLoggedIn', function() {
 
         new Route(['GET' => $settedWebsiteSlug[0]], ['LoginController' => 'index']);
         new Route(['POST' => $settedWebsiteSlug[0]], ['LoginController' => 'authenticateUsers']);
-    } else {
-        new Route(['GET' => '/login'], ['LoginController' => 'index']);
-        new Route(['POST' => '/login'], ['LoginController' => 'authenticateUsers']);
     }
 });
 

@@ -8,6 +8,7 @@ use app\models\User;
 use app\models\UserRole;
 use app\models\Roles;
 use app\models\Table;
+use app\models\WebsiteSlug;
 use database\DB;
 
 class InstallationController extends Controller {
@@ -72,6 +73,12 @@ class InstallationController extends Controller {
             $this->databaseConfigFile($request);
                 
             Table::create();
+            WebsiteSlug::insert([
+
+                'slug' => '/login',
+                'created_at' => date('Y-m-d H:i:s', $_SERVER['REQUEST_TIME']),
+                'updated_at' => date('Y-m-d H:i:s', $_SERVER['REQUEST_TIME'])
+            ]);
     
             redirect('/');
         } else {
