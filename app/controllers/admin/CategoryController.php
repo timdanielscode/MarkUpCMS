@@ -132,7 +132,7 @@ class CategoryController extends Controller {
         $this->_data['id'] = $id;
         $this->_data['slug'] = Category::getColumns(['slug'], $id)['slug'];
         $this->_data['assignedPages'] = Category::getPostAssignedIdTitle($id);
-        $this->_data['notAssingedPages'] = Category::getNotPostAssignedIdTitle(Category::getPostAssignedIdTitle($id));
+        $this->_data['notAssingedPages'] = Category::getNotPostAssignedIdTitle();
         $this->_data['assingedSubCategories'] = Category::getSubIdTitleSlug($id);
         $this->_data['notAssingedSubs'] = Category::getNotSubIdTitleSlug(Category::getSubIdTitleSlug($id), $id);
 

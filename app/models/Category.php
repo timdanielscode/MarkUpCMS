@@ -66,26 +66,16 @@ class Category extends Model {
         return DB::try()->select('id, title')->from('pages')->join('category_page')->on('pages.id', '=', 'category_page.page_id')->where('category_id', '=', $id)->and('pages.removed', '!=', 1)->fetch();
     }
 
-    public static function getNotPostAssignedIdTitle($postAssignedIdTitle) {
+    public static function getNotPostAssignedIdTitle() {
 
-        if(!empty(self::getAssignedPostIds()) && !empty($postAssignedIdTitle) ) {
-
-            foreach($postAssignedIdTitle as $post) {
-
-                array_push(self::$_postIds, $post['id']);
-            }
+        if(!empty(self::getAssignedPostIds())  ) {
 
             $postIdsString = implode(',', self::$_postIds);
-            return DB::try()->select('id, title')->from('pages')->whereNotIn('id', $postIdsString)->fetch();
-
-        } else if(!empty(self::getAssignedPostIds()) && empty($postAssignedIdTitle) ) {
-
-            $assignedPostIdsString = implode(',', self::getAssignedPostIds());
-            return DB::try()->select('id, title')->from('pages')->whereNotIn('id', $assignedPostIdsString)->fetch();
+            return DB::try()->select('id, title')->from('pages')->whereNotIn('id', $postIdsString)->and('removed', '!=', 1)->fetch();
 
         } else {
             
-            return DB::try()->select('id, title')->from('pages')->fetch();
+            return DB::try()->select('id, title')->from('pages')->where('removed', '!=', 1)->fetch();
         }
     }
 
