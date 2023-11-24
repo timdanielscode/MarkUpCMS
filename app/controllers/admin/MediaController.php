@@ -6,7 +6,6 @@ use app\controllers\Controller;
 use app\models\Media;
 use app\models\MediaFolder;
 use core\Session;
-use core\Csrf;
 use extensions\Pagination;
 use validation\Rules;
 use validation\Get;

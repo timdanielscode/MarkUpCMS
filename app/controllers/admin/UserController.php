@@ -6,7 +6,6 @@ use app\controllers\Controller;
 use app\models\User;
 use app\models\UserRole;
 use core\Session;
-use core\Csrf;
 use validation\Rules;
 use core\http\Response;
 use extensions\Pagination;

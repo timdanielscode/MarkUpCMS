@@ -7,7 +7,6 @@ use app\models\Cdn;
 use app\models\Post;
 use extensions\Pagination;
 use app\models\CdnPage;
-use core\Csrf;
 use validation\Rules;
 use core\Session;
 use core\http\Response;

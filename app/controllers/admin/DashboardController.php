@@ -3,8 +3,6 @@
 namespace app\controllers\admin;
 
 use app\controllers\Controller;
-use database\DB;
-use app\models\WebsiteSlug;
 use app\models\Post;
 use app\models\Menu;
 use app\models\Widget;
@@ -13,7 +11,6 @@ use app\models\Css;
 use app\models\Js;
 use app\models\Media;
 use app\models\User;
-use validation\Rules;
                     
 class DashboardController extends Controller {
 

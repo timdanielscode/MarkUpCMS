@@ -8,7 +8,6 @@
   use validation\Rules;
   use app\models\User;
   use app\models\UserRole;
-  use core\Csrf;
   use extensions\Auth;
   use app\models\WebsiteSlug;
                 

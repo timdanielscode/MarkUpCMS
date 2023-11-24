@@ -7,7 +7,6 @@ use app\models\Post;
 use app\models\WebsiteSlug;
 use validation\Rules;
 use core\Session;
-use core\Csrf;
                     
 class SettingsController extends Controller {
 

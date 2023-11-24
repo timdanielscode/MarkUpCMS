@@ -3,7 +3,6 @@
 namespace app\controllers\admin;
 
 use app\controllers\Controller;
-use core\Csrf;
 use app\models\Widget;
 use app\models\PageWidget;
 use core\Session;

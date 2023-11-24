@@ -6,7 +6,6 @@ use app\controllers\Controller;
 use app\models\Css;
 use app\models\CssPage;
 use app\models\Post;
-use core\Csrf;
 use validation\Rules;
 use core\Session;
 use extensions\Pagination;

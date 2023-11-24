@@ -9,7 +9,6 @@ use app\models\UserRole;
 use app\models\Roles;
 use app\models\Table;
 use app\models\WebsiteSlug;
-use database\DB;
 
 class InstallationController extends Controller {
 

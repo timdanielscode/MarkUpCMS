@@ -33,7 +33,7 @@
             $this->_data["rules"] = $rules->errors;
 
             return $this->view("login")->data($this->_data);  
-        }     
+        }
     }
 
     private function authentication() {

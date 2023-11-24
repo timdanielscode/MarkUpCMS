@@ -9,7 +9,6 @@ use app\models\CategoryPage;
 use app\models\CategorySub;
 use core\Session;
 use extensions\Pagination;
-use core\Csrf;
 use validation\Rules;
 use core\http\Response;
 use validation\Get;

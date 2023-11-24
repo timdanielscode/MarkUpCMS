@@ -3,7 +3,6 @@
 namespace app\controllers\admin;
 
 use app\controllers\Controller;
-use core\Csrf;
 use validation\Rules;
 use app\models\Post;
 use app\models\CategoryPage;
