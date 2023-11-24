@@ -9,6 +9,7 @@ namespace database;
 class DB {
 
     private $_pdo, $_stmt, $_query = "", $_data = [], $_columns = [], $_placeholders = [], $_setValues = [];
+    public static $error;
     private static $_instance = null;
 
     /**
@@ -43,13 +44,18 @@ class DB {
         } 
     }
 
+    public static function getError() {
+
+        return self::$error;
+    }
+
     /**
      * Executes sql statement
      * 
      * @param string $sql query
      * @param array $data sql 
      */      
-    public function execute_query() {
+    private function execute_query() {
 
         $this->_stmt = $this->_pdo->prepare($this->_query);
 
@@ -67,7 +73,7 @@ class DB {
     /**
      * Fetching sql statement in array
      */     
-    public function fetch_query() {
+    private function fetch_query() {
 
         return $this->_stmt->fetchAll();
     }
@@ -75,7 +81,7 @@ class DB {
     /**
      * Fetching sql statement in array but first item
      */     
-    public function fetch_query_first() {
+    private function fetch_query_first() {
 
         return $this->_stmt->fetch();
     }

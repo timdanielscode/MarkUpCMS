@@ -11,9 +11,6 @@ class HasDBConnectionMiddleware {
 
         if(file_exists("../config/database/config.ini") === true) {
 
-            $table = new Table();
-            $table->create();
-
             return $run();
         }
     }          

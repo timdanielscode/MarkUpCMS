@@ -70,7 +70,7 @@ class MenuController extends Controller {
             ]);
           
             Session::set('success', 'You have successfully created a new menu!');
-            //redirect('/admin/menus');
+            redirect('/admin/menus');
 
         } else {
 
