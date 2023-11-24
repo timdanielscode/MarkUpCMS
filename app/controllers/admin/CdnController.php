@@ -74,9 +74,10 @@ class CdnController extends Controller {
                
         } else {
 
-            $this->_data['rules'] = $rules->errors;
             $this->_data['title'] = $request['title'];
-
+            $this->_data['content'] = $request['content'];
+            $this->_data['rules'] = $rules->errors;
+            
             return $this->view('admin/cdn/create')->data($this->_data);
         }
     }

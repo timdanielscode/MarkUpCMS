@@ -71,7 +71,7 @@ class JsController extends Controller {
             $filename = str_replace(" ", "-", $filename);
 
             $file = fopen("website/assets/js/" . $filename . ".js", "w");
-            fwrite($file, $request['code']);
+            fwrite($file, htmlspecialchars_decode($request['code']));
             fclose($file);
 
             if(!empty($request['code']) ) { $hasContent = 1; } else { $hasContent = 0; }
@@ -92,8 +92,9 @@ class JsController extends Controller {
 
         } else {
 
-            $this->_data['rules'] = $rules->errors;
             $this->_data['filename'] = $request['filename'];
+            $this->_data['code'] = $request['code'];
+            $this->_data['rules'] = $rules->errors;
 
             return $this->view('admin/js/create')->data($this->_data);
         }
@@ -117,8 +118,6 @@ class JsController extends Controller {
 
         $this->ifExists($request['id']);
 
-        //if($file['removed'] === 1) { return Response::statusCode(404)->view("/404/404") . exit(); 
-        
         $this->_data['data'] = Js::get($request['id']);
         $this->_data['data']['pages'] = Js::getNotPostAssingedIdTitle(Js::getPostAssignedIdTitle($request['id']));
         $this->_data['data']['assingedPages'] = Js::getPostAssignedIdTitle($request['id']); 
@@ -152,7 +151,7 @@ class JsController extends Controller {
             ]);
 	
             $file = fopen("website/assets/js/" . $filename . $this->_fileExtension, "w");
-            fwrite($file, $request["code"]);
+            fwrite($file, htmlspecialchars_decode($request["code"]));
             fclose($file);
 
             Session::set('success', 'You have successfully updated the js file!');

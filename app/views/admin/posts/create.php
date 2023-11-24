@@ -31,7 +31,7 @@
                                 </div>    
                             <?php } ?>
                         </div>
-                        <textarea type="text" name="body" type="body" id="code"></textarea>
+                        <textarea type="text" name="body" type="body" id="code"><?php if(!empty($body)) { echo $body; } ?></textarea>
                         <div class="form-parts">
                             <button name="submit" id="submit" type="submit" class="display-none">Create</button>
                         </div>

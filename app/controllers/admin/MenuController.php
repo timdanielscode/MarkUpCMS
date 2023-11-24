@@ -73,6 +73,7 @@ class MenuController extends Controller {
 
         } else {
 
+            $this->_data['content'] = $request['content'];
             $this->_data['title'] = $request['title'];
             $this->_data['rules'] = $rules->errors;
 

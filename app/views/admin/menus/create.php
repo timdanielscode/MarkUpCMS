@@ -33,7 +33,7 @@
                             <?php } ?>
                         </div>
                         <div class="form-parts">
-                            <textarea type="text" name="content" type="content" id="code"></textarea>
+                            <textarea type="text" name="content" type="content" id="code"><?php if(!empty($content) ) { echo $content; } ?></textarea>
                             <div class="error-messages">
                                 <?php echo Errors::get($rules, 'content'); ?>
                             </div>

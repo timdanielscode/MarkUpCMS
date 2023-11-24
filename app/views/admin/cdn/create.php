@@ -30,7 +30,7 @@
                                     <span><?php echo Errors::get($rules, 'title'); ?></span>
                                 </div>    
                             <?php } ?> 
-                            <textarea name="content" id="code"></textarea>
+                            <textarea name="content" id="code"><?php if(!empty($content) ) { echo $content; } ?></textarea>
                         </div>
                         <div class="form-parts">
                             <button name="submit" id="submit" type="submit" class="display-none">Create</button>

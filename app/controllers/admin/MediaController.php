@@ -117,9 +117,7 @@ class MediaController extends Controller {
     }
 
     public function store($request) {
-
-
-
+        
         $filenames = $_FILES['file']['name'];
         $tmps = $_FILES['file']['tmp_name'];
         $sizes = $_FILES['file']['size'];

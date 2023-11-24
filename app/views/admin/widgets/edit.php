@@ -36,7 +36,7 @@
                             </div>    
                         <?php } ?>  
                     </div>
-                    <textarea name="content" type="content" id="code"><?php echo htmlentities($widget['content']); ?></textarea>
+                    <textarea name="content" type="content" id="code"><?php echo $widget['content']; ?></textarea>
                     <button name="submit" id="submit" type="submit" class="display-none">Create</button>
                 </form>
             </div>

@@ -39,7 +39,7 @@
                             </div>    
                         <?php } ?>
                     </div>
-                    <textarea name="body" id="code"><?php echo htmlentities($data['body']); ?></textarea>
+                    <textarea name="body" id="code"><?php echo $data['body']; ?></textarea>
                     <button name="submit" id="submit" type="submit" class="hiddenButton" value="submit">Update</button>
                 </form>
             </div>

@@ -62,7 +62,7 @@ class CssController extends Controller {
             $code = $request['code'];
             $file = fopen("website/assets/css" . $filename . ".css", "w");
 
-            fwrite($file, $code);
+            fwrite($file, htmlspecialchars_decode($code));
             fclose($file);
                     
             if(!empty($request['code']) ) { $hasContent = 1; } else { $hasContent = 0; }
@@ -83,8 +83,9 @@ class CssController extends Controller {
 
         } else {
 
-            $this->_data['rules'] = $rules->errors;
             $this->_data['filename'] = $request['filename'];
+            $this->_data['code'] = $request['code'];
+            $this->_data['rules'] = $rules->errors;
 
             return $this->view('admin/css/create')->data($this->_data);
         }
@@ -117,8 +118,6 @@ class CssController extends Controller {
     public function edit($request) {
 
         $this->ifExists($request['id']);
-
-        //if($cssFile['removed'] === 1) { return Response::statusCode(404)->view("/404/404") . exit(); }
 
         $this->_data['data'] = Css::get($request['id']);
         $this->_data['data']['code'] = $this->getFileContent(Css::get($request['id'])['file_name']);
@@ -153,7 +152,7 @@ class CssController extends Controller {
             ]);
 	
             $file = fopen("website/assets/css/" . $filename . $this->_fileExtension, "w");
-            fwrite($file, $request["code"]);
+            fwrite($file, htmlspecialchars_decode($request["code"]));
             fclose($file);
 
             Session::set('success', 'You have successfully updated the css file!');

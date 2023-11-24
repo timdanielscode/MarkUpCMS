@@ -31,7 +31,7 @@
                                     <span><?php echo Errors::get($rules, 'filename'); ?></span>
                                 </div>    
                             <?php } ?> 
-                            <textarea name="code" id="code"></textarea>
+                            <textarea name="code" id="code"><?php if(!empty($code) ) { echo $code; } ?></textarea>
                         </div>
                         <div class="form-parts">
                             <button name="submit" id="submit" type="submit" class="display-none">Create</button>
