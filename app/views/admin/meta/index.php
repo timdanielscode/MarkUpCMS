@@ -19,9 +19,9 @@
 <div class="index-container">
     <?php Alert::message('success'); ?>
     <div class="headerContainer">
-        <h1>Cdn</h1><span class="badge cdn"><?php echo $count; ?></span>
+        <h1>Meta</h1><span class="badge meta"><?php echo $count; ?></span>
     </div>
-    <?php if(Session::get('user_role') === 'admin') { ?><a href="/admin/cdn/create" class="create">Create</a> <span class="deleteSeparator">|</span> <form action="/admin/cdn/delete" method="POST" class="indexDeleteForm"><input type="submit" class="delete" value="<?php if($search === 'Thrashcan') { echo 'Delete permanently'; } else { echo 'Delete'; } ?>" <?php if($search === 'Thrashcan') { echo 'onclick="return confirm(' . "'Are you sure?'" . ');"'; } ?>/><input type="hidden" name="deleteIds" id="deleteIds" value=""/></form> | <?php } ?><form action="" method="GET" class="thrashcanForm"><input type="submit" name="search" value="Thrashcan"/></form><?php if($search === 'Thrashcan') { ?><?php if(Session::get('user_role') === 'admin') { ?> | <form action="/admin/cdn/recover" method="POST" class="recoverForm"><input type="submit" class="recover" value="Recover"/><input type="hidden" name="recoverIds" id="recoverIds" value=""/></form> <?php } } ?>
+    <?php if(Session::get('user_role') === 'admin') { ?><a href="/admin/meta/create" class="create">Create</a> <span class="deleteSeparator">|</span> <form action="/admin/meta/delete" method="POST" class="indexDeleteForm"><input type="submit" class="delete" value="<?php if($search === 'Thrashcan') { echo 'Delete permanently'; } else { echo 'Delete'; } ?>" <?php if($search === 'Thrashcan') { echo 'onclick="return confirm(' . "'Are you sure?'" . ');"'; } ?>/><input type="hidden" name="deleteIds" id="deleteIds" value=""/></form> | <?php } ?><form action="" method="GET" class="thrashcanForm"><input type="submit" name="search" value="Thrashcan"/></form><?php if($search === 'Thrashcan') { ?><?php if(Session::get('user_role') === 'admin') { ?> | <form action="/admin/meta/recover" method="POST" class="recoverForm"><input type="submit" class="recover" value="Recover"/><input type="hidden" name="recoverIds" id="recoverIds" value=""/></form> <?php } } ?>
     <form action="" method="GET" class="searchForm">
         <input type="text" name="search" placeholder="Search" id="search">
         <input type="submit" name="submit" value="Search" class="button">
@@ -45,14 +45,14 @@
                             </td>
                             <?php if($cdn['removed'] !== 1 && Session::get('user_role') === 'admin') { ?>
                             <td class="width-25">
-                                <a href="/admin/cdn/<?php echo $cdn['id']; ?>/edit" class="font-weight-500"><?php echo $cdn['title']; ?></a> |
-                                <a href="/admin/cdn/<?php echo $cdn['id']; ?>/edit" class="font-weight-300">Edit</a> |
-                                <a href="/admin/cdn/<?php echo $cdn['id']; ?>/read" class="font-weight-300">Read</a>
+                                <a href="/admin/meta/<?php echo $cdn['id']; ?>/edit" class="font-weight-500"><?php echo $cdn['title']; ?></a> |
+                                <a href="/admin/meta/<?php echo $cdn['id']; ?>/edit" class="font-weight-300">Edit</a> |
+                                <a href="/admin/meta/<?php echo $cdn['id']; ?>/read" class="font-weight-300">Read</a>
                             </td>
                             <?php } else { ?>
                                 <td class="width-25">
                                 <span class="font-weight-500"><?php echo $cdn['title']; ?></span> |
-                                <a href="/admin/cdn/<?php echo $cdn['id']; ?>/read" class="font-weight-300">Read</a>
+                                <a href="/admin/meta/<?php echo $cdn['id']; ?>/read" class="font-weight-300">Read</a>
                             </td>
                             <?php } ?>
                             <td class="width-60">
@@ -82,9 +82,9 @@
 
                     if(!empty($search) ) {
 
-                        echo '<li class="page-item"><a href="/admin/cdn?search=' . $search . '&page='.$page.'">'.$page.'</a></li>';
+                        echo '<li class="page-item"><a href="/admin/meta?search=' . $search . '&page='.$page.'">'.$page.'</a></li>';
                     } else {
-                        echo '<li class="page-item"><a href="/admin/cdn?page='.$page.'">'.$page.'</a></li>';
+                        echo '<li class="page-item"><a href="/admin/meta?page='.$page.'">'.$page.'</a></li>';
                     }
                 }  
             ?>

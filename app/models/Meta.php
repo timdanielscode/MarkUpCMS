@@ -4,7 +4,7 @@ namespace app\models;
 
 use database\DB;
 
-class Cdn extends Model {
+class Meta extends Model {
 
     private static $_table = "cdn";
     private static $_postIds = [];
@@ -14,7 +14,7 @@ class Cdn extends Model {
         return DB::try()->select('id')->from(self::$_table)->where('id', '=', $id)->first();
     }
 
-    public static function allCdnsButOrderedByDate() {
+    public static function allMetaButOrderedByDate() {
 
         return DB::try()->select('id, title, content, has_content, removed, author, created_at, updated_at')->from(self::$_table)->where('removed', '=', 0)->order('updated_at')->desc()->fetch();
     }
@@ -24,7 +24,7 @@ class Cdn extends Model {
         return DB::try()->select('content')->from('cdn')->join('cdn_page')->on('cdn.id', '=', 'cdn_page.cdn_id')->where('cdn_page.page_id', '=', $postId)->fetch();
     }
 
-    public static function orderedCdnsOnSearch($searchValue = null) {
+    public static function orderedMetaOnSearch($searchValue = null) {
 
         if(!empty($searchValue) && $searchValue !== null) {
 
@@ -37,7 +37,7 @@ class Cdn extends Model {
         } 
     }
 
-    public static function getAllCdn() {
+    public static function getAllMeta() {
 
         return DB::try()->select('id, title')->from(self::$_table)->where('removed', '!=', 1)->fetch();
     }

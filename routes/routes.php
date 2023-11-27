@@ -209,20 +209,20 @@ Middleware::route(['auth' => 'admin'], function() {
 
 Middleware::route('login', function() {
 
-    new Route(['GET' => '/admin/cdn'], ['admin\CdnController' => 'index']);
-    new Route(['GET' => '/admin/cdn/[id]/read'], ['admin\CdnController' => 'read']);
+    new Route(['GET' => '/admin/meta'], ['admin\MetaController' => 'index']);
+    new Route(['GET' => '/admin/meta/[id]/read'], ['admin\MetaController' => 'read']);
 });
 
 Middleware::route(['auth' => 'admin'], function() {
 
-    new Route(['GET' => '/admin/cdn/create'], ['admin\CdnController' => 'create']);
-    new Route(['POST' => '/admin/cdn/store'], ['admin\CdnController' => 'store']);
-    new Route(['GET' => '/admin/cdn/[id]/edit'], ['admin\CdnController' => 'edit']);
-    new Route(['POST' => '/admin/cdn/[id]/update'], ['admin\CdnController' => 'update']);
-    new Route(['POST' => '/admin/cdn/[id]/import-pages'], ['admin\CdnController' => 'importPage']);
-    new Route(['POST' => '/admin/cdn/[id]/export-pages'], ['admin\CdnController' => 'exportPage']);
-    new Route(['POST' => '/admin/cdn/delete'], ['admin\CdnController' => 'delete']);
-    new Route(['POST' => '/admin/cdn/recover'], ['admin\CdnController' => 'recover']);
-    new Route(['POST' => '/admin/cdn/[id]/import-all'], ['admin\CdnController' => 'importAll']);
-    new Route(['POST' => '/admin/cdn/[id]/export-all'], ['admin\CdnController' => 'exportAll']);
+    new Route(['GET' => '/admin/meta/create'], ['admin\MetaController' => 'create']);
+    new Route(['POST' => '/admin/meta/store'], ['admin\MetaController' => 'store']);
+    new Route(['GET' => '/admin/meta/[id]/edit'], ['admin\MetaController' => 'edit']);
+    new Route(['POST' => '/admin/meta/[id]/update'], ['admin\MetaController' => 'update']);
+    new Route(['POST' => '/admin/meta/[id]/import-pages'], ['admin\MetaController' => 'importPage']);
+    new Route(['POST' => '/admin/meta/[id]/export-pages'], ['admin\MetaController' => 'exportPage']);
+    new Route(['POST' => '/admin/meta/delete'], ['admin\MetaController' => 'delete']);
+    new Route(['POST' => '/admin/meta/recover'], ['admin\MetaController' => 'recover']);
+    new Route(['POST' => '/admin/meta/[id]/import-all'], ['admin\MetaController' => 'importAll']);
+    new Route(['POST' => '/admin/meta/[id]/export-all'], ['admin\MetaController' => 'exportAll']);
 });

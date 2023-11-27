@@ -7,13 +7,14 @@ use validation\Rules;
 use app\models\Post;
 use app\models\CategoryPage;
 use app\models\Category;
-use app\models\CdnPage;
+use app\models\PageMeta;
 use app\models\Css;
 use app\models\Js;
 use app\models\Widget;
 use app\models\PageWidget;
 use app\models\Menu;
-use app\models\Cdn;
+use app\models\CssPage;
+use app\models\JsPage;
 use core\Session;
 use extensions\Pagination;
 use core\http\Response;
@@ -217,7 +218,7 @@ class PostController extends Controller {
 
         foreach($request['cdns'] as $cdnId) {
 
-            CdnPage::insert([
+            PageMeta::insert([
 
                 'page_id' => $id,
                 'cdn_id' => $cdnId
@@ -374,7 +375,11 @@ class PostController extends Controller {
 
         foreach($request['jsFiles'] as $jsId) {
 
-            Post::insertJs($id, $jsId);
+            JsPage::insert([
+
+                'js_id' => $jsId,
+                'page_id' => $id
+            ]);
         }
 
         Session::set('success', 'You have successfully included the js file(s) on this page!');
@@ -390,8 +395,12 @@ class PostController extends Controller {
 
         foreach($request['cssFiles'] as $cssId) {
 
-            Post::insertCss($id, $cssId);
-        }
+            CssPage::insert([
+
+                'css_id' => $cssId,
+                'page_id' => $id
+            ]);
+        };
 
         Session::set('success', 'You have successfully linked the css file(s) on this page!');
         redirect("/admin/posts/$id/edit");

@@ -121,16 +121,6 @@ class Post extends Model {
         return DB::try()->delete('js_page')->where('page_id', '=', $id)->and('js_id', '=', $jsId)->run();        
     }
 
-    public static function insertJs($id, $jsId) {
-
-        return DB::try()->insert('js_page', [
-
-            'js_id' => $jsId,
-            'page_id' => $id
-
-        ])->where('js_page', '=', $id)->and('js_id', '=', $jsId);
-    }
-
     public static function getJsIdFilenameExtension($id) {
 
         return DB::try()->select('js.id, file_name', 'extension')->from('js')->join('js_page')->on('js_page.js_id', '=', 'js.id')->where('js_page.page_id', '=', $id)->and('removed', '!=', 1)->fetch();
@@ -150,16 +140,6 @@ class Post extends Model {
         } else {
             return DB::try()->select('id, file_name, extension')->from('js')->where('removed', '!=', 1)->fetch();
         }
-    }
-
-    public static function insertCss($id, $cssId) {
-
-        return DB::try()->insert('css_page', [
-
-            'css_id' => $cssId,
-            'page_id' => $id
-
-        ])->where('css_page', '=', $id)->and('css_id', '=', $cssId);
     }
 
     public static function getCdnIdTitle($id) {

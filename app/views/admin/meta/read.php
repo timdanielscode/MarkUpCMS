@@ -38,7 +38,7 @@
                 <div id="sidebar" class="width-25-L">
                     <div class="sidebarContainer">
                         <div class="mainButtonContainer">
-                            <a href="/admin/cdn" class="button darkBlueButton">Back</a>
+                            <a href="/admin/meta" class="button darkBlueButton">Back</a>
                         </div>
                     </div>
                 </div>

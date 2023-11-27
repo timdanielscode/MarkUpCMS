@@ -62,13 +62,13 @@
                         <a id="categoryButton" class="button lightButton ">Categories</a>
                     </div>
                     <div class="buttonContainer">
-                        <a id="cdnButton" class="button lightButton margin-r-10">Cdn</a>
+                        <a id="cdnButton" class="button lightButton margin-r-10">Meta</a>
                         <a id="jsButton" class="button lightButton margin-r-10">Scripts</a>
                         <a id="cssButton" class="button lightButton margin-r-10">Css</a>
                     </div>
                     <div class="buttonContainer">
                         <a id="widgetButton" class="button lightButton margin-r-10">Widgets</a>
-                        <a id="metaButton" class="button lightButton">Meta data</a>
+                        <a id="metaButton" class="button lightButton">Seo</a>
                     </div>
                     <div id="slug" class="<?php if(Session::exists('slug') === false ) { echo 'display-none'; } ?>">
                         <span class="text">Slug:</span>
@@ -88,7 +88,7 @@
                     </div>
                     <div id="cdn" class="<?php if(Session::exists('cdn') === false ) { echo 'display-none'; } ?>">
                         <form action="/admin/posts/<?php echo $data['id']; ?>/export-cdns" method="POST" class="cdnForm margin-t-50">
-                            <label>Import cdn: </label>
+                            <label>Import meta: </label>
                             <select name="cdns[]" multiple>
                                 <?php foreach($data['exportCdns'] as $cdn) { ?>
                                 <option value="<?php echo $cdn['id']; ?>">
@@ -99,7 +99,7 @@
                             </select>
                         </form>
                         <form action="/admin/posts/<?php echo $data['id']; ?>/import-cdns" method="POST" class="cdnForm margin-t-20">
-                            <label>Export cdn: </label>
+                            <label>Export meta: </label>
                             <select name="cdns[]" multiple>
                                 <?php foreach($data['importCdns'] as $cdn) { ?>
                                 <option value="<?php echo $cdn['id']; ?>">

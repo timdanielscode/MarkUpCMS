@@ -2,7 +2,7 @@
 
 namespace app\models;
 
-class CdnPage extends Model {
+class PageMeta extends Model {
 
 
 }

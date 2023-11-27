@@ -47,7 +47,7 @@
                 <th>Slug</th>
                 <th>Category</th>
                 <th>Author</th>
-                <th>Meta</th>
+                <th>Seo</th>
                 <th>Date and time</th>
             </tr>
         </thead>
