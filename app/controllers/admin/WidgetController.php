@@ -15,6 +15,12 @@ class WidgetController extends Controller {
 
     private $_data;
 
+    /**
+     * To show 404 page with 404 status code (on not existing widget)
+     * 
+     * @param string $id _POST widget id
+     * @return object WidgetController
+     */ 
     private function ifExists($id) {
 
         if(empty(Widget::ifRowExists($id)) ) {
@@ -23,6 +29,12 @@ class WidgetController extends Controller {
         }
     }
 
+    /**
+     * To show the widget index view
+     * 
+     * @param array $request _GET search, page
+     * @return object WidgetController, Controller
+     */
     public function index($request) {
 
         $widgets = Widget::allWidgetsButOrderedOnDate();
@@ -42,12 +54,23 @@ class WidgetController extends Controller {
         return $this->view('admin/widgets/index')->data($this->_data);
     }
 
+    /**
+     * To show the widget create view
+     * 
+     * @return object WidgetController, Controller
+     */
     public function create() {
 
         $this->_data['rules'] = [];
         return $this->view('admin/widgets/create')->data($this->_data);
     }
 
+    /**
+     * To store a new widget (on successful validation)
+     * 
+     * @param array $request _POST title, content
+     * @return object WidgetController, Controller (on failed validation)
+     */
     public function store($request) {
 
         if(!empty($request['content']) ) { $hasContent = 1; } else { $hasContent = 0; }
@@ -79,6 +102,12 @@ class WidgetController extends Controller {
         }
     }
 
+    /**
+     * To show the widget read view
+     * 
+     * @param array $request _POST id (widget id)
+     * @return object WidgetController, Controller
+     */
     public function read($request) {
 
         $this->ifExists($request['id']);
@@ -88,6 +117,12 @@ class WidgetController extends Controller {
         return $this->view('admin/widgets/read')->data($this->_data);
     }
 
+    /**
+     * To show the widget edit view
+     * 
+     * @param array $request _POST id (widget id)
+     * @return object WidgetController, Controller
+     */
     public function edit($request) {
 
         $this->ifExists($request['id']);
@@ -98,6 +133,12 @@ class WidgetController extends Controller {
         return $this->view('admin/widgets/edit')->data($this->_data);
     }
 
+    /**
+     * To update widget data (on successful validation)
+     * 
+     * @param array $request _POST id (widget id), title, content
+     * @return object WidgetController, Controller (on failed validation)
+     */
     public function update($request) {
 
         $id = $request['id'];
@@ -128,6 +169,11 @@ class WidgetController extends Controller {
         }
     }
 
+    /**
+     * To remove widget(s) from thrashcan
+     * 
+     * @param array $request _POST recoverIds (widget recoverIds)
+     */
     public function recover($request) {
 
         $recoverIds = explode(',', $request['recoverIds']);
@@ -146,6 +192,11 @@ class WidgetController extends Controller {
         redirect("/admin/widgets");
     }
 
+    /**
+     * To remove widget(s) permanently or move to thrashcan
+     * 
+     * @param array $request _POST deleteIds (widget deleteIds)
+     */
     public function delete($request) {
 
         $deleteIds = explode(',', $request['deleteIds']);
@@ -174,6 +225,7 @@ class WidgetController extends Controller {
                 }
             }
         }
+        
         redirect("/admin/widgets");
     }
 }

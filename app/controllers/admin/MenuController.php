@@ -14,6 +14,12 @@ class MenuController extends Controller {
 
     private $_data;
 
+    /**
+     * To show 404 page with 404 status code (on not existing menu)
+     * 
+     * @param string $id _POST menu id
+     * @return object MenuController
+     */ 
     private function ifExists($id) {
 
         if(empty(Menu::ifRowExists($id)) ) {
@@ -22,6 +28,12 @@ class MenuController extends Controller {
         }
     }
 
+    /**
+     * To show the menu index view
+     * 
+     * @param array $request _GET search, page
+     * @return object MenuController, Controller
+     */
     public function index($request) {
 
         $menus = Menu::allMenusButOrderedOnDate();
@@ -41,12 +53,23 @@ class MenuController extends Controller {
         return $this->view('admin/menus/index')->data($this->_data);
     }
 
+    /**
+     * To show the menu create view
+     * 
+     * @return object MenuController, Controller
+     */
     public function create() {
 
         $this->_data['rules'] = [];
         return $this->view('admin/menus/create')->data($this->_data);
     }
 
+    /**
+     * To store a new menu (on successful validation)
+     * 
+     * @param array $request _POST title, content
+     * @return object MenuController, Controller (on failed validation)
+     */
     public function store($request) {
 
         $rules = new Rules(); 
@@ -81,6 +104,12 @@ class MenuController extends Controller {
         } 
     }
 
+    /**
+     * To show the menu read view
+     * 
+     * @param array $request _POST id (menu id)
+     * @return object MenuController, Controller
+     */
     public function read($request) {
 
         $this->ifExists($request['id']);
@@ -90,6 +119,12 @@ class MenuController extends Controller {
         return $this->view('/admin/menus/read')->data($this->_data);
     }
 
+    /**
+     * To show the menu edit view
+     * 
+     * @param array $request _POST id (menu id)
+     * @return object MenuController, Controller
+     */
     public function edit($request) {
 
         $this->ifExists($request['id']);
@@ -100,6 +135,12 @@ class MenuController extends Controller {
         return $this->view('admin/menus/edit')->data($this->_data);
     }
 
+    /**
+     * To update menu data (on successful validation)
+     * 
+     * @param array $request _POST id (menu id), title, content)
+     * @return object MenuController, Controller (on failed validation)
+     */
     public function update($request) {
 
         $id = $request['id'];
@@ -131,6 +172,11 @@ class MenuController extends Controller {
         }
     }
 
+    /**
+     * To update menu data (position)
+     * 
+     * @param array $request _POST id (menu id), position
+     */
     public function updatePosition($request) {
 
         $id = $request['id'];
@@ -146,6 +192,11 @@ class MenuController extends Controller {
         redirect("/admin/menus/$id/edit");
     }
 
+    /**
+     * To update menu data (ordering)
+     * 
+     * @param array $request _POST id (menu id), ordering
+     */
     public function updateOrdering($request) {
 
         $id = $request['id'];
@@ -161,6 +212,11 @@ class MenuController extends Controller {
         redirect("/admin/menus/$id/edit");
     }
 
+    /**
+     * To remove menu(s) from thrashcan
+     * 
+     * @param array $request _POST recoverIds (menu recoverIds)
+     */
     public function recover($request) {
 
         $recoverIds = explode(',', $request['recoverIds']);
@@ -179,6 +235,11 @@ class MenuController extends Controller {
         redirect("/admin/menus");
     }
 
+    /**
+     * To remove menu(s) permanently or move to thrashcan
+     * 
+     * @param array $request _POST deleteIds (menu deleteIds)
+     */
     public function delete($request) {
 
         $deleteIds = explode(',', $request['deleteIds']);

@@ -1,5 +1,17 @@
 <?php
 
+/** 
+ * categories table
+ * 
+ * column id: to use as an unique identifier
+ * column title: to distinguish categories and to use as a reference for categories
+ * column slug: to extend page slugs
+ * column category_description: to add a short description (could be anything)
+ * column author: to know who created the category
+ * column created_at: to know when a category is been created
+ * column updated_at: to know when a category is been updated
+ */
+
 namespace app\models;
 
 use database\DB;

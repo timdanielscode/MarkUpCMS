@@ -1,32 +1,46 @@
-<?php use validation\Errors; ?>
-<?php use core\Session; ?>
-<?php use extensions\Pagination; ?>
-<?php use validation\Get; ?>
-<?php use core\Alert; ?>
+<!-- 
+    - to show an overview of users, by default not thrashed. Or thrashed or on search value (by a dividing amount to not have to scroll down a lot)
+    -
+    - FOR TYPE OF ADMIN USER
+    -
+    - to create a selection of users to move to/from thrashcan or to permanently remove
+-->
 
-<?php 
-    $this->include('headerOpen');  
+<?php $this->include('openHeadTag'); ?>
+    <?php $this->stylesheet("/assets/css/style.css"); ?>
+    <?php $this->stylesheet("/assets/css/navbar.css"); ?>
+    <?php $this->stylesheet("/assets/css/index.css"); ?>
+    <?php $this->stylesheet("/assets/css/users.css"); ?>
+    <?php $this->stylesheet("/assets/css/pagination.css"); ?>
+    <?php $this->script("/assets/js/delete.js", true); ?>
+    <?php $this->script("/assets/js/recover.js", true); ?>
+<?php $this->include('closeHeadTagAndOpenBodyTag'); ?>
 
-    $this->stylesheet("/assets/css/style.css");
-    $this->stylesheet("/assets/css/navbar.css");
-    $this->stylesheet("/assets/css/index.css");
-    $this->stylesheet("/assets/css/users.css");
-    $this->stylesheet("/assets/css/pagination.css");
+<?php $this->include('navbar'); ?>
 
-    $this->script("/assets/js/delete.js", true);
-    $this->script("/assets/js/recover.js", true);
-
-    $this->include('headerClose');
-    $this->include('navbar');
-?>
 <div class="index-container">
-    <?php Alert::message('success'); ?>
+    <?php core\Alert::message('success'); ?>
     <div class="headerContainer">
         <h1>Users</h1>
-            <span class="badge pages"><?php echo $count; ?></span>
+        <span class="badge pages"><?php echo $count; ?></span>
     </div>
-
-    <?php if(Session::get('user_role') === 'admin') { ?><a href="/admin/users/create" class="create">Create</a> <span class="deleteSeparator">|</span> <form action="/admin/users/delete" method="POST" class="indexDeleteForm"><input type="submit" class="delete" value="<?php if($search === 'Thrashcan') { echo 'Delete permanently'; } else { echo 'Delete'; } ?>"/><input type="hidden" name="deleteIds" id="deleteIds" value=""/></form> | <?php } ?><form action="" method="GET" class="thrashcanForm"><input type="submit" name="search" value="Thrashcan"/></form><?php if($search === 'Thrashcan' && Session::get('user_role') === 'admin') { ?> | <form action="/admin/users/recover" method="POST" class="recoverForm"><input type="submit" class="recover" value="Recover"/><input type="hidden" name="recoverIds" id="recoverIds" value=""/></form> <?php } ?>
+    <?php if(core\Session::get('user_role') === 'admin') { ?>
+        <a href="/admin/users/create" class="create">Create</a> 
+        <span class="deleteSeparator">|</span> 
+        <form action="/admin/users/delete" method="POST" class="indexDeleteForm">
+            <input type="submit" class="delete" value="<?php if($search === 'Thrashcan') { echo 'Delete permanently'; } else { echo 'Delete'; } ?>"/>
+            <input type="hidden" name="deleteIds" id="deleteIds" value=""/>
+        </form> | 
+    <?php } ?>
+        <form action="" method="GET" class="thrashcanForm">
+            <input type="submit" name="search" value="Thrashcan"/>
+        </form>
+        <?php if($search === 'Thrashcan' && core\Session::get('user_role') === 'admin') { ?> | 
+            <form action="/admin/users/recover" method="POST" class="recoverForm">
+                <input type="submit" class="recover" value="Recover"/>
+                <input type="hidden" name="recoverIds" id="recoverIds" value=""/>
+            </form> 
+        <?php } ?>
     <form action="" method="GET" class="searchForm">
         <input type="text" name="search" placeholder="Search" id="search">
         <input type="submit" name="submit" value="Search" class="button">
@@ -67,7 +81,6 @@
                         </tr>
                     <?php } ?>
                 <?php } else { ?>
-
                     <tr>
                         <td>-</td>
                         <td class="width-20">-</td>
@@ -75,7 +88,6 @@
                         <td class="width-50">-</td>
                         <td class="width-10">-</td>
                     </tr>
-
                 <?php } ?>
             </tbody>
         </table>
@@ -86,7 +98,6 @@
                     foreach($numberOfPages as $page) {
 
                         if(!empty($search) && $search !== null) {
-
                             echo '<li class="page-item"><a href="/admin/users?search=' . $search . '&page='.$page.'">'.$page.'</a></li>';
                         } else {
                             echo '<li class="page-item"><a href="/admin/users?page='.$page.'">'.$page.'</a></li>';
@@ -95,9 +106,7 @@
                 ?>
             </ul>
         </nav>
-        <?php } ?>
+    <?php } ?>
 </div>
 
-<?php 
-    $this->include('footer');
-?>
+<?php $this->include('footer'); ?>

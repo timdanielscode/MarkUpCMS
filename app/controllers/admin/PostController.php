@@ -24,6 +24,12 @@ class PostController extends Controller {
 
     private $_data;
 
+    /**
+     * To show 404 page with 404 status code (on not existing page)
+     * 
+     * @param string $id _POST page id
+     * @return object PostController
+     */ 
     private function ifExists($id) {
 
         if(empty(Post::ifRowExists($id)) ) {
@@ -32,8 +38,14 @@ class PostController extends Controller {
         }
     }
 
+    /**
+     * To show the page index view
+     * 
+     * @param array $request _GET search, page
+     * @return object PostController, Controller
+     */
     public function index($request) {
-
+        
         $posts = Post::allPostsWithCategories();
 
         $this->_data['search'] = '';
@@ -51,12 +63,23 @@ class PostController extends Controller {
         return $this->view('admin/posts/index')->data($this->_data);
     }
 
+    /**
+     * To show the page create view
+     * 
+     * @return object PostController, Controller
+     */
     public function create() {
         
         $this->_data['rules'] = [];
         return $this->view('admin/posts/create')->data($this->_data);
     }
 
+    /**
+     * To store a new page (on successful validation)
+     * 
+     * @param array $request _POST title, body
+     * @return object PostController, Controller (on failed validation)
+     */
     public function store($request) {
 
         $rules = new Rules();
@@ -92,6 +115,12 @@ class PostController extends Controller {
         }
     }
 
+    /**
+     * To show the page read view
+     * 
+     * @param array $request _GET search, page, _POST id (page id)
+     * @return object PostController, Controller
+     */
     public function read($request) {
 
         $this->ifExists($request['id']);
@@ -105,6 +134,12 @@ class PostController extends Controller {
         return $this->view('/admin/posts/read')->data($this->_data);
     }
 
+    /**
+     * To show the page edit view
+     * 
+     * @param array $request _GET search, page, _POST id (page id)
+     * @return object PostController, Controller
+     */
     public function edit($request) {
 
         $this->ifExists($request['id']);
@@ -116,6 +151,12 @@ class PostController extends Controller {
         return $this->view('admin/posts/edit')->data($this->_data);
     }
 
+    /**
+     * To update page data (on successful validation)
+     * 
+     * @param array $request _POST id (page id), title, body
+     * @return object PostController, Controller (on failed validation)
+     */
     public function update($request) {
 
         $id = $request['id'];
@@ -148,6 +189,11 @@ class PostController extends Controller {
         }
     }
 
+    /**
+     * To unset sessions on session name
+     * 
+     * @param array $names session names
+     */
     private function unsetSessions($names) {
 
         if(!empty($names) && $names !== null) {
@@ -159,6 +205,11 @@ class PostController extends Controller {
         }
     }
 
+    /**
+     * To only show a certain 'section' on page edit view after clicking on sidebar
+     * 
+     * @param string $slug slug
+     */
     private function setDefaultSession($slug) {
 
         $names = ['cdn', 'widget', 'category', 'css', 'js', 'meta'];
@@ -174,6 +225,12 @@ class PostController extends Controller {
         Session::set($slug, true);
     }
 
+    /**
+     * To get all necessary data on failed validation or page edit view
+     * 
+     * @param string $id _POST id (page id)
+     * @param array optional $requestData request data 
+     */
     private function getAllData($id, $requestData = null) {
 
         $postData = Post::get($id);
@@ -208,13 +265,16 @@ class PostController extends Controller {
         return $this->_data;
     }
 
+    /** 
+     * To import meta(s) on page
+     * 
+     * @param array $request _POST id (page id), cdns
+     */
     public function importCdns($request) {
 
         $id = $request['id'];
         $this->unsetSessions(['slug', 'widget', 'category', 'css', 'js', 'meta']);
         Session::set('cdn', true); 
-
-        $rules = new Rules();
 
         foreach($request['cdns'] as $cdnId) {
 
@@ -229,6 +289,11 @@ class PostController extends Controller {
         redirect("/admin/posts/$id/edit");
     }
 
+    /** 
+     * To export meta(s) from page
+     * 
+     * @param array $request _POST id (page id), cdns
+     */
     public function exportCdns($request) {
 
         $id = $request['id'];
@@ -244,6 +309,11 @@ class PostController extends Controller {
         redirect("/admin/posts/$id/edit");
     }
 
+    /**
+     * To make widget(s) applicable on page
+     * 
+     * @param array $request _POST id (page id), widgets
+     */
     public function addWidget($request) {
 
         $id = $request['id'];
@@ -251,11 +321,9 @@ class PostController extends Controller {
         $this->unsetSessions(['slug', 'cdn', 'category', 'css', 'js', 'meta']);
         Session::set('widget', true);
 
-        $widgetIds = $request['widgets'];
+        if(!empty($request['widgets']) && $request['widgets'] !== null) {
 
-        if(!empty($widgetIds) && $widgetIds !== null) {
-
-            foreach($widgetIds as $widgetId) {
+            foreach($request['widgets'] as $widgetId) {
 
                 PageWidget::insert([
 
@@ -269,6 +337,11 @@ class PostController extends Controller {
         redirect("/admin/posts/$id/edit");
     }
 
+    /**
+     * To make widget(s) inapplicable on page
+     * 
+     * @param array $request _POST id (page id), widgets
+     */
     public function removeWidget($request) {
 
         $id = $request['id'];
@@ -288,6 +361,12 @@ class PostController extends Controller {
         redirect("/admin/posts/$id/edit");
     }
 
+    /**
+     * To assign category on page (on successful validation)
+     * 
+     * @param array $request _POST id (page id), categories
+     * @return object PostController, Controller (on failed validation)
+     */
     public function assignCategory($request) {
 
         $id = $request['id'];
@@ -323,6 +402,12 @@ class PostController extends Controller {
         }
     }
 
+    /**
+     * To update post data (slug) after assigning a category
+     * 
+     * @param string $id _POST page id 
+     * @param string $categoryId _POST category id
+     */
     private function updateSlugCategory($id, $categoryId) {
 
         if(!empty(Category::getSlugSub($categoryId))) {
@@ -350,6 +435,11 @@ class PostController extends Controller {
         }
     }
 
+    /**
+     * To exclude js file(s) on page
+     * 
+     * @param array $request _POST id (page id), linkedJsFiles
+     */
     public function removeJs($request) {
 
         $id = $request['id'];
@@ -366,6 +456,11 @@ class PostController extends Controller {
         redirect("/admin/posts/$id/edit");
     }
 
+    /**
+     * To include js file(s) on page
+     * 
+     * @param array $request _POST id (page id), jsFiles
+     */
     public function includeJs($request) {
 
         $id = $request['id'];
@@ -386,6 +481,11 @@ class PostController extends Controller {
         redirect("/admin/posts/$id/edit");
     }
 
+    /**
+     * To link css file(s) on page
+     * 
+     * @param array $request _POST id (page id), cssFiles
+     */
     public function linkCss($request) {
 
         $id = $request['id'];
@@ -406,6 +506,11 @@ class PostController extends Controller {
         redirect("/admin/posts/$id/edit");
     }
 
+    /**
+     * To unlink css file(s) on page
+     * 
+     * @param array $request _POST id (page id), linkedCssFiles
+     */
     public function unLinkCss($request) {
 
         $id = $request['id'];
@@ -422,6 +527,12 @@ class PostController extends Controller {
         redirect("/admin/posts/$id/edit");
     }
 
+    /**
+     * To update page data (slug) (on successful validation)
+     * 
+     * @param array $request _POST id (page id), postSlug
+     * @return object PostController, Controller (on failed validation)
+     */
     public function updateSlug($request) {
 
         $id = $request['id'];
@@ -461,6 +572,12 @@ class PostController extends Controller {
         redirect("/admin/posts/$id/edit");
     }
 
+    /**
+     * To update page data (meta title, meta description, meta keywords) (on successful validation)
+     * 
+     * @param array $request _POST id (page id), metaTitle, metaDescription, metaKeywords
+     * @return object PostController, Controller (on failed validation)
+     */
     public function updateMetadata($request) {
 
         $id = $request['id'];
@@ -492,6 +609,12 @@ class PostController extends Controller {
         redirect("/admin/posts/$id/edit");
     }
 
+    /**
+     * To detach category from page and update page data (slug) (on successful validation)
+     * 
+     * @param array $request _POST id (page id), slug
+     * @return object PostController, Controller (on failed validation)
+     */
     public function detachCategory($request) {
 
         $id = $request['id'];
@@ -526,19 +649,23 @@ class PostController extends Controller {
         }
     }
 
+    /**
+     * To remove page(s) from thrashcan
+     * 
+     * @param array $request _POST recoverIds (page recoverIds) 
+     */
     public function recover($request) {
 
-        $id = $request['id'];
         $recoverIds = explode(',', $request['recoverIds']);
                 
-        foreach($recoverIds as $request['id'] ) {
+        foreach($recoverIds as $id) {
 
-            $this->ifExists($request['id']);
+            $this->ifExists($id);
             
-            Post::update(['id' => $request['id']], [
+            Post::update(['id' => $id], [
             
                 'removed'  => 0,
-                'slug' => "/" . Post::getColumns(['title'], $request['id'])['title']
+                'slug' => "/" . Post::getColumns(['title'], $id)['title']
             ]);
         }
         
@@ -546,6 +673,11 @@ class PostController extends Controller {
         redirect("/admin/posts");
     }
 
+    /**
+     * To remove page(s) permanently or move to thrashcan
+     * 
+     * @param array $request _POST deleteIds (page deleteIds)
+     */
     public function delete($request) {
 
         $deleteIds = explode(',', $request['deleteIds']);

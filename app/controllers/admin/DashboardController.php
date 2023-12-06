@@ -18,6 +18,12 @@ class DashboardController extends Controller {
     private $_pageIds = [], $_metaTitles = [], $_metaDescriptions = [], $_metaKeyWords = [], $_cssIds = [], $_jsIds = [];
     private $_pngIds = [], $_jpegIds = [], $_gifIds = [], $_webpIds = [], $_svgIds = [], $_videoIds = [], $_applicationIds = [];
                 
+    /**
+     * To show the dashboard index view
+     * 
+     * @param array $request _GET search
+     * @return object DashboardController, Controller
+     */
     public function index() {    
 
         $this->_data['pages'] = Post::getAll(['id']);
@@ -67,6 +73,11 @@ class DashboardController extends Controller {
         return $this->view("admin/dashboard/index")->data($this->_data);     
     }
 
+    /**
+     * to get the amount of pages
+     * 
+     * @return int _pageIds counted pages
+     */
     private function getNumberOfPages() {
 
         foreach(User::getAll(['id']) as $id) {
@@ -77,6 +88,11 @@ class DashboardController extends Controller {
         return count($this->_pageIds);
     }
 
+    /**
+     * To get the amount of page meta titles
+     * 
+     * @return int _metaTitles counted titles
+     */
     private function getNumberOfNotAppliedMetaTitle() {
 
         foreach(Post::getMetaTitleNotNullEmpty() as $metaTitle) {
@@ -87,6 +103,11 @@ class DashboardController extends Controller {
         return count($this->_metaTitles);
     }
 
+    /**
+     * To get the amout of page meta descriptions
+     * 
+     * @return int _metaDescriptions counted descriptions
+     */
     private function getNumberOfNotAppliedMetaDescription() {
     
         foreach(Post::getMetaDescriptionNotNullEmpty() as $metaDescription) {
@@ -97,6 +118,11 @@ class DashboardController extends Controller {
         return count($this->_metaDescriptions);
     }
 
+    /**
+     * To get the amount of page meta keywords
+     * 
+     * @return int _metaKeyWords counted keywords
+     */
     private function getNumberOfNotAppliedMetaKeywords() {
 
         foreach(Post::getMetaKeyWordsNotNullEmpty() as $metaKeyWord) {
@@ -107,6 +133,11 @@ class DashboardController extends Controller {
         return count($this->_metaKeyWords);
     }
 
+    /**
+     * To get the amount of css files
+     * 
+     * @return int _cssIds counted css
+     */
     private function getNumberOfLinkedCss() {
 
         foreach(Css::getIdLinkedNotNull() as $id) {
@@ -117,6 +148,11 @@ class DashboardController extends Controller {
         return count($this->_cssIds);
     }
 
+    /**
+     * To get the amount of js files
+     * 
+     * @return int _jsIds counted js
+     */
     private function getNumberOfIncludedJs() {
 
         foreach(Js::getIdIncludedNotNull() as $id) {
@@ -127,6 +163,11 @@ class DashboardController extends Controller {
         return count($this->_jsIds);
     }
 
+    /**
+     * To get the amount of png files
+     * 
+     * @return int _pngIds counted png
+     */
     private function getNumberOfMediaTypePng() {
 
         foreach(Media::whereColumns(['id'], ['media_filetype' => 'image/png']) as $id) {
@@ -137,6 +178,11 @@ class DashboardController extends Controller {
         return count($this->_pngIds);
     }
 
+    /**
+     * To get the amount of jpg files
+     * 
+     * @return int _jpegIds counted jpg
+     */
     private function getNumberOfMediaTypeJpg() {
 
         foreach(Media::whereColumns(['id'], ['media_filetype' => 'image/jpeg']) as $id) {
@@ -147,6 +193,11 @@ class DashboardController extends Controller {
         return count($this->_jpegIds);
     }
 
+    /**
+     * To get the amount of gif files
+     * 
+     * @return int _gifIds counted gif
+     */
     private function getNumberOfMediaTypeGif() {
 
         foreach(Media::whereColumns(['id'], ['media_filetype' => 'image/gif']) as $id) {
@@ -157,6 +208,11 @@ class DashboardController extends Controller {
         return count($this->_gifIds);
     }
 
+    /**
+     * To get the amount of webp files
+     * 
+     * @return int _webpIds counted webp
+     */
     private function getNumberOfMediaTypeWebp() {
 
         foreach(Media::whereColumns(['id'], ['media_filetype' => 'image/webp']) as $id) {
@@ -167,6 +223,11 @@ class DashboardController extends Controller {
         return count($this->_webpIds);
     }
 
+    /**
+     * To get the amount of svg files
+     * 
+     * @return int _svgIds counted svg
+     */
     private function getNumberOfMediaTypeSvg() {
 
         foreach(Media::whereColumns(['id'], ['media_filetype' => 'image/svg+xml']) as $id) {
@@ -177,6 +238,11 @@ class DashboardController extends Controller {
         return count($this->_svgIds);
     }
 
+    /**
+     * To get the amount of video files
+     * 
+     * @return int _videoIds counted video
+     */
     private function getNumberOfMediaTypeMp4() {
 
         foreach(Media::whereColumns(['id'], ['media_filetype' => 'video/mp4']) as $id) {
@@ -187,6 +253,11 @@ class DashboardController extends Controller {
         return count($this->_videoIds);
     }
 
+    /**
+     * To get the amount of pdf files
+     * 
+     * @return int _applicationIds counted pdf
+     */
     private function getNumberOfMediaTypePdf() {
 
         foreach(Media::whereColumns(['id'], ['media_filetype' => 'application/pdf']) as $id) {

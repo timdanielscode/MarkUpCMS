@@ -8,13 +8,18 @@ use app\models\Css;
 use app\models\Js;
 use app\models\Menu;
 use app\models\Widget;
-use app\models\Cdn;
+use app\models\Meta;
 use core\http\Request;
 
 class RenderPageController extends Controller {
 
     private $_data;
 
+    /**
+     * To show the page view (show the actual pages and all contents)
+     * 
+     * @return object RenderPageController, Controller
+     */
     public function render() {
 
         $request = new Request();
@@ -31,7 +36,7 @@ class RenderPageController extends Controller {
             }
         }
 
-        $this->_data['cdns'] = Cdn::getContent($this->_data['post'][0]['id']);
+        $this->_data['metas'] = Meta::getContent($this->_data['post'][0]['id']);
         $this->_data['cssFiles'] = Css::getFilenameExtension($this->_data['post'][0]['id']);
         $this->_data['jsFiles'] = Js::getFilenameExtension($this->_data['post'][0]['id']);
         $this->_data['menusTop'] = Menu::getTopMenus();

@@ -1,5 +1,13 @@
 <?php
 
+/** 
+ * websiteSlug table 
+ * 
+ * column id: to use as an unique identifier
+ * column slug: to modify the login slug 
+ * column updated_at: to know when a slug has been modified
+ */
+
 namespace app\models;
 
 use database\DB;

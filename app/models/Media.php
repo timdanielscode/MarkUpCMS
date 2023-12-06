@@ -1,5 +1,17 @@
 <?php
 
+/** 
+ * media table 
+ * 
+ * column id: to use as an unique identifier
+ * column media_filename: to load files correctly and distinguish media files and to use as a reference for media files
+ * column media_folder, media_filetype: to load files correctly
+ * column media_filesize: to know size of file
+ * column media_description: to know who created the category
+ * column created_at: to know when a page is been created
+ * column updated_at: to know when a page is been updated
+ */
+
 namespace app\models;
 
 use database\DB;

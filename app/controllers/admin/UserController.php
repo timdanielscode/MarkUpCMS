@@ -15,6 +15,12 @@ class UserController extends Controller {
 
     private $_data;
 
+    /**
+     * To show 404 page with 404 status code (on not existing user)
+     * 
+     * @param string $id _POST user id
+     * @return object UserController
+     */ 
     private function ifExists($id) {
 
         if(empty(User::ifRowExists($id)) ) {
@@ -23,6 +29,12 @@ class UserController extends Controller {
         }
     }
 
+    /**
+     * To show the user index view
+     * 
+     * @param array $request _GET search, page
+     * @return object UserController, Controller
+     */
     public function index($request) {
 
         $users = User::allUsersWithRoles(Session::get('username'));
@@ -42,12 +54,23 @@ class UserController extends Controller {
         return $this->view('admin/users/index')->data($this->_data);
     }
 
+    /**
+     * To show the user create view
+     * 
+     * @return object UserController, Controller
+     */
     public function create() {
 
         $this->_data["rules"] = [];
         return $this->view('admin/users/create')->data($this->_data);
     }
 
+    /**
+     * To store a new user (on successful validation)
+     * 
+     * @param array $request _POST f_username, email, password, password_confirm, role
+     * @return object UserController, Controller (on failed validation)
+     */
     public function store($request) {
 
         $rules = new Rules();
@@ -85,14 +108,11 @@ class UserController extends Controller {
         }
     }
 
-    public function read($request) {
-
-        $this->ifExists($request['username']);
-
-        $this->_data['current'] = User::userAndRole('username', $request['username']);
-        return $this->view('admin/users/read')->data($this->_data);
-    }
-
+    /**
+     * To show the user edit view
+     * 
+     * @return object UserController, Controller
+     */
     public function edit($request) {
 
         $this->ifExists($request['username']);
@@ -103,6 +123,12 @@ class UserController extends Controller {
         return $this->view('admin/users/edit')->data($this->_data);
     }
 
+    /**
+     * To update user data (details) (on successful validation)
+     * 
+     * @param array $request _POST id (user id), f_username, email
+     * @return object UserController, Controller (on failed validation)
+     */
     public function update($request) {
 
         $id = $request['id'];
@@ -130,6 +156,12 @@ class UserController extends Controller {
         }
     }
 
+    /**
+     * To update user data (role) (on successful validation)
+     * 
+     * @param array $request _POST id (user id)
+     * @return object UserController, Controller (on failed validation)
+     */
     public function updateRole($request) {
 
         $id = $request['id'];
@@ -145,6 +177,11 @@ class UserController extends Controller {
         redirect('/admin/users'); 
     }
 
+    /**
+     * To remove user(s) from thrashcan
+     * 
+     * @param array $request _POST recoverIds (user recoverIds)
+     */
     public function recover($request) {
 
         $recoverIds = explode(',', $request['recoverIds']);
@@ -163,6 +200,11 @@ class UserController extends Controller {
         redirect("/admin/users");
     }
 
+    /**
+     * To remove user(s) permanently or move to thrashcan
+     * 
+     * @param array $request _POST deleteIds (user deleteIds)
+     */
     public function delete($request) {
 
         $deleteIds = explode(',', $request['deleteIds']);

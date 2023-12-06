@@ -1,105 +1,101 @@
-<?php use validation\Errors; ?>
-<?php use core\Session; ?>
-<?php use core\Alert; ?>
+<!-- 
+    - FOR TYPE OF ADMIN USER
+    - 
+    - to change the filename value to submit and update
+    - to change the contents value to submit and update
+    - to click on 'link on all' button to submit and link css file on every page
+    - to click on 'unlink all' button to submit and unlink css file on every page
+    - to have an overview of pages where css file is linked and to create a selection to submit and unlink css file
+    - to have an overview of pages where css file is not linked and to create a selection to submit and link css file
+--> 
 
-<?php 
-    $this->include('headerOpen');  
+<?php $this->include('openHeadTag'); ?>  
+    <?php $this->stylesheet("/assets/css/style.css"); ?>
+    <?php $this->stylesheet("/assets/css/navbar.css"); ?>
+    <?php $this->stylesheet("/assets/css/css.css"); ?>
+    <?php $this->stylesheet("/assets/css/sidebar.css"); ?>
+    <?php $this->script("/assets/js/fullscreen.js", true); ?>
+    <?php $this->script("/assets/js/zoom.js", true); ?>
+    <?php $this->stylesheet("/assets/css/codemirror/codemirror.css"); ?>
+    <?php $this->stylesheet("/assets/css/codemirror/monokai.css"); ?>
+    <?php $this->script("/assets/js/codemirror/codemirror.js"); ?>
+    <?php $this->script("/assets/js/codemirror/css.js"); ?>
+    <?php $this->script("/assets/js/codemirror/closebrackets.js"); ?>
+<?php $this->include("closeHeadTagAndOpenBodyTag"); ?>
 
-    $this->stylesheet("/assets/css/style.css");
-    $this->stylesheet("/assets/css/navbar.css");
-    $this->stylesheet("/assets/css/css.css");
-    $this->stylesheet("/assets/css/sidebar.css");
+<?php $this->include('navbar'); ?>
 
-    $this->script("/assets/js/fullscreen.js", true);
-    $this->script("/assets/js/zoom.js", true);
-
-    $this->stylesheet("/assets/css/codemirror/codemirror.css");
-    $this->stylesheet("/assets/css/codemirror/monokai.css");
-    $this->script("/assets/js/codemirror/codemirror.js");
-    $this->script("/assets/js/codemirror/css.js");
-    $this->script("/assets/js/codemirror/closebrackets.js");
-
-    $this->include("headerClose");
-    $this->include('navbar');
-?>
-
-    
-        <div class="row">
-            <div class="col10 col10-L- col9-L col8-S">
-                <div class="edit-container">
-                <?php Alert::message('success'); ?>
-                    <form id="editorForm" action="/admin/css/<?php echo $data['id'];?>/update" method="POST" class="form-code">
-                        <div class="form-parts">
-                            <input name="filename" type="text" id="filename" placeholder="Filename" value="<?php if(!empty($data['file_name'])) { echo $data['file_name']; } ?>">
-                            <?php if(!empty(Errors::get($rules, 'filename')) && Errors::get($rules, 'filename') !== null) { ?>
-                                <div class="error-messages margin-b-10 margin-tm-10 font-size-14">
-                                    <span><?php echo Errors::get($rules, 'filename'); ?></span>
-                                </div>    
-                            <?php } ?> 
-                            <textarea name="code" id="code"><?php echo $data['code']; ?></textarea>
-                        </div>
-                        <div class="form-parts">
-                            <button name="submit" id="submit" type="submit" class="display-none" value="submit">Create</button>
-                        </div>
+<div class="row">
+    <div class="col10 col10-L- col9-L col8-S">
+        <div class="edit-container">
+        <?php core\Alert::message('success'); ?>
+            <form id="editorForm" action="/admin/css/<?php echo $data['id'];?>/update" method="POST" class="form-code">
+                <div class="form-parts">
+                    <input name="filename" type="text" id="filename" placeholder="Filename" value="<?php if(!empty($data['file_name'])) { echo $data['file_name']; } ?>">
+                    <?php if(!empty(validation\Errors::get($rules, 'filename')) && validation\Errors::get($rules, 'filename') !== null) { ?>
+                        <div class="error-messages margin-b-10 margin-tm-10 font-size-14">
+                            <span><?php echo validation\Errors::get($rules, 'filename'); ?></span>
+                        </div>    
+                    <?php } ?> 
+                    <textarea name="code" id="code"><?php echo $data['code']; ?></textarea>
+                </div>
+                <div class="form-parts">
+                    <button name="submit" id="submit" type="submit" class="display-none" value="submit"></button>
+                </div>
+            </form>
+        </div>
+    </div>
+    <div class="col2 col2-L col3-L col4-S">
+        <div id="sidebar" class="width-25">
+            <div class="sidebarContainer">
+                <div class="mainButtonContainer">
+                    <label for="submit" class="button greenButton margin-r-10">Update</label>
+                    <a href="/admin/css" class="button blueButton">Back</a>
+                </div>
+                <div class="buttonContainer">
+                    <a href="#" id="codeEditorFullScreen" class="button darkButton margin-r-10">Full screen</a>
+                    <a href="#" id="codeEditorZoomIn" class="button darkButton margin-r-10">+</a>
+                    <a href="#" id="codeEditorZoomOut" class="button darkButton">-</a>
+                </div>
+                <div class="buttonContainer">
+                    <form action="/admin/css/<?php echo $data['id']; ?>/link-all" method="POST">
+                        <input type="submit" name="submit" class="button lightButton margin-r-10" value="Link on all" onclick="return confirm('Are you sure?');"/>
+                    </form>
+                    <form action="/admin/css/<?php echo $data['id']; ?>/unlink-all" method="POST">
+                        <input type="submit" name="submit" class="button lightButton" value="Unlink all" onclick="return confirm('Are you sure?');"/>
                     </form>
                 </div>
-            </div>
-            <div class="col2 col2-L col3-L col4-S">
-                <div id="sidebar" class="width-25">
-                    <div class="sidebarContainer">
-                        <div class="mainButtonContainer">
-                            <label for="submit" class="button greenButton margin-r-10">Update</label>
-                            <a href="/admin/css" class="button blueButton">Back</a>
-                        </div>
-                        <div class="buttonContainer">
-                            <a href="#" id="codeEditorFullScreen" class="button darkButton margin-r-10">Full screen</a>
-                            <a href="#" id="codeEditorZoomIn" class="button darkButton margin-r-10">+</a>
-                            <a href="#" id="codeEditorZoomOut" class="button darkButton">-</a>
-                        </div>
-                        <div class="buttonContainer">
-                            <form action="/admin/css/<?php echo $data['id']; ?>/link-all" method="POST">
-                                <input type="submit" name="submit" class="button lightButton margin-r-10" value="Link on all" onclick="return confirm('Are you sure?');"/>
-                            </form>
-                            <form action="/admin/css/<?php echo $data['id']; ?>/unlink-all" method="POST">
-                                <input type="submit" name="submit" class="button lightButton" value="Unlink all" onclick="return confirm('Are you sure?');"/>
-                            </form>
-                        </div>
-                        <span class="text margin-t-50">File: </span>
-                        <span class="data"><?php echo $data['file_name'] . $data['extension']; ?></span>
-                        <form action="/admin/css/<?php echo $data['id']; ?>/unlink-pages" method="POST" class="removeCssForm">
-                            <label>Linked on: </label>
-                            <select name="pages[]" multiple>
-                                <?php foreach($data['assingedPages'] as $page) { ?>
-                                    <option value="<?php echo $page['id']; ?>"><?php echo $page['title']; ?></option>
-                                <?php } ?>
-                            </select>
-                            <input type="submit" name="submit" class="button blueButton" value="Unlink"/>
-                        </form>
-                        <form action="/admin/css/<?php echo $data['id']; ?>/link-pages" method="POST" class="linkCssForm">
-                            <label>Other pages: </label>
-                            <select name="pages[]" multiple>
-                                <?php foreach($data['pages'] as $page) { ?>
-                                    <option value="<?php echo $page['id']; ?>"><?php echo $page['title']; ?></option>
-                                <?php } ?>
-                            </select>
-                            <input type="submit" name="submit" class="button greenButton" value="Link"/>
-                        </form>
-                    </div>
-                </div>
+                <form action="/admin/css/<?php echo $data['id']; ?>/unlink-pages" method="POST" class="removeCssForm margin-t-50">
+                    <label>Linked on: </label>
+                    <select name="pages[]" multiple>
+                        <?php foreach($data['assingedPages'] as $page) { ?>
+                            <option value="<?php echo $page['id']; ?>"><?php echo $page['title']; ?></option>
+                        <?php } ?>
+                    </select>
+                    <input type="submit" name="submit" class="button blueButton" value="Unlink"/>
+                </form>
+                <form action="/admin/css/<?php echo $data['id']; ?>/link-pages" method="POST" class="linkCssForm">
+                    <label>Other pages: </label>
+                    <select name="pages[]" multiple>
+                        <?php foreach($data['pages'] as $page) { ?>
+                            <option value="<?php echo $page['id']; ?>"><?php echo $page['title']; ?></option>
+                        <?php } ?>
+                    </select>
+                    <input type="submit" name="submit" class="button greenButton" value="Link"/>
+                </form>
             </div>
         </div>
-    
+    </div>
+</div>
 
-    <script>
-        var editor = CodeMirror.fromTextArea(document.getElementById("code"), {
-            theme: "monokai",
-            lineNumbers: true,
-            autoCloseBrackets: true,
-            tabSize: 2
-        });
-    </script>
-    
+<!-- to use CodeMirror text editor to have a better ux -->
+<script>
+    var editor = CodeMirror.fromTextArea(document.getElementById("code"), {
+        theme: "monokai",
+        lineNumbers: true,
+        autoCloseBrackets: true,
+        tabSize: 2
+    });
+</script>
 
-<?php 
-    $this->include('footer');
-?>
+<?php $this->include('footer'); ?>

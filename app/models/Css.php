@@ -1,5 +1,17 @@
 <?php
 
+/** 
+ * css table
+ * 
+ * column id: to use as an unique identifier
+ * column file_name: to distinguish css files and to use as a reference for css files
+ * column author: to know who created the css file
+ * column has_content: to confirm css file does contains data
+ * column removed: to not direct permanently delete css files 
+ * column created_at: to know when a category is been created
+ * column updated_at: to know when a category is been updated
+ */
+
 namespace app\models;
 
 use database\DB;

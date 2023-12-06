@@ -1,5 +1,9 @@
 <?php 
 
+/** 
+ * To create necessary tables (during installation process)
+ */
+
 namespace app\models;
 
 use database\DB;

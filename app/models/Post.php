@@ -1,5 +1,20 @@
 <?php
 
+/** 
+ * pages table 
+ * 
+ * column id: to use as an unique identifier
+ * column title: to distinguish pages and to use as a reference for pages
+ * column slug: to show pages using the url (navigating through pages by clicking on links, for search engines)
+ * column body: to show page body content (html markup)
+ * column has_content: to confirm body of page does contains data
+ * column author: to know who created the category
+ * column metaTitle, metaDescription, metaKeywords: seo 
+ * column removed: to not direct permanently delete pages 
+ * column created_at: to know when a page is been created
+ * column updated_at: to know when a page is been updated
+ */
+
 namespace app\models;
 
 use database\DB;

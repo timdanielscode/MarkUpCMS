@@ -2,10 +2,13 @@
              
 namespace app\controllers;
 
-    use core\Session;
+use core\Session;
                 
-    class LogoutController extends Controller {
+class LogoutController extends Controller {
                 
+    /**
+     * To unset sessions to logout
+     */ 
     public function logout() {    
                      
         Session::delete("logged_in");

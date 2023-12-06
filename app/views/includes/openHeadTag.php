@@ -1,3 +1,4 @@
+<!-- to open head tag and add meta tags -->
 <!DOCTYPE html>
 <html>
 <head>

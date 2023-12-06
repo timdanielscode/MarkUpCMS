@@ -1,8 +1,15 @@
 <?php
                 
-/**        
- * Model: app/models/User.php
- */ 
+/** 
+ * users table 
+ * 
+ * column id: to use as an unique identifier
+ * column username, email: to distinguish users and to authenticate
+ * column password: to authenticate
+ * column removed: to not direct permanently delete a user 
+ * column created_at: to know when a page is been created
+ * column updated_at: to know when a page is been updated
+ */
 namespace app\models;
 
 use database\DB;

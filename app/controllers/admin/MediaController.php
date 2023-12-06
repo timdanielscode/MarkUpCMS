@@ -15,6 +15,12 @@ class MediaController extends Controller {
 
     private $_data, $_search = '',$_type = false, $_folder = 'website/assets';
 
+    /**
+     * To show 404 page with 404 status code (on not existing media)
+     * 
+     * @param string $id _POST media id
+     * @return object MediaController
+     */ 
     private function ifExists($id) {
 
         if(empty(Media::ifRowExists($id)) ) {
@@ -23,6 +29,76 @@ class MediaController extends Controller {
         }
     }
 
+    /**
+     * To get the folder value
+     * 
+     * @param array $request _GET and _POST (values)
+     * @return string folder name
+     */
+    private function getFolder($request) {
+
+        if(!empty($request['folder']) ) {
+
+            $this->_folder = Get::validate($request['folder']);
+        }
+
+        return $this->_folder;
+    }
+
+    /**
+     * To get the search value
+     * 
+     * @param array $request _GET (values)
+     * @return string search value
+     */
+    private function getSearch($request) {
+
+        if(!empty($request['search'])) {
+
+            $this->_search = Get::validate($request['search']);
+        }
+
+        return $this->_search;
+    }
+
+    /**
+     * To check if type is set
+     * 
+     * @param array $request _GET and _POST (values)
+     * @return bool true | false
+     */
+    private function getTypes($request) {
+
+        if(!empty($request['type']) ) {
+
+            $this->_type = true;
+        }
+
+        return $this->_type;
+    }
+
+    /**
+     * To force failed validation message on update filename (filename is equal to folder name)
+     * 
+     * @param array $filename media filename
+     */
+    private function checkIfFilenameIsFolderName($filename) {
+
+        foreach(MediaFolder::getAll(['folder_name']) as $folder) { 
+
+            if($folder['folder_name'] === $filename) {
+
+                exit();
+            }
+        }
+    }
+
+    /**
+     * To show the media index view
+     * 
+     * @param array $request _GET search, page
+     * @return object MediaController, Controller
+     */
     public function index($request) {
 
         $media = Media::allMediaButOrdered();
@@ -41,36 +117,12 @@ class MediaController extends Controller {
         return $this->view('admin/media/index')->data($this->_data);
     }
 
-    private function getFolder($request) {
-
-        if(!empty($request['folder']) ) {
-
-            $this->_folder = Get::validate($request['folder']);
-        }
-
-        return $this->_folder;
-    }
-
-    private function getSearch($request) {
-
-        if(!empty($request['search'])) {
-
-            $this->_search = Get::validate($request['search']);
-        }
-
-        return $this->_search;
-    }
-
-    private function getTypes($request) {
-
-        if(!empty($request['type']) ) {
-
-            $this->_type = true;
-        }
-
-        return $this->_type;
-    }
-
+    /**
+     * To show the media create view
+     * 
+     * @param array $request _GET search, folder, type, filter
+     * @return object MediaController, Controller
+     */
     public function create($request) {
 
         $folders = glob($this->getFolder($request) . '/*', GLOB_ONLYDIR);
@@ -96,26 +148,38 @@ class MediaController extends Controller {
         return $this->view('admin/media/create')->data($this->_data);
     }
 
+    /**
+     * To get media files on filter value
+     * 
+     * @param array $types filter values
+     * @return array media data
+     */
     private function getOnType($types) {
 
         $filesQuery = "SELECT * FROM media";
         $count = 0;
 
-        foreach($types as $type) {
+        foreach($types as $filter) {
 
             $count++;
 
             if($count === 1) {
 
-                $filesQuery .= " WHERE media_filetype LIKE " . "'%" . Get::validate($type) . "%'";
+                $filesQuery .= " WHERE media_filetype LIKE " . "'%" . Get::validate($filter) . "%'";
             } else {
-                $filesQuery .= " OR media_filetype LIKE " . "'%" . Get::validate($type) . "%'";
+                $filesQuery .= " OR media_filetype LIKE " . "'%" . Get::validate($filter) . "%'";
             }
         }
-        
+
         return Media::getOnType($filesQuery);  
     }
 
+    /**
+     * To store new media data and upload new files (on successful validation)
+     * 
+     * @param array $request _GET search, folder, type, filter _POST media_description
+     * @return object MediaController, Controller (on failed validation)
+     */
     public function store($request) {
         
         $filenames = $_FILES['file']['name'];
@@ -157,6 +221,11 @@ class MediaController extends Controller {
         }
     }
 
+    /**
+     * To store new folder data and create a new folder or remove a folder (checking create or remove)
+     * 
+     * @param array $request _GET search, folder, type, filter _POST P_folder
+     */
     public function folder($request) {
 
         if(file_exists($this->getFolder($request) . '/' . $request['P_folder']) === true) {
@@ -169,12 +238,23 @@ class MediaController extends Controller {
         redirect('/admin/media/create?folder=' . $this->getFolder($request));
     }
 
+    /**
+     * To remove a folder
+     * 
+     * @param array $request _GET search, folder, type, filter _POST P_folder
+     */
     private function deleteFolder($request) {
 
         Session::set('success', 'You have successfully removed the folder!');
         rmdir($this->getFolder($request) . '/' . $request['P_folder']);
     }
 
+    /**
+     * To store new folder data and create a new folder (on successful validation)
+     * 
+     * @param array $request _GET search, folder, type, filter _POST P_folder
+     * @return object MediaController, Controller (on failed validation)
+     */
     private function addFolder($request) {
 
         $rules = new Rules();
@@ -195,6 +275,11 @@ class MediaController extends Controller {
         }
     }
 
+    /**
+     * To store new folder data
+     * 
+     * @param array $folder folder name
+     */
     private function insertFolder($folder) {
 
         if(empty(MediaFolder::where(['folder_name' => $folder]) ) ) {
@@ -206,6 +291,15 @@ class MediaController extends Controller {
         }
     }
 
+    /**
+     * To validate files
+     * 
+     * @param array $filenames filenames 
+     * @param array $types file types
+     * @param array $errors file errors 
+     * @param object $rules Rules
+     * @return bool true | false 
+     */
     private function validation($filenames, $types, $errors, $rules) {
 
         foreach($filenames as $key => $value) {
@@ -221,14 +315,27 @@ class MediaController extends Controller {
         return $this->checkErrors($rules);
     }
 
+    /**
+     * To show failed validation error messages
+     * 
+     * @param string $file filename
+     * @param object $rules
+     */
     private function checkSelected($file, $rules) {
 
         if(empty($file) || $file === null) {
 
             $rules->errors[] = ['file' => "No file selected."];
-         }
+        }
     }
 
+    /**
+     * To show failed validation error messages
+     * 
+     * @param array $errors file errors
+     * @param string $error file key value
+     * @param object $rules Rules
+     */
     private function checkFilesize($errors, $error, $rules) {
 
         if($errors[$error] === 1) {
@@ -237,22 +344,41 @@ class MediaController extends Controller {
         }
     }
 
+    /**
+     * To show failed validation error messages
+     * 
+     * @param array $file filename
+     * @param object $rules Rules
+     */
     private function checkExists($file, $rules) {
 
-        if(!empty(Media::where(['media_filename' => $file]) )) {
+        if(!empty(Media::where(['media_filename' => $file]) ) || !empty(MediaFolder::where(['folder_name' => $file]))) {
     
             $rules->errors[] = ["file" => "File already exists."];
         }
     }
 
+    /**
+     * To show failed validation error messages
+     * 
+     * @param array $types file mime type
+     * @param string $file file key value
+     * @param object $rules Rules
+     */
     private function checkType($types, $file, $rules) {
 
-        if(in_array($types[$file],['image/png', 'image/jpeg', 'image/gif', 'image/webp', 'image/svg+xml', 'application/pdf', 'video/mp4', 'video/quicktime']) === false) {
+        if(in_array($types[$file], ['image/png', 'image/jpeg', 'image/gif', 'image/webp', 'image/svg+xml', 'application/pdf', 'video/mp4', 'video/quicktime']) === false) {
                     
             $rules->errors[] = ["file" => "File mime type is not valid."];
         }
     }
 
+    /**
+     * To show failed validation error messages
+     * 
+     * @param array $file filename
+     * @param object $rules Rules
+     */
     private function checkSpecial($file, $rules) {
 
         if(preg_match('/[#$%^&*()+=\\[\]\';,\/{}|":<>?~\\\\]/', $file)) {
@@ -261,6 +387,12 @@ class MediaController extends Controller {
         } 
     }
 
+    /**
+     * To show failed validation error messages
+     * 
+     * @param array $file filename
+     * @param object $rules Rules
+     */
     private function checkMax($file, $rules) {
 
         if(strlen($file) > 49) {
@@ -269,6 +401,12 @@ class MediaController extends Controller {
         }
     }
 
+    /**
+     * To check if validation errors exist
+     * 
+     * @param object $rules Rules
+     * @return bool false
+     */
     private function checkErrors($rules) {
 
         if(!empty($rules->errors)) {
@@ -277,6 +415,11 @@ class MediaController extends Controller {
         }
     }
 
+    /**
+     * To update media data (filename) (on successful validation) (AJAX)
+     * 
+     * @param array $request _GET search, page | search, folder, type, filter _POST id (media id), filename
+     */
     public function UPDATEFILENAME($request) {
 
         $this->ifExists($request['id']);
@@ -298,17 +441,11 @@ class MediaController extends Controller {
         }
     }
 
-    private function checkIfFilenameIsFolderName($filename) {
-
-        foreach(MediaFolder::getAll(['folder_name']) as $folder) { 
-
-            if($folder['folder_name'] === $filename) {
-
-                exit();
-            }
-        }
-    }
-
+    /**
+     * To update media data (description) (on successful validation) (AJAX)
+     * 
+     * @param array $request _GET search, page | search, folder, type, filter _POST id (media id), description
+     */
     public function UPDATEDESCRIPTION($request) {
 
         $this->ifExists($request['id']);
@@ -327,18 +464,33 @@ class MediaController extends Controller {
         }
     }
 
+    /**
+     * To remove media files (index view)
+     * 
+     * @param array $request _POST deleteIds (media deleteIds)
+     */
     public function delete($request) {
 
         $this->deleteFiles($request['deleteIds']);
         redirect("/admin/media");
     }
 
+    /**
+     * To remove media files (create view)
+     * 
+     * @param array $request _POST deleteIds (media deleteIds)
+     */
     public function deleteCreate($request) {
 
         $this->deleteFiles($request['deleteIds']);
         redirect('/admin/media/create?folder=' . Media::get(substr($request['deleteIds'], 0, strpos($request['deleteIds'], ",")))['media_folder']);
     }
 
+    /**
+     * To remove media files
+     * 
+     * @param array $ids media ids
+     */
     private function deleteFiles($ids) {
 
         $ids = explode(',', $ids);

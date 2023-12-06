@@ -1,5 +1,17 @@
 <?php
 
+/** 
+ * js table
+ * 
+ * column id: to use as an unique identifier
+ * column file_name: to distinguish js files and to use as a reference for js files
+ * column author: to know who created the js file
+ * column has_content: to confirm js file does contains data
+ * column removed: to not direct permanently delete js files 
+ * column created_at: to know when a category is been created
+ * column updated_at: to know when a category is been updated
+ */
+
 namespace app\models;
 
 use database\DB;

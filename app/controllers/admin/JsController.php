@@ -18,6 +18,12 @@ class JsController extends Controller {
     private $_fileExtension = ".js";
     private $_folderLocation = "website/assets/js/";
 
+    /**
+     * To show 404 page with 404 status code (on not existing js)
+     * 
+     * @param string $id _POST js id
+     * @return object JsController
+     */ 
     private function ifExists($id) {
 
         if(empty(Js::ifRowExists($id)) ) {
@@ -26,6 +32,12 @@ class JsController extends Controller {
         }
     }
 
+    /**
+     * To show the js index view
+     * 
+     * @param array $request _GET search, page
+     * @return object JsController, Controller
+     */
     public function index($request) {
 
         $js = Js::allJsButOrderedOnDate();
@@ -45,12 +57,23 @@ class JsController extends Controller {
         return $this->view('admin/js/index')->data($this->_data);
     }
 
+    /**
+     * To show the js create view
+     * 
+     * @return object JsController, Controller
+     */
     public function create() {
 
         $this->_data['rules'] = [];
         return $this->view('admin/js/create')->data($this->_data);
     }
 
+    /**
+     * To show the js read view
+     * 
+     * @param array $request _POST id (js id)
+     * @return object JsController, Controller
+     */
     public function read($request) {
 
         $this->ifExists($request['id']);
@@ -61,6 +84,12 @@ class JsController extends Controller {
         return $this->view('admin/js/read')->data($this->_data);
     }
 
+    /**
+     * To store new js data and to create a new js file (on successful validaton)
+     * 
+     * @param array $request _POST filename, code
+     * @return object JsController, Controller (on failed validation)
+     */
     public function store($request) {
 
         $rules = new Rules();
@@ -100,6 +129,12 @@ class JsController extends Controller {
         }
     }
 
+    /**
+     * To get contents of js file
+     * 
+     * @param string $filename js filename
+     * @return string js file content
+     */
     private function getFileContent($filename) {
 
         if(!empty($filename) && $filename !== null) {
@@ -114,6 +149,12 @@ class JsController extends Controller {
         }
     }
 
+    /**
+     * To show the js edit view
+     * 
+     * @param array $request _POST id (page id)
+     * @return object JsController, Controller
+     */
     public function edit($request) {
 
         $this->ifExists($request['id']);
@@ -127,6 +168,12 @@ class JsController extends Controller {
         return $this->view('admin/js/edit')->data($this->_data);
     }
 
+    /**
+     * To update js data and to update the js file (on successful validation)
+     * 
+     * @param array $request _POST id (js id), filename, code
+     * @return object JsController, Controller (on failed validation)
+     */
     public function update($request) {
 
         $id = $request['id'];
@@ -169,6 +216,11 @@ class JsController extends Controller {
         }
     }
 
+    /**
+     * To include a js file on page(s)
+     * 
+     * @param array $request _POST id (js id), pages
+     */
     public function includePages($request) {
 
         $id = $request['id'];
@@ -190,6 +242,11 @@ class JsController extends Controller {
         redirect("/admin/js/$id/edit");
     }
 
+    /**
+     * To exclude a js file on page(s)
+     * 
+     * @param array $request _POST id (js id), pages
+     */
     public function removePages($request) {
 
         $id = $request['id'];
@@ -207,6 +264,11 @@ class JsController extends Controller {
         redirect("/admin/js/$id/edit");
     }
 
+    /**
+     * To include a js file on all pages
+     * 
+     * @param array $request _POST id (js id)
+     */
     public function includeAll($request) {
 
         $id = $request['id'];
@@ -230,6 +292,11 @@ class JsController extends Controller {
         redirect("/admin/js/$id/edit");
     }
 
+    /**
+     * To exclude a js file on all pages
+     * 
+     * @param array $request _POST id (js id)
+     */
     public function removeAll($request) {
 
         $id = $request['id'];
@@ -241,15 +308,20 @@ class JsController extends Controller {
         redirect("/admin/js/$id/edit");
     }
 
+    /**
+     * To remove js file(s) from thrashcan
+     * 
+     * @param array $request _POST recoverIds (js recoverIds)
+     */
     public function recover($request) {
 
         $recoverIds = explode(',', $request['recoverIds']);
             
-        foreach($recoverIds as $request['id'] ) {
+        foreach($recoverIds as $id ) {
 
-            $this->ifExists($request['id']);
+            $this->ifExists($id);
 
-            Js::update(['id' => $request['id']], [
+            Js::update(['id' => $id], [
 
                 'removed'  => 0
             ]);
@@ -259,6 +331,11 @@ class JsController extends Controller {
         redirect("/admin/js");
     }
 
+    /**
+     * To remove js file(s) permanently or move to thrashcan
+     * 
+     * @param array $request _POST deleteIds (js deleteIds)
+     */
     public function delete($request) {
 
         $deleteIds = explode(',', $request['deleteIds']);

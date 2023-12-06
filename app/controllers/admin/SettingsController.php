@@ -12,7 +12,13 @@ class SettingsController extends Controller {
 
     private $_data;
          
-    public function index() {    
+    /**
+     * To show the settings index view
+     * 
+     * @param array $request _GET search (pages)
+     * @return object SettingsController, Controller
+     */
+    public function index($request) {    
 
         $this->_data['currentLoginSlug'] = WebsiteSlug::getData(['slug']);
         $this->_data['rules'] = [];
@@ -20,6 +26,12 @@ class SettingsController extends Controller {
         return $this->view('/admin/settings/index')->data($this->_data);
     }
 
+    /**
+     * To update login website data (slug) (on successful validation)
+     * 
+     * @param array $request _POST slug
+     * @return object SettingsController, Controller (on failed validation)
+     */
     public function updateSlug($request) {
 
         $rules = new Rules();

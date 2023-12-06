@@ -11,6 +11,11 @@
 
     private $_data;
                 
+    /**
+     * To show the login view
+     * 
+     * @return object LoginController, Controller
+     */
     public function index() {    
 
         $this->_data['failedLoginMessage'] = "";
@@ -18,7 +23,13 @@
 
         return $this->view("login")->data($this->_data);     
     }
-                  
+                 
+    /**
+     * To authenticate users to sign in (on successful validation)
+     * 
+     * @param array $request _POST username, password, token (on successful validation)
+     * @return object LoginController, Controller (on failed validation)
+     */
     public function authenticateUsers($request) {    
                            
         $rules = new Rules();  
@@ -36,6 +47,11 @@
         }
     }
 
+    /**
+     * To authenticate users to sign in
+     * 
+     * @return object LoginController, Controller (on failed authentication)
+     */
     private function authentication() {
 
         if(Auth::authenticate() ) {
@@ -51,6 +67,11 @@
         }
     }
 
+    /**
+     * To get failed authentication error messages
+     * 
+     * @return string $message failed authentication error message
+     */
     private function getFailedLoginAttemptMessages() {
 
         if(Session::exists('failed_login_attempt') === true && Session::exists('failed_login_attempts_timestamp') === false) {

@@ -13,9 +13,13 @@ use app\models\WebsiteSlug;
 class InstallationController extends Controller {
 
     private $_data;
-
     private $_configDatabasePath = "../config/database/config.ini";
 
+    /**
+     * To show the installation (create) user view
+     * 
+     * @return object InstallationController, Controller
+     */
     public function createUser() {
 
         $this->_data['rules'] = [];
@@ -23,6 +27,12 @@ class InstallationController extends Controller {
         return $this->view('admin/installation/user')->data($this->_data);
     }
 
+    /**
+     * To store the first type of admin user (on successful validation)
+     * 
+     * @param array $request _POST username, email, password, retypePassword, token
+     * @return object InstallationController, Controller (on failed validation)
+     */
     public function storeUser($request) {
 
         $rules = new Rules();  
@@ -57,12 +67,23 @@ class InstallationController extends Controller {
         }
     }
 
+    /**
+     * To show the installation (create) database view
+     * 
+     * @return object InstallationController, Controller
+     */
     public function databaseSetup() {
 
         $this->_data['rules'] = [];
         return $this->view('admin/installation/database')->data($this->_data);
     }
     
+    /**
+     * To create a config.ini file to write database credentials to and insert necessary tables in database (on successful validation)
+     * 
+     * @param array $request _POST host, database, username, password, retypePassword, token
+     * @return object InstallationController, Controller (on failed validation)
+     */
     public function createConnection($request) {
 
         $rules = new Rules();  
@@ -87,6 +108,11 @@ class InstallationController extends Controller {
         }
     }
 
+    /**
+     * To create a config.ini file to write database credentials to
+     * 
+     * @param array $request _POST host, database, username, password, retypePassword, token
+     */
     private function databaseConfigFile($request) {
 
         if(file_exists($this->_configDatabasePath) === false) {

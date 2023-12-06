@@ -1,5 +1,18 @@
 <?php
 
+/** 
+ * widgets table 
+ * 
+ * column id: to use as an unique identifier
+ * column title: to distinguish widgets and to use as a reference for widgets
+ * column content: to show widget contents (html markup)
+ * column has_content: to confirm widget content does contains data
+ * column author: to know who created the widget
+ * column removed: to not direct permanently delete a widget 
+ * column created_at: to know when a widget is been created
+ * column updated_at: to know when a widget is been updated
+ */
+
 namespace app\models;
 
 use database\DB;

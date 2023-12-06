@@ -1,5 +1,20 @@
 <?php
 
+/** 
+ * menus table 
+ * 
+ * column id: to use as an unique identifier
+ * column title: to distinguish menus and to use as a reference for menus
+ * column content: to show menu contents (html markup)
+ * column has_content: to confirm menu content does contains data
+ * column position: to determine menu position on page, to load menu before or after contents of page body
+ * column ordering: to order menus with same position
+ * column author: to know who created the menu
+ * column removed: to not direct permanently delete menus 
+ * column created_at: to know when a page is been created
+ * column updated_at: to know when a page is been updated
+ */
+
 namespace app\models;
 
 use database\DB;

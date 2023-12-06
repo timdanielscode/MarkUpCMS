@@ -17,6 +17,12 @@ class CategoryController extends Controller {
 
     private $_data;
 
+    /**
+     * To show 404 page with 404 status code (on not existing category)
+     * 
+     * @param string $id _POST category id
+     * @return object CategoryController
+     */ 
     private function ifExists($id) {
 
         if(empty(Category::ifRowExists($id)) ) {
@@ -25,6 +31,11 @@ class CategoryController extends Controller {
         }
     }
 
+    /**
+     * To force failed validation message on sub category assignment (and pages are already assigned)
+     * 
+     * @param string $id _POST category id
+     */
     private function checkPostIsAssigned($id) {
 
         if(!empty(Category::checkPostAssinged($id)) === true) { 
@@ -33,6 +44,12 @@ class CategoryController extends Controller {
         }
     }
 
+    /**
+     * To force failed validation message on detaching page from category (and page slug is not unique)
+     * 
+     * @param string $slug page slug
+     * @param string $pageId page id
+     */
     private function checkUniqueSlugDetach($slug, $pageId) {
 
         if(empty(Post::checkUniqueSlug($slug, $pageId)) === false) {
@@ -41,6 +58,13 @@ class CategoryController extends Controller {
         }
     }
 
+    /**
+     * To force failed validation message on assigning page to category (and page slug is not unique)
+     * 
+     * @param string $pageId page id
+     * @param string $slug page slug
+     * @param string $categoryId category id
+     */
     private function checkUniqueSlugAttach($pageId, $slug, $categoryId) {
 
         if(empty(Post::checkUniqueSlugDetach($pageId, $slug, $categoryId)) === false) {
@@ -49,6 +73,12 @@ class CategoryController extends Controller {
         }
     }
 
+    /**
+     * To force failed validation message on update category slug (and page slug is not unique)
+     * 
+     * @param string $slug page slug
+     * @param string $id page id
+     */
     private function checkUniqueSlugUpdate($slug, $id) {
 
         if(!empty(Post::checkUniqueSlug($slug, $id)) === true) { 
@@ -57,6 +87,12 @@ class CategoryController extends Controller {
         }
     }
 
+    /**
+     * To show the categories index view
+     * 
+     * @param array $request _GET search, page
+     * @return object CategoryController, Controller
+     */
     public function index($request) {
 
         $categories = Category::allCategoriesButOrdered();
@@ -72,10 +108,15 @@ class CategoryController extends Controller {
         $this->_data['categories'] = Pagination::get($request, $categories, 10);
         $this->_data['count'] = count($categories);
         $this->_data['numberOfPages'] = Pagination::getPageNumbers();
-       
+
         return $this->view('admin/categories/index')->data($this->_data);
     }
 
+    /**
+     * To store a new category (on successful validation)
+     * 
+     * @param array $request _POST title, description
+     */
     public function store($request) {
 
         $rules = new Rules();
@@ -100,6 +141,11 @@ class CategoryController extends Controller {
         redirect('/admin/categories');
     }
 
+    /**
+     * To update category data (on successful validation)
+     * 
+     * @param array $request _POST id (category id), title, description
+     */
     public function update($request) {
 
         $id = $request['id'];
@@ -124,6 +170,12 @@ class CategoryController extends Controller {
         redirect('/admin/categories');
     }
 
+    /**
+     * To show the categories add view
+     * 
+     * @param array $request _GET (id) category id
+     * @return object CategoryController, Controller
+     */
     public function SHOWADDABLE($request) {
 
         $id = Get::validate($request['id']);
@@ -139,6 +191,11 @@ class CategoryController extends Controller {
         return $this->view('admin/categories/add')->data($this->_data);
     }
 
+    /**
+     * To assign and detach page(s) to a category (checking assign or detach)
+     * 
+     * @param array $request _POST id (category id), pageid
+     */
     public function ADDPAGE($request) {
 
         $this->ifExists($request['id']);
@@ -162,6 +219,12 @@ class CategoryController extends Controller {
         echo json_encode($DATA);
     }
 
+    /**
+     * To detach page(s) from a category
+     * 
+     * @param string $id _POST category id
+     * @param array $pageData id, slug
+     */
     private function detachPost($id, $pageData) {
 
         $slugParts = explode('/', $pageData['slug']);
@@ -178,6 +241,12 @@ class CategoryController extends Controller {
         Category::deletePost($pageData['id'], $id);
     }
 
+    /**
+     * To assign page(s) to a category 
+     * 
+     * @param string $id _POST category id
+     * @param array $pageData id, slug
+     */
     private function attachPost($id, $pageData) {
 
         $slug = explode('/', $pageData['slug']);
@@ -194,6 +263,12 @@ class CategoryController extends Controller {
         $this->updatePageSlugOnAttach($id, $pageData);
     }
 
+    /**
+     * To update page slug after assigning to a category
+     * 
+     * @param string $id _POST category id
+     * @param array $pageData id, slug
+     */
     private function updatePageSlugOnAttach($id, $pageData) {
 
         if(!empty(Category::getSlugSub($id)) && Category::getSlugSub($id) !== null) {
@@ -221,6 +296,11 @@ class CategoryController extends Controller {
         }
     }
 
+    /**
+     * To assign and detach sub category(ies) to a category
+     * 
+     * @param array $request _POST id (category id), subcategoryid
+     */
     public function ADDCATEGORY($request) {
 
         $this->ifExists($request['id']);
@@ -251,6 +331,11 @@ class CategoryController extends Controller {
         echo json_encode($DATA);
     }
 
+    /**
+     * To update category data (slug)
+     * 
+     * @param array $request _POST id (category id), slug
+     */
     public function SLUG($request) { 
 
         $this->ifExists($request['id']);
@@ -285,6 +370,13 @@ class CategoryController extends Controller {
         } 
     }
 
+    /**
+     * To update page data (slug)
+     * 
+     * @param array $currentSlug category slug
+     * @param array $request _POST id (category id), slug
+     * @param array $pages assigned pages (id, slug)
+     */
     private function updateCategoriesPostSlug($currentSlug, $request, $pages) {
 
         foreach($pages as $page) {
@@ -307,6 +399,11 @@ class CategoryController extends Controller {
         } 
     }
 
+    /**
+     * To remove a category
+     * 
+     * @param array $request _POST (category deleteIds)
+     */
     public function delete($request) {
 
         $deleteIds = explode(',', $request['deleteIds']);
@@ -314,7 +411,6 @@ class CategoryController extends Controller {
         foreach($deleteIds as $id) {
 
             $this->ifExists($id);
-
             $this->updateSlugAssingedCategory($id); 
             $this->updateSlugAssingedSubCategories($id);
 
@@ -327,6 +423,11 @@ class CategoryController extends Controller {
         }
     }
 
+    /**
+     * To update page data (slug) after assinged category is removed
+     * 
+     * @param string $categoryId category id
+     */
     private function updateSlugAssingedCategory($categoryId) {
 
         if(!empty(Post::getAssignedCategoryIdSlug($categoryId)) && Post::getAssignedCategoryIdSlug($categoryId) !== null) {
@@ -345,6 +446,11 @@ class CategoryController extends Controller {
         }
     }
 
+    /**
+     * To update page data (slug) after assinged category is removed
+     * 
+     * @param string $categoryId category id
+     */
     private function updateSlugAssingedSubCategories($categoryId) {
 
         if(!empty(Post::getAssignedSubCategoryIdSlug($categoryId)) && Post::getAssignedSubCategoryIdSlug($categoryId) !== null) {

@@ -18,6 +18,12 @@ class CssController extends Controller {
     private $_fileExtension = ".css";
     private $_folderLocation = "website/assets/css/";
 
+    /**
+     * To show 404 page with 404 status code (on not existing css)
+     * 
+     * @param string $id css id
+     * @return object CssController
+     */ 
     private function ifExists($id) {
 
         if(empty(Css::ifRowExists($id)) ) {
@@ -26,6 +32,12 @@ class CssController extends Controller {
         }
     }
 
+    /**
+     * To show the css index view
+     * 
+     * @param array $request _GET (search)
+     * @return object CssController, Controller
+     */
     public function index($request) {
 
         $css = Css::allCssButOrderedOnDate();
@@ -45,12 +57,23 @@ class CssController extends Controller {
         return $this->view('admin/css/index')->data($this->_data);
     }
 
+    /**
+     * To show the css create view
+     * 
+     * @return object CssController, Controller
+     */
     public function create() {
 
         $this->_data['rules'] = [];
         return $this->view('admin/css/create')->data($this->_data);
     }
 
+    /**
+     * To store new css data and to create a new css file (on successful validation)
+     * 
+     * @param array $request _POST (filename, code) 
+     * @return object CssController, Controller (on failed validation)
+     */
     public function store($request) {
 
         $rules = new Rules();
@@ -91,6 +114,12 @@ class CssController extends Controller {
         }
     }
 
+    /**
+     * To get contents of css file
+     * 
+     * @param string $filename css filename
+     * @return string css file content
+     */
     private function getFileContent($filename) {
 
         if(!empty($filename) && $filename !== null) {
@@ -105,6 +134,12 @@ class CssController extends Controller {
         }
     }
 
+    /**
+     * To show the css read view
+     * 
+     * @param array $request _POST (id)
+     * @return object CssController, Controller
+     */
     public function read($request) {
 
         $this->ifExists($request['id']);
@@ -115,6 +150,12 @@ class CssController extends Controller {
         return $this->view('admin/css/read')->data($this->_data);
     }
 
+    /**
+     * To show the css edit view
+     * 
+     * @param array $request _POST (id)
+     * @return object CssController, Controller
+     */
     public function edit($request) {
 
         $this->ifExists($request['id']);
@@ -128,6 +169,12 @@ class CssController extends Controller {
         return $this->view('admin/css/edit')->data($this->_data);
     }
 
+    /**
+     * To update css data and to update the css file (on successful validation)
+     * 
+     * @param array $request _POST (id, filename, code)
+     * @return object CssController, Controller (on failed validation)
+     */
     public function update($request) {
 
         $id = $request['id'];
@@ -173,6 +220,11 @@ class CssController extends Controller {
         }
     }
 
+    /**
+     * To link a css file on all pages
+     * 
+     * @param array $request _POST (id)
+     */
     public function linkAll($request) {
 
         $id = $request['id'];
@@ -196,6 +248,11 @@ class CssController extends Controller {
         redirect("/admin/css/$id/edit");
     }
 
+    /**
+     * To unlink a css file on all pages
+     * 
+     * @param array $request _POST (id)
+     */
     public function unlinkAll($request) {
 
         $id = $request['id'];
@@ -207,6 +264,11 @@ class CssController extends Controller {
         redirect("/admin/css/$id/edit");
     }
 
+    /**
+     * To unlink a css file on page(s)
+     * 
+     * @param array $request _POST (id, pages)
+     */
     public function unlinkPages($request) {
 
         $id = $request['id'];
@@ -224,6 +286,11 @@ class CssController extends Controller {
         redirect("/admin/css/$id/edit");
     }
 
+    /**
+     * To link a css file on page(s)
+     * 
+     * @param array $request _POST (id, pages)
+     */
     public function linkPages($request) {
 
         $id = $request['id'];
@@ -245,15 +312,20 @@ class CssController extends Controller {
         redirect("/admin/css/$id/edit");
     }
 
+    /**
+     * To remove css file(s) from thrashcan
+     * 
+     * @param array $request _POST (id, recoverIds)
+     */
     public function recover($request) {
 
         $recoverIds = explode(',', $request['recoverIds']);
             
-        foreach($recoverIds as $request['id'] ) {
+        foreach($recoverIds as $id) {
 
-            $this->ifExists($request['id']);
+            $this->ifExists($id);
 
-            Css::update(['id' => $request['id']], [
+            Css::update(['id' => $id], [
 
                 'removed'  => 0
             ]);
@@ -263,6 +335,11 @@ class CssController extends Controller {
         redirect("/admin/css");
     }
 
+    /**
+     * To remove css file(s) permanently or move to thrashcan
+     * 
+     * @param array $request _POST (deleteIds)
+     */
     public function delete($request) {
 
         $deleteIds = explode(',', $request['deleteIds']);

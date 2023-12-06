@@ -16,6 +16,12 @@ class MetaController extends Controller {
 
     private $_data;
 
+    /**
+     * To show 404 page with 404 status code (on not existing meta)
+     * 
+     * @param string $id _POST meta id
+     * @return object MetaController
+     */ 
     private function ifExists($id) {
 
         if(empty(Meta::ifRowExists($id)) ) {
@@ -24,6 +30,12 @@ class MetaController extends Controller {
         }
     }
 
+    /**
+     * To show the meta index view
+     * 
+     * @param array $request _GET search, page
+     * @return object MetaController, Controller
+     */
     public function index($request) {
 
         $cdn = Meta::allMetaButOrderedByDate();
@@ -43,6 +55,11 @@ class MetaController extends Controller {
         return $this->view('admin/meta/index')->data($this->_data);
     }
 
+    /**
+     * To show the meta create view
+     * 
+     * @return object MetaController, Controller
+     */
     public function create() {
 
         $this->_data['rules'] = [];
@@ -50,6 +67,12 @@ class MetaController extends Controller {
         return $this->view('admin/meta/create')->data($this->_data);
     }
 
+    /**
+     * To store a new meta (on successful validation)
+     * 
+     * @param array $request _POST title, content
+     * @return object MetaController, Controller (on failed validation)
+     */
     public function store($request) {
 
         $rules = new Rules();
@@ -82,6 +105,12 @@ class MetaController extends Controller {
         }
     }
 
+    /**
+     * To show the meta read view
+     * 
+     * @param array $request _POST id (meta id)
+     * @return object MetaController, Controller
+     */
     public function read($request) {
 
         $this->ifExists($request['id']);
@@ -91,6 +120,12 @@ class MetaController extends Controller {
         return $this->view('admin/meta/read')->data($this->_data);
     }
 
+    /**
+     * To show the meta edit view
+     * 
+     * @param array $request _POST id (meta id)
+     * @return object MetaController, Controller
+     */
     public function edit($request) {
 
         $this->ifExists($request['id']);
@@ -103,6 +138,12 @@ class MetaController extends Controller {
         return $this->view('admin/meta/edit')->data($this->_data);
     }
 
+    /**
+     * To update meta data (on successful validation)
+     * 
+     * @param array $request _POST id (meta id) title, content
+     * @return object MetaController, Controller (on failed validation)
+     */
     public function update($request) {
         
         $id = $request['id'];
@@ -136,6 +177,11 @@ class MetaController extends Controller {
         }
     }
 
+    /**
+     * To import a meta on page(s)
+     * 
+     * @param array $request _POST id (meta id), pages
+     */
     public function importPage($request) {
 
         $id = $request['id'];
@@ -154,6 +200,11 @@ class MetaController extends Controller {
         redirect("/admin/meta/$id/edit");
     }
 
+    /**
+     * To import a meta on all pages
+     * 
+     * @param array $request _POST id (meta id)
+     */
     public function importAll($request) {
 
         $id = $request['id'];
@@ -174,6 +225,11 @@ class MetaController extends Controller {
         redirect("/admin/meta/$id/edit");
     }
 
+    /**
+     * To export a meta from page(s)
+     * 
+     * @param array $request _POST id (meta id), pages
+     */
     public function exportPage($request) {
 
         $id = $request['id'];
@@ -188,6 +244,11 @@ class MetaController extends Controller {
         redirect("/admin/meta/$id/edit");
     }
 
+    /**
+     * To export a meta from all pages
+     * 
+     * @param array $request _POST id (meta id)
+     */
     public function exportAll($request) {
 
         $id = $request['id'];
@@ -199,15 +260,20 @@ class MetaController extends Controller {
         redirect("/admin/meta/$id/edit");
     }
 
+    /**
+     * To remove meta(s) from thrashcan
+     * 
+     * @param array $request _POST recoverIds (meta recoverIds)
+     */
     public function recover($request) {
 
         $recoverIds = explode(',', $request['recoverIds']);
             
-        foreach($recoverIds as $request['id'] ) {
+        foreach($recoverIds as $id ) {
 
-            $this->ifExists($request['id']);
+            $this->ifExists($id);
 
-            Meta::update(['id' => $request['id']], [
+            Meta::update(['id' => $id], [
 
                 'removed'  => 0
             ]);
@@ -217,6 +283,11 @@ class MetaController extends Controller {
         redirect("/admin/meta");
     }
 
+    /**
+     * To remove meta(s) permanently or move to thrashcan
+     * 
+     * @param array $request _POST deleteIds (meta deleteIds)
+     */
     public function delete($request) {
 
         $deleteIds = explode(',', $request['deleteIds']);

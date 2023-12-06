@@ -1,1 +1,5 @@
-<?php echo html_entity_decode($menu["content"]); ?>
+<!-- 
+    - to show preview of menu
+--> 
+
+<?php echo htmlspecialchars_decode($menu["content"]); ?>

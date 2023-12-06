@@ -1,9 +1,8 @@
-<?php use core\Session; ?>
+<!-- to navigate through pages -->
 
 <nav id="navbar" class="navbarSmall">
     <a href="/admin/dashboard"><img id="logo" src="/assets/img/logo.png"/></a>
     <ul class="navbarItems">
-    
         <li><a href="/admin/posts">Pages</a></li>
         <li><a href="/admin/categories">Categories</a></li>
         <li><a href="/admin/menus">Menus</a></li>

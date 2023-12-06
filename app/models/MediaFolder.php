@@ -1,5 +1,12 @@
 <?php
 
+/** 
+ * mediaFolders table
+ * 
+ * column id: to use as an unique identifier
+ * column folder_name: for file validation
+ */
+
 namespace app\models;
 
 use database\DB;
