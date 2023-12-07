@@ -113,6 +113,23 @@ class CategoryController extends Controller {
     }
 
     /**
+     * To show the categories apply view
+     * 
+     * @param array $request _GET id (category id)
+     * @return object CategoryController, Controller
+     */
+    public function apply($request) {
+
+        $this->ifExists($request['id']);
+
+        $this->_data['categories'] = Category::allCategoriesButOrdered();
+        $this->_data['add'] = $this->getAddData($request['id']);
+        $this->_data['categoryId'] = $request['id'];
+
+        return $this->view('admin/categories/apply')->data($this->_data);
+    }
+
+    /**
      * To store a new category (on successful validation)
      * 
      * @param array $request _POST title, description
@@ -176,19 +193,18 @@ class CategoryController extends Controller {
      * @param array $request _GET (id) category id
      * @return object CategoryController, Controller
      */
-    public function SHOWADDABLE($request) {
-
-        $id = Get::validate($request['id']);
+    public function getAddData($id) {
+     
         $this->ifExists($id);
 
         $this->_data['id'] = $id;
         $this->_data['slug'] = Category::getColumns(['slug'], $id)['slug'];
         $this->_data['assignedPages'] = Category::getPostAssignedIdTitle($id);
-        $this->_data['notAssingedPages'] = Category::getNotPostAssignedIdTitle();
+        $this->_data['notAssingedPages'] = Category::getNotPostAssignedIdTitle($id);
         $this->_data['assingedSubCategories'] = Category::getSubIdTitleSlug($id);
         $this->_data['notAssingedSubs'] = Category::getNotSubIdTitleSlug(Category::getSubIdTitleSlug($id), $id);
 
-        return $this->view('admin/categories/add')->data($this->_data);
+        return $this->_data;
     }
 
     /**
@@ -196,16 +212,19 @@ class CategoryController extends Controller {
      * 
      * @param array $request _POST id (category id), pageid
      */
-    public function ADDPAGE($request) {
+    public function assignDetachPages($request) {
 
-        $this->ifExists($request['id']);
+        $id = $request['id'];
+        $this->ifExists($id);
+            
+        $pageIds = array_filter(explode(',', $request['pageIds']));
+        
+        if(!empty($pageIds) && $pageIds !== null) {
 
-        if(!empty($request['pageid']) && $request['pageid'] !== null) {
-
-            foreach($request['pageid'] as $pageId) {
+            foreach($pageIds as $pageId) {
 
                 if(!empty(Category::checkPostAssingedId($request['id'], $pageId)) ) {
-
+                    
                     $this->detachPost($request['id'], Post::getColumns(['id, slug'], $pageId));
                 } else if(empty(Category::checkPostAssingedId($request['id'], $pageId)) ) {
                     $this->attachPost($request['id'], Post::getColumns(['id', 'slug'], $pageId));
@@ -213,10 +232,7 @@ class CategoryController extends Controller {
             }
         }
 
-        $DATA['pageid'] = $request['pageid'];
-        $DATA['categoryid'] = $request['id'];
-
-        echo json_encode($DATA);
+        redirect("/admin/categories/$id/apply");
     }
 
     /**
@@ -301,34 +317,35 @@ class CategoryController extends Controller {
      * 
      * @param array $request _POST id (category id), subcategoryid
      */
-    public function ADDCATEGORY($request) {
+    public function assignDetachCategories($request) {
 
         $this->ifExists($request['id']);
         $this->checkPostIsAssigned($request['id']);
+        
+        $id = $request['id'];
 
-        if(!empty($request['subcategoryid']) && $request['subcategoryid'] !== null) {
+        $categoryIds = array_filter(explode(',', $request['categoryIds']));
 
-            foreach($request['subcategoryid'] as $subCategoryId) {
+        if(!empty($categoryIds) && $categoryIds !== null) {
 
-                if(!empty(Category::checkSubId($request['id'], $subCategoryId))) {
+            foreach($categoryIds as $categoryId) {
 
-                    CategorySub::delete('sub_id', $subCategoryId);
+                if(!empty(Category::checkSubId($request['id'], $categoryId))) {
+
+                    CategorySub::delete('sub_id', $categoryId);
 
                 } else {
 
                     CategorySub::insert([
     
-                        'sub_id'   => $subCategoryId,
+                        'sub_id'   => $categoryId,
                         'category_id'   => $request['id']
                     ]);
                 } 
             }
         }
 
-        $DATA['subcategoryid'] = $request['subcategoryid'];
-        $DATA['categoryid'] = $request['id'];
-
-        echo json_encode($DATA);
+        redirect("/admin/categories/$id/apply");
     }
 
     /**
@@ -336,36 +353,34 @@ class CategoryController extends Controller {
      * 
      * @param array $request _POST id (category id), slug
      */
-    public function SLUG($request) { 
+    public function slug($request) { 
 
-        $this->ifExists($request['id']);
+        $id = $request['id'];
+        $this->ifExists($id);
 
         if(!empty($request['slug']) && $request['slug'] !== null) {
-    
+            
             $rules = new Rules();
-
+  
             if($rules->category_slug($request['slug'])->validated()) {
+         
+                if(!empty(Post::getAssignedCategoryIdSlug($id)) && Post::getAssignedCategoryIdSlug($id) !== null) {
 
-                if(!empty(Post::getAssignedCategoryIdSlug($request['id'])) && Post::getAssignedCategoryIdSlug($request['id']) !== null) {
-
-                    $this->updateCategoriesPostSlug(Category::getColumns(['slug'], $request['id']), $request, Post::getAssignedCategoryIdSlug($request['id']));
+                    $this->updateCategoriesPostSlug(Category::getColumns(['slug'], $id), $request, Post::getAssignedCategoryIdSlug($id));
                 } 
                 
-                if(!empty(Post::getAssignedSubCategoryIdSlug($request['id'])) && Post::getAssignedSubCategoryIdSlug($request['id']) !== null) {
+                if(!empty(Post::getAssignedSubCategoryIdSlug($id)) && Post::getAssignedSubCategoryIdSlug($id) !== null) {
 
-                    $this->updateCategoriesPostSlug(Category::getColumns(['slug'], $request['id']), $request, Post::getAssignedSubCategoryIdSlug($request['id']));
+                    $this->updateCategoriesPostSlug(Category::getColumns(['slug'], $id), $request, Post::getAssignedSubCategoryIdSlug($id));
                 }
 
-                Category::update(['id' => $request['id']], [
+                Category::update(['id' => $id], [
 
                     'slug'  => "/" . $request['slug'],
                     'updated_at' => date('Y-m-d H:i:s', $_SERVER['REQUEST_TIME'])
                 ]);
 
-                $data['id'] = $request['id'];
-                $data['slug'] = $request['slug'];
-        
-                echo json_encode($data);
+                redirect("/admin/categories/$id/apply");
             }
         } 
     }

@@ -37,7 +37,7 @@ class Category extends Model {
         return DB::try()->all(self::$_table)->where('title', 'LIKE', '%'.$searchValue.'%')->or('slug', 'LIKE', '%'.$searchValue.'%')->or('author', 'LIKE', '%'.$searchValue.'%')->order('created_at')->desc()->fetch();
     }
 
-    public function getLastRegisteredCategoryId() {
+    public static function getLastRegisteredCategoryId() {
 
         return DB::try()->getLastId(self::$_table)->first();
     }
@@ -78,22 +78,21 @@ class Category extends Model {
         return DB::try()->select('id, title')->from('pages')->join('category_page')->on('pages.id', '=', 'category_page.page_id')->where('category_id', '=', $id)->and('pages.removed', '!=', 1)->fetch();
     }
 
-    public static function getNotPostAssignedIdTitle() {
+    public static function getNotPostAssignedIdTitle($id) {
 
-        if(!empty(self::getAssignedPostIds())  ) {
+        if(!empty(self::getAssignedPostIds($id))  ) {
 
-            $postIdsString = implode(',', self::$_postIds);
+            $postIdsString = implode(',', self::getAssignedPostIds($id));
             return DB::try()->select('id, title')->from('pages')->whereNotIn('id', $postIdsString)->and('removed', '!=', 1)->fetch();
 
         } else {
-            
             return DB::try()->select('id, title')->from('pages')->where('removed', '!=', 1)->fetch();
         }
     }
 
-    private static function getAssignedPostIds() {
+    private static function getAssignedPostIds($id) {
 
-        $assignedPostIds = DB::try()->select('page_id')->from('category_page')->fetch();
+        $assignedPostIds = DB::try()->select('page_id')->from('category_page')->where('category_id', '=', $id)->fetch();
 
         foreach($assignedPostIds as $postId) {
 

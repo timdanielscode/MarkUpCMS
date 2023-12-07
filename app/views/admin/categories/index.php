@@ -8,9 +8,6 @@
     -
     - to change the title value and submit to update (after clicking on the edit link)
     - to add or change the description value to submit and update (after clicking on the edit link)
-    - to create a selection of sub categories to submit and assign or detach from/to category (after clicking on the 'apply' link)
-    - to create a selection of pages to submit and assign or detach from/to category (after clicking on the 'apply' link)
-    - to change the slug value to submit and update 
     - to create a selection of categories to submit and remove
 -->
 
@@ -21,11 +18,9 @@
     <?php $this->stylesheet("/assets/css/index.css"); ?>
     <?php $this->stylesheet("/assets/css/categories.css"); ?>
     <?php $this->stylesheet("/assets/css/pagination.css"); ?>
-    <?php $this->script('/assets/js/ajax.js', true); ?>
-    <?php $this->script('/assets/js/categories/modal.js', true); ?>
-    <?php $this->script('/assets/js/categories/add.js', true); ?>
-    <?php $this->script('/assets/js/categories/slug.js', true); ?>
-    <?php $this->script('/assets/js/categories/delete.js', true); ?>
+    <?php $this->script('/assets/js/categories/index/Modal.js', true); ?>
+    <?php $this->script('/assets/js/categories/index/main.js', true); ?>
+    <?php $this->script('/assets/js/categories/index/delete.js', true); ?>
 <?php $this->include('closeHeadTagAndOpenBodyTag'); ?>
 
 <?php $this->include('navbar'); ?>
@@ -39,7 +34,7 @@
         <h1>Categories</h1><span class="badge categories"><?php echo $count; ?></span>
     </div>
     <?php if(core\Session::get('user_role') === 'admin') { ?>
-        <a class="create" id="create">Create</a> <span class="deleteSeparator">|</span> 
+        <a class="create" id="create">Create</a> <span class="deleteSeparator">|</span>
         <form action="/admin/categories/delete" method="POST" class="indexDeleteForm">
             <input type="submit" value="Delete" class="delete" onclick="return confirm('Are you sure?')"/>
             <input type="hidden" name="deleteIds" id="deleteIds" value=""/>
@@ -56,7 +51,6 @@
                 <th>#</th>
                 <th>Title</th>
                 <th>Slug</th>
-                <?php if(core\Session::get('user_role') === 'admin') { ?><th></th><?php } ?>
                 <th>Author</th>
                 <th>Date and time</th>
             </tr>
@@ -69,34 +63,20 @@
                         <input class="deleteCheckbox" type="checkbox" name="delete" value="<?php echo $category['id']; ?>" <?php if(core\Session::get('user_role') === 'normal') { echo 'disabled'; } ?>/>
                     </td>
                     <?php if(core\Session::get('user_role') === 'admin') { ?>
-                    <td class="width-20">
+                    <td class="width-30">
                         <a data-id="<?php echo $category['id']; ?>" data-title="<?php echo $category["title"]; ?>" data-description="<?php echo $category["category_description"]; ?>" class="edit font-weight-300"><?php echo $category["title"]; ?></a> |
                         <a data-id="<?php echo $category['id']; ?>" data-title="<?php echo $category["title"]; ?>" data-description="<?php echo $category["category_description"]; ?>" class="edit font-weight-300">Edit</a> |
-                        <a href="#" data-role="add" data-id="<?php echo $category['id']; ?>" class="add font-weight-300">Apply</a>
-                        </td>
+                        <a href="/admin/categories/<?php echo $category['id']; ?>/apply" class="edit font-weight-300">Apply</a>
+                    </td>
                     <?php } else { ?>
-                        <td class="width-30">
+                    <td class="width-30">
                         <span class="removed font-weight-500"><?php echo $category["title"]; ?></span> |
-                        <a href="#" data-role="add" data-id="<?php echo $category['id']; ?>" class="add font-weight-300">Apply</a>
+                        <a href="/admin/categories/<?php echo $category['id']; ?>/apply" class="edit font-weight-300">Apply</a>
                     </td>
                     <?php } ?>
-                    <?php if(core\Session::get('user_role') === 'admin') { ?>
-                    <td class="width-30">
-                        <form>
-                            <input class="categorySlug" name="slug" id="slug-<?php echo $category['id']; ?>" type="text" value="<?php echo substr($category['slug'], 1); ?>"/>
-                            <div id="message-<?php echo $category['id'] ?>"></div>
-                        </form>
-                    </td>
-                    <?php } else { ?>
                     <td class="width-30">
                         <?php echo $category['slug']; ?>
                     </td>
-                    <?php } ?>
-                    <?php if(core\Session::get('user_role') === 'admin') { ?>
-                        <td class="width-10">
-                            <a data-role="update" id="update" data-id="<?php echo $category['id']; ?>" class="button">Update</a>
-                        </td>
-                    <?php } ?>
                     <td class="width-25">
                         <?php echo $category['author']; ?>
                     </td>
@@ -111,7 +91,6 @@
                     <td>-</td>
                     <td class="width-20">-</td>
                     <td class="width-30">-</td>
-                    <td class="width-10"></td>
                     <td class="width-25">-</td>
                     <td class="width-15">-</td>
                 </tr>
@@ -138,8 +117,6 @@
     <div id="modal" class="display-none">
         <div class="container">
             <div id="modalForm">
-
-            </div>
         </div>
     </div>
 </div>

@@ -67,52 +67,102 @@ table td .button {
     border-color: #42971c;
 }
 
-
-
-
 /*
-    Sidebar
+    Apply
 */
-.mainButtonContainer {
-    width: 100%;
-    display: flex;
-    flex-wrap: wrap;
+
+.edit-container {
     margin-top: 20px;
+    margin-left: 5%;
 }
-.mainButtonContainer a, .mainButtonContainer label {
-    width: auto;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    height: 36px;
-    border-radius: 4px;
-    padding: 0 20px;
-    transition: 0.3s;
-    font-size: 16px;
-}
-.mainButtonContainer label {
-    margin-right: 20px;
-    color: #fff;
-    background: #42971c;
-    border: 1px solid #42971c;
-}
-.mainButtonContainer label:hover {
-    background: #6ba152;
-    border: 1px solid #6ba152;
-}
-.mainButtonContainer a {
-    border: 1px solid #fff;
-    background: rgba(0,0,0,0.1);
-    color: #fff;
-}
-.mainButtonContainer a:hover {
-    background: #fff;
-    color: #000;
-}
-.mainButtonContainer label:hover {
-    cursor: pointer;
+#sidebar table {
+    width: 100%;
+    background: white;
+    display: block;
+    overflow-y: auto;
+    min-height: 250px;
+    border-radius: 3px 0px 0px 3px;
+    max-height: 500px;
+    overflow-x: hidden;
 }
 
+#sidebar .title {
+    display: block;
+    font-size: 14px;
+    color: #333;
+    margin-top: 50px;
+    margin-bottom: 10px;
+}
+
+#sidebar table td {
+    display: block;
+    padding: 2px 0 2px 10px;
+    width: 100%;
+}
+
+#sidebar table td a {
+    font-size: 14px;
+    color: #000;
+    text-decoration: none;
+}
+
+#sidebar table td a:hover {
+    color: #3b75ca;
+}
+
+#slug {
+    background: #fff;
+    padding: 12px;
+    border: 1px solid #aaa;
+    width: 95%;
+    margin-bottom: 50px;
+    box-sizing: border-box;
+}
+
+#slug .listedItem {
+    color: #333;
+    display: inline;
+}
+
+#category select, #page select {
+    width: 90%;
+    height: 250px;
+    display: block;
+    box-sizing: border-box;
+    border: 1px solid #aaa;
+}
+
+#category select option, #page select option {
+    display: block;
+    padding: 2px 0px 2px 8px;
+}
+
+#category .assingedSubCategories, #page .assignedPages {
+    margin-bottom: 5%;
+}
+
+#category label, #page label {
+    display: block;
+    margin-bottom: 10px;
+}
+
+#sidebar #slugForm {
+    margin-top: 50px;
+}
+
+#sidebar #slugForm label {
+    font-size: 14px;
+}
+
+#sidebar #slugForm input[type="text"] {
+    padding: 10px;
+    margin-top: 10px;
+    font-size: 14px;
+    border: none;
+    width: 100%;
+    box-sizing: border-box;
+    margin-bottom: 20px;
+}
 
 /*
     Modal
@@ -128,54 +178,16 @@ table td .button {
     position: relative;
     height: 100%;
 }
-#SUBCATEGORYSLUGCONTAINER {
-    background: #fff;
-    border-radius: 5px;
-    margin-left: 20px;
-    margin-top: 20px;
-    margin-bottom: 20px;
-    padding: 10px;
-    display: inline-block;
-    color: #000;
-}
-#SUBCATEGORYSLUGCONTAINER div {
-    display: inline-block;
-}
-#ASSINGEDSUBCATEGORYID option, #NOTASSINGEDSUBCATEGORYID option, #ASSIGNEDPAGEID option, #NOTASSIGNEDPAGEID option {
-    padding: 3px 0px 3px 7px;
-}
-#ASSIGNEDPAGEID, #NOTASSIGNEDPAGEID, #ASSINGEDSUBCATEGORYID, #NOTASSINGEDSUBCATEGORYID {
-    width: 93%;
-    height: 30%;
-    border: none;
-    margin: 0 auto;
-    display: block;
-}
-#ASSIGNCATEGORY {
-    margin-left: 20px;
-}
-#modal #ASSIGNCATEGORY, #modal #ASSIGNPAGES, #modal #update {
-    width: 75px;
-    background: #42971c;
-    border-color: #42971c;
-    margin-top: 20px;
-    color: #fff;
-    padding: 2px;
-    text-align: center;
-    font-size: 14px;
-}
-#ASSIGNCATEGORY:hover, #ASSIGNPAGES:hover, #update:hover {
-    background: #6ba152;
-    cursor: pointer;
-    border-color: #6ba152;
-}
-#ASSINGEDSUBCATEGORYID, #ASSIGNEDPAGEID {
-    margin-bottom: 20px;
-    margin-top: 20px;
-}
-#ASSINGEDSUBCATEGORYID, #ASSIGNPAGES {
-    margin-left: 3.5%;
-}
+
+
+
+
+
+
+
+
+
+
 .modal-add form label {
     margin-left: 30px;
 }
