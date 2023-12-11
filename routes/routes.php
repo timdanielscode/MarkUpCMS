@@ -178,14 +178,14 @@ Middleware::route(['auth' => 'admin'], function() {
 Middleware::route('login', function() {
 
     new Route(['GET' => '/admin/categories'], ['admin\CategoryController' => 'index']);
-    new Route(['GET' => '/admin/categories/[id]/apply'], ['admin\CategoryController' => 'apply']);
+    new Route(['GET' => '/admin/categories/[id]'], ['admin\CategoryController' => 'index']);
 }); 
 
 Middleware::route(['auth' => 'admin'], function() {
 
     new Route(['POST' => '/admin/categories/addcategory'], ['admin\CategoryController' => 'assignDetachCategories']);
     new Route(['POST' => '/admin/categories/addpage'], ['admin\CategoryController' => 'assignDetachPages']);
-    new Route(['POST' => '/admin/categories/store'], ['admin\CategoryController' => 'store']);
+    new Route(['POST' => '/admin/categories/[id]/store'], ['admin\CategoryController' => 'store']);
     new Route(['POST' => '/admin/categories/update'], ['admin\CategoryController' => 'update']);
     new Route(['POST' => '/admin/categories/slug'], ['admin\CategoryController' => 'slug']);
     new Route(['POST' => '/admin/categories/delete'], ['admin\CategoryController' => 'delete']);

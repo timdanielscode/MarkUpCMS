@@ -8,6 +8,16 @@ class Modal {
         this.setEditOnclickEvent();
         this.setCreateOnclickEvent();
         this.setAddOnclickEvent();
+        this.setDeleteOnclickEvent();
+
+        if(this.element.dataset.id === "") {
+
+            this.createCreateForm(this.element, true)
+            this.getElement().classList.remove('display-none');
+            this.getHtmlElement().classList.add('dark-layer');
+        }
+
+       
     }
 
     setElement() {
@@ -29,10 +39,16 @@ class Modal {
 
         var modal = this;
 
-        document.getElementById('create').addEventListener("click", function() { 
+        if(document.getElementById('create') !== null) {
+
+            document.getElementById('create').addEventListener("click", function() { 
                 
-            modal.showModal('Create', this); 
-        }); 
+                if(modal.getElement().classList.contains('display-none') === true) {
+
+                    modal.showModal('Create', this); 
+                }
+            }); 
+        }
     }
 
     setEditOnclickEvent() {
@@ -43,8 +59,11 @@ class Modal {
         for(var element of elements) {
 
             element.addEventListener("click", function() { 
+
+                if(modal.getElement().classList.contains('display-none') === true) {
                 
-                modal.showModal('Edit', this); 
+                    modal.showModal('Edit', this); 
+                }
             }); 
         }
     }
@@ -62,6 +81,19 @@ class Modal {
                 modal.getHtmlElement().classList.add('dark-layer');
             }); 
         }
+    }
+
+    setDeleteOnclickEvent() {
+
+        var modal = this;
+
+        var element = document.getElementById('delete');
+
+        element.addEventListener("click", function() { 
+                
+            modal.changeListedCategories();
+        }); 
+
     }
 
     setCloseOnclickEvent() {
@@ -85,6 +117,15 @@ class Modal {
         }
     }
 
+    changeListedCategories() {
+
+        var categoriesTable = document.querySelector('table');
+        var deleteForm = categoriesTable.nextElementSibling;
+
+        categoriesTable.remove();
+        deleteForm.classList.remove('display-none')
+        
+    }
 
     createEditForm(element) {
 
@@ -153,10 +194,10 @@ class Modal {
         this.setCloseOnclickEvent();
     }
 
-    createCreateForm() {
+    createCreateForm(element, notExists = null) {
 
         var form = document.createElement('form');
-        form.setAttribute('action', '/admin/categories/store');
+        form.setAttribute('action', '/admin/categories/' + element.dataset.id + '/store');
         form.setAttribute('method', 'POST');
 
         var labelTitle = document.createElement('label');
@@ -203,12 +244,19 @@ class Modal {
         form.append(textarea)
         form.append(buttonContainer);
         buttonContainer.append(containerInput);
-        buttonContainer.append(containerAnchor)
+
+        if(notExists !== true) {
+
+            buttonContainer.append(containerAnchor);
+        }
 
         this.getElement().classList.add('modal-edit');
         this.getElement().children[0].children[0].append(form);
 
-        this.setCloseOnclickEvent();
+        if(notExists !== true) {
+
+            this.setCloseOnclickEvent();
+        }
     }
 
     showModal(type, dataElement) {

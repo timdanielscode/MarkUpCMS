@@ -42,6 +42,11 @@ class Category extends Model {
         return DB::try()->getLastId(self::$_table)->first();
     }
 
+    public static function getFirstInsertedCategoryId() {
+
+        return DB::try()->select('id')->from('categories')->first();
+    }
+
     public function allCategoriesWithPosts($id) {
 
         return DB::try()->select('pages.title', 'pages.id')->from('pages')->join('category_page')->on('category_page.page_id', '=', 'pages.id')->join(self::$_table)->on('category_page.category_id', '=', 'categories.id')->where('categories.id', '=', $id)->fetch();

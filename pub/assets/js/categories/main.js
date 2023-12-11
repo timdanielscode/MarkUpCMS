@@ -1,3 +1,5 @@
+var modal = new Modal();
+
 var category = new Category();
 var page = new Page();
 

@@ -20,7 +20,7 @@ class CategoryController extends Controller {
     /**
      * To show 404 page with 404 status code (on not existing category)
      * 
-     * @param string $id _POST category id
+     * @param string $id category id
      * @return object CategoryController
      */ 
     private function ifExists($id) {
@@ -34,53 +34,41 @@ class CategoryController extends Controller {
     /**
      * To show the categories index view
      * 
-     * @param array $request _GET search, page
+     * @param array $request id (category id)
      * @return object CategoryController, Controller
      */
     public function index($request) {
 
-        $categories = Category::allCategoriesButOrdered();
+        if(empty($request['id'])) {
 
-        $this->_data['search'] = '';
-
-        if(!empty($request['search'] ) ) {
-
-            $this->_data['search'] = Get::validate($request['search']);
-            $categories = Category::categoriesFilesOnSearch($this->_data['search']);
+            return $this->view('admin/categories/index')->data();
         }
 
-        $this->_data['categories'] = Pagination::get($request, $categories, 10);
-        $this->_data['count'] = count($categories);
-        $this->_data['numberOfPages'] = Pagination::getPageNumbers();
+        $this->ifExists($request['id']);
+
+        $this->_data['categoryId'] = $request['id'];
+        $this->_data['title'] = Category::getColumns(['title'], $request['id'])['title'];
+        $this->_data['description'] = Category::getColumns(['category_description'], $request['id'])['category_description'];
+        $this->_data['slug'] = Category::getColumns(['slug'], $request['id'])['slug'];
+        $this->_data['categories'] = Category::allCategoriesButOrdered();
+        $this->_data['assignedPages'] = Category::getPostAssignedIdTitle($request['id']);
+        $this->_data['notAssingedPages'] = Category::getNotPostAssignedIdTitle();
+        $this->_data['assingedSubCategories'] = Category::getSubIdTitleSlug($request['id']);
+        $this->_data['notAssingedSubs'] = Category::getNotSubIdTitleSlug(Category::getSubIdTitleSlug($request['id']), $request['id']);
 
         return $this->view('admin/categories/index')->data($this->_data);
     }
 
     /**
-     * To show the categories apply view
-     * 
-     * @param array $request id (category id)
-     * @return object CategoryController, Controller
-     */
-    public function apply($request) {
-
-        $this->ifExists($request['id']);
-
-        $this->_data['categories'] = Category::allCategoriesButOrdered();
-        $this->_data['add'] = $this->getAddData($request['id']);
-        $this->_data['categoryId'] = $request['id'];
-
-        return $this->view('admin/categories/apply')->data($this->_data);
-    }
-
-    /**
      * To store a new category (on successful validation)
      * 
-     * @param array $request _POST title, description
+     * @param array $request id (category id) _POST title, description
      */
     public function store($request) {
 
         $rules = new Rules();
+
+        $id = $request['id'];
         
         if($rules->category($request['title'], $request['description'], Category::whereColumns(['title'], ['title' => $request['title']]))->validated()) {
 
@@ -99,7 +87,12 @@ class CategoryController extends Controller {
             Session::set('failed', "Title can't be empty, must be unique, max 49 characters, no special characters! Description max 99 characters, no special characters!");
         }
 
-        redirect('/admin/categories');
+        if(empty($id) || $id === null) {
+            
+            $id = Category::getLastRegisteredCategoryId()['id'];
+        }
+
+        redirect("/admin/categories/$id");
     }
 
     /**
@@ -128,27 +121,7 @@ class CategoryController extends Controller {
             Session::set('failed', "Title can't be empty, must be unique, max 49 characters, no special characters! Description max 99 characters, no special characters!");
         }
 
-        redirect('/admin/categories');
-    }
-
-    /**
-     * To show the categories add view
-     * 
-     * @param array $request id category id
-     * @return object CategoryController, Controller
-     */
-    public function getAddData($id) {
-     
-        $this->ifExists($id);
-
-        $this->_data['id'] = $id;
-        $this->_data['slug'] = Category::getColumns(['slug'], $id)['slug'];
-        $this->_data['assignedPages'] = Category::getPostAssignedIdTitle($id);
-        $this->_data['notAssingedPages'] = Category::getNotPostAssignedIdTitle();
-        $this->_data['assingedSubCategories'] = Category::getSubIdTitleSlug($id);
-        $this->_data['notAssingedSubs'] = Category::getNotSubIdTitleSlug(Category::getSubIdTitleSlug($id), $id);
-
-        return $this->_data;
+        redirect("/admin/categories/$id");
     }
 
     /**
@@ -176,7 +149,7 @@ class CategoryController extends Controller {
             }
         }
 
-        redirect("/admin/categories/$id/apply");
+        redirect("/admin/categories/$id");
     }
 
     /**
@@ -302,7 +275,7 @@ class CategoryController extends Controller {
             Session::set('failed', 'Page(s) are already assinged!');
         }
 
-        redirect("/admin/categories/$id/apply");
+        redirect("/admin/categories/$id");
     }
 
     /**
@@ -337,7 +310,7 @@ class CategoryController extends Controller {
                     'updated_at' => date('Y-m-d H:i:s', $_SERVER['REQUEST_TIME'])
                 ]);
 
-                redirect("/admin/categories/$id/apply");
+                redirect("/admin/categories/$id");
             }
         } 
     }
@@ -379,9 +352,7 @@ class CategoryController extends Controller {
      */
     public function delete($request) {
 
-        $deleteIds = explode(',', $request['deleteIds']);
-
-        foreach($deleteIds as $id) {
+        foreach($request['deleteIds'] as $id) {
 
             $this->ifExists($id);
             $this->updateSlugAssingedCategory($id); 
@@ -391,9 +362,16 @@ class CategoryController extends Controller {
             Category::delete('id', $id);
             CategoryPage::delete('category_id', $id);
             CategorySub::delete('category_id', $id);
-        
-            redirect("/admin/categories");
         }
+
+        $id = Category::getFirstInsertedCategoryId()['id'];
+
+        if(!empty($id) && $id !== null) {
+
+            redirect("/admin/categories/$id") . exit();
+        }
+
+        redirect('/admin/categories');
     }
 
     /**
