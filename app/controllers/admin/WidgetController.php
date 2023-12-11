@@ -105,7 +105,7 @@ class WidgetController extends Controller {
     /**
      * To show the widget read view
      * 
-     * @param array $request _POST id (widget id)
+     * @param array $request id (widget id)
      * @return object WidgetController, Controller
      */
     public function read($request) {
@@ -120,7 +120,7 @@ class WidgetController extends Controller {
     /**
      * To show the widget edit view
      * 
-     * @param array $request _POST id (widget id)
+     * @param array $request id (widget id)
      * @return object WidgetController, Controller
      */
     public function edit($request) {
@@ -136,7 +136,7 @@ class WidgetController extends Controller {
     /**
      * To update widget data (on successful validation)
      * 
-     * @param array $request _POST id (widget id), title, content
+     * @param array $request id (widget id), _POST title, content
      * @return object WidgetController, Controller (on failed validation)
      */
     public function update($request) {

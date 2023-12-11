@@ -107,7 +107,7 @@ class MenuController extends Controller {
     /**
      * To show the menu read view
      * 
-     * @param array $request _POST id (menu id)
+     * @param array $request id (menu id)
      * @return object MenuController, Controller
      */
     public function read($request) {
@@ -122,7 +122,7 @@ class MenuController extends Controller {
     /**
      * To show the menu edit view
      * 
-     * @param array $request _POST id (menu id)
+     * @param array $request id (menu id)
      * @return object MenuController, Controller
      */
     public function edit($request) {
@@ -138,7 +138,7 @@ class MenuController extends Controller {
     /**
      * To update menu data (on successful validation)
      * 
-     * @param array $request _POST id (menu id), title, content)
+     * @param array $request id (menu id), _POST title, content)
      * @return object MenuController, Controller (on failed validation)
      */
     public function update($request) {
@@ -175,7 +175,7 @@ class MenuController extends Controller {
     /**
      * To update menu data (position)
      * 
-     * @param array $request _POST id (menu id), position
+     * @param array $request id (menu id), _POST position
      */
     public function updatePosition($request) {
 
@@ -195,7 +195,7 @@ class MenuController extends Controller {
     /**
      * To update menu data (ordering)
      * 
-     * @param array $request _POST id (menu id), ordering
+     * @param array $request id (menu id), _POST ordering
      */
     public function updateOrdering($request) {
 

@@ -418,7 +418,7 @@ class MediaController extends Controller {
     /**
      * To update media data (filename) (on successful validation) (AJAX)
      * 
-     * @param array $request _GET search, page | search, folder, type, filter _POST id (media id), filename
+     * @param array $request id (media id), _GET search, page | search, folder, type, filter _POST filename
      */
     public function UPDATEFILENAME($request) {
 
@@ -444,7 +444,7 @@ class MediaController extends Controller {
     /**
      * To update media data (description) (on successful validation) (AJAX)
      * 
-     * @param array $request _GET search, page | search, folder, type, filter _POST id (media id), description
+     * @param array $request id (media id), _GET search, page | search, folder, type, filter _POST description
      */
     public function UPDATEDESCRIPTION($request) {
 

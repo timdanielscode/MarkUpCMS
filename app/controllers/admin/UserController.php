@@ -111,6 +111,7 @@ class UserController extends Controller {
     /**
      * To show the user edit view
      * 
+     * @param array $request username
      * @return object UserController, Controller
      */
     public function edit($request) {
@@ -126,7 +127,7 @@ class UserController extends Controller {
     /**
      * To update user data (details) (on successful validation)
      * 
-     * @param array $request _POST id (user id), f_username, email
+     * @param array $request username, _POST id (user id), f_username, email
      * @return object UserController, Controller (on failed validation)
      */
     public function update($request) {
@@ -159,7 +160,7 @@ class UserController extends Controller {
     /**
      * To update user data (role) (on successful validation)
      * 
-     * @param array $request _POST id (user id)
+     * @param array username, $request _POST id (user id)
      * @return object UserController, Controller (on failed validation)
      */
     public function updateRole($request) {

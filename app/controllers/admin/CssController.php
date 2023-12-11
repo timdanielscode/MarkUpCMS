@@ -71,7 +71,7 @@ class CssController extends Controller {
     /**
      * To store new css data and to create a new css file (on successful validation)
      * 
-     * @param array $request _POST (filename, code) 
+     * @param array $request _POST filename, code 
      * @return object CssController, Controller (on failed validation)
      */
     public function store($request) {
@@ -137,7 +137,7 @@ class CssController extends Controller {
     /**
      * To show the css read view
      * 
-     * @param array $request _POST (id)
+     * @param array $request id (css id)
      * @return object CssController, Controller
      */
     public function read($request) {
@@ -153,7 +153,7 @@ class CssController extends Controller {
     /**
      * To show the css edit view
      * 
-     * @param array $request _POST (id)
+     * @param array $request id (css id)
      * @return object CssController, Controller
      */
     public function edit($request) {
@@ -172,7 +172,7 @@ class CssController extends Controller {
     /**
      * To update css data and to update the css file (on successful validation)
      * 
-     * @param array $request _POST (id, filename, code)
+     * @param array $request id (css id), _POST filename, code
      * @return object CssController, Controller (on failed validation)
      */
     public function update($request) {
@@ -223,7 +223,7 @@ class CssController extends Controller {
     /**
      * To link a css file on all pages
      * 
-     * @param array $request _POST (id)
+     * @param array $request id (css id)
      */
     public function linkAll($request) {
 
@@ -251,7 +251,7 @@ class CssController extends Controller {
     /**
      * To unlink a css file on all pages
      * 
-     * @param array $request _POST (id)
+     * @param array $request id (css id)
      */
     public function unlinkAll($request) {
 
@@ -267,7 +267,7 @@ class CssController extends Controller {
     /**
      * To unlink a css file on page(s)
      * 
-     * @param array $request _POST (id, pages)
+     * @param array $request id (css id) _POST pages
      */
     public function unlinkPages($request) {
 
@@ -289,7 +289,7 @@ class CssController extends Controller {
     /**
      * To link a css file on page(s)
      * 
-     * @param array $request _POST (id, pages)
+     * @param array $request id (css id), _POST pages
      */
     public function linkPages($request) {
 
@@ -315,7 +315,7 @@ class CssController extends Controller {
     /**
      * To remove css file(s) from thrashcan
      * 
-     * @param array $request _POST (id, recoverIds)
+     * @param array $request _POST recoverIds (css recoverIds)
      */
     public function recover($request) {
 
@@ -338,7 +338,7 @@ class CssController extends Controller {
     /**
      * To remove css file(s) permanently or move to thrashcan
      * 
-     * @param array $request _POST (deleteIds)
+     * @param array $request _POST deleteIds (css deleteIds)
      */
     public function delete($request) {
 

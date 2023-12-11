@@ -118,7 +118,7 @@ class PostController extends Controller {
     /**
      * To show the page read view
      * 
-     * @param array $request _GET search, page, _POST id (page id)
+     * @param array $request id (page id), _GET search, page
      * @return object PostController, Controller
      */
     public function read($request) {
@@ -137,7 +137,7 @@ class PostController extends Controller {
     /**
      * To show the page edit view
      * 
-     * @param array $request _GET search, page, _POST id (page id)
+     * @param array $request id (page id), _GET search, page
      * @return object PostController, Controller
      */
     public function edit($request) {
@@ -154,7 +154,7 @@ class PostController extends Controller {
     /**
      * To update page data (on successful validation)
      * 
-     * @param array $request _POST id (page id), title, body
+     * @param array $request id (page id), _POST title, body
      * @return object PostController, Controller (on failed validation)
      */
     public function update($request) {
@@ -228,7 +228,7 @@ class PostController extends Controller {
     /**
      * To get all necessary data on failed validation or page edit view
      * 
-     * @param string $id _POST id (page id)
+     * @param string $id page id
      * @param array optional $requestData request data 
      */
     private function getAllData($id, $requestData = null) {
@@ -268,7 +268,7 @@ class PostController extends Controller {
     /** 
      * To import meta(s) on page
      * 
-     * @param array $request _POST id (page id), cdns
+     * @param array $request id (page id), _POST cdns
      */
     public function importCdns($request) {
 
@@ -292,7 +292,7 @@ class PostController extends Controller {
     /** 
      * To export meta(s) from page
      * 
-     * @param array $request _POST id (page id), cdns
+     * @param array $request id (page id), _POST cdns
      */
     public function exportCdns($request) {
 
@@ -312,7 +312,7 @@ class PostController extends Controller {
     /**
      * To make widget(s) applicable on page
      * 
-     * @param array $request _POST id (page id), widgets
+     * @param array $request id (page id), _POST widgets
      */
     public function addWidget($request) {
 
@@ -340,7 +340,7 @@ class PostController extends Controller {
     /**
      * To make widget(s) inapplicable on page
      * 
-     * @param array $request _POST id (page id), widgets
+     * @param array $request id (page id), _POST widgets
      */
     public function removeWidget($request) {
 
@@ -364,7 +364,7 @@ class PostController extends Controller {
     /**
      * To assign category on page (on successful validation)
      * 
-     * @param array $request _POST id (page id), categories
+     * @param array $request id (page id), _POST categories
      * @return object PostController, Controller (on failed validation)
      */
     public function assignCategory($request) {
@@ -405,7 +405,7 @@ class PostController extends Controller {
     /**
      * To update post data (slug) after assigning a category
      * 
-     * @param string $id _POST page id 
+     * @param string $id page id 
      * @param string $categoryId _POST category id
      */
     private function updateSlugCategory($id, $categoryId) {
@@ -438,7 +438,7 @@ class PostController extends Controller {
     /**
      * To exclude js file(s) on page
      * 
-     * @param array $request _POST id (page id), linkedJsFiles
+     * @param array $request id (page id), _POST linkedJsFiles
      */
     public function removeJs($request) {
 
@@ -459,7 +459,7 @@ class PostController extends Controller {
     /**
      * To include js file(s) on page
      * 
-     * @param array $request _POST id (page id), jsFiles
+     * @param array $request id (page id), _POST jsFiles
      */
     public function includeJs($request) {
 
@@ -484,7 +484,7 @@ class PostController extends Controller {
     /**
      * To link css file(s) on page
      * 
-     * @param array $request _POST id (page id), cssFiles
+     * @param array $request id (page id), _POST cssFiles
      */
     public function linkCss($request) {
 
@@ -509,7 +509,7 @@ class PostController extends Controller {
     /**
      * To unlink css file(s) on page
      * 
-     * @param array $request _POST id (page id), linkedCssFiles
+     * @param array $request id (page id), _POST linkedCssFiles
      */
     public function unLinkCss($request) {
 
@@ -530,7 +530,7 @@ class PostController extends Controller {
     /**
      * To update page data (slug) (on successful validation)
      * 
-     * @param array $request _POST id (page id), postSlug
+     * @param array $request id (page id), _POST postSlug
      * @return object PostController, Controller (on failed validation)
      */
     public function updateSlug($request) {
@@ -575,7 +575,7 @@ class PostController extends Controller {
     /**
      * To update page data (meta title, meta description, meta keywords) (on successful validation)
      * 
-     * @param array $request _POST id (page id), metaTitle, metaDescription, metaKeywords
+     * @param array $request id (page id), _POST metaTitle, metaDescription, metaKeywords
      * @return object PostController, Controller (on failed validation)
      */
     public function updateMetadata($request) {
@@ -612,7 +612,7 @@ class PostController extends Controller {
     /**
      * To detach category from page and update page data (slug) (on successful validation)
      * 
-     * @param array $request _POST id (page id), slug
+     * @param array $request id (page id), _POST slug
      * @return object PostController, Controller (on failed validation)
      */
     public function detachCategory($request) {

@@ -115,7 +115,7 @@ class CategoryController extends Controller {
     /**
      * To show the categories apply view
      * 
-     * @param array $request _GET id (category id)
+     * @param array $request id (category id)
      * @return object CategoryController, Controller
      */
     public function apply($request) {
@@ -161,7 +161,7 @@ class CategoryController extends Controller {
     /**
      * To update category data (on successful validation)
      * 
-     * @param array $request _POST id (category id), title, description
+     * @param array $request id (category id), _POST title, description
      */
     public function update($request) {
 
@@ -190,7 +190,7 @@ class CategoryController extends Controller {
     /**
      * To show the categories add view
      * 
-     * @param array $request _GET (id) category id
+     * @param array $request id category id
      * @return object CategoryController, Controller
      */
     public function getAddData($id) {
@@ -239,7 +239,7 @@ class CategoryController extends Controller {
      * To detach page(s) from a category
      * 
      * @param string $id _POST category id
-     * @param array $pageData id, slug
+     * @param array $pageData _POST id, slug
      */
     private function detachPost($id, $pageData) {
 
@@ -261,7 +261,7 @@ class CategoryController extends Controller {
      * To assign page(s) to a category 
      * 
      * @param string $id _POST category id
-     * @param array $pageData id, slug
+     * @param array $pageData _POST id, slug
      */
     private function attachPost($id, $pageData) {
 
@@ -283,7 +283,7 @@ class CategoryController extends Controller {
      * To update page slug after assigning to a category
      * 
      * @param string $id _POST category id
-     * @param array $pageData id, slug
+     * @param array $pageData _POST id, slug
      */
     private function updatePageSlugOnAttach($id, $pageData) {
 

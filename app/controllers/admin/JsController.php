@@ -71,7 +71,7 @@ class JsController extends Controller {
     /**
      * To show the js read view
      * 
-     * @param array $request _POST id (js id)
+     * @param array $request id (js id)
      * @return object JsController, Controller
      */
     public function read($request) {
@@ -152,7 +152,7 @@ class JsController extends Controller {
     /**
      * To show the js edit view
      * 
-     * @param array $request _POST id (page id)
+     * @param array $request id (page id)
      * @return object JsController, Controller
      */
     public function edit($request) {
@@ -171,7 +171,7 @@ class JsController extends Controller {
     /**
      * To update js data and to update the js file (on successful validation)
      * 
-     * @param array $request _POST id (js id), filename, code
+     * @param array $request id (js id), _POST filename, code
      * @return object JsController, Controller (on failed validation)
      */
     public function update($request) {
@@ -219,7 +219,7 @@ class JsController extends Controller {
     /**
      * To include a js file on page(s)
      * 
-     * @param array $request _POST id (js id), pages
+     * @param array $request id (js id), _POST pages
      */
     public function includePages($request) {
 
@@ -245,7 +245,7 @@ class JsController extends Controller {
     /**
      * To exclude a js file on page(s)
      * 
-     * @param array $request _POST id (js id), pages
+     * @param array $request id (js id), _POST pages
      */
     public function removePages($request) {
 
@@ -267,7 +267,7 @@ class JsController extends Controller {
     /**
      * To include a js file on all pages
      * 
-     * @param array $request _POST id (js id)
+     * @param array $request id (js id)
      */
     public function includeAll($request) {
 

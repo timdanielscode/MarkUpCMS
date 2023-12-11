@@ -108,7 +108,7 @@ class MetaController extends Controller {
     /**
      * To show the meta read view
      * 
-     * @param array $request _POST id (meta id)
+     * @param array $request id (meta id)
      * @return object MetaController, Controller
      */
     public function read($request) {
@@ -123,7 +123,7 @@ class MetaController extends Controller {
     /**
      * To show the meta edit view
      * 
-     * @param array $request _POST id (meta id)
+     * @param array $request id (meta id)
      * @return object MetaController, Controller
      */
     public function edit($request) {
@@ -141,7 +141,7 @@ class MetaController extends Controller {
     /**
      * To update meta data (on successful validation)
      * 
-     * @param array $request _POST id (meta id) title, content
+     * @param array $request id (meta id), _POST title, content
      * @return object MetaController, Controller (on failed validation)
      */
     public function update($request) {
@@ -180,7 +180,7 @@ class MetaController extends Controller {
     /**
      * To import a meta on page(s)
      * 
-     * @param array $request _POST id (meta id), pages
+     * @param array $request id (meta id), _POST pages
      */
     public function importPage($request) {
 
@@ -203,7 +203,7 @@ class MetaController extends Controller {
     /**
      * To import a meta on all pages
      * 
-     * @param array $request _POST id (meta id)
+     * @param array $request id (meta id)
      */
     public function importAll($request) {
 
@@ -228,7 +228,7 @@ class MetaController extends Controller {
     /**
      * To export a meta from page(s)
      * 
-     * @param array $request _POST id (meta id), pages
+     * @param array $request id (meta id), _POST pages
      */
     public function exportPage($request) {
 
@@ -247,7 +247,7 @@ class MetaController extends Controller {
     /**
      * To export a meta from all pages
      * 
-     * @param array $request _POST id (meta id)
+     * @param array $request id (meta id)
      */
     public function exportAll($request) {
 
