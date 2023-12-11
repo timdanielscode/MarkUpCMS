@@ -110,6 +110,10 @@ table td .button {
     color: #3b75ca;
 }
 
+#sidebar table td a.active {
+    font-weight: bold;
+}
+
 #slug {
     background: #fff;
     padding: 12px;
@@ -162,6 +166,19 @@ table td .button {
     width: 100%;
     box-sizing: border-box;
     margin-bottom: 20px;
+}
+
+.message-container.success {
+    color: #42971c;
+    margin-bottom: 10px;
+    margin-top: -10px;
+    font-size: 14px;
+}
+.message-container.failed {
+    color: rgb(199, 48, 48);
+    margin-bottom: 10px;
+    margin-top: -10px;
+    font-size: 14px;
 }
 
 /*

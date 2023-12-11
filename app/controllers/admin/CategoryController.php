@@ -32,62 +32,6 @@ class CategoryController extends Controller {
     }
 
     /**
-     * To force failed validation message on sub category assignment (and pages are already assigned)
-     * 
-     * @param string $id _POST category id
-     */
-    private function checkPostIsAssigned($id) {
-
-        if(!empty(Category::checkPostAssinged($id)) === true) { 
-            
-            exit();
-        }
-    }
-
-    /**
-     * To force failed validation message on detaching page from category (and page slug is not unique)
-     * 
-     * @param string $slug page slug
-     * @param string $pageId page id
-     */
-    private function checkUniqueSlugDetach($slug, $pageId) {
-
-        if(empty(Post::checkUniqueSlug($slug, $pageId)) === false) {
-
-            exit();
-        }
-    }
-
-    /**
-     * To force failed validation message on assigning page to category (and page slug is not unique)
-     * 
-     * @param string $pageId page id
-     * @param string $slug page slug
-     * @param string $categoryId category id
-     */
-    private function checkUniqueSlugAttach($pageId, $slug, $categoryId) {
-
-        if(empty(Post::checkUniqueSlugDetach($pageId, $slug, $categoryId)) === false) {
-
-            exit();
-        }
-    }
-
-    /**
-     * To force failed validation message on update category slug (and page slug is not unique)
-     * 
-     * @param string $slug page slug
-     * @param string $id page id
-     */
-    private function checkUniqueSlugUpdate($slug, $id) {
-
-        if(!empty(Post::checkUniqueSlug($slug, $id)) === true) { 
-            
-            exit(); 
-        }
-    }
-
-    /**
      * To show the categories index view
      * 
      * @param array $request _GET search, page
@@ -200,7 +144,7 @@ class CategoryController extends Controller {
         $this->_data['id'] = $id;
         $this->_data['slug'] = Category::getColumns(['slug'], $id)['slug'];
         $this->_data['assignedPages'] = Category::getPostAssignedIdTitle($id);
-        $this->_data['notAssingedPages'] = Category::getNotPostAssignedIdTitle($id);
+        $this->_data['notAssingedPages'] = Category::getNotPostAssignedIdTitle();
         $this->_data['assingedSubCategories'] = Category::getSubIdTitleSlug($id);
         $this->_data['notAssingedSubs'] = Category::getNotSubIdTitleSlug(Category::getSubIdTitleSlug($id), $id);
 
@@ -247,14 +191,19 @@ class CategoryController extends Controller {
         $lastPageSlugKey = array_key_last($slugParts);
         $lastPageSlugValue = "/" . $slugParts[$lastPageSlugKey];
 
-        $this->checkUniqueSlugDetach($lastPageSlugValue, $pageData['id']);
+        if(empty(Post::checkUniqueSlug($lastPageSlugValue, $pageData['id'])) === true) {
 
-        Post::update(['id' => $pageData['id']], [
+            Post::update(['id' => $pageData['id']], [
 
-            'slug'  => $lastPageSlugValue
-        ]);
+                'slug'  => $lastPageSlugValue
+            ]);
+    
+            Category::deletePost($pageData['id'], $id);
 
-        Category::deletePost($pageData['id'], $id);
+            Session::set('success', 'You have successfuly detached page(s) from the category!');
+        } else {
+            Session::set('failed', 'Page(s) slug is not unique!');
+        }
     }
 
     /**
@@ -268,15 +217,18 @@ class CategoryController extends Controller {
         $slug = explode('/', $pageData['slug']);
         $lastKey = array_key_last($slug);
 
-        $this->checkUniqueSlugAttach($pageData['id'], $slug[$lastKey], $id);
+        if(empty(Post::checkUniqueSlugDetach($pageData['id'], $slug[$lastKey])) === true) {
 
-        CategoryPage::insert([
+            CategoryPage::insert([
 
-            'page_id'   => $pageData['id'],
-            'category_id'   => $id
-        ]);
+                'page_id'   => $pageData['id'],
+                'category_id'   => $id
+            ]);
 
-        $this->updatePageSlugOnAttach($id, $pageData);
+            $this->updatePageSlugOnAttach($id, $pageData);
+        } else {
+            Session::set('failed', 'Page(s) slug is not unique!');
+        }
     }
 
     /**
@@ -310,6 +262,8 @@ class CategoryController extends Controller {
                 'slug'  =>  Category::getSlug($id)['slug'] . $pageData['slug']
             ]);
         }
+
+        Session::set('success', 'You have successfuly assinged page(s) to the category!');
     }
 
     /**
@@ -320,13 +274,12 @@ class CategoryController extends Controller {
     public function assignDetachCategories($request) {
 
         $this->ifExists($request['id']);
-        $this->checkPostIsAssigned($request['id']);
         
         $id = $request['id'];
 
         $categoryIds = array_filter(explode(',', $request['categoryIds']));
 
-        if(!empty($categoryIds) && $categoryIds !== null) {
+        if(!empty($categoryIds) && $categoryIds !== null && !empty(Category::checkPostAssinged($id)) === false) {
 
             foreach($categoryIds as $categoryId) {
 
@@ -343,6 +296,10 @@ class CategoryController extends Controller {
                     ]);
                 } 
             }
+
+            Session::set('success', 'You have successfuly assinged the category(ies)!');
+        } else {
+            Session::set('failed', 'Page(s) are already assinged!');
         }
 
         redirect("/admin/categories/$id/apply");
@@ -398,18 +355,19 @@ class CategoryController extends Controller {
         
             $slugParts = explode('/', $page['slug']);
             $categorySlugKey = array_search(substr($currentSlug['slug'], 1), $slugParts);
+            $slugParts[$categorySlugKey] = substr("/" . $request['slug'], 1);
+            $slug = implode('/', $slugParts);
             
-            if(!empty($categorySlugKey) && $categorySlugKey !== null) {
- 
-                $slugParts[$categorySlugKey] = substr("/" . $request['slug'], 1);
-                $slug = implode('/', $slugParts);
-
-                $this->checkUniqueSlugUpdate($slug, $page['id']);
+            if(!empty(Post::checkUniqueSlug($slug, $page['id'])) === false) {
 
                 Post::update(['id' => $page['id']], [
         
                     'slug'  => $slug
                 ]);
+
+                Session::set('success', 'You have successfuly updated the category slug!');
+            } else {
+                Session::set('failed', 'Page(s) slug is not unique!');
             }
         } 
     }

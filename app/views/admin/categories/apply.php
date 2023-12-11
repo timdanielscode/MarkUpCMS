@@ -26,6 +26,10 @@
 <div class="row">
     <div class="col10 col10-L- col9-L col8-S">
         <div class="edit-container">
+
+            <?php echo core\Alert::message('success'); ?>
+            <?php echo core\Alert::message('failed'); ?>
+
             <div id="slug"><?php if(!empty($assingedSubCategories) && $assingedSubCategories !== null) { ?><?php foreach($assingedSubCategories as $assingedSubCategory) { ?><div class="listedItem"><?php echo $assingedSubCategory['slug']; ?></div><?php } ?><?php } ?><div class="listedItem"><?php echo $slug; ?></div></div>
             <div class="row">
                 <div class="col6">
@@ -69,7 +73,7 @@
                         </select>
                         <input type="hidden" id="pageIds" name="pageIds" value=""/>
                         <input type="hidden" name="id" value="<?php echo $categoryId; ?>"/>
-                            <input id="submitPages" type="submit" name="submit" class="display-none"/>
+                        <input id="submitPages" type="submit" name="submit" class="display-none"/>
                     </form>
                 </div>
             </div>  
@@ -89,13 +93,13 @@
                     <label>Slug: </label>
                     <input type="text" name="slug" value="<?php echo ltrim($slug, '/'); ?>"/>
                     <input type="hidden" name="id" value="<?php echo $categoryId; ?>" />
-                    <input type="submit" name="submitSlug" value="Update" class="button lightButton"/>
+                    <input type="submit" name="submitSlug" value="Update" class="button darkButton"/>
                 </form>
                 <span class="title">Categories: </span>
                 <table>
                     <?php foreach($categories as $category){ ?>
                         <tr>
-                            <td><a href="/admin/categories/<?php echo $category['id']; ?>/apply"><?php echo $category['title']; ?></a></td>
+                            <td><a href="/admin/categories/<?php echo $category['id']; ?>/apply" class="<?php if($category['id'] == $categoryId) { echo 'active'; } ?>"><?php echo $category['title']; ?></a></td>
                         </tr>
                     <?php } ?>
                 </table>

@@ -90,9 +90,9 @@ class Post extends Model {
         return DB::try()->select('page_id')->from('category_page')->where('page_id', '=', $id)->fetch();      
     }
 
-    public static function checkUniqueSlugDetach($id, $lastPartSlug, $categoryId) {
+    public static function checkUniqueSlugDetach($id, $lastPartSlug) {
 
-        return DB::try()->select('pages.slug')->from(self::$_table)->join('category_page')->on('category_page.page_id', '=', 'pages.id')->where('category_page.category_id', '=', $categoryId)->and('slug', 'LIKE', '%'.$lastPartSlug)->and('id', '!=', $id)->first();
+        return DB::try()->select('pages.slug')->from(self::$_table)->join('category_page')->on('category_page.page_id', '=', 'pages.id')->where('slug', 'LIKE', '%'.$lastPartSlug)->and('id', '!=', $id)->first();
     }
 
     public static function getCategoryTitleSlug($postId) {

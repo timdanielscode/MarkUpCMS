@@ -78,11 +78,11 @@ class Category extends Model {
         return DB::try()->select('id, title')->from('pages')->join('category_page')->on('pages.id', '=', 'category_page.page_id')->where('category_id', '=', $id)->and('pages.removed', '!=', 1)->fetch();
     }
 
-    public static function getNotPostAssignedIdTitle($id) {
+    public static function getNotPostAssignedIdTitle() {
 
-        if(!empty(self::getAssignedPostIds($id))  ) {
+        if(!empty(self::getAssignedPostIds())  ) {
 
-            $postIdsString = implode(',', self::getAssignedPostIds($id));
+            $postIdsString = implode(',', self::getAssignedPostIds());
             return DB::try()->select('id, title')->from('pages')->whereNotIn('id', $postIdsString)->and('removed', '!=', 1)->fetch();
 
         } else {
@@ -90,9 +90,9 @@ class Category extends Model {
         }
     }
 
-    private static function getAssignedPostIds($id) {
+    private static function getAssignedPostIds() {
 
-        $assignedPostIds = DB::try()->select('page_id')->from('category_page')->where('category_id', '=', $id)->fetch();
+        $assignedPostIds = DB::try()->select('page_id')->from('category_page')->fetch();
 
         foreach($assignedPostIds as $postId) {
 
