@@ -177,8 +177,8 @@ Middleware::route(['auth' => 'admin'], function() {
 
 Middleware::route('login', function() {
 
-    new Route(['GET' => '/admin/categories'], ['admin\CategoryController' => 'index']);
-    new Route(['GET' => '/admin/categories/[id]'], ['admin\CategoryController' => 'index']);
+    new Route(['GET' => '/admin/categories/apply'], ['admin\CategoryController' => 'index']);
+    new Route(['GET' => '/admin/categories/[id]/apply'], ['admin\CategoryController' => 'index']);
 }); 
 
 Middleware::route(['auth' => 'admin'], function() {

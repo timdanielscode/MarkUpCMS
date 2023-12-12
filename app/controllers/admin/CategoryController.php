@@ -34,7 +34,7 @@ class CategoryController extends Controller {
     /**
      * To show the categories index view
      * 
-     * @param array $request id (category id)
+     * @param array $request id (category id), _GET search
      * @return object CategoryController, Controller
      */
     public function index($request) {
@@ -51,6 +51,12 @@ class CategoryController extends Controller {
         $this->_data['description'] = Category::getColumns(['category_description'], $request['id'])['category_description'];
         $this->_data['slug'] = Category::getColumns(['slug'], $request['id'])['slug'];
         $this->_data['categories'] = Category::allCategoriesButOrdered();
+
+        if(!empty($request['search']) ) {
+
+            $this->_data['categories'] = Category::categoriesFilesOnSearch(Get::validate($request['search']));
+        }
+
         $this->_data['assignedPages'] = Category::getPostAssignedIdTitle($request['id']);
         $this->_data['notAssingedPages'] = Category::getNotPostAssignedIdTitle();
         $this->_data['assingedSubCategories'] = Category::getSubIdTitleSlug($request['id']);
@@ -92,7 +98,7 @@ class CategoryController extends Controller {
             $id = Category::getLastRegisteredCategoryId()['id'];
         }
 
-        redirect("/admin/categories/$id");
+        redirect("/admin/categories/$id/apply");
     }
 
     /**
@@ -121,7 +127,7 @@ class CategoryController extends Controller {
             Session::set('failed', "Title can't be empty, must be unique, max 49 characters, no special characters! Description max 99 characters, no special characters!");
         }
 
-        redirect("/admin/categories/$id");
+        redirect("/admin/categories/$id/apply");
     }
 
     /**
@@ -149,7 +155,7 @@ class CategoryController extends Controller {
             }
         }
 
-        redirect("/admin/categories/$id");
+        redirect("/admin/categories/$id/apply");
     }
 
     /**
@@ -275,7 +281,7 @@ class CategoryController extends Controller {
             Session::set('failed', 'Page(s) are already assinged!');
         }
 
-        redirect("/admin/categories/$id");
+        redirect("/admin/categories/$id/apply");
     }
 
     /**
@@ -310,7 +316,7 @@ class CategoryController extends Controller {
                     'updated_at' => date('Y-m-d H:i:s', $_SERVER['REQUEST_TIME'])
                 ]);
 
-                redirect("/admin/categories/$id");
+                redirect("/admin/categories/$id/apply");
             }
         } 
     }
@@ -368,10 +374,10 @@ class CategoryController extends Controller {
 
         if(!empty($id) && $id !== null) {
 
-            redirect("/admin/categories/$id") . exit();
+            redirect("/admin/categories/$id/apply") . exit();
         }
 
-        redirect('/admin/categories');
+        redirect('/admin/categories/apply');
     }
 
     /**

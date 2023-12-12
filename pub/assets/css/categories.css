@@ -158,23 +158,33 @@ table td .button {
     position: absolute;
     top: -25px;
 }
-
-#sidebar #slugForm {
-    margin-top: 50px;
+#slugForm {
+    display: inline-block;
+}
+#slugForm input[type="text"] {
+    border: 0;
+    font-size: 16px;
+    padding: 0;
+    font-weight: bold;
+}
+#slugForm input[type="text"]:focus, #slugForm input[type="text"]:active {
+    outline: none;
 }
 
-#sidebar #slugForm label {
-    font-size: 14px;
+.searchForm {
+    margin-bottom: 20px;
 }
 
-#sidebar #slugForm input[type="text"] {
+.searchForm input[type="text"] {
     padding: 10px;
-    margin-top: 10px;
     font-size: 14px;
     border: none;
     width: 100%;
     box-sizing: border-box;
-    margin-bottom: 20px;
+}
+
+.searchForm input[type="text"]:focus, .searchForm input[type="text"]:active {
+    outline: none;
 }
 
 .message-container.success {

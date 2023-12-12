@@ -35,7 +35,7 @@
             <?php echo core\Alert::message('success'); ?>
             <?php echo core\Alert::message('failed'); ?>
 
-            <?php if(!empty($categoryId) && $categoryId !== null ) { ?><div id="slug"><?php if(!empty($assingedSubCategories) && $assingedSubCategories !== null) { ?><?php foreach($assingedSubCategories as $assingedSubCategory) { ?><div class="listedItem"><?php echo $assingedSubCategory['slug']; ?></div><?php } ?><?php } ?><div class="listedItem"><?php echo $slug; ?></div></div><?php } ?>
+            <?php if(!empty($categoryId) && $categoryId !== null ) { ?><div id="slug"><?php if(!empty($assingedSubCategories) && $assingedSubCategories !== null) { ?><?php foreach($assingedSubCategories as $assingedSubCategory) { ?><div class="listedItem"><?php echo $assingedSubCategory['slug']; ?></div><?php } ?><?php } ?><div class="listedItem">/</div><form action="/admin/categories/slug" method="POST" id="slugForm"><input type="text" name="slug" value="<?php echo ltrim($slug, '/'); ?>"/><input type="hidden" name="id" value="<?php echo $categoryId; ?>" /></form></div><?php } ?>
             <?php if(!empty($categoryId) && $categoryId !== null) { ?>
                 <div class="row">
                     <div class="col6">
@@ -96,18 +96,16 @@
                         <a class="button darkBlueButton" id="delete">Delete</a>
                     <?php } ?>
                 </div>
+                <span class="title">Categories: </span>
+                <form class="searchForm" action="" method="GET">
+                    <input type="text" name="search" value="" placeholder="Search"/>
+                    <input type="hidden" name="submit" value="Search"/>
+                </form>
                 <?php if(!empty($categoryId) && $categoryId !== null ) { ?>
-                    <form action="/admin/categories/slug" method="POST" id="slugForm">
-                        <label>Slug: </label>
-                        <input type="text" name="slug" value="<?php echo ltrim($slug, '/'); ?>"/>
-                        <input type="hidden" name="id" value="<?php echo $categoryId; ?>" />
-                        <input type="submit" name="submitSlug" value="Update" class="button darkButton"/>
-                    </form>
-                    <span class="title">Categories: </span>
                     <table>
                         <?php foreach($categories as $category){ ?>
                             <tr>
-                                <td><a href="/admin/categories/<?php echo $category['id']; ?>" class="<?php if($category['id'] == $categoryId) { echo 'active'; } ?>"><?php echo $category['title']; ?></a></td>
+                                <td><a href="/admin/categories/<?php echo $category['id']; ?>/apply" class="<?php if($category['id'] == $categoryId) { echo 'active'; } ?>"><?php echo $category['title']; ?></a></td>
                             </tr>
                         <?php } ?>
                     </table>
