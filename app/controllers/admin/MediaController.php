@@ -153,7 +153,7 @@ class MediaController extends Controller {
     /**
      * To store new media data and upload new files (on successful validation)
      * 
-     * @param array $request _POST media_description
+     * @param array $request _POST media_description _GET folder, search, type, filter
      * @return object MediaController, Controller (on failed validation)
      */
     public function store($request) {
@@ -200,7 +200,7 @@ class MediaController extends Controller {
     /**
      * To store new folder data and create a new folder or remove a folder (checking create or remove)
      * 
-     * @param array $request _POST P_folder
+     * @param array $request _POST P_folder, _GET folder
      */
     public function folder($request) {
 
@@ -217,7 +217,7 @@ class MediaController extends Controller {
     /**
      * To remove a folder
      * 
-     * @param array $request _POST P_folder
+     * @param array $request _POST P_folder, _GET folder
      */
     private function deleteFolder($request) {
 
@@ -228,7 +228,7 @@ class MediaController extends Controller {
     /**
      * To store new folder data and create a new folder (on successful validation)
      * 
-     * @param array $request _POST P_folder
+     * @param array $request _POST P_folder, _GET folder
      * @return object MediaController, Controller (on failed validation)
      */
     private function addFolder($request) {
@@ -441,35 +441,13 @@ class MediaController extends Controller {
     }
 
     /**
-     * To remove media files (index view)
+     * To remove media files
      * 
-     * @param array $request _POST deleteIds (media deleteIds)
+     * @param array $request _POST deleteIds (media deleteIds), _GET folder
      */
     public function delete($request) {
 
-        $this->deleteFiles($request['deleteIds']);
-        redirect("/admin/media");
-    }
-
-    /**
-     * To remove media files (create view)
-     * 
-     * @param array $request _POST deleteIds (media deleteIds)
-     */
-    public function deleteCreate($request) {
-
-        $this->deleteFiles($request['deleteIds']);
-        redirect('/admin/media?folder=' . Media::get(substr($request['deleteIds'], 0, strpos($request['deleteIds'], ",")))['media_folder']);
-    }
-
-    /**
-     * To remove media files
-     * 
-     * @param array $ids media ids
-     */
-    private function deleteFiles($ids) {
-
-        $ids = explode(',', $ids);
+        $ids = explode(',', $request['deleteIds']);
 
         foreach(array_filter($ids) as $id) {
 
@@ -479,5 +457,6 @@ class MediaController extends Controller {
         }
 
         Session::set('success', 'You have successfully removed the file(s)!');
+        redirect('/admin/media?folder=' . $request['folder']);
     }
 }
