@@ -414,6 +414,7 @@ class MediaController extends Controller {
             ]);
         }
 
+        Session::set('success', 'You have successfully updated the filename!');
         redirect("/admin/media?folder=" . Media::getColumns(['media_folder'], $request['id'])['media_folder']);
     }
 
@@ -436,6 +437,7 @@ class MediaController extends Controller {
                 'updated_at' => date('Y-m-d H:i:s', $_SERVER['REQUEST_TIME'])
             ]);
             
+            Session::set('success', 'You have successfully updated the description!');
             redirect("/admin/media?folder=" . Media::getColumns(['media_folder'], $request['id'])['media_folder']);
         }
     }

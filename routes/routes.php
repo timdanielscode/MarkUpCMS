@@ -166,11 +166,10 @@ Middleware::route('login', function() {
 
 Middleware::route(['auth' => 'admin'], function() {
         
+    new Route(['POST' => '/admin/media'], ['admin\MediaController' => 'store']);
+    new Route(['POST' => '/admin/media/folder'], ['admin\MediaController' => 'folder']);
     new Route(['POST' => '/admin/media/update/filename'], ['admin\MediaController' => 'updateFilename']);
     new Route(['POST' => '/admin/media/update/description'], ['admin\MediaController' => 'updateDescription']);
-    new Route(['POST' => '/admin/media'], ['admin\MediaController' => 'store']);
-    new Route(['POST' => '/admin/media/delete'], ['admin\MediaController' => 'deleteCreate']);
-    new Route(['POST' => '/admin/media/folder'], ['admin\MediaController' => 'folder']);
     new Route(['POST' => '/admin/media/delete'], ['admin\MediaController' => 'delete']);
 });   
 
