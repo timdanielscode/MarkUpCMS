@@ -162,16 +162,15 @@ Middleware::route(['auth' => 'admin'], function() {
 Middleware::route('login', function() {
 
     new Route(['GET' => '/admin/media'], ['admin\MediaController' => 'index']);
-    new Route(['GET' => '/admin/media/create'], ['admin\MediaController' => 'create']);
 });
 
 Middleware::route(['auth' => 'admin'], function() {
         
-    new Route(['POST' => '/admin/media/update/filename'], ['admin\MediaController' => 'UPDATEFILENAME']);
-    new Route(['POST' => '/admin/media/update/description'], ['admin\MediaController' => 'UPDATEDESCRIPTION']);
-    new Route(['POST' => '/admin/media/create'], ['admin\MediaController' => 'store']);
-    new Route(['POST' => '/admin/media/create/delete'], ['admin\MediaController' => 'deleteCreate']);
-    new Route(['POST' => '/admin/media/create/folder'], ['admin\MediaController' => 'folder']);
+    new Route(['POST' => '/admin/media/update/filename'], ['admin\MediaController' => 'updateFilename']);
+    new Route(['POST' => '/admin/media/update/description'], ['admin\MediaController' => 'updateDescription']);
+    new Route(['POST' => '/admin/media'], ['admin\MediaController' => 'store']);
+    new Route(['POST' => '/admin/media/delete'], ['admin\MediaController' => 'deleteCreate']);
+    new Route(['POST' => '/admin/media/folder'], ['admin\MediaController' => 'folder']);
     new Route(['POST' => '/admin/media/delete'], ['admin\MediaController' => 'delete']);
 });   
 

@@ -1,155 +1,233 @@
 <!-- 
-    - to show an overview of media files (by a dividing amount to not have to scroll down a lot)
+    - to show overview of media files and folders
+    - to navigate through folders by clicking on folders
+    - to navigate through folders by clicking on crumpath and to show current directory
+    - to select a file to show more details and or deselect file if already selected
+    - to show file with a bigger width by clicking on file after selection or read button to have a better view of file
+    - to get a different overview by adjusting file and folder width sizes using a slider bar
     - to search for specific media files
-    - to show media file but with a bigger width after clicking on file in overview to have a better view of file 
+    - to filter media files on file type
     -
     - FOR TYPE OF ADMIN USER
     -
-    - to create a selection of media files to submit and remove
-    - to add changes to a filename value to submit and update
-    - to add changes to a description value to submit and update
+    - to create a selection of files to submit and upload new files
+    - to create a selection of files to submit and remove files
+    - to apply changes of filename value to submit and update
+    - to apply changes of description value to submit and update
+    - to add a folder value to submit and create a new folder or delete a folder (depending if exists)
 --> 
 
-<?php $this->include('openHeadTag'); ?>
+<?php $this->include('openHeadTag'); ?>  
     <?php $this->stylesheet("/assets/css/style.css"); ?>
     <?php $this->stylesheet("/assets/css/navbar.css"); ?>
-    <?php $this->stylesheet("/assets/css/modal.css"); ?>
-    <?php $this->stylesheet("/assets/css/index.css"); ?>
-    <?php $this->stylesheet("/assets/css/pagination.css"); ?>
     <?php $this->stylesheet("/assets/css/media.css"); ?>
-    <?php $this->script('/assets/js/ajax.js'); ?>
-    <?php $this->script('/assets/js/media/index/read.js'); ?>
-    <?php $this->script('/assets/js/media/index/delete.js', true); ?>
-    <?php $this->script('/assets/js/media/index/update/filename.js', true); ?>
-    <?php $this->script('/assets/js/media/index/update/description.js', true); ?>
-<?php $this->include('closeHeadTagAndOpenBodyTag'); ?>
+    <?php $this->stylesheet("/assets/css/sidebar.css"); ?>
+    <?php $this->stylesheet("/assets/css/pagination.css"); ?>
+    <?php $this->script('/assets/js/media/Sidebar.js', true); ?>
+    <?php $this->script('/assets/js/media/FileContainer.js', true); ?>
+    <?php $this->script('/assets/js/media/ReadImageContainer.js', true); ?>
+    <?php $this->script('/assets/js/media/Ranger.js', true); ?>
+    <?php $this->script('/assets/js/media/main.js', true); ?>
+<?php $this->include("closeHeadTagAndOpenBodyTag"); ?>
 
 <?php $this->include('navbar'); ?>
 
-<div class="index-container">
-    <div class="index"><?php core\Alert::message('success'); ?></div>
-    <div class="headerContainer">
-        <h1>Media</h1><span class="badge media"><?php echo $count; ?></span>
-    </div>
-    <a href="/admin/media/create" class="create">Switch layout</a> 
-    <?php if(core\Session::get('user_role') === 'admin') { ?>
-        <span class="deleteSeparator">|</span> 
-        <form action="/admin/media/delete" method="POST" class="indexDeleteForm">
-            <input type="submit" class="delete" value="Delete"/>
-            <input type="hidden" name="deleteIds" id="deleteIds" value=""/>
-        </form>
-    <?php } ?>
-    <form action="" method="GET" class="searchForm">
-        <input type="text" name="search" placeholder="Search" id="search">
-        <input id="searchValue" type="hidden" name="submit" value="<?php if(!empty($search) && $search !== null) { echo $search; } ?>">
-        <input type="submit" name="submit" value="Search" class="button">
-    </form>
-    <div id="MEDIAREAD"></div>
-    <table>
-        <thead>
-            <th>#</th>
-            <th>File</th>
-            <th>Filename</th>
-            <th></th>
-            <th>Description</th>
-            <th></th>
-            <th>Type</th>
-            <th>Size</th>
-            <th>Date and time</th>
-        </thead>
-        <tbody id="mediaTableBody">
-        <?php if(!empty($allMedia) && $allMedia !== null) { ?>
-            <?php foreach($allMedia as $media) { ?>
-                <tr id="<?php echo $media["id"]; ?>">
-            <td>
-                <input class="deleteCheckbox" type="checkbox" name="delete" value="<?php echo $media['id']; ?>" <?php if(core\Session::get('user_role') === 'normal') { echo 'disabled'; } ?>/>
-            </td>
-            <td class="width-10">
-                <?php if($media['media_filetype'] == 'image/png' || $media['media_filetype']  == 'image/webp' || $media['media_filetype']  == 'image/gif' || $media['media_filetype']  == 'image/jpeg' || $media['media_filetype']  == 'image/svg+xml') { ?>
-                    <a href="#<?php echo $media['media_filename']; ?>" class="mediaRead font-weight-300" data-id="<?php echo $media['id']; ?>"><img src="<?php echo "/" . $media['media_folder'] . '/' . $media['media_filename']; ?>" id="imageSmall" class="image"></a>
-                <?php } else if ($media['media_filetype'] == 'application/pdf') { ?>  
-                    <a href="#<?php echo $media['media_filename']; ?>" class="mediaRead font-weight-300" data-id="<?php echo $media['id']; ?>"><img src="/assets/img/pdf.png" class="pdfImage" data-src="<?php echo '/' . $media['media_folder'] . '/' . $media['media_filename']; ?>"></a>
-                <?php } else if ($media['media_filetype'] == 'video/mp4' || $media['media_filetype'] == 'video/quicktime') { ?>
-                    <a href="#<?php echo $media['media_filename']; ?>" class="mediaRead font-weight-300" data-id="<?php echo $media['id']; ?>"><video src="<?php echo "/" . $media['media_folder'] . '/' . $media['media_filename']; ?>" id="imageSmall" class="video"></video></a>
-                <?php } ?>
-            </td>
-            <td class="width-20">
-                <span class="font-weight-400" id="mediaPath-<?php echo $media['id']; ?>">
-                    <?php echo "/" . $media['media_folder'] . '/' . $media["media_filename"]; ?>
-                </span>
-                <?php if(core\Session::get('user_role') === 'admin') { ?>
-                    <form action="/admin/media/update/filename" method="POST">
-                        <input class="mediaFilename" name="filename" id="filename-<?php echo $media['id']; ?>" type="text" value="<?php echo $media["media_filename"]; ?>"/>
-                        <div class="margin-t-10" id="MESSAGE-<?php echo $media['id'] ?>"></div>
-                    </form>
-                <?php } ?>
-            </td>
-            <td class="width-10">
-                <?php if(core\Session::get('user_role') === 'admin') { ?><a data-role="update" data-folder="<?php echo $media['media_folder']; ?>" id="update" class="button" value="<?php echo $media['id']; ?>" data-folder="<?php echo $media['media_folder']; ?>">Update</a><?php } ?>
-            </td>
-            <td class="width-15">
-                <?php if(core\Session::get('user_role') === 'admin') { ?>
-                    <textarea id="description-<?php echo $media['id']; ?>" class="updateDescription" value="<?php echo $media['media_description']; ?>"><?php echo $media['media_description']; ?></textarea>
-                <?php } else { ?>
-                    <?php echo $media['media_description']; ?>
-                <?php } ?>
-                <div class="margin-t-10" id="MESSAGE-DESCRIPTION-<?php echo $media['id']; ?>"></div>
-            </td>
-            <td class="width-10 text-center">
-                <?php if(core\Session::get('user_role') === 'admin') { ?><a data-role="update-description" id="update-description" class="button" value="<?php echo $media['id']; ?>">Update</a><?php } ?>
-            </td>
-            <td class="width-10">
-                <span class="font-weight-500"><?php echo $media['media_filetype']; ?></span>
-            </td>
-            <td class="width-10">
-                <span class="font-weight-400">
-                    <?php 
-                        $filesize = $media['media_filesize'] / 1000000;
-                        $filesize = number_format((float)$filesize, 2, '.', '');
-                        echo $filesize;
-                    ?>
-                </span>
-                <span class="font-weight-500"> 
-                    mb
-                </span> 
-            </td>
-            <td class="width-15"> 
-                <span class="padding-b-2 bold">Created:</span> <span class="font-weight-300"><?php echo date("d/m/Y", strtotime($media["created_at"]) ); ?> <?php echo date("H:i:s", strtotime($media["created_at"]) ); ?></span><br>
-                <span class="bold">Updated:</span> <span class="font-weight-300"><?php echo date("d/m/Y", strtotime($media["updated_at"]) ); ?> <?php echo date("H:i:s", strtotime($media["updated_at"]) ); ?></span>
-            </td> 
-                </tr>
-            <?php } ?>
-        <?php } else { ?>
-            <tr id="<?php echo $media["id"]; ?>">
-                <td>-</td>
-                <td class="width-10">-</td>
-                <td class="width-20">-</td>
-                <td class="width-10"></td>
-                <td class="width-15">-</td>
-                <td class="width-10"></td>
-                <td class="width-10">-</td>
-                <td class="width-10">-</td>
-                <td class="width-15">-</td>
-            </tr>
-        <?php } ?>
-        </tbody>
-    </table>
-    <?php if($numberOfPages !== null && count($numberOfPages) > 1) { ?>
-            <nav class="pagination">
-            <ul>
-                <?php 
-                    foreach($numberOfPages as $page) {
+<div class="row">
+    <div class="col10 col10-L- col9-L col8-S">
+            <?php if(!empty($folder) && $folder !== 'website/assets') {
+                
+                    echo '<div class="crumPath">';
 
-                        if(!empty($search) ) {
-                            echo '<li class="page-item"><a href="/admin/media?search=' . $search . '&page='.$page.'">'.$page.'</a></li>';
-                        } else {
-                            echo '<li class="page-item"><a href="/admin/media?page='.$page.'">'.$page.'</a></li>';
-                        }
-                    }  
-                ?>
-            </ul>
-        </nav>
-    <?php } ?>
+                    $folderParts = explode('/', $folder); 
+                    unset($folderParts[0]);
+                    $link = implode('/', $folderParts);
+
+                    echo '<span>/</span>';
+                    echo '<span>website</span>';
+
+                    foreach($folderParts as $part) { 
+
+                        $regex = "/\/". $part . "\/.*/";
+                        preg_match($regex, "/" . implode('/', $folderParts) . "/", $match);
+                        echo '<span class="separator">/</span>';
+                        echo '<a class="folderPath" href="?folder=website' . str_replace($match, "", "/" . implode('/', $folderParts) . '/') . "/" . $part . '">' . $part . '</a>';
+                    } 
+                echo '</div>';
+            } else { ?>
+                <div class="crumPath"><span>/website</span><span class="separator">/</span><a class="folderPath" href="?folder=website/assets">assets</a></div>
+            <?php } ?>
+        <?php if(core\Session::get('user_role') === 'admin') { ?>
+            <form action="/admin/media/folder?<?php echo "folder=" . $folder; ?>" method="POST" class="folderForm">
+                <input type="text" placeholder="Folder" name="P_folder">
+                <input type="submit" name="submitFolder" value="Folder &plusmn"/>
+                <?php if(!empty(validation\Errors::get($rules, 'P_folder')) && validation\Errors::get($rules, 'P_folder') !== null) { ?>
+                    <div class="error-messages font-size-14 folder">
+                        <span><?php echo validation\Errors::get($rules, 'P_folder'); ?></span>
+                    </div>    
+                <?php } ?> 
+            </form>
+        <?php } ?>
+        
+        <?php core\Alert::message('success'); ?>
+
+        <div class="readImageContainer display-none"></div>
+        <div class="filesContainer">
+            <div class="row flex-center">
+                <?php if(!empty($folders) && $folders !== null && empty($search) && $types === false ) { 
+                    foreach($folders as $folder) { 
+                        if($folder !== 'website/assets/css' && $folder !== 'website/assets/js') {
+                            $folderParts = explode('/', $folder);
+                            unset($folderParts[0]);
+                            unset($folderParts[1]);
+                            $folderWithoutWebsiteAndAssets = implode('/', $folderParts);
+                            if(!empty($folderWithoutWebsiteAndAssets) && $folderWithoutWebsiteAndAssets !== null) {
+                                echo '<a href="?folder='.$folder.'">';
+                                    echo '<div class="fileContainer folder">';
+                                        echo '<img class="file folder" src="/assets/img/folder.png"/>';
+                                        echo '<span class="folderText">' . $folderParts[array_key_last($folderParts)] . '</span>';
+                                    echo '</div>';
+                                echo '</a>';
+                            } 
+                        } 
+                    } 
+                } ?>
+                <?php if(!empty($files) && $files !== null) { ?>
+                    <?php foreach($files as $file) { ?>
+                        <?php switch ($file['media_filetype']) {
+                                case 'image/png':
+                                case 'image/webp':
+                                case 'image/gif':
+                                case 'image/jpeg':
+                                case 'image/svg+xml':
+
+                                    $type = 'img';
+                                break;
+                                case 'video/mp4':
+                                case 'video/quicktime':
+                                    
+                                    $type = 'video';
+                                break;  
+                                case 'application/pdf':
+
+                                    $type = 'application';
+                                break;
+                                default:
+
+                                    $type = 'image/png';
+                                break;
+                            }
+                        ?>
+                        <div class="fileContainer">
+                            <?php if($type === 'img') { ?>
+                            <img class="file mediaFile imgFile" data-id="<?php echo $file['id']; ?>" data-filename="<?php echo $file['media_filename']; ?>"  data-folder="<?php echo $file['media_folder']; ?>" data-filetype="<?php echo $file['media_filetype']; ?>" data-filesize="<?php echo $file['media_filesize']; ?>" src="<?php echo '/' . $file['media_folder'] . '/' . $file['media_filename']; ?>" data-description="<?php if(!empty($file['media_description']) && $file['media_description'] !== null) { echo $file['media_description']; } else { echo '-'; } ?>" loading="lazy">
+                            <?php } else if($type === 'video') { ?>
+                                <video class="file mediaFile videoFile" data-id="<?php echo $file['id']; ?>" data-filename="<?php echo $file['media_filename']; ?>" data-folder="<?php echo $file['media_folder']; ?>" data-filetype="<?php echo $file['media_filetype']; ?>" data-filesize="<?php echo $file['media_filesize']; ?>" src="<?php echo '/' . $file['media_folder'] . '/' . $file['media_filename']; ?>" data-description="<?php if(!empty($file['media_description']) && $file['media_description'] !== null) { echo $file['media_description']; } else { echo '-'; } ?>" loading="lazy"></video>
+                            <?php } else if($type === 'application') { ?>
+                                <img class="file mediaFile pdfFile" data-id="<?php echo $file['id']; ?>" data-filename="<?php echo $file['media_filename']; ?>" data-folder="<?php echo $file['media_folder']; ?>" data-filetype="<?php echo $file['media_filetype']; ?>" data-filesize="<?php echo $file['media_filesize']; ?>" src="/assets/img/pdf.png" data-description="<?php if(!empty($file['media_description']) && $file['media_description'] !== null) { echo $file['media_description']; } else { echo '-'; } ?>" loading="lazy"></iframe>
+                            <?php } ?>
+                            <input class="deleteSelection <?php if(core\Session::get('user_role') === 'normal') { echo 'display-none-important'; } ?>" type="checkbox"/>
+                        </div>
+                <?php } ?>
+                <?php } ?>
+            </div>
+        </div>
+        <div class="rangerContainer">
+            <input type="range" min="50" max="500" value="100" id="ranger">
+        </div>
+    </div>
+    <div class="col2 col2-L col3-L col4-S">
+        <div id="sidebar" class="width-25">
+            <div class="sidebarContainer">
+                <div class="mainButtonContainer">
+                    <label for="submit" class="button greenButton margin-r-10 <?php if(core\Session::get('user_role') === 'normal') { echo 'display-none-important'; } ?>">Upload</label>
+                    <form action="/admin/media/delete?<?php echo "folder=" . $folder; ?>" method="POST" class="deleteForm display-none">
+                        <input id="selectedFiles" type="hidden" name="deleteIds" value=""/>
+                        <input type="submit" name="submitDelete" class="button redButton margin-r-10" value="Delete"/>
+                    </form>
+                    <a href="#" class="button read blueButton display-none-important">Read</a>
+                    <a href="#" class="button close blueButton display-none-important">Close</a>
+                    <a href="/admin/media" class="button back darkBlueButton">Back</a>
+                </div>
+                    <form action="" method="POST" class="uploadFileForm <?php if(core\Session::get('user_role') === 'normal') { echo 'display-none-important'; } ?>" enctype="multipart/form-data">
+                        <div class="form-parts">
+                            <label>Description: </label>
+                            <textarea name="media_description" type="text" id="media_description" autofocus placeholder="Optional"></textarea>
+                            <?php if(!empty(validation\Errors::get($rules, 'file')) && validation\Errors::get($rules, 'file') !== null) { ?>
+                                <div class="error-messages margin-tm-10 font-size-14">
+                                    <span><?php echo validation\Errors::get($rules, 'file'); ?></span>
+                                </div>    
+                            <?php } ?> 
+                            <?php if(!empty(validation\Errors::get($rules, 'media_description')) && validation\Errors::get($rules, 'media_description') !== null) { ?>
+                                <div class="error-messages margin-tm-10 font-size-14">
+                                    <span><?php echo validation\Errors::get($rules, 'media_description'); ?></span>
+                                </div>    
+                            <?php } ?> 
+                        </div>
+                        <div class="form-parts">
+                            <input name="file[]" type="file" multiple="true" id="file" class="display-none">
+                        </div>
+                        <div class="form-parts">
+                            <button name="submit" id="submit" type="submit" class="display-none <?php if(core\Session::get('user_role') === 'normal') { echo 'display-none-important'; } ?>"></button>
+                        </div>
+                    </form>
+                <div class="buttonContainer">
+                <label for="file" class="button darkButton margin-t-10 <?php if(core\Session::get('user_role') === 'normal') { echo 'display-none-important'; } ?>">Select files</label>
+                </div>
+                <div class="totalContainer">
+                    <span class="text">Total: </span>
+                    <span class="data"><?php echo count($files); ?></span>
+                </div>
+                <form action="" method="GET" class="searchFormCreate">
+                    <label for="#search">Search: </label>
+                    <input type="text" name="search" placeholder="Search"/>
+                </form>
+                <form action="/admin/media" method="GET" class="filterForm">
+                    <label>Filter: </label>
+                    <select name="type[]" multiple>
+                        <option value="png">Png</option>
+                        <option value="jpeg">Jpeg</option>
+                        <option value="gif">Gif</option>
+                        <option value="webp">Webp</option>
+                        <option value="svg">Svg</option>
+                        <option value="video">Video</option>
+                        <option value="pdf">Pdf</option>
+                    </select>
+                    <input type="submit" class="button greenButton margin-t-10 margin-r-10" name="filter" value="Apply"/><input type="submit" class="button blueButton margin-t-10" name="applied-filter" value="Unset"/>
+                </form>
+                <div class="fileInfoContainer display-none">
+                    <div id="currentFile"></div>
+                    <div class="infoContainer">
+                        <div class="infoPart">
+                        <span class="infoText">File:</span>
+                            <span class="infoData" id="currentFolderFilename"></span>
+                            <form action="/admin/media/update/filename" method="POST">
+                                <input id="currentFilename" type="text" name="filename"/>
+                                <input type="hidden" name="id" id="update" value=""/>
+                                <input type="submit" name="submit" value="Update" class="button greenButton margin-t-10"/>
+                            </form>
+                            <span id="currentFolder"></span>
+                        </div>
+                        <div class="infoPart">
+                            <span class="infoText">Type: </span>
+                            <span class="infoData" id="currentFiletype"></span>
+                        </div>
+                        <div class="infoPart">
+                            <span class="infoText">Size: </span>
+                            <span class="infoData" id="currentFilesize"></span>
+                        </div>
+                        <div class="infoPart">
+                            <form action="/admin/media/update/description" method="POST">
+                                <span class="infoText">Description: </span>
+                                <textarea type="text" name="description" class="infoData" id="currentDescription"></textarea>
+                                <input type="hidden" name="id" value="" id="updateDescription"/>
+                                <input type="submit" name="submit" value="Update" class="button greenButton margin-t-10"/>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
 </div>
 
 <?php $this->include('footer'); ?>

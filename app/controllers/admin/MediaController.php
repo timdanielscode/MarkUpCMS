@@ -94,36 +94,12 @@ class MediaController extends Controller {
     }
 
     /**
-     * To show the media index view
-     * 
-     * @param array $request _GET search, page
-     * @return object MediaController, Controller
-     */
-    public function index($request) {
-
-        $media = Media::allMediaButOrdered();
-
-        if(!empty($request['search'] ) ) {
-
-            $this->_search = Get::validate($request['search']);
-            $media = Media::mediaFilesOnSearch($this->_search);
-        }
-
-        $this->_data['search'] = $this->_search;
-        $this->_data["allMedia"] = Pagination::get($request, $media, 8);
-        $this->_data['count'] = count($media);
-        $this->_data['numberOfPages'] = Pagination::getPageNumbers();
-
-        return $this->view('admin/media/index')->data($this->_data);
-    }
-
-    /**
      * To show the media create view
      * 
      * @param array $request _GET search, folder, type, filter
      * @return object MediaController, Controller
      */
-    public function create($request) {
+    public function index($request) {
 
         $folders = glob($this->getFolder($request) . '/*', GLOB_ONLYDIR);
         $files = Media::where(['media_folder' => $this->getFolder($request)]);
@@ -145,7 +121,7 @@ class MediaController extends Controller {
         $this->_data['types'] = $this->getTypes($request);
         $this->_data["rules"] = [];
 
-        return $this->view('admin/media/create')->data($this->_data);
+        return $this->view('admin/media/index')->data($this->_data);
     }
 
     /**
@@ -177,7 +153,7 @@ class MediaController extends Controller {
     /**
      * To store new media data and upload new files (on successful validation)
      * 
-     * @param array $request _GET search, folder, type, filter _POST media_description
+     * @param array $request _POST media_description
      * @return object MediaController, Controller (on failed validation)
      */
     public function store($request) {
@@ -209,7 +185,7 @@ class MediaController extends Controller {
             }
                
             Session::set('success', 'You have successfully uploaded new file(s)!');            
-            redirect('/admin/media/create?folder=' . $this->getFolder($request));
+            redirect('/admin/media?folder=' . $this->getFolder($request));
         } else {
 
             $this->_data['types'] = $this->getTypes($request);
@@ -217,14 +193,14 @@ class MediaController extends Controller {
             $this->_data['files'] = Media::where(['media_folder' => $this->getFolder($request)]);
             $this->_data['rules'] = $rules->errors;
 
-            return $this->view('admin/media/create')->data($this->_data);
+            return $this->view('admin/media/index')->data($this->_data);
         }
     }
 
     /**
      * To store new folder data and create a new folder or remove a folder (checking create or remove)
      * 
-     * @param array $request _GET search, folder, type, filter _POST P_folder
+     * @param array $request _POST P_folder
      */
     public function folder($request) {
 
@@ -235,13 +211,13 @@ class MediaController extends Controller {
             $this->addFolder($request);
         }   
   
-        redirect('/admin/media/create?folder=' . $this->getFolder($request));
+        redirect('/admin/media?folder=' . $this->getFolder($request));
     }
 
     /**
      * To remove a folder
      * 
-     * @param array $request _GET search, folder, type, filter _POST P_folder
+     * @param array $request _POST P_folder
      */
     private function deleteFolder($request) {
 
@@ -252,7 +228,7 @@ class MediaController extends Controller {
     /**
      * To store new folder data and create a new folder (on successful validation)
      * 
-     * @param array $request _GET search, folder, type, filter _POST P_folder
+     * @param array $request _POST P_folder
      * @return object MediaController, Controller (on failed validation)
      */
     private function addFolder($request) {
@@ -271,7 +247,7 @@ class MediaController extends Controller {
             $this->_data['files'] = Media::where(['media_folder' => $this->getFolder($request)]);
             $this->_data['rules'] = $rules->errors;
 
-            return $this->view('admin/media/create')->data($this->_data);
+            return $this->view('admin/media/index')->data($this->_data);
         }
     }
 
@@ -416,11 +392,11 @@ class MediaController extends Controller {
     }
 
     /**
-     * To update media data (filename) (on successful validation) (AJAX)
+     * To update media data (filename) (on successful validation)
      * 
-     * @param array $request id (media id), _GET search, page | search, folder, type, filter _POST filename
+     * @param array $request _POST id (media id), filename
      */
-    public function UPDATEFILENAME($request) {
+    public function updateFilename($request) {
 
         $this->ifExists($request['id']);
         $this->checkIfFilenameIsFolderName($request['filename']);
@@ -429,24 +405,24 @@ class MediaController extends Controller {
 
         if($rules->media_filename($request['filename'], Media::checkMediaFilenameOnId($request['filename'], $request['id']))->validated()) {
         
-            rename($request['folder'] . '/' . Media::get($request['id'])['media_filename'], $request['folder'] . '/' . $request['filename']);
+            rename(Media::getColumns(['media_folder'], $request['id'])['media_folder'] . '/' . Media::getColumns(['media_filename'], $request['id'])['media_filename'], Media::getColumns(['media_folder'], $request['id'])['media_folder'] . '/' . $request['filename']);
         
             Media::update(['id' => $request['id']], [
                             
                 'media_filename'    => $request['filename'],
                 'updated_at' => date('Y-m-d H:i:s', $_SERVER['REQUEST_TIME'])
             ]);
-                    
-            echo json_encode($request);
         }
+
+        redirect("/admin/media?folder=" . Media::getColumns(['media_folder'], $request['id'])['media_folder']);
     }
 
     /**
-     * To update media data (description) (on successful validation) (AJAX)
+     * To update media data (description) (on successful validation)
      * 
-     * @param array $request id (media id), _GET search, page | search, folder, type, filter _POST description
+     * @param array $request id (media id), description
      */
-    public function UPDATEDESCRIPTION($request) {
+    public function updateDescription($request) {
 
         $this->ifExists($request['id']);
 
@@ -460,7 +436,7 @@ class MediaController extends Controller {
                 'updated_at' => date('Y-m-d H:i:s', $_SERVER['REQUEST_TIME'])
             ]);
             
-            echo json_encode($request);
+            redirect("/admin/media?folder=" . Media::getColumns(['media_folder'], $request['id'])['media_folder']);
         }
     }
 
@@ -483,7 +459,7 @@ class MediaController extends Controller {
     public function deleteCreate($request) {
 
         $this->deleteFiles($request['deleteIds']);
-        redirect('/admin/media/create?folder=' . Media::get(substr($request['deleteIds'], 0, strpos($request['deleteIds'], ",")))['media_folder']);
+        redirect('/admin/media?folder=' . Media::get(substr($request['deleteIds'], 0, strpos($request['deleteIds'], ",")))['media_folder']);
     }
 
     /**
