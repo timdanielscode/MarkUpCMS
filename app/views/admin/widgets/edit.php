@@ -17,9 +17,9 @@
     <?php $this->script("/assets/js/codemirror/xml.js"); ?>
     <?php $this->stylesheet("/assets/css/codemirror/monokai.css"); ?>
 <?php $this->include("closeHeadTagAndOpenBodyTag"); ?>
-
-<?php $this->include('navbar'); ?>
     
+<?php $this->include('navbar'); ?>
+
 <div class="row">
     <div class="col10 col10-L- col9-L col8-S">
         <div class="edit-container">
@@ -43,13 +43,13 @@
             <div class="sidebarContainer">
                 <div class="mainButtonContainer">
                     <label for="submit" class="button greenButton margin-r-10">Update</label>
-                    <a href="/admin/widgets/<?php echo $widget['id']; ?>/read" class="button blueButton margin-r-10">Read</a>
-                    <a href="/admin/widgets" class="button darkBlueButton">Back</a>
+                    <a href="/admin/widgets/<?php echo $widget['id']; ?>/read" class="button darkBlueButton margin-r-10">Read</a>
+                    <a href="/admin/widgets" class="button blueButton">Back</a>
                 </div>
                 <div class="buttonContainer margin-b-50">
-                    <a href="#" id="codeEditorFullScreen" class="button darkButton margin-r-10">Full screen</a>
-                    <a href="#" id="codeEditorZoomIn" class="button darkButton margin-r-10">+</a>
-                    <a href="#" id="codeEditorZoomOut" class="button darkButton">-</a>
+                    <a href="#" id="codeEditorFullScreen" class="button lightButton margin-r-10">Full screen</a>
+                    <a href="#" id="codeEditorZoomIn" class="button lightButton margin-r-10">+</a>
+                    <a href="#" id="codeEditorZoomOut" class="button lightButton">-</a>
                 </div>
             </div>
         </div>

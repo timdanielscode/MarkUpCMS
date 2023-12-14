@@ -59,7 +59,7 @@
                             </select>  
                             <input type="hidden" id="categoryIds" name="categoryIds" value=""/>
                             <input type="hidden" name="id" value="<?php echo $categoryId; ?>"/>
-                            <input type="submit" name="submit" value="Apply" class="button greenButton margin-t-20"/>
+                            <input type="submit" name="submit" value="Apply" class="button darkBlueButton margin-t-20"/>
                         </form>
                     </div>
                     <div class="col6">
@@ -79,7 +79,7 @@
                             </select>
                             <input type="hidden" id="pageIds" name="pageIds" value=""/>
                             <input type="hidden" name="id" value="<?php echo $categoryId; ?>"/>
-                            <input type="submit" name="submit" value="Apply" class="button greenButton margin-t-20"/>
+                            <input type="submit" name="submit" value="Apply" class="button darkBlueButton margin-t-20"/>
                         </form>
                     </div>
                 </div> 
@@ -92,9 +92,9 @@
                 <div class="mainButtonContainer">
                     <?php if(core\Session::get('user_role') === 'admin') { ?>
                         <a class="create button greenButton margin-r-10" id="create" data-id="<?php if(!empty($categoryId) && $categoryId !== null) { echo $categoryId; } ?>">Create</a>
-                        <a data-id="<?php echo $categoryId; ?>" data-title="<?php echo $title; ?>" data-description="<?php echo $description; ?>" class="edit button blueButton margin-r-10">Edit</a>
-                        <a class="button darkBlueButton" id="delete">Delete</a>
+                        <a data-id="<?php echo $categoryId; ?>" data-title="<?php echo $title; ?>" data-description="<?php echo $description; ?>" class="edit button darkBlueButton margin-r-10">Edit</a>
                     <?php } ?>
+                        <a href="/admin/posts" class="button blueButton">Back</a>
                 </div>
                 <span class="title">Categories: </span>
                 <form class="searchForm" action="" method="GET">
@@ -109,6 +109,7 @@
                             </tr>
                         <?php } ?>
                     </table>
+                    <a class="button darkBlueButton margin-t-20 width-50-px" id="delete">Delete</a>
                 <?php } ?>
                 <form action="/admin/categories/delete" method="POST" class="display-none deleteForm">
                     <select name="deleteIds[]" multiple>

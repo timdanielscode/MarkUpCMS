@@ -17,7 +17,7 @@
     <?php $this->script("/assets/js/zoom.js"); ?> 
 <?php $this->include("closeHeadTagAndOpenBodyTag"); ?> 
 
-<?php $this->include('navbar'); ?> 
+<?php $this->include('navbar'); ?>
 
 <div class="row">
     <div class="col10 col9-L">
@@ -34,7 +34,7 @@
         <div id="sidebar" class="width-25-L">
             <div class="sidebarContainer">
                 <div class="mainButtonContainer">
-                    <a href="/admin/css" class="button darkBlueButton">Back</a>
+                    <a href="/admin/css" class="button blueButton">Back</a>
                 </div>
                 <div class="buttonContainer">
                     <a href="#" id="codeEditorFullScreen" class="button darkButton margin-r-10">Full screen</a>

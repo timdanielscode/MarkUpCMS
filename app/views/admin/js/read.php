@@ -34,7 +34,7 @@
         <div id="sidebar" class="width-25-L">
             <div class="sidebarContainer">
                 <div class="mainButtonContainer">
-                    <a href="/admin/js" class="button darkBlueButton">Back</a>
+                    <a href="/admin/js" class="button blueButton">Back</a>
                 </div>
                 <div class="buttonContainer">
                     <a href="#" id="codeEditorFullScreen" class="button darkButton margin-r-10">Full screen</a>

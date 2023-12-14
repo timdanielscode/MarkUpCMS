@@ -53,35 +53,35 @@
                     <a href="/admin/meta" class="button blueButton">Back</a>
                 </div>
                 <div class="buttonContainer">
-                    <a href="#" id="codeEditorFullScreen" class="button darkButton margin-r-10">Full screen</a>
-                    <a href="#" id="codeEditorZoomIn" class="button darkButton margin-r-10">+</a>
-                    <a href="#" id="codeEditorZoomOut" class="button darkButton">-</a>
+                    <a href="#" id="codeEditorFullScreen" class="button lightButton margin-r-10">Full screen</a>
+                    <a href="#" id="codeEditorZoomIn" class="button lightButton margin-r-10">+</a>
+                    <a href="#" id="codeEditorZoomOut" class="button lightButton">-</a>
                 </div>
                 <div class="buttonContainer">
                     <form action="/admin/meta/<?php echo $cdn['id']; ?>/import-all" method="POST">
-                        <input type="submit" name="submit" value="Import all" class="button lightButton margin-t-10 margin-r-10" onclick="return confirm('Are you sure?');"/>
+                        <input type="submit" name="submit" value="Import all" class="button darkButton margin-t-10 margin-r-10" onclick="return confirm('Are you sure?');"/>
                     </form>
                     <form action="/admin/meta/<?php echo $cdn['id']; ?>/export-all" method="POST">
-                        <input type="submit" name="submit" value="Export all" class="button lightButton margin-t-10" onclick="return confirm('Are you sure?');"/>
+                        <input type="submit" name="submit" value="Export all" class="button darkButton margin-t-10" onclick="return confirm('Are you sure?');"/>
                     </form>
                 </div>
                 <form class="cdnForm" action="/admin/meta/<?php echo $cdn['id']; ?>/export-pages" method="POST">
-                    <label>Imported on: </label>
+                    <label>Imported: </label>
                     <select name="pages[]" multiple>
                         <?php foreach($importedPages as $importedPage) { ?>
                             <option value="<?php echo $importedPage['id']; ?>"><?php echo $importedPage['title']; ?></option>
                         <?php } ?>
                     </select>
-                    <input type="submit" name="submit" value="Export" class="button blueButton"/>
+                    <input type="submit" name="submit" value="Export" class="button darkBlueButton"/>
                 </form>
                 <form class="cdnForm" action="/admin/meta/<?php echo $cdn['id']; ?>/import-pages" method="POST">
-                    <label>Other pages: </label>
+                    <label>Pages: </label>
                     <select name="pages[]" multiple>
                         <?php foreach($pages as $page) { ?>
                             <option value="<?php echo $page['id']; ?>"><?php echo $page['title']; ?></option>
                         <?php } ?>
                     </select>
-                    <input type="submit" name="submit" value="Import" class="button greenButton"/>
+                    <input type="submit" name="submit" value="Import" class="button darkBlueButton"/>
                 </form>
             </div>
         </div>

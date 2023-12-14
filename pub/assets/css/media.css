@@ -228,16 +228,16 @@
     right: 51px;
     top: 14px;
     border: none;
-    background: #42971c;
-    border: 1px solid #42971c;
+    background: #2e6ac1;
+    border: 1px solid #003582;
     border-radius: 3px;
     padding: 5px;
     color: #fff;
     font-size: 12px;
 }
 .folderForm input[type="submit"]:hover {
-    background: #6ba152;
-    border: 1px solid #6ba152;
+    background: #003582;
+    border: 1px solid #003582;
     cursor: pointer;
 }
 .deleteSelection {

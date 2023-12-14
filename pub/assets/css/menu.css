@@ -62,6 +62,9 @@
     overflow: hidden;
     height: 93px;
 }
+.updatePositionForm .data {
+    margin-bottom: 20px;
+}
 .updateNumberForm input:nth-child(1) {
     width: 100%;
     padding: 10px 16px 10px 10px;
@@ -83,7 +86,6 @@
     display: block;
     font-size: 14px;
 }
-
 .text {
     color: #000;
     display: block;
@@ -98,6 +100,12 @@
     border-radius: 3px;
     padding: 10px;
     font-size: 14px;
+}
+.text.ordering {
+    margin-top: 50px;
+}
+.data.ordering {
+    margin-bottom: 20px;
 }
 
 @media only screen and (max-width: 750px) {

@@ -146,7 +146,7 @@
                     </form>
                     <a href="#" class="button read blueButton display-none-important">Read</a>
                     <a href="#" class="button close blueButton display-none-important">Close</a>
-                    <a href="/admin/media" class="button back darkBlueButton">Back</a>
+                    <a href="/admin/posts" class="button back blueButton">Back</a>
                 </div>
                     <form action="" method="POST" class="uploadFileForm <?php if(core\Session::get('user_role') === 'normal') { echo 'display-none-important'; } ?>" enctype="multipart/form-data">
                         <div class="form-parts">
@@ -192,7 +192,7 @@
                         <option value="video">Video</option>
                         <option value="pdf">Pdf</option>
                     </select>
-                    <input type="submit" class="button greenButton margin-t-10 margin-r-10" name="filter" value="Apply"/><input type="submit" class="button blueButton margin-t-10" name="applied-filter" value="Unset"/>
+                    <input type="submit" class="button darkBlueButton margin-t-10 margin-r-10" name="filter" value="Apply"/>
                 </form>
                 <div class="fileInfoContainer display-none">
                     <div id="currentFile"></div>
@@ -203,7 +203,7 @@
                             <form action="/admin/media/update/filename" method="POST">
                                 <input id="currentFilename" type="text" name="filename"/>
                                 <input type="hidden" name="id" id="update" value=""/>
-                                <input type="submit" name="submit" value="Update" class="button greenButton margin-t-10"/>
+                                <input type="submit" name="submit" value="Update" class="button darkBlueButton margin-t-10"/>
                             </form>
                             <span id="currentFolder"></span>
                         </div>
@@ -220,7 +220,7 @@
                                 <span class="infoText">Description: </span>
                                 <textarea type="text" name="description" class="infoData" id="currentDescription"></textarea>
                                 <input type="hidden" name="id" value="" id="updateDescription"/>
-                                <input type="submit" name="submit" value="Update" class="button greenButton margin-t-10"/>
+                                <input type="submit" name="submit" value="Update" class="button darkBlueButton margin-t-10"/>
                             </form>
                         </div>
                     </div>

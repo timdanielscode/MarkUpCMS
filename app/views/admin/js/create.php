@@ -42,7 +42,7 @@
         <div id="sidebar" class="width-25">
             <div class="sidebarContainer">
                 <div class="mainButtonContainer">
-                    <label for="submit" class="button greenButton margin-r-10">Create</label>
+                    <label for="submit" class="button darkBlueButton margin-r-10">Create</label>
                     <a href="/admin/js" class="button blueButton">Back</a>
                 </div>
             </div>

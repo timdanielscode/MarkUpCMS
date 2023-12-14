@@ -53,35 +53,35 @@
                     <a href="/admin/css" class="button blueButton">Back</a>
                 </div>
                 <div class="buttonContainer">
-                    <a href="#" id="codeEditorFullScreen" class="button darkButton margin-r-10">Full screen</a>
-                    <a href="#" id="codeEditorZoomIn" class="button darkButton margin-r-10">+</a>
-                    <a href="#" id="codeEditorZoomOut" class="button darkButton">-</a>
+                    <a href="#" id="codeEditorFullScreen" class="button lightButton margin-r-10">Full screen</a>
+                    <a href="#" id="codeEditorZoomIn" class="button lightButton margin-r-10">+</a>
+                    <a href="#" id="codeEditorZoomOut" class="button lightButton">-</a>
                 </div>
                 <div class="buttonContainer">
                     <form action="/admin/css/<?php echo $data['id']; ?>/link-all" method="POST">
-                        <input type="submit" name="submit" class="button lightButton margin-r-10" value="Link on all" onclick="return confirm('Are you sure?');"/>
+                        <input type="submit" name="submit" class="button darkButton margin-r-10" value="Link on all" onclick="return confirm('Are you sure?');"/>
                     </form>
                     <form action="/admin/css/<?php echo $data['id']; ?>/unlink-all" method="POST">
-                        <input type="submit" name="submit" class="button lightButton" value="Unlink all" onclick="return confirm('Are you sure?');"/>
+                        <input type="submit" name="submit" class="button darkButton" value="Unlink all" onclick="return confirm('Are you sure?');"/>
                     </form>
                 </div>
                 <form action="/admin/css/<?php echo $data['id']; ?>/unlink-pages" method="POST" class="removeCssForm margin-t-50">
-                    <label>Linked on: </label>
+                    <label>Linked: </label>
                     <select name="pages[]" multiple>
                         <?php foreach($data['assingedPages'] as $page) { ?>
                             <option value="<?php echo $page['id']; ?>"><?php echo $page['title']; ?></option>
                         <?php } ?>
                     </select>
-                    <input type="submit" name="submit" class="button blueButton" value="Unlink"/>
+                    <input type="submit" name="submit" class="button darkBlueButton" value="Unlink"/>
                 </form>
                 <form action="/admin/css/<?php echo $data['id']; ?>/link-pages" method="POST" class="linkCssForm">
-                    <label>Other pages: </label>
+                    <label>Pages: </label>
                     <select name="pages[]" multiple>
                         <?php foreach($data['pages'] as $page) { ?>
                             <option value="<?php echo $page['id']; ?>"><?php echo $page['title']; ?></option>
                         <?php } ?>
                     </select>
-                    <input type="submit" name="submit" class="button greenButton" value="Link"/>
+                    <input type="submit" name="submit" class="button darkBlueButton" value="Link"/>
                 </form>
             </div>
         </div>

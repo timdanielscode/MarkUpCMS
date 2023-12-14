@@ -34,7 +34,7 @@
 <?php $this->include("closeHeadTagAndOpenBodyTag"); ?>
 
 <?php $this->include('navbar'); ?>
-    
+
 <div class="row">
     <div class="col10 col10-L- col9-L col8-S">
         <div class="edit-container">
@@ -58,26 +58,26 @@
             <div class="sidebarContainer">
                 <div class="mainButtonContainer">
                     <label for="submit" class="button greenButton margin-r-10">Update</label>
-                    <a href="/admin/posts/<?php echo $data['id']; ?>/read" target="_blank" class="button blueButton margin-r-10">Read</a>
-                    <a href="/admin/posts" class="button darkBlueButton">Back</a>
+                    <a href="/admin/posts/<?php echo $data['id']; ?>/read" target="_blank" class="button darkBlueButton margin-r-10">Read</a>
+                    <a href="/admin/posts" class="button blueButton">Back</a>
                 </div>
                 <div class="buttonContainer">
-                    <a href="#" id="codeEditorFullScreen" class="button darkButton margin-r-10">Full screen</a>
-                    <a href="#" id="codeEditorZoomIn" class="button darkButton margin-r-10">+</a>
-                    <a href="#" id="codeEditorZoomOut" class="button darkButton">-</a>
+                    <a href="#" id="codeEditorFullScreen" class="button lightButton margin-r-10">Full screen</a>
+                    <a href="#" id="codeEditorZoomIn" class="button lightButton margin-r-10">+</a>
+                    <a href="#" id="codeEditorZoomOut" class="button lightButton">-</a>
                 </div>
                 <div class="buttonContainer">
-                    <a id="slugButton" class="button lightButton margin-r-10">Page slug</a>
-                    <a id="categoryButton" class="button lightButton ">Categories</a>
+                    <a id="slugButton" class="button margin-r-10 <?php if(core\Session::exists('slug') === true ) { echo 'lightButton'; } else { echo 'darkButton'; } ?>">Page slug</a>
+                    <a id="categoryButton" class="button <?php if(core\Session::exists('category') === true ) { echo 'lightButton'; } else { echo 'darkButton'; } ?>">Categories</a>
                 </div>
                 <div class="buttonContainer">
-                    <a id="cdnButton" class="button lightButton margin-r-10">Meta</a>
-                    <a id="jsButton" class="button lightButton margin-r-10">Scripts</a>
-                    <a id="cssButton" class="button lightButton margin-r-10">Css</a>
+                    <a id="cdnButton" class="button margin-r-10 <?php if(core\Session::exists('cdn') === true ) { echo 'lightButton'; } else { echo 'darkButton'; } ?>">Meta</a>
+                    <a id="jsButton" class="button margin-r-10 <?php if(core\Session::exists('js') === true ) { echo 'lightButton'; } else { echo 'darkButton'; } ?>">Scripts</a>
+                    <a id="cssButton" class="button margin-r-10 <?php if(core\Session::exists('css') === true ) { echo 'lightButton'; } else { echo 'darkButton'; } ?>">Css</a>
                 </div>
                 <div class="buttonContainer">
-                    <a id="widgetButton" class="button lightButton margin-r-10">Widgets</a>
-                    <a id="metaButton" class="button lightButton">Seo</a>
+                    <a id="widgetButton" class="button margin-r-10 <?php if(core\Session::exists('widget') === true ) { echo 'lightButton'; } else { echo 'darkButton'; } ?>">Widgets</a>
+                    <a id="metaButton" class="button <?php if(core\Session::exists('meta') === true ) { echo 'lightButton'; } else { echo 'darkButton'; } ?>">Seo</a>
                 </div>
                 <div id="slug" class="<?php if(core\Session::exists('slug') === false ) { echo 'display-none'; } ?>">
                     <span class="text">Slug:</span>
@@ -92,23 +92,23 @@
                             <?php } ?>
                         </div>
                         <input type="hidden" name="slug" value="<?php echo $data['slug']; ?>">
-                        <input class="button greenButton margin-t-10" type="submit" name="submit" value="Update"/>
+                        <input class="button darkBlueButton margin-t-10" type="submit" name="submit" value="Update"/>
                     </form>
                 </div>
                 <div id="cdn" class="<?php if(core\Session::exists('cdn') === false ) { echo 'display-none'; } ?>">
                     <form action="/admin/posts/<?php echo $data['id']; ?>/export-cdns" method="POST" class="cdnForm margin-t-50">
-                        <label>Import meta: </label>
+                        <label>Imported: </label>
                         <select name="cdns[]" multiple>
                             <?php foreach($data['exportCdns'] as $cdn) { ?>
                             <option value="<?php echo $cdn['id']; ?>">
                                 <?php echo $cdn['title']; ?>
                             </option>
                             <?php } ?>
-                            <input type="submit" name="submit" value="Export" class="button blueButton margin-t-20"/>
+                            <input type="submit" name="submit" value="Export" class="button darkBlueButton margin-t-20"/>
                         </select>
                     </form>
                     <form action="/admin/posts/<?php echo $data['id']; ?>/import-cdns" method="POST" class="cdnForm margin-t-20">
-                        <label>Export meta: </label>
+                        <label>Metas: </label>
                         <select name="cdns[]" multiple>
                             <?php foreach($data['importCdns'] as $cdn) { ?>
                             <option value="<?php echo $cdn['id']; ?>">
@@ -122,7 +122,7 @@
                 <div id="widget" class="<?php if(core\Session::exists('widget') === false ) { echo 'display-none'; } ?>">
                     <div id="applyWidget"></div>
                     <form class="widgetForm" action="/admin/posts/<?php echo $data['id']; ?>/remove-widget" method="POST">
-                        <label>Applicable widgets: </label>
+                        <label>Applicable: </label>
                         <select id="applicableWidgetSelect" name="widgets[]" multiple>
                             <?php foreach($data['applicableWidgets'] as $widget) { ?>
                                 <option value="<?php echo $widget['id']; ?>">    
@@ -130,10 +130,10 @@
                                 </option>
                             <?php } ?>
                         </select>
-                        <input class="button blueButton margin-t-20" type="submit" name="submit" value="Make it inapplicable"/>
+                        <input class="button darkBlueButton margin-t-20" type="submit" name="submit" value="Make it inapplicable"/>
                     </form>
                     <form class="widgetForm margin-t-20" action="/admin/posts/<?php echo $data['id']; ?>/add-widget" method="POST">
-                        <label>Other widgets: </label>
+                        <label>Widgets: </label>
                         <select name="widgets[]" multiple>
                             <?php foreach($data['inapplicableWidgets'] as $widget) { ?>
                                 <option value="<?php echo $widget['id']; ?>">    
@@ -145,8 +145,8 @@
                     </form>
                 </div>
                 <div id="category" class="<?php if(core\Session::exists('category') === false ) { echo 'display-none'; } ?>">
-                    <span class="text">Category: </span>
                         <?php if(!empty($data['categories']) && $data['categories'] !== null) { ?>
+                            <span class="text">Categories: </span>
                             <form class="AddCategory" action="/admin/posts/<?php echo $data['id']; ?>/assign-category" method="POST">
                                 <select name="categories" multiple>
                                     <?php foreach($data['categories'] as $category) { ?>
@@ -159,17 +159,18 @@
                                     <?php echo validation\Errors::get($rules, 'categories'); ?>
                                 </div>  
                                 <div class="AssingCategoryContainer">
-                                    <input class="button blueButton margin-t-20" type="submit" name="submit" value="Assign"/>
+                                    <input class="button darkBlueButton margin-t-20" type="submit" name="submit" value="Assign"/>
                                 </div> 
                             </form>
                         <?php } else { ?>
+                            <span class="text">Category: </span>
                             <span class="categoryTitle"><?php echo $data['category']['title']; ?></span>
                             <form action="/admin/posts/<?php echo $data['id']; ?>/detach-category" method="POST">
                                 <input type="hidden" name="slug" value="<?php echo $data['slug']; ?>"/>
                                 <div class="error-messages">
                                     <?php echo validation\Errors::get($rules, 'submit'); ?>
                                 </div>   
-                                <input class="button blueButton margin-t-10" type="submit" name="submit" value="Detach" onclick="return confirm('Are you sure?');"/>
+                                <input class="button darkBlueButton margin-t-10" type="submit" name="submit" value="Detach" onclick="return confirm('Are you sure?');"/>
                             </form>
                     <?php } ?>
                 </div>
@@ -186,7 +187,6 @@
                     <div class="form-parts">
                         <label for="metaDescription">Meta description: </label>
                         <textarea id="metaDescription" name="metaDescription" placeholder="Description"><?php echo $data['metaDescription']; ?></textarea>
-
                         <?php if(!empty(validation\Errors::get($rules, 'metaDescription')) && validation\Errors::get($rules, 'metaDescription') !== null) { ?>
                             <div class="error-messages font-size-12 margin-b-5">
                                 <?php echo validation\Errors::get($rules, 'metaDescription'); ?>
@@ -196,17 +196,16 @@
                     <div class="form-parts">
                         <label for="metaKeywords">Meta keywords: </label>
                         <textarea id="metaKeywords" name="metaKeywords" placeholder="Keywords separated with a comma"><?php echo $data['metaKeywords']; ?></textarea>
-                
                         <?php if(!empty(validation\Errors::get($rules, 'metaKeywords')) && validation\Errors::get($rules, 'metaKeywords') !== null) { ?>
                             <div class="error-messages font-size-12 margin-b-5">
                                 <?php echo validation\Errors::get($rules, 'metaKeywords'); ?>
                             </div>   
                         <?php } ?>  
                     </div>
-                    <input type="submit" name="submit" class="button blueButton margin-t-10" value="Update"/>
+                    <input type="submit" name="submit" class="button darkBlueButton margin-t-10" value="Update"/>
                 </form>
                 <form id="linkedCssFiles" class="linkedCssFilesForm <?php if(core\Session::exists('css') === false ) { echo 'display-none'; } ?>" action="/admin/posts/<?php echo $data['id']; ?>/unlink-css" method="POST">
-                    <label for="linkedFiles">Linked css files:</label>
+                    <label for="linkedFiles">Linked:</label>
                     <select id="linkedFiles" name="linkedCssFiles[]" multiple>
                         <?php foreach($data['linkedCssFiles'] as $linkedCssFile) { ?>
                             <option value="<?php echo $linkedCssFile['id']; ?>">
@@ -214,10 +213,10 @@
                             </option>
                         <?php } ?>
                     </select>
-                    <input type="submit" name="submit" class="button blueButton margin-y-20" value="Unlink"/>
+                    <input type="submit" name="submit" class="button darkBlueButton margin-y-20" value="Unlink"/>
                 </form>
                 <form id="cssFiles" class="cssFilesForm <?php if(core\Session::exists('css') === false ) { echo 'display-none'; } ?>" action="/admin/posts/<?php echo $data['id']; ?>/link-css" method="POST">
-                    <label for="cssFilesSelect">Other css files:</label>
+                    <label for="cssFilesSelect">Css files:</label>
                     <select id="cssFilesSelect" name="cssFiles[]" multiple>
                         <?php foreach($data['notLinkedCssFiles'] as $notLinkedCssFile) { ?>
                             <option value="<?php echo $notLinkedCssFile['id']; ?>">
@@ -228,7 +227,7 @@
                     <input type="submit" class="button darkBlueButton margin-t-20" name="submit" value="Link"/>
                 </form>
                 <form id="linkedJsFiles" class="linkedJsFilesForm margin-t-50 <?php if(core\Session::exists('js') === false ) { echo 'display-none'; } ?>" action="/admin/posts/<?php echo $data['id'] ?>/remove-js" method="POST">
-                    <label for="linkedJsFiles">Linked js files:</label>
+                    <label for="linkedJsFiles">Included:</label>
                     <select id="linkedJsFiles" name="linkedJsFiles[]" multiple>
                         <?php foreach($data['linkedJsFiles'] as $linkedJsFile) { ?>
                             <option value="<?php echo $linkedJsFile['id']; ?>">
@@ -236,10 +235,10 @@
                             </option>
                         <?php } ?>
                     </select>
-                    <input type="submit" name="submit" class="button blueButton margin-t-20" value="Exclude"/>
+                    <input type="submit" name="submit" class="button darkBlueButton margin-t-20" value="Exclude"/>
                 </form>
                 <form id="jsFiles" class="jsFilesForm margin-t-20 <?php if(core\Session::exists('js') === false ) { echo 'display-none'; } ?>" action="/admin/posts/<?php echo $data['id']; ?>/include-js" method="POST">
-                    <label for="jsFilesSelect">Other js files:</label>
+                    <label for="jsFilesSelect">Js files:</label>
                         <select id="jsFilesSelect" name="jsFiles[]" multiple>
                             <?php foreach($data['notLinkedJsFiles'] as $notLinkedJsFile) { ?>
                                 <option value="<?php echo $notLinkedJsFile['id']; ?>">

@@ -45,31 +45,29 @@
             <div class="sidebarContainer">
                 <div class="mainButtonContainer">
                     <label for="submit" class="button greenButton margin-r-10">Update</label>
-                    <a href="/admin/menus/<?php echo $menu['id']; ?>/read" class="button blueButton margin-r-10">Read</a>
-                    <a href="/admin/menus" class="button darkBlueButton">Back</a>
+                    <a href="/admin/menus/<?php echo $menu['id']; ?>/read" class="button darkBlueButton margin-r-10">Read</a>
+                    <a href="/admin/menus" class="button blueButton">Back</a>
                 </div>
                 <div class="buttonContainer margin-b-50">
-                    <a href="#" id="codeEditorFullScreen" class="button darkButton margin-r-10">Full screen</a>
-                    <a href="#" id="codeEditorZoomIn" class="button darkButton margin-r-10">+</a>
-                    <a href="#" id="codeEditorZoomOut" class="button darkButton">-</a>
+                    <a href="#" id="codeEditorFullScreen" class="button lightButton margin-r-10">Full screen</a>
+                    <a href="#" id="codeEditorZoomIn" class="button lightButton margin-r-10">+</a>
+                    <a href="#" id="codeEditorZoomOut" class="button lightButton">-</a>
                 </div>
-                <span class="text">Current position: </span>
-                <span class="data"><?php echo $menu['position']; ?></span>
                 <form action="/admin/menus/<?php echo $menu['id']; ?>/update-position" method="POST" class="updatePositionForm">
-                    <label>Position:</label>
+                    <label class="margin-b-20">Position:</label>
+                    <span class="data"><?php echo $menu['position']; ?></span>
                     <select name="position" multiple>
                         <option value="top">Top</option>
                         <option value="bottom">Bottom</option>
                         <option value="unset">Unset</option>
                     </select>
-                    <input type="submit" name="submit" class="button greenButton" value="Update"/>
+                    <input type="submit" name="submit" class="button darkBlueButton" value="Update"/>
                 </form>
-                <span class="text margin-t-50">Current ordering: </span>
-                <span class="data"><?php if(!empty($menu['ordering']) && $menu['ordering'] !== null) { echo $menu['ordering']; } else { echo 'Unset'; } ?></span>
-                <span class="text">Ordering: </span>
+                <span class="text ordering">Ordering: </span>
+                <span class="data ordering"><?php if(!empty($menu['ordering']) && $menu['ordering'] !== null) { echo $menu['ordering']; } else { echo 'Unset'; } ?></span>
                 <form action="/admin/menus/<?php echo $menu['id']; ?>/update-ordering" method="POST" class="updateNumberForm">
                     <input dir="rtl" type="number" name="ordering" min="1" max="99" value="1">
-                    <input type="submit" name="submit" class="button blueButton" value="Update"/>
+                    <input type="submit" name="submit" class="button darkBlueButton" value="Update"/>
                 </form>
             </div>
         </div>

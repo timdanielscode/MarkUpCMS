@@ -53,6 +53,8 @@
 .removeCssForm label, .linkCssForm label {
     color: #333;
     font-size: 14px;
+    margin-top: 50px;
+    display: block;
 }
 .removeCssForm select, .linkCssForm select {
     margin-top: 10px;

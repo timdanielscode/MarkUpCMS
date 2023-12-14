@@ -54,6 +54,8 @@
 .removeJsForm label, .includeJsForm label {
     color: #333;
     font-size: 14px;
+    display: block;
+    margin-top: 50px;
 }
 .removeJsForm select, .includeJsForm select {
     margin-top: 10px;

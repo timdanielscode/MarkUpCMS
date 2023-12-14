@@ -88,13 +88,13 @@
     margin-bottom: 20px;
 }
 .AddCategory select {
-    height: 250px;
+    height: 400px;
 }
 #metaForm, .linkedCssFilesForm {
     margin-top: 50px;
 }
 .linkedCssFilesForm select, .cssFilesForm select, .linkedJsFilesForm select, .jsFilesForm select, .widgetForm select, .cdnForm select {
-    height: 80px;
+    height: 150px;
 }
 .AddCategory select, .linkedCssFilesForm select, .cssFilesForm select, .linkedJsFilesForm select, .jsFilesForm select, .widgetForm select, .cdnForm select {
     width: 100%;
@@ -135,7 +135,7 @@
     width: 100%;
     padding-top: 10px;
     padding-left: 10px;
-    height: 46px;
+    height: 100px;
     border: none;
     margin: 10px 0;
     box-sizing: border-box;

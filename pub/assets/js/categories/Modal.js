@@ -91,7 +91,7 @@ class Modal {
 
         element.addEventListener("click", function() { 
                 
-            modal.changeListedCategories();
+            modal.changeListedCategories(element);
         }); 
 
     }
@@ -117,14 +117,15 @@ class Modal {
         }
     }
 
-    changeListedCategories() {
+    changeListedCategories(element) {
 
         var categoriesTable = document.querySelector('table');
-        var deleteForm = categoriesTable.nextElementSibling;
-
         categoriesTable.remove();
-        deleteForm.classList.remove('display-none')
         
+        var deleteForm = document.querySelector('.deleteForm');
+        deleteForm.classList.remove('display-none')
+
+        element.remove();
     }
 
     createEditForm(element) {
@@ -162,7 +163,7 @@ class Modal {
         containerInput.setAttribute('name', 'submit');
         containerInput.setAttribute('value', 'Update');
         containerInput.classList.add('button');
-        containerInput.classList.add('greenButton');
+        containerInput.classList.add('darkBlueButton');
         containerInput.classList.add('margin-t-20');
         containerInput.classList.add('margin-r-20');
 
@@ -226,7 +227,7 @@ class Modal {
         containerInput.setAttribute('name', 'submit');
         containerInput.setAttribute('value', 'Store');
         containerInput.classList.add('button');
-        containerInput.classList.add('greenButton');
+        containerInput.classList.add('darkBlueButton');
         containerInput.classList.add('margin-t-20');
         containerInput.classList.add('margin-r-20');
 

@@ -53,35 +53,35 @@
                     <a href="/admin/js" class="button blueButton">Back</a>
                 </div>
                 <div class="buttonContainer">
-                    <a href="#" id="codeEditorFullScreen" class="button darkButton margin-r-10">Full screen</a>
-                    <a href="#" id="codeEditorZoomIn" class="button darkButton margin-r-10">+</a>
-                    <a href="#" id="codeEditorZoomOut" class="button darkButton">-</a>
+                    <a href="#" id="codeEditorFullScreen" class="button lightButton margin-r-10">Full screen</a>
+                    <a href="#" id="codeEditorZoomIn" class="button lightButton margin-r-10">+</a>
+                    <a href="#" id="codeEditorZoomOut" class="button lightButton">-</a>
                 </div>
                 <div class="buttonContainer">
                     <form action="/admin/js/<?php echo $data['id']; ?>/include-all" method="POST">
-                        <input type="submit" name="submit" class="button lightButton margin-r-10" value="Include on all" onclick="return confirm('Are you sure?');"/>
+                        <input type="submit" name="submit" class="button darkButton margin-r-10" value="Include on all" onclick="return confirm('Are you sure?');"/>
                     </form>
                     <form action="/admin/js/<?php echo $data['id']; ?>/remove-all" method="POST">
-                        <input type="submit" name="submit" class="button lightButton" value="Remove all" onclick="return confirm('Are you sure?');"/>
+                        <input type="submit" name="submit" class="button darkButton" value="Remove all" onclick="return confirm('Are you sure?');"/>
                     </form>
                 </div>
                 <form action="/admin/js/<?php echo $data['id']; ?>/remove-pages" method="POST" class="removeJsForm margin-t-50">
-                    <label>Included on: </label>
+                    <label>Included: </label>
                     <select name="pages[]" multiple>
                         <?php foreach($data['assingedPages'] as $page) { ?>
                             <option value="<?php echo $page['id']; ?>"><?php echo $page['title']; ?></option>
                         <?php } ?> 
                     </select>
-                    <input type="submit" name="submit" class="button blueButton" value="Exclude"/>
+                    <input type="submit" name="submit" class="button darkBlueButton" value="Exclude"/>
                 </form>   
                 <form action="/admin/js/<?php echo $data['id']; ?>/include-pages" method="POST" class="includeJsForm">
-                    <label>Other pages: </label>
+                    <label>Pages: </label>
                     <select name="pages[]" multiple>
                         <?php foreach($data['pages'] as $page) { ?>
                             <option value="<?php echo $page['id']; ?>"><?php echo $page['title']; ?></option>
                         <?php } ?> 
                     </select>
-                    <input type="submit" name="submit" class="button greenButton" value="Include"/>
+                    <input type="submit" name="submit" class="button darkBlueButton" value="Include"/>
                 </form>   
             </div>
         </div>

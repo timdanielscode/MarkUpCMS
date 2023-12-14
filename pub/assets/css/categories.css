@@ -86,53 +86,69 @@ table td .button {
 #sidebar .title {
     display: block;
     font-size: 14px;
-    color: #333;
     margin-top: 50px;
     margin-bottom: 10px;
 }
 
 #sidebar table td {
     display: block;
-    padding: 2px 0 2px 10px;
     width: 100%;
+    padding: 2px 0;
 }
-
+#sidebar table tr, #sidebar tbody {
+    display: block;
+}
 #sidebar table td a {
     font-size: 14px;
-    color: #000;
     text-decoration: none;
+    width: 100%;
+    display: block;
+    padding: 5px 10px;
+    color: #000;
 }
 
 #sidebar table td a:hover {
-    color: #3b75ca;
+    background: #ececec;
+    padding-left: 20px;
+    transition: 0.2s;
 }
 
 #sidebar table td a.active {
-    font-weight: bold;
+    background: #ececec;
+    padding-left: 20px;
 }
 
 #sidebar .deleteForm select {
     width: 100%;
     display: block;
     overflow-y: auto;
-    min-height: 250px;
-    max-height: 500px;
+    height: 500px;
     overflow-x: hidden;
-    padding: 2px 0 2px 10px;
+    box-sizing: border-box;
+    border: none;
+}
+
+#sidebar .deleteForm select option {
+    font-size: 14px;
+    text-decoration: none;
+    width: 100%;
+    display: block;
+    padding: 5px 10px;
 }
 
 #slug {
     background: #fff;
-    padding: 12px;
+    padding: 5px 10px;
     border: 1px solid #aaa;
     width: 95%;
-    margin: 50px 0;
     box-sizing: border-box;
+    margin-bottom: 50px;
 }
 
 #slug .listedItem {
     color: #333;
     display: inline;
+    font-size: 14px;
 }
 
 #category select, #page select {
@@ -157,20 +173,26 @@ table td .button {
     margin-bottom: 10px;
     position: absolute;
     top: -25px;
+    font-size: 14px;
 }
 #slugForm {
     display: inline-block;
+    width: 250px;
 }
 #slugForm input[type="text"] {
-    border: 0;
-    font-size: 16px;
-    padding: 0;
-    font-weight: bold;
+    width: 100%;
+    margin-left: 5px;
+    border: 1px solid #e4e4e4;
+    padding: 7px;
+    color: #333;
+    font-size: 14px;
+}
+#slugForm input[type="text"]:active, #slugForm input[type="text"]:focus {
+    border: 1px solid #2e6ac1;
 }
 #slugForm input[type="text"]:focus, #slugForm input[type="text"]:active {
     outline: none;
 }
-
 .searchForm {
     margin-bottom: 20px;
 }
@@ -192,16 +214,12 @@ table td .button {
     margin-bottom: 10px;
     margin-top: -10px;
     font-size: 14px;
-    position: absolute;
-    top: 25px;
 }
 .message-container.failed {
     color: rgb(199, 48, 48);
     margin-bottom: 10px;
     margin-top: -10px;
     font-size: 14px;
-    position: absolute;
-    top: 25px;
 }
 
 /*
