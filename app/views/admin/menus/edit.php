@@ -12,8 +12,10 @@
     <?php $this->stylesheet("/assets/css/navbar.css"); ?>
     <?php $this->stylesheet("/assets/css/menu.css"); ?>
     <?php $this->stylesheet("/assets/css/sidebar.css"); ?>
-    <?php $this->script("/assets/js/fullscreen.js", true); ?>
-    <?php $this->script("/assets/js/zoom.js", true); ?>
+    <?php $this->script("/assets/js/sidebar/Editor.js", true); ?>
+    <?php $this->script("/assets/js/sidebar/Section.js", true); ?>
+    <?php $this->script("/assets/js/sidebar/Button.js", true); ?>
+    <?php $this->script("/assets/js/sidebar/main.js", true); ?>
     <?php $this->stylesheet("/assets/css/codemirror/codemirror.css"); ?>
     <?php $this->script("/assets/js/codemirror/codemirror.js"); ?>
     <?php $this->script("/assets/js/codemirror/xml.js"); ?>

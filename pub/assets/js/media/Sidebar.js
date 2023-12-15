@@ -2,364 +2,235 @@ class Sidebar {
 
     constructor() {
 
-        this.infoContainer;
-        this.setInfoContainerElement();
-        this.currentFileElement;
-        this.setCurrentFileElement();
-        this.currentFileFolderElement;
-        this.setCurrentFileFolderElement();
-        this.currentFilesizeElement;
-        this.setCurrentFilesizeElement();
-        this.currentFiletypeElement;
-        this.setCurrentFiletypeElement();
-        this.currentFilenameElement;
-        this.setCurrentFilenameElement();
-        this.currentFolderElement;
-        this.setCurrentFolderElement();
-        this.currentDescriptionElement;
-        this.setCurrentDescriptionElement();
-        this.updateFilenameButtonElement;
-        this.setUpdateFilenameButtonElement();
-        this.deleteFormElement;
-        this.setDeleteFormElement();
-        this.mainButtonContainerElement;
-        this.setMainButtonContainerElement();
-        this.updateFileFormElement;
-        this.setUpdateFileFormElement();
-        this.buttonContainerElement;
-        this.setButtonContainerElement();
-        this.updateDescriptionButtonElement;
-        this.setUpdateDescriptionButtonElement();
-        this.readButtonElement;
-        this.setReadButtonElement();
-        this.closeButtonElement;
-        this.setCloseButtonElement();
         this.setOnclickCloseButton();
         this.setOnclickReadButton();
-        this.searchElement;
-        this.setSearchElement();
-        this.totalElement;
-        this.setTotalElement();
-        this.filterElement;
-        this.setFilterElement();
     }
 
-    setUpdateFileFormElement() {
+    /*
+     * To get necessary elements
+    */
+    getUpdateFileFormElement() {
 
-        var element = document.querySelector('.uploadFileForm');
-
-        if(element !== null && element !== 'undefined') {
-
-            this.updateFileFormElement = element;
-        }
+        return document.querySelector('.uploadFileForm');
     }
 
-    setButtonContainerElement() {
-        
-        var element = document.querySelector('.buttonContainer');
+    getButtonContainerElement() {
 
-        if(element !== null && element !== 'undefined') {
-
-            this.buttonContainerElement = element;
-        }
+        return document.querySelector('.buttonContainer');
     }
 
-    setMainButtonContainerElement() {
+    getMainButtonContainerElement() {
 
-        var element = document.querySelector('.mainButtonContainer');
-
-        if(element !== null && typeof element !== 'undefined') {
-
-            this.mainButtonContainerElement = element;
-        }
+        return document.querySelector('.mainButtonContainer');
     }
 
-    setDeleteFormElement() {
+    getDeleteFormElement() {
 
-        var element = document.querySelector('.deleteForm');
-
-        if(element !== null && typeof element !== 'undefined') {
-
-            this.deleteFormElement = element;
-        }
+        return document.querySelector('.deleteForm');
     }
 
     getDeleteInputElement() {
 
-        var element = document.getElementById('selectedFiles');
-        
-        if(element !== null && typeof element !== 'undefined') {
-
-            return element;
-        }
-    }
-
-    setInfoContainerElement() {
-
-        var element = document.querySelector('.fileInfoContainer');
-
-        if(element !== null && typeof element !== 'undefined') {
-
-            this.infoContainer = element;
-        }
+        return document.getElementById('selectedFiles');
     }
 
     getInfoContainerElement() {
 
-        return this.infoContainer;
+        return document.querySelector('.fileInfoContainer');
     }
 
-    setCurrentFileElement() {
+    getCurrentFileElement() {
 
-        var element = document.getElementById('currentFile');
-
-        if(element !== null && typeof element !== 'undefined') {
-
-            this.currentFileElement = element;
-        }
+        return document.getElementById('currentFile');
     }
 
-    setCurrentFileElement() {
+    getCurrentFileFolderElement() {
 
-        var element = document.getElementById('currentFile');
-
-        if(element !== null && typeof element !== 'undefined') {
-
-            this.currentFileElement = element;
-        }
+        return document.getElementById('currentFolderFilename');
     }
 
-    setCurrentFileFolderElement() {
+    getCurrentFilesizeElement() {
 
-        var element = document.getElementById('currentFolderFilename');
-
-        if(element !== null && typeof element !== 'undefined') {
-
-            this.currentFileFolderElement = element;
-        }
-    }
-    setCurrentFilesizeElement() {
-
-        var element = document.getElementById('currentFilesize');
-
-        if(element !== null && typeof element !== 'undefined') {
-
-            this.currentFilesizeElement = element;
-        }
-    }
-    setCurrentFiletypeElement() {
-
-        var element = document.getElementById('currentFiletype');
-
-        if(element !== null && typeof element !== 'undefined') {
-
-            this.currentFiletypeElement = element;
-        }
-    }
-    setCurrentFilenameElement() {
-
-        var element = document.getElementById('currentFilename');
-
-        if(element !== null && typeof element !== 'undefined') {
-
-            this.currentFilenameElement = element;
-        }
+        return document.getElementById('currentFilesize');
     }
 
-    setCurrentFolderElement() {
+    getCurrentFiletypeElement() {
 
-        var element = document.getElementById('currentFolder');
-
-        if(element !== null && typeof element !== 'undefined') {
-
-            this.currentFolderElement = element;
-        }
+        return document.getElementById('currentFiletype');
     }
 
-    setCurrentDescriptionElement() {
+    getCurrentFilenameElement() {
 
-        var element = document.getElementById('currentDescription');
-
-        if(element !== null && typeof element !== 'undefined') {
-
-            this.currentDescriptionElement = element;
-        }
+        return document.getElementById('currentFilename');
     }
 
-    setUpdateFilenameButtonElement() {
+    getCurrentFolderElement() {
 
-        var element = document.getElementById('update');
-
-        if(element !== null && typeof element !== 'undefined') {
-
-            this.updateFilenameButtonElement = element;
-        }
+        return document.getElementById('currentFolder');
     }
 
-    setUpdateDescriptionButtonElement() {
+    getCurrentDescriptionElement() {
 
-        var element = document.getElementById('updateDescription');
+        return document.getElementById('currentDescription');
+    }
 
-        if(element !== null && typeof element !== 'undefined') {
+    getUpdateFilenameButtonElement() {
 
-            this.updateDescriptionButtonElement = element;
-        }
+        return document.getElementById('update');
+    }
 
+    getUpdateDescriptionButtonElement() {
+
+        return document.getElementById('updateDescription');
     }
 
     getCurrentSelectedFileElement() {
 
-        var element = document.getElementById('currentFile')
-
-        if(element !== null && typeof element !== 'undefined') {
-
-            return element.children[0];
-        }
+        return document.getElementById('currentFile');
     }
 
+    getSearchElement() {
+
+        return document.querySelector('.searchFormCreate');
+    }
+
+    getTotalElement() {
+
+        return document.querySelector('.totalContainer');
+    }
+
+    getFilterElement() {
+
+        return document.querySelector('.filterForm');
+    }
+
+    getReadButtonElement() {
+
+        return document.querySelector('.read');
+    }
+
+    getCloseButtonElement() {
+
+        return document.querySelector('.close');
+    }
+
+    /*
+     * After file is selected and clicking on the file itself (only type of image files) to run the displayReadImageContainer method
+     *
+     * @param element object div tag (clicked file)
+    */
     setCurrentSelectedFileElementOnclick(element) {
 
-        var closeButton = this.closeButtonElement;
-        var readButton = this.readButtonElement;
+        var sidebar = this;
+        var closeButton = this.getCloseButtonElement();
+        var readButton = this.getReadButtonElement();
 
         element.onclick = function() {
-                        
-            displayReadImageContainer(readButton, closeButton);
+     
+            sidebar.displayReadImageContainer(readButton, closeButton);
         };
     }
 
-    setReadButtonElement() {
-
-        var element = document.querySelector('.read');
-
-        if(element !== null && typeof element !== 'undefined') {
-
-            this.readButtonElement = element;
-        }
-    }
-
+    /*
+     * After clicking on the 'read button' to run the displayReadImageContainer method
+    */
     setOnclickReadButton() {
 
-        var closeButton = this.closeButtonElement;
+        var sidebar = this;
+        var closeButton = this.getCloseButtonElement();
 
-        this.readButtonElement.onclick = function() {
+        this.getReadButtonElement().onclick = function() {
                     
-            displayReadImageContainer(this, closeButton);
+            sidebar.displayReadImageContainer(this, closeButton);
         };
     }
 
-    setCloseButtonElement() {
-
-        var element = document.querySelector('.close');
-
-        if(element !== null && typeof element !== 'undefined') {
-
-            this.closeButtonElement = element;
-        }
-    }
-
+    /*
+     * After clicking on the 'close button' to run the closeReadImageContainer method
+    */
     setOnclickCloseButton() {
 
-        var readButton = this.readButtonElement;
+        var sidebar = this;
+        var readButton = this.getReadButtonElement();
 
-        this.closeButtonElement.onclick = function() {
+        this.getCloseButtonElement().onclick = function() {
 
-            closeReadImageContainer(this, readButton);
+            sidebar.closeReadImageContainer(this, readButton);
         }
     }
 
-    setSearchElement() {
+    /*
+    * To close the 'bigger view of file' to show the overview of files
+    *
+    * @param object element anchor tag (close button)
+    * @param object readButtonElement anchor tag (read button)
+    */
+    closeReadImageContainer(closeButtonElement, readButtonElement) {
 
-        var element = document.querySelector('.searchFormCreate');
+        closeButtonElement.classList.add('display-none-important');
+        readButtonElement.classList.remove('display-none-important');
 
-        if(element !== null && typeof element !== 'undefined') {
-
-            this.searchElement = element;
-        }
-    }
-    setTotalElement() {
-
-        var element = document.querySelector('.totalContainer');
-
-        if(element !== null && typeof element !== 'undefined') {
-
-            this.totalElement = element;
-        }
-    }
-    setFilterElement() {
-
-        var element = document.querySelector('.filterForm');
-
-        if(element !== null && typeof element !== 'undefined') {
-
-            this.filterElement = element;
-        }
-    }
-}
-
-function closeReadImageContainer(element, readButtonElement) {
-
-    element.classList.add('display-none-important')
-    readButtonElement.classList.remove('display-none-important')
-
-    var readImageContainer = new ReadImageContainer();
-    readImageContainer.getElement().classList.add('display-none');
-    
-    
-    var fileContainer = new FileContainer();
-    fileContainer.filesContainerElement.classList.remove('display-none')
-
-    if(readImageContainer.getFileElement().classList.contains('read-iframe') === true) {
-
-        readImageContainer.getFileElement().classList.remove('read-iframe')
-        readImageContainer.getFileElement().remove();
-    } else if(readImageContainer.getFileElement().classList.contains('read-image') === true) {
-
-        readImageContainer.getFileElement().classList.remove('read-image')
-        fileContainer.getReadFileContainerElement().append(readImageContainer.getFileElement())
-        fileContainer.getReadFileContainerElement().append(fileContainer.getReadFileContainerElement().children[0])
-    } else if(readImageContainer.getFileElement().classList.contains('read-video') === true) {
-
-        readImageContainer.getFileElement().classList.remove('read-video')
-        readImageContainer.getFileElement().removeAttribute('controls')
-
-        console.log(fileContainer.getReadFileContainerElement())
-
-        fileContainer.getReadFileContainerElement().append(readImageContainer.getFileElement())
-        fileContainer.getReadFileContainerElement().append(fileContainer.getReadFileContainerElement().children[0])
-    }
-
-    var ranger = new Ranger();
-    ranger.getElement().classList.remove('display-none');
-}
-
-
-function displayReadImageContainer(element, closeButtonElement) {
-
-    element.classList.add('display-none-important')
-    closeButtonElement.classList.remove('display-none-important')
-
-    var readImageContainer = new ReadImageContainer();
-    readImageContainer.getElement().classList.remove('display-none');
-
-    var ranger = new Ranger();
-    ranger.getElement().classList.add('display-none');
-
-    var fileContainer = new FileContainer();
-    fileContainer.filesContainerElement.classList.add('display-none')
-
-    if(fileContainer.currentSelectedFileElement.classList.contains('imgFile') === true) {
+        var readImageContainer = new ReadImageContainer();
+        readImageContainer.getElement().classList.add('display-none');
         
-        fileContainer.currentSelectedFileElement.classList.add('read-image')
-        readImageContainer.getElement().append(fileContainer.currentSelectedFileElement)
-    } else if(fileContainer.currentSelectedFileElement.classList.contains('videoFile') === true) {
+        var fileContainer = new FileContainer();
+        fileContainer.getFilesContainerElement().classList.remove('display-none');
 
-        fileContainer.currentSelectedFileElement.classList.add('read-video')
-        fileContainer.currentSelectedFileElement.setAttribute('controls', "true")
-        readImageContainer.getElement().append(fileContainer.currentSelectedFileElement)
+        if(readImageContainer.getFileElement().classList.contains('read-iframe') === true) {
 
-    } else if(fileContainer.currentSelectedFileElement.classList.contains('pdfFile') === true) {
+            readImageContainer.getFileElement().classList.remove('read-iframe');
+            readImageContainer.getFileElement().remove();
+        } else if(readImageContainer.getFileElement().classList.contains('read-image') === true) {
 
-        readImageContainer.getElement().append(fileContainer.createIframeElement(fileContainer.currentSelectedFileElement))
+            readImageContainer.getFileElement().classList.remove('read-image');
+            fileContainer.getReadFileContainerElement().append(readImageContainer.getFileElement());
+            fileContainer.getReadFileContainerElement().append(fileContainer.getReadFileContainerElement().children[0])
+        } else if(readImageContainer.getFileElement().classList.contains('read-video') === true) {
+
+            readImageContainer.getFileElement().classList.remove('read-video');
+            readImageContainer.getFileElement().removeAttribute('controls');
+
+            fileContainer.getReadFileContainerElement().append(readImageContainer.getFileElement());
+            fileContainer.getReadFileContainerElement().append(fileContainer.getReadFileContainerElement().children[0])
+        }
+
+        var ranger = new Ranger();
+        ranger.getElement().classList.remove('display-none');
+    }
+
+    /*
+    * To show the 'selected file' with a bigger width to have a better view of the file
+    *
+    * @param object readButtonElement anchor tag (read button)
+    * @param object closeButtonElement anchor tag (close button)
+    */
+    displayReadImageContainer(readButtonElement, closeButtonElement) {
+
+        readButtonElement.classList.add('display-none-important');
+        closeButtonElement.classList.remove('display-none-important');
+
+        var readImageContainer = new ReadImageContainer();
+        readImageContainer.getElement().classList.remove('display-none');
+
+        var ranger = new Ranger();
+        ranger.getElement().classList.add('display-none');
+
+        var fileContainer = new FileContainer();
+        fileContainer.getFilesContainerElement().classList.add('display-none');
+
+        if(fileContainer.getCurrentSelectedFileElement().classList.contains('imgFile') === true) {
+            
+            fileContainer.getCurrentSelectedFileElement().classList.add('read-image');
+            readImageContainer.getElement().append(fileContainer.getCurrentSelectedFileElement());
+        } else if(fileContainer.getCurrentSelectedFileElement().classList.contains('videoFile') === true) {
+
+            fileContainer.getCurrentSelectedFileElement().classList.add('read-video');
+            fileContainer.getCurrentSelectedFileElement().setAttribute('controls', "true");
+            readImageContainer.getElement().append(fileContainer.getCurrentSelectedFileElement());
+
+        } else if(fileContainer.getCurrentSelectedFileElement().classList.contains('pdfFile') === true) {
+
+            readImageContainer.getElement().append(fileContainer.createIframeElement(fileContainer.getCurrentSelectedFileElement()));
+        }
     }
 }

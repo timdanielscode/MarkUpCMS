@@ -1,30 +1,15 @@
 class ReadImageContainer {
 
-    constructor() {
-
-        this.element;
-        this.setElement();
-    }
-
-    setElement() {
-
-        var element = document.querySelector('.readImageContainer');
-
-        if(element !== null && typeof element !== 'undefined') {
-
-            this.element = element;
-        }
-    }
-
+    /*
+     * To get necessary elements
+    */
     getElement() {
 
-        return this.element;
+        return document.querySelector('.readImageContainer');
     }
 
     getFileElement() {
 
-        var element = this.element.children;
-
-        return element[0];
+        return document.querySelector('.readImageContainer').children[0];
     }
 }

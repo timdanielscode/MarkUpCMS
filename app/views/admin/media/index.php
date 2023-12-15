@@ -192,7 +192,7 @@
                         <option value="video">Video</option>
                         <option value="pdf">Pdf</option>
                     </select>
-                    <input type="submit" class="button darkBlueButton margin-t-10 margin-r-10" name="filter" value="Apply"/>
+                    <input type="submit" class="button blueButton margin-t-10 margin-r-10" name="filter" value="Apply"/>
                 </form>
                 <div class="fileInfoContainer display-none">
                     <div id="currentFile"></div>

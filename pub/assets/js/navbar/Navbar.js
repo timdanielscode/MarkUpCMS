@@ -1,40 +1,40 @@
 class Navbar {
 
-    constructor() {
-
-        this.element;
-        this.setElement();
-    }
-
-    setElement() {
-
-        var element = document.getElementById('profileIcon');
-
-        if(element !== null && typeof element !== 'undefined') {
-
-            this.element = element;
-        }
-    }
-
+    /*
+     * To get necessary elements
+    */
     getElement() {
 
-        return this.element;
+        return document.getElementById('profileIcon');
     }
 
-    setOnclickEvent(progressInfoItem) {
+    getBodyElement() {
 
-        this.getElement().onclick = function(){
+        return document.querySelector('html');
+    }
+
+    getDropdownElement() {
+
+        return document.getElementById('profileDropdown');
+    }
+
+    setOnclickEvent() {
+
+        var navbar = this;
+
+        this.getElement().onclick = function() {
             
-            showMenu(progressInfoItem);
+            navbar.showHideMenu();
         };
     }
 
+    /*
+     * To show/hide the navbar profile menu afger clicking on the 'profile icon'
+    */
+    showHideMenu() {
+
+        this.getBodyElement().classList.toggle('dark-layer');
+        this.getDropdownElement().classList.toggle('show-dropdown')
+    }
 }
 
-function showMenu() {
-
-    var body = document.querySelector('html');
-    body.classList.toggle('dark-layer');
-    var profileDropdown = document.getElementById('profileDropdown');
-    profileDropdown.classList.toggle('show-dropdown')
-}

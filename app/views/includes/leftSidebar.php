@@ -20,7 +20,7 @@
         <nav id="navigationMenu">
             <ul id="dropdownItems">
                 <li class="dropdownItem"><img src="/assets/img/file.png"/>Pages</li>
-                <ul class="dropdown">
+                <ul class="dropdown display-none">
                     <?php if(core\Session::get('user_role') === 'admin') { ?>
                     <a href="/admin/posts/create"><li>Add new <img class="add" src="/assets/img/add.png"/></li></a>
                     <?php } ?>
@@ -71,7 +71,7 @@
                     <?php } ?>
                 </ul>
                 <li class="dropdownItem"><img src="/assets/img/menu.png"/>Widgets</li>
-                <ul class="dropdown">
+                <ul class="dropdown display-none">
                     <?php if(core\Session::get('user_role') === 'admin') { ?>
                     <a href="/admin/widgets/create"><li>Add new <img class="add" src="/assets/img/add.png"/></li></a>
                     <?php } ?>
@@ -146,7 +146,7 @@
                     <?php } ?>
                 </ul>
                 <li class="dropdownItem"><img src="/assets/img/image.png"/>Media</a></li>
-                <ul class="dropdown">
+                <ul class="dropdown display-none">
                     <a href="/admin/media"><li>Table overview</li></a>
                 </ul>
                 <li class="dropdownItem"><img src="/assets/img/multiple-users-silhouette.png"/>Users</a></li>

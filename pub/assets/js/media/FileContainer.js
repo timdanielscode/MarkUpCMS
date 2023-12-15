@@ -5,44 +5,31 @@ class FileContainer {
         this.sidebar = sidebar;
         this.elements = [];
         this.checkboxes = [];
+        
         this.setElements();
-        this.fileContainerElement;
-        this.setFilesContainerElement();
-        this.currentSelectedFileElement;
-        this.setCurrentSelectedFileElement();
     }
 
-    setFilesContainerElement() {
+    /*
+     * To get necessary elements
+    */
+    getElements() {
 
-        var element = document.querySelector('.filesContainer');
-
-        if(element !== null && typeof element !== 'undefined') {
-
-            this.filesContainerElement = element;
-        }
+        return this.elements;
     }
 
-    setCurrentSelectedFileElement() {
+    getCheckboxElements() {
 
-        var element = document.querySelector('.selected');
-
-        if(element !== null && typeof element !== 'undefined') {
-
-            this.currentSelectedFileElement = element;
-        }
+        return this.checkboxes;
     }
 
-    setElements() {
+    getFilesContainerElement() {
 
-        var elements = document.querySelectorAll('.fileContainer');
+        return document.querySelector('.filesContainer');
+    }
 
-        for(var element of elements) {
+    getCurrentSelectedFileElement() {
 
-            if(element.classList.contains('folder') === false) {
-
-                this.elements.push(element);
-            }
-        }
+        return document.querySelector('.selected');
     }
 
     getAllElements() {
@@ -61,6 +48,19 @@ class FileContainer {
         return collection;
     }
 
+    setElements() {
+
+        var elements = document.querySelectorAll('.fileContainer');
+
+        for(var element of elements) {
+
+            if(element.classList.contains('folder') === false) {
+
+                this.elements.push(element);
+            }
+        }
+    }
+
     setCheckboxElements() {
 
         for(var element of this.elements) {
@@ -69,19 +69,13 @@ class FileContainer {
         }
     }
 
-    getElements() {
-
-        return this.elements;
-    }
-
-    getCheckboxElements() {
-
-        return this.checkboxes;
-    }
-
+    /*
+     * After clicking on 'a file in the overview of all files' to run the clearSelection, showFileInfo, setCurrentSelectedFileElementOnclick methods
+    */
     setElementOnclicks() {
 
         var sidebar = this.sidebar;
+        var fileContainer = this;
         var elements = this.elements;
         var checkboxElements = this.getCheckboxElements();
 
@@ -90,9 +84,9 @@ class FileContainer {
             if(element !== null && typeof element !== 'undefined') {
                
                 element.children[0].onclick = function() {
-                    
-                    clearSelection(elements, checkboxElements, sidebar);
-                    showFileInfo(this, checkboxElements, sidebar);
+
+                    fileContainer.clearSelection(elements, checkboxElements, sidebar);
+                    fileContainer.showFileInfo(this, checkboxElements, sidebar);
             
                     sidebar.setCurrentSelectedFileElementOnclick(sidebar.getCurrentSelectedFileElement());
                 };
@@ -100,8 +94,12 @@ class FileContainer {
         }
     }
 
+    /*
+     * After clicking on 'a checkbox of a file in the overview of all files' to run the deleteSelection, toggleDeleteForm methods
+    */
     setCheckboxElementOnclicks() {
         
+        var fileContainer = this;
         var deleteInputElement = this.sidebar.getDeleteInputElement();
         var sidebar = this.sidebar;
         var checkboxElements = this.getCheckboxElements();
@@ -113,13 +111,16 @@ class FileContainer {
 
                 element.onclick = function() {
                     
-                    deleteSelection(this, deleteInputElement, sidebar);
-                    toggleDeleteForm(checkboxElements, elements, sidebar);
+                    fileContainer.deleteSelection(this, deleteInputElement, sidebar);
+                    fileContainer.toggleDeleteForm(checkboxElements, elements, sidebar);
                 };
             }
         }
     }
 
+    /*
+     * To get the 'file container element' (after closing the bigger overview of file)
+    */
     getReadFileContainerElement() {
 
         var elements = document.querySelectorAll('.fileContainer')
@@ -133,6 +134,11 @@ class FileContainer {
         }
     }
 
+    /*
+     * To show a pdf file width a bigger width (after clicking on the read button or clicking on a file after selected) to have a better view of the file
+     *
+     * @param object imgElement img tag (pdf data)
+    */
     createIframeElement(imgElement) {
 
         var element = document.createElement("iframe");
@@ -141,94 +147,118 @@ class FileContainer {
 
         return element;
     }
-}
 
-function deleteSelection(element, input, sidebar) {
+    /*
+     * To add the ids to the delete input field to submit to remove the selection of files
+     *
+     * @param object element input tag (file checkbox)
+     * @param object input input tag (delete button)
+     * @param object sidebar Sidebar 
+    */
+    deleteSelection(element, input, sidebar) {
 
-    sidebar.deleteFormElement.classList.remove('display-none')
-    sidebar.mainButtonContainerElement.children[0].classList.add('display-none-important')
-    sidebar.updateFileFormElement.classList.add('display-none')
-    sidebar.searchElement.classList.add('display-none')
-    sidebar.totalElement.classList.add('display-none')
-    sidebar.filterElement.classList.add('display-none')
-    sidebar.buttonContainerElement.classList.add('display-none-important')
-
-    toggleSelectedDeleteClass(element);
+        sidebar.getDeleteFormElement().classList.remove('display-none')
+        sidebar.getMainButtonContainerElement().children[0].classList.add('display-none-important')
+        sidebar.getUpdateFileFormElement().classList.add('display-none')
+        sidebar.getSearchElement().classList.add('display-none')
+        sidebar.getTotalElement().classList.add('display-none')
+        sidebar.getFilterElement().classList.add('display-none')
+        sidebar.getButtonContainerElement().classList.add('display-none-important')
     
-    if(element.previousElementSibling.classList.contains('selected-delete') === true || element.previousElementSibling.previousElementSibling !== null && element.previousElementSibling.previousElementSibling.classList.contains('selected-delete') === true) {
-
-        input.value += element.previousElementSibling.dataset.id + ",";
-    } else {
-        input.value = input.value.replace(element.previousElementSibling.dataset.id + ",", "");
-    }
-}
-
-function toggleSelectedDeleteClass(element) {
-
-    if(element.previousElementSibling.previousElementSibling !== null) {
-        element.previousElementSibling.previousElementSibling.classList.toggle('selected-delete')
-    } else {
-        element.previousElementSibling.classList.toggle('selected-delete')
-    }
-}
-
-function showFileInfo(element, checkboxElements, sidebar) {
-
-    element.classList.add('selected');
-
-    if(element.classList.contains('deselect') === false) {
+        this.toggleSelectedDeleteClass(element);
         
-        sidebar.infoContainer.classList.remove('display-none')
-        sidebar.updateFileFormElement.classList.add('display-none')
-        sidebar.searchElement.classList.add('display-none')
-        sidebar.totalElement.classList.add('display-none')
-        sidebar.filterElement.classList.add('display-none')
-        sidebar.buttonContainerElement.classList.add('display-none-important')
-        sidebar.mainButtonContainerElement.children[0].classList.add('display-none-important')
-
-        if(ifAnyElementHasSelectedDelete(checkboxElements) === false) {
-            
-            sidebar.mainButtonContainerElement.children[2].classList.remove('display-none-important')
+        if(element.previousElementSibling.classList.contains('selected-delete') === true || element.previousElementSibling.previousElementSibling !== null && element.previousElementSibling.previousElementSibling.classList.contains('selected-delete') === true) {
+    
+            input.value += element.previousElementSibling.dataset.id + ",";
+        } else {
+            input.value = input.value.replace(element.previousElementSibling.dataset.id + ",", "");
         }
     }
 
-    var nodetype = getFileNodeType(element.dataset.filetype);
-    var fileNode = createNode(nodetype, element.dataset.folder, element.dataset.filename);
+    /*
+     * To show the file is selected 
+     *
+     * @param object element input tag (file checkbox)
+    */
+    toggleSelectedDeleteClass(element) {
 
-    clearCurrentFile(sidebar.currentFileElement);
-    sidebar.currentFileElement.append(fileNode);
-
-    setEqualFileContainerHeight(sidebar.currentFileElement);
-    window.addEventListener("resize", function() {
-
-        setEqualFileContainerHeight(sidebar.currentFileElement);
-    }); 
-
-    sidebar.currentFiletypeElement.innerText = element.dataset.filetype;
-    sidebar.currentFilesizeElement.innerText = parseFloat(element.dataset.filesize / 1000000).toFixed(2) + 'MB';
-    sidebar.currentDescriptionElement.value = element.dataset.description;
-    sidebar.currentFileFolderElement.innerText = "/" + element.dataset.folder + '/' + element.dataset.filename;
-    sidebar.currentFilenameElement.value = element.dataset.filename;
-    sidebar.currentFolderElement.setAttribute('data-folder', element.dataset.folder);
-
-    if(sidebar.updateFilenameButtonElement !== null && typeof sidebar.updateFilenameButtonElement !== 'undefined') {
-
-        sidebar.updateFilenameButtonElement.setAttribute('value', element.dataset.id);
+        if(element.previousElementSibling.previousElementSibling !== null) {
+            element.previousElementSibling.previousElementSibling.classList.toggle('selected-delete')
+        } else {
+            element.previousElementSibling.classList.toggle('selected-delete')
+        }
     }
-    if(sidebar.updateDescriptionButtonElement !== null && typeof sidebar.updateDescriptionButtonElement !== 'undefined') {
-        
-        sidebar.updateDescriptionButtonElement.setAttribute('value', element.dataset.id);
+
+    /*
+     * To show contents of file in sidebar and file is selected
+     *
+     * @param object element img or video tag (file)
+     * @param array checkboxElements input tags (checkboxes) 
+     * @param object sidebar Sidebar
+    */
+    showFileInfo(element, checkboxElements, sidebar) {
+
+        element.classList.add('selected');
+    
+        if(element.classList.contains('deselect') === false) {
+            
+            sidebar.getInfoContainerElement().classList.remove('display-none')
+            sidebar.getUpdateFileFormElement().classList.add('display-none')
+            sidebar.getSearchElement().classList.add('display-none')
+            sidebar.getTotalElement().classList.add('display-none')
+            sidebar.getFilterElement().classList.add('display-none')
+            sidebar.getButtonContainerElement().classList.add('display-none-important')
+            sidebar.getMainButtonContainerElement().children[0].classList.add('display-none-important')
+    
+            if(this.ifAnyElementHasSelectedDelete(checkboxElements) === false) {
+                
+                sidebar.getMainButtonContainerElement().children[2].classList.remove('display-none-important')
+            }
+        }
+    
+        var nodetype = this.getFileNodeType(element.dataset.filetype);
+        var fileNode = this.createNode(nodetype, element.dataset.folder, element.dataset.filename);
+    
+        this.clearCurrentFile(sidebar.getCurrentFileElement());
+        sidebar.getCurrentFileElement().append(fileNode);
+    
+        this.setEqualFileContainerHeight(sidebar.getCurrentFileElement());
+        window.addEventListener("resize", function() {
+    
+            this.setEqualFileContainerHeight(sidebar.getCurrentFileElement());
+        }); 
+    
+        sidebar.getCurrentFiletypeElement().innerText = element.dataset.filetype;
+        sidebar.getCurrentFilesizeElement().innerText = parseFloat(element.dataset.filesize / 1000000).toFixed(2) + 'MB';
+        sidebar.getCurrentDescriptionElement().value = element.dataset.description;
+        sidebar.getCurrentFileFolderElement().innerText = "/" + element.dataset.folder + '/' + element.dataset.filename;
+        sidebar.getCurrentFilenameElement().value = element.dataset.filename;
+        sidebar.getCurrentFolderElement().setAttribute('data-folder', element.dataset.folder);
+    
+        if(sidebar.getUpdateFilenameButtonElement() !== null && typeof sidebar.getUpdateFilenameButtonElement() !== 'undefined') {
+    
+            sidebar.getUpdateFilenameButtonElement().setAttribute('value', element.dataset.id);
+        }
+        if(sidebar.getUpdateDescriptionButtonElement() !== null && typeof sidebar.getUpdateDescriptionButtonElement() !== 'undefined') {
+            
+            sidebar.getUpdateDescriptionButtonElement().setAttribute('value', element.dataset.id);
+        }
     }
-}
 
-function getFileNodeType(elementType) {
+    /*
+     * To get the type of file
+     *
+     * @param string elementType type of file
+    */
+    getFileNodeType(elementType) {
 
-    if(elementType !== null && typeof elementType !== 'undefined') {
+        var nodetype = '';
 
         switch (elementType) {
+
             case 'image/png':
     
-               nodetype = 'img';
+                nodetype = 'img';
             break;
             case 'image/webp':
     
@@ -261,120 +291,179 @@ function getFileNodeType(elementType) {
             default:
                 nodetype = 'img';
         }
+
+        return nodetype;
     }
+    
+    /*
+     * To show the file in the sidebar
+     *
+     * @param string type type of file
+     * @param string folder folder name
+     * @param string filename filename
+    */
+    createNode(type, folder, filename) {
 
-    return nodetype;
-}
-
-function createNode(type, folder, filename) {
-
-    if(type !== null && typeof type !== 'undefined') {
-
-        var node = document.createElement(nodetype);
+        var node = document.createElement(type);
         node.setAttribute('src', "/" + folder + '/' + filename);
-
+    
         if(type === 'video') {
-
+    
             node.setAttribute('controls', true);
         }
-
+    
         return node;
     }
-}
 
-function clearCurrentFile(file) {
+    /*
+     * To remove the file after new file is selected from sidebar
+     *
+     * @param object file div tag (sidebar file container)
+    */
+    clearCurrentFile(file) {
 
-    if(file.children.length !== 0) {
-
-        file.children[0].remove();
+        if(file.children.length !== 0) {
+    
+            file.children[0].remove();
+        }
     }
-}
 
-function setEqualFileContainerHeight(element = null) {
+    /*
+     * To set the same height as width for the 'sidebar file container' element to show the file like a square
+     *
+     * @param object file div tag (sidebar file container)
+    */
+    setEqualFileContainerHeight(element = null) {
 
-    element.style.height = element.clientWidth + 'px';
-}
+        element.style.height = element.clientWidth + 'px';
+    }
 
-function clearSelection(elements, checkboxElements, sidebar) {
+    /*
+     * To select files individually (to 'clear' last selected file selection and to deselect the file)
+     *
+     * @param array elements file container elements
+     * @param array checkboxElements input checkbox elements
+     * @param object sidebar Sidebar
+    */
+    clearSelection(elements, checkboxElements, sidebar) {
 
-    for(var element of elements) {
-
-        if(element.children[0].classList.contains('deselect') ) {
-
-            element.children[0].classList.remove('deselect')
-            element.children[0].classList.remove('selected')
-
-        } else if(element.children[0].classList.contains('selected') === true) {
-
-            element.children[0].classList.add('deselect')
-            element.children[0].classList.remove('selected')
-            sidebar.infoContainer.classList.add('display-none')
-            sidebar.mainButtonContainerElement.children[2].classList.add('display-none-important')
-
-            if(ifAnyElementHasSelectedDelete(checkboxElements) === false) {
-
-                sidebar.updateFileFormElement.classList.remove('display-none')
-                sidebar.searchElement.classList.remove('display-none')
-                sidebar.totalElement.classList.remove('display-none')
-                sidebar.filterElement.classList.remove('display-none')
-                sidebar.buttonContainerElement.classList.remove('display-none-important')
-                sidebar.mainButtonContainerElement.children[0].classList.remove('display-none-important')
+        for(var element of elements) {
+    
+            if(element.children[0].classList.contains('deselect') ) {
+    
+                element.children[0].classList.remove('deselect')
+                element.children[0].classList.remove('selected')
+    
+            } else if(element.children[0].classList.contains('selected') === true) {
+    
+                element.children[0].classList.add('deselect')
+                element.children[0].classList.remove('selected')
+                sidebar.getInfoContainerElement().classList.add('display-none')
+                sidebar.getMainButtonContainerElement().children[2].classList.add('display-none-important')
+    
+                if(this.ifAnyElementHasSelectedDelete(checkboxElements) === false) {
+    
+                    sidebar.getUpdateFileFormElement().classList.remove('display-none')
+                    sidebar.getSearchElement().classList.remove('display-none')
+                    sidebar.getTotalElement().classList.remove('display-none')
+                    sidebar.getFilterElement().classList.remove('display-none')
+                    sidebar.getButtonContainerElement().classList.remove('display-none-important')
+                    sidebar.getMainButtonContainerElement().children[0].classList.remove('display-none-important')
+                }
             }
         }
     }
-}
 
-function toggleDeleteForm(checkboxElements, elements, sidebar) {
+    /*
+     * To show/hide the delete button (and to show sidebar elements after deselection)
+     *
+     * @param array checkboxElements input checkbox elements
+     * @param array elements file container elements
+     * @param object sidebar Sidebar
+    */
+    toggleDeleteForm(checkboxElements, elements, sidebar) {
 
-    sidebar.mainButtonContainerElement.children[2].classList.add('display-none-important')
-    
-    if(ifAnyElementHasSelectedDelete(checkboxElements) === false) {
-
-        sidebar.mainButtonContainerElement.children[1].classList.add('display-none')
+        sidebar.getMainButtonContainerElement().children[2].classList.add('display-none-important')
         
-        if(ifAnyElementHasSelected(elements) === false) {
-
-            sidebar.mainButtonContainerElement.children[0].classList.remove('display-none-important')
-            sidebar.updateFileFormElement.classList.remove('display-none')
-            sidebar.searchElement.classList.remove('display-none')
-            sidebar.totalElement.classList.remove('display-none')
-            sidebar.filterElement.classList.remove('display-none')
-            sidebar.buttonContainerElement.classList.remove('display-none-important')
+        if(this.ifAnyElementHasSelectedDelete(checkboxElements) === false) {
+    
+            sidebar.getMainButtonContainerElement().children[1].classList.add('display-none')
             
-        } else {
+            if(this.ifAnyElementHasSelected(elements) === false) {
+    
+                sidebar.getMainButtonContainerElement().children[0].classList.remove('display-none-important')
+                sidebar.getUpdateFileFormElement().classList.remove('display-none')
+                sidebar.getSearchElement().classList.remove('display-none')
+                sidebar.getTotalElement().classList.remove('display-none')
+                sidebar.getFilterElement().classList.remove('display-none')
+                sidebar.getButtonContainerElement().classList.remove('display-none-important')
+                
+            } else {
+    
+                sidebar.getMainButtonContainerElement().children[2].classList.remove('display-none-important')
+            }
+        } 
+    }
 
-            sidebar.mainButtonContainerElement.children[2].classList.remove('display-none-important')
+    /*
+     * To check if file is selected to remove
+     *
+     * @param array elements input checkbox elements
+    */
+    ifAnyElementHasSelectedDelete(elements) {
+
+        var hasClass = false;
+    
+        for(var element of elements) {
+    
+            if(element.previousElementSibling.classList.contains('selected-delete') === true || element.previousElementSibling.previousElementSibling !== null && element.previousElementSibling.previousElementSibling.classList.contains('selected-delete')) {
+    
+                hasClass = true;
+            } 
         }
-    } 
-}
-
-function ifAnyElementHasSelectedDelete(elements) {
-
-    var hasClass = false;
-
-    for(var element of elements) {
-
-        if(element.previousElementSibling.classList.contains('selected-delete') === true || element.previousElementSibling.previousElementSibling !== null && element.previousElementSibling.previousElementSibling.classList.contains('selected-delete')) {
-
-            hasClass = true;
-        } 
+    
+        return hasClass;
     }
 
-    return hasClass;
-}
+    /*
+     * To check if file is selected (to show file)
+     *
+     * @param array elements input checkbox elements
+    */
+    ifAnyElementHasSelected(elements) {
 
-function ifAnyElementHasSelected(elements) {
-
-    var hasClass = false;
-
-    for(var element of elements) {
-
-        if(element.children[0].classList.contains('selected') === true && element.children[0].classList.contains('deselect') === false) {
-
-            hasClass = true;
-        } 
+        var hasClass = false;
+    
+        for(var element of elements) {
+    
+            if(element.children[0].classList.contains('selected') === true && element.children[0].classList.contains('deselect') === false) {
+    
+                hasClass = true;
+            } 
+        }
+    
+        return hasClass
     }
-
-    return hasClass;
-
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

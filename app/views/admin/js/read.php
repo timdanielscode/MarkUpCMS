@@ -7,14 +7,15 @@
     <?php $this->stylesheet("/assets/css/navbar.css"); ?>
     <?php $this->stylesheet("/assets/css/js.css"); ?>
     <?php $this->stylesheet("/assets/css/sidebar.css"); ?>
+    <?php $this->script("/assets/js/sidebar/Editor.js", true); ?>
+    <?php $this->script("/assets/js/sidebar/Section.js", true); ?>
+    <?php $this->script("/assets/js/sidebar/Button.js", true); ?>
+    <?php $this->script("/assets/js/sidebar/main.js", true); ?>
     <?php $this->stylesheet("/assets/css/codemirror/codemirror.css"); ?>
     <?php $this->stylesheet("/assets/css/codemirror/shadowfox.css"); ?>
     <?php $this->script("/assets/js/codemirror/codemirror.js"); ?>
     <?php $this->script("/assets/js/codemirror/css.js"); ?>
     <?php $this->script("/assets/js/codemirror/closebrackets.js"); ?>
-    <?php $this->script('/assets/js/ajax.js'); ?>
-    <?php $this->script("/assets/js/fullscreen.js"); ?>
-    <?php $this->script("/assets/js/zoom.js"); ?>
 <?php $this->include("closeHeadTagAndOpenBodyTag"); ?>
 
 <?php $this->include('navbar'); ?>

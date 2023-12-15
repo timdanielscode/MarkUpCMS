@@ -2,20 +2,15 @@ class Page {
 
     constructor() {
 
-        this.element;
         this.pageIds = [];
-
-        this.setElement();
     }
 
-    setElement() {
-
-        this.element = document.getElementById('page');
-    }
-
+    /*
+     * To get necessary elements
+    */
     getElement() {
 
-        return this.element;
+        return document.getElementById('page');
     }
 
     getPageIdsElement() {
@@ -23,11 +18,14 @@ class Page {
         return document.getElementById('pageIds');
     }
 
+    /*
+     * After clicking on a 'page element' to run the selectedPages method
+    */
     setOnclickEvents() {
 
         var page = this;
 
-        for(var element of this.getElement()) {
+        for(var element of this.getElement().children) {
 
             if(element.nodeName === 'SELECT') {
 
@@ -37,19 +35,22 @@ class Page {
 
                     element.addEventListener("click", function() { 
                 
-                        page.selectedCategories(this);
+                        page.selectedPages(this);
                     }); 
                 }
             }
         }
     }
 
-    selectedCategories(element) {
+    /*
+     * To show a page is selected, to push selected page id to submit the selection to 'apply'
+     *
+     * @param object element option tag
+    */
+    selectedPages(element) {
 
         element.classList.toggle('selectedCategory');
 
-        var pageIds = this.getPageIdsElement();
-        
         if(this.pageIds.includes(element.value) === false) {
 
             this.pageIds.push(element.value);
@@ -63,7 +64,6 @@ class Page {
             }
         }
 
-        pageIds.value = this.pageIds;
+        this.getPageIdsElement().value = this.pageIds;
     }
-
 }

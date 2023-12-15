@@ -1,93 +1,84 @@
 class Progress {
 
-    constructor() {
-
-        this.element;
-        this.layers;
-        this.stopElements;
-        this.setElement();
-        this.setLayers();
-        this.setStopElements();
-    }
-
-    setElement() {
-
-        var element = document.getElementById('progressInfoItem');
-
-        if(element !== null && typeof element !== 'undefined') {
-
-            this.element = element;
-        }
-    }
-
+    /*
+     * To get necessary elements
+    */
     getElement() {
 
-        return this.element;
+        return document.getElementById('progressInfoItem');
     }
 
-    setLayers() {
+    getLayers() {
 
-        var elements = document.querySelectorAll(".layer");
-
-        if(elements !== null && typeof elements !== 'undefined') {
-
-            this.layers = elements;
-        }
+        return document.querySelectorAll(".layer");
     }
 
-    setStopElements() {
+    getStopElements() {
 
-        var elements = document.querySelectorAll('.stopMousemoveEvent');
-
-        if(elements !== null && typeof elements !== 'undefined') {
-
-            this.stopElements = elements;
-        }
+        return document.querySelectorAll('.stopMousemoveEvent');
     }
 
+    /*
+     * After hovering over 'progressbar elements' to run the showElement method
+    */
     setMouseMoveEventShow() {
 
-        for(var element of this.layers) {
+        var progress = this;
 
-            var progressElement = this.element;
+        for(var element of this.getLayers()) {
 
             element.addEventListener("mousemove", function(event) {
 
-                showElement(this, progressElement, event);
+                progress.showElement(this, progress.getElement(), event);
             });
         }
     }
 
+    /*
+     * After hovering over 'stop mouse event elements' to run the hideElement method
+    */
     setMouseMoveEventHide() {
 
-        for(var element of this.stopElements) {
+        var progress = this;
 
-            var progressElement = this.element;
+        for(var element of this.getStopElements()) {
 
             element.addEventListener("mousemove", function(event) {
 
-                hideElement(progressElement);
+                progress.hideElement(progress.getElement());
             });
         }
     }
-}
 
-function showElement(element, progressElement, event) {
+    /*
+     * To show the progressbar info
+     *
+     * @param object element div tag (progressbar layer)
+     * @param object progressElement div tag (progress info element)
+     * @param object event (param element, mousemove)
+    */
+    showElement(element, progressElement, event) {
 
-    var cursorX = event.clientX;
-    var cursorY = event.clientY;
+        var cursorX = event.clientX;
+        var cursorY = event.clientY;
+    
+        var label = element.nextElementSibling;
+        var progressBar = element.nextElementSibling.nextElementSibling
+    
+        progressElement.innerText = label.innerText + ": " + progressBar.value;
+    
+        progressElement.style.left = cursorX + 20 + 'px';
+        progressElement.style.top = cursorY + 20 + 'px';
+        progressElement.style.display = 'block';
+    }
 
-    var label = element.nextElementSibling;
-    var progressBar = element.nextElementSibling.nextElementSibling
+    /*
+     * To hide the progressbar info
+     *
+     * @param object element div tag (progress info element)
+    */
+    hideElement(element) {
 
-    progressElement.innerText = label.innerText + ": " + progressBar.value;
-
-    progressElement.style.left = cursorX + 20 + 'px';
-    progressElement.style.top = cursorY + 20 + 'px';
-    progressElement.style.display = 'block';
-}
-
-function hideElement(element) {
-
-    element.style.display = '';
+        element.style.display = '';
+    }
 }

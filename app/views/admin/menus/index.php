@@ -11,8 +11,8 @@
     <?php $this->stylesheet("/assets/css/navbar.css"); ?>  
     <?php $this->stylesheet("/assets/css/index.css"); ?>  
     <?php $this->stylesheet("/assets/css/pagination.css"); ?>  
-    <?php $this->script("/assets/js/delete.js", true); ?>  
-    <?php $this->script("/assets/js/recover.js", true); ?>  
+    <?php $this->script("/assets/js/checkbox/Checkbox.js", true); ?>
+    <?php $this->script("/assets/js/checkbox/main.js", true); ?>
 <?php $this->include('closeHeadTagAndOpenBodyTag'); ?>
 
 <?php $this->include('navbar'); ?>  

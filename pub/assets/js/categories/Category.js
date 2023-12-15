@@ -2,27 +2,30 @@ class Category {
 
     constructor() {
 
-        this.element;
         this.categoryIds = [];
-
-        this.setElement();
     }
 
-    setElement() {
-
-        this.element = document.getElementById('category');
-    }
-
+    /*
+     * To get necessary elements
+    */
     getElement() {
 
-        return this.element;
+        return document.getElementById('category');
     }
 
+    getCategoryIdsElement() {
+
+        return document.getElementById('categoryIds');
+    }
+
+    /*
+     * After clicking on a 'category element' to run the selectedCategories method
+    */
     setOnclickEvents() {
 
         var category = this;
 
-        for(var element of this.getElement()) {
+        for(var element of this.getElement().children) {
 
             if(element.nodeName === 'SELECT') {
 
@@ -39,12 +42,15 @@ class Category {
         }
     }
 
+    /*
+     * To show a category is selected, to push selected category id to submit the selection to 'apply'
+     *
+     * @param object element option tag
+    */
     selectedCategories(element) {
 
         element.classList.toggle('selectedCategory');
 
-        var categoryIds = document.getElementById('categoryIds');
-        
         if(this.categoryIds.includes(element.value) === false) {
 
             this.categoryIds.push(element.value);
@@ -58,6 +64,6 @@ class Category {
             }
         }
 
-        categoryIds.value = this.categoryIds;
+        this.getCategoryIdsElement().value = this.categoryIds;
     }
 }

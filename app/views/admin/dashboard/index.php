@@ -15,11 +15,12 @@
     <?php $this->stylesheet("/assets/css/sidebar.css"); ?>
     <?php $this->stylesheet("/assets/css/leftSidebar.css"); ?>
     <?php $this->stylesheet("/assets/css/dashboard.css"); ?>
+    <?php $this->script("/assets/js/sidebar/left/Sidebar.js", true); ?>
+    <?php $this->script("/assets/js/sidebar/left/main.js", true); ?>
     <?php $this->script("/assets/js/dashboard/Progress.js", true); ?>
     <?php $this->script("/assets/js/dashboard/main.js", true); ?>
     <?php $this->script("/assets/js/navbar/Navbar.js", true); ?>
     <?php $this->script("/assets/js/navbar/main.js", true); ?>
-    <?php $this->script("/assets/js/sidebar.js", true); ?>
 <?php $this->include("closeHeadTagAndOpenBodyTag"); ?>
 
 <?php $this->include("dashboardNavbar"); ?>

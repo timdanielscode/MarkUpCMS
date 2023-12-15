@@ -2,24 +2,22 @@ class Modal {
 
     constructor() {
 
-        this.element;
-
         this.setElement();
         this.setEditOnclickEvent();
         this.setCreateOnclickEvent();
-        this.setAddOnclickEvent();
         this.setDeleteOnclickEvent();
-
+        
         if(this.element.dataset.id === "") {
 
             this.createCreateForm(this.element, true)
             this.getElement().classList.remove('display-none');
             this.getHtmlElement().classList.add('dark-layer');
         }
-
-       
     }
 
+    /*
+     * To get necessary elements
+    */
     setElement() {
 
         this.element = document.getElementById('modal');
@@ -35,99 +33,119 @@ class Modal {
         return document.querySelector('html');
     }
 
+    getEditButtonElement() {
+
+        return document.querySelector('.edit');
+    }
+
+    getCreateButtonElement() {
+
+        return document.getElementById('create');
+    }
+
+    getDeleteButtonElement() {
+
+        return document.getElementById('delete');
+    }
+
+    getTableElement() {
+
+        return document.querySelector('table');
+    }
+
+    getDeleteFormElement() {
+
+        return document.querySelector('.deleteForm');
+    }
+
+    /*
+     * After clicking on the 'create button' to run the showModal method
+    */
     setCreateOnclickEvent() {
 
         var modal = this;
-
-        if(document.getElementById('create') !== null) {
-
-            document.getElementById('create').addEventListener("click", function() { 
+        
+        this.getCreateButtonElement().addEventListener("click", function() { 
                 
-                if(modal.getElement().classList.contains('display-none') === true) {
+            if(modal.getElement().classList.contains('display-none') === true) {
 
-                    modal.showModal('Create', this); 
-                }
-            }); 
-        }
+                modal.showModal('Create', this); 
+            }
+        }); 
     }
 
+    /*
+     * After clicking on the 'edit button' to run the showModal method
+    */
     setEditOnclickEvent() {
 
         var modal = this;
-        var elements = document.querySelectorAll('.edit');
 
-        for(var element of elements) {
+        this.getEditButtonElement().addEventListener("click", function() { 
 
-            element.addEventListener("click", function() { 
-
-                if(modal.getElement().classList.contains('display-none') === true) {
+            if(modal.getElement().classList.contains('display-none') === true) {
                 
-                    modal.showModal('Edit', this); 
-                }
-            }); 
-        }
+                modal.showModal('Edit', this); 
+            }
+        }); 
     }
 
-    setAddOnclickEvent() {
-
-        var modal = this;
-        var elements = document.querySelectorAll('.add');
-
-        for(var element of elements) {
-
-            element.addEventListener("click", function() { 
-                
-                modal.getElement().classList.remove('display-none');
-                modal.getHtmlElement().classList.add('dark-layer');
-            }); 
-        }
-    }
-
+    /*
+     * After clicking on the 'delete button' to run the changeListedCategories method
+    */
     setDeleteOnclickEvent() {
 
-        var modal = this;
-
-        var element = document.getElementById('delete');
-
-        element.addEventListener("click", function() { 
+        this.getDeleteButtonElement().addEventListener("click", function() { 
                 
-            modal.changeListedCategories(element);
+            modal.changeListedCategories(modal.getDeleteButtonElement());
         }); 
-
     }
 
+    /*
+     * After clicking on the 'close button' to run the closeModal method
+    */
     setCloseOnclickEvent() {
 
         var modal = this;
 
         document.getElementById('close').addEventListener("click", function() { 
                 
-            modal.closeModal(modal); 
+            modal.closeModal(); 
         }); 
     }
 
-    closeModal(modal) {
+    /*
+     * To close the modal
+    */
+    closeModal() {
 
-        modal.getElement().classList.add('display-none');
+        this.getElement().classList.add('display-none');
         this.getHtmlElement().classList.remove('dark-layer');
 
-        if(modal.getElement().children[0].children[0].children[0].nodeName === 'FORM') {
+        if(this.getElement().children[0].children[0].children[0].nodeName === 'FORM') {
 
-            modal.getElement().children[0].children[0].children[0].remove();
+            this.getElement().children[0].children[0].children[0].remove();
         }
     }
 
+    /*
+     * To change the categories list to create a selection to submit and delete categoriees
+     *
+     * @param object element anchor tag (delete button)
+    */
     changeListedCategories(element) {
 
-        var categoriesTable = document.querySelector('table');
-        categoriesTable.remove();
-        
-        var deleteForm = document.querySelector('.deleteForm');
-        deleteForm.classList.remove('display-none')
+        this.getTableElement().remove();
+        this.getDeleteFormElement().classList.remove('display-none')
 
         element.remove();
     }
 
+    /*
+     * To create the edit form to submit and update the category title and description
+     *
+     * @param object element anchor tag (edit button)
+    */
     createEditForm(element) {
 
         var form = document.createElement('form');
@@ -163,7 +181,7 @@ class Modal {
         containerInput.setAttribute('name', 'submit');
         containerInput.setAttribute('value', 'Update');
         containerInput.classList.add('button');
-        containerInput.classList.add('darkBlueButton');
+        containerInput.classList.add('greenButton');
         containerInput.classList.add('margin-t-20');
         containerInput.classList.add('margin-r-20');
 
@@ -195,6 +213,12 @@ class Modal {
         this.setCloseOnclickEvent();
     }
 
+    /*
+     * To create the create form to submit to store a new category
+     *
+     * @param object element anchor tag (create button)
+     * @param bool notExists   
+    */
     createCreateForm(element, notExists = null) {
 
         var form = document.createElement('form');
@@ -227,7 +251,7 @@ class Modal {
         containerInput.setAttribute('name', 'submit');
         containerInput.setAttribute('value', 'Store');
         containerInput.classList.add('button');
-        containerInput.classList.add('darkBlueButton');
+        containerInput.classList.add('greenButton');
         containerInput.classList.add('margin-t-20');
         containerInput.classList.add('margin-r-20');
 
@@ -260,6 +284,12 @@ class Modal {
         }
     }
 
+    /*
+     * To show the modal to submit and store or update categories
+     *
+     * @param string type Create | Edit
+     * @param object anchor tag (create | edit button)
+    */
     showModal(type, dataElement) {
 
         this.getElement().classList.remove('display-none');
