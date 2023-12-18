@@ -1,32 +1,12 @@
 <?php
-/**
- * Rules
- * 
- * @author Tim Daniëls
- */
+
 namespace validation;
 
 use core\validation\Validate;
 
-
 class Rules {
 
     public $errors;
-
-    /**
-     * You can add the validation rule methods right here
-     * 
-     * https://indy-php.com/docs/validation
-     * 
-     * https://indy-php.com/docs/
-     * Chain input method on instance variable and add html input name as argument
-     * Chain as method to input and add alias as argument
-     * Chain rules method to as method and add array of validation rules as argument
-     * 
-     * Set property $this->errors to instance errors property ($this->errors = $validation->errors)
-     * Where $validation = instance Validate
-     * return $this
-     */
 
     public function installation_database($host, $database, $username, $password, $retypePassword, $addedToken, $csrf) {    
                 
@@ -281,16 +261,16 @@ class Rules {
     }
 
     /**
-     * Checking if empty errors
+     * To check for failed validation errors
      * 
      * @return mixed bool | void
      */
     public function validated($request = null) {
 
-      if(empty($this->errors) ) {
+        if(empty($this->errors) ) {
 
-          return true;
-      }
-  }
+            return true;
+        }
+    }
 }
 

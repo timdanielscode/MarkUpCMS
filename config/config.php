@@ -1,10 +1,11 @@
 <?php
-/**
- * config file
- * 
- * @author Tim Daniëls
- */
 
+/**
+* To run the application only on https for a better security
+* Among othor things prevent xss for a better security
+* To be able to set/get/unset sessions 
+* To prevent session hijacking for a better security
+*/
 header("strict-transport-security: max-age=7776000");
 header("X-XSS-Protection: 1; mode=block");
 header("Referrer-Policy: no-referrer;");

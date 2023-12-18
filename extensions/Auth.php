@@ -1,9 +1,5 @@
 <?php
-/**
- * Auth 
- * 
- * @author Tim Daniëls
- */
+
 namespace extensions;
 
 use core\http\Request;
@@ -15,11 +11,11 @@ class Auth {
     private static $_userCredentialInputName, $_userCredentialInputValue, $_password;
 
     /**
-     * Authenticate & authorize users
+     * To get user credentials
      * 
      * @param array $roleType expects 'role' as key and value type of admin|normal
      * @example authenticate(array('role' => 'normal')) || authenticate(array('role' => 'admin'))
-     * @return bool true|false
+     * @return bool
      */
     public static function authenticate($userRole = null) {
 
@@ -36,10 +32,9 @@ class Auth {
     }
 
     /**
-     * Setting user credentials
+     * To set user credentials
      * 
-     * @param object $request 
-     * @return bool
+     * @param object $request Request
      */
     public static function setUserCredentials($request) {
 
@@ -58,7 +53,7 @@ class Auth {
     }
 
     /**
-     * Verify user password
+     * To verify user password
      * 
      * @param array $sql user database record
      * @param string $password html input password value
@@ -79,7 +74,7 @@ class Auth {
     }
 
     /**
-     * Counting failded login attempts
+     * To count failded login attempts to show failed login attempt messages
      */
     public static function loginAttempt() {
 
@@ -102,7 +97,7 @@ class Auth {
     }
 
     /**
-     * Setting timeout based on failed login attempts
+     * To set a timeout to prevent brute force
      */
     public static function checkTooManyLoginAttempts() {
 

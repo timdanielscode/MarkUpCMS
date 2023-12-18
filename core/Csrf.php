@@ -1,9 +1,5 @@
 <?php
-/**
- * Csrf
- * 
- * @author Tim Daniëls
- */
+
 namespace core;
 
 use core\Session;
@@ -11,7 +7,7 @@ use core\Session;
 class Csrf {
 
     /**
-     * Setting token
+     * To set a csrf token value
      */
     public static function token() {
 
@@ -24,7 +20,7 @@ class Csrf {
     }
 
     /**
-     * Getting token
+     * To get setted csrf token value
      */
     public static function get() {
 

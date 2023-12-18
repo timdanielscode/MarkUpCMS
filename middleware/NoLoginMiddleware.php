@@ -1,16 +1,21 @@
 <?php
-                
+            
 namespace middleware;
-                
+            
 use core\Session; 
 
 class NoLoginMiddleware {
-                
-  public function __construct($run) {    
-    
-      if(Session::exists("logged_in") === false) {
+            
+    /** 
+     * To check user is not logged in to restrict routes
+     * 
+     * @return object $run App, Closure Object
+     */  
+    public function __construct($run) {    
 
-         return $run();
-      }    
+        if(Session::exists("logged_in") === false) {
+
+            return $run();
+        }    
     }          
-  }  
+}  

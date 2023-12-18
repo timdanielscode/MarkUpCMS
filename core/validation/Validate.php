@@ -1,9 +1,4 @@
 <?php
-/**
- * Validate
- * 
- * @author Tim Daniëls
- */
 
 namespace core\validation;
 
@@ -15,10 +10,10 @@ class Validate {
     public $errors;
 
     /**
-     * Setting input values
+     * To set a html input name and value 
      * 
      * @param string $values html input name and value
-     * @return Object $this Validate
+     * @return object $this Validate
      */    
     public function input($values) {
 
@@ -32,8 +27,7 @@ class Validate {
     }
 
     /**
-     * Setting html input name aliases
-     * so aliases can be printed out on view instead of the actual input name
+     * To set html input name aliases to apply these in validation error messages on failed validation
      * 
      * @param string $alias html input value
      * @return mixed object Validate
@@ -48,7 +42,7 @@ class Validate {
     }
 
     /**
-     * Creating the validation rules and setting error messages
+     * To set rules which can be applied to validate html input values
      * 
      * @param string $rules type of rules
      */     
@@ -184,6 +178,8 @@ class Validate {
     }
 
     /**
+     * To set the failded validation error messages to show the failed validation error messages
+     * 
      * @param string $inputName optional html input name
      * @param string $message optional rule message
      * @return array validation errors

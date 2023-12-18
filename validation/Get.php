@@ -1,18 +1,14 @@
 <?php
-/**
- * Get 
- * 
- * @author Tim Daniëls
- */
+
 namespace validation;
 
 class Get {
  
     /**
-     * Validating get values on special characters
+     * To validate type of request get values on special characters
      * 
-     * @param string $value get value
-     * @return string get value
+     * @param string $value _GET value
+     * @return string $value _GET value
      */ 
     public static function validate($value) {
 

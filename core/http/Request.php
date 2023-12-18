@@ -1,9 +1,5 @@
 <?php
-/**
- * Request
- * 
- * @author Tim Daniëls
- */
+
 namespace core\http;
 
 use validation\request\Rules;
@@ -13,7 +9,7 @@ class Request {
     private $_postData = [], $_getData = [], $_getValues = [];
 
     /** 
-     * Getting REQUEST_METHOD
+     * To get the type of request method
      * 
      * @return global REQUEST_METHOD
      */    
@@ -23,7 +19,7 @@ class Request {
     }
 
     /** 
-     * Getting REQUEST_URI
+     * To get the request uri
      * 
      * @return global REQUEST_URI
      */    
@@ -33,7 +29,7 @@ class Request {
     }
  
     /** 
-     * Getting POST & GET superglobals
+     * To get post and get superglobal values
      * 
      * @return array POST/GET variables
      */       
@@ -46,7 +42,7 @@ class Request {
     }
 
     /**
-     * Setting type of post superglobal values
+     * To check type of superglobal post names are set
      * 
      * @param array $post superglobal
      */
@@ -65,7 +61,7 @@ class Request {
     }
 
     /**
-     * Setting type of get superglobal values
+     * To check type of superglobal get names are set
      * 
      * @param array $get superglobal
      */
@@ -84,7 +80,7 @@ class Request {
     }
 
     /**
-     * Checking type of global
+     * To check type of superglobal
      * 
      * @param mixed $value array|string get value
      * @param string $name name get 
@@ -102,7 +98,7 @@ class Request {
 
 
     /**
-     * Checking type of get
+     * To check superglobal value type for superglobal type of get
      * 
      * @param mixed $value array|string get value
      * @param string $name name get 
@@ -118,7 +114,7 @@ class Request {
     }
 
     /**
-     * Checking type of post
+     * To check superglobal value type for superglobal type of post
      * 
      * @param mixed $value array|string post value
      * @param string $name name post 
@@ -134,7 +130,7 @@ class Request {
     }
 
     /**
-     * Setting type of get superglobal values after checking type of value
+     * To set type of get superglobal values
      * 
      * @param string $value get value
      * @param string $name name get 
@@ -148,7 +144,7 @@ class Request {
     }
 
     /**
-     * Setting type of post superglobal values after checking type of value
+     * To set type of post superglobal values
      * 
      * @param string $value post value
      * @param string $name name post 
@@ -162,7 +158,7 @@ class Request {
     }
 
     /**
-     * Setting type of get superglobal values after checking type of value
+     * To set type of get superglobal values
      * 
      * @param array $values get values
      * @param string $name name get 
@@ -181,7 +177,7 @@ class Request {
     }
 
     /**
-     * Setting type of post superglobal values after checking type of value
+     * To set type of post superglobal values
      * 
      * @param array $values post values
      * @param string $name name post 

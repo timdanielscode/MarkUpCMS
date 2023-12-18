@@ -1,9 +1,5 @@
 <?php 
-/**
- * Create success/failed messages based on setted session names
- * 
- * @author Tim Daniëls
- */
+
 namespace core;
 
 class Alert {
@@ -11,7 +7,7 @@ class Alert {
     private static $_type;
 
     /**
-     * Checking if message type is not null
+     * To set type of alert message (success or failed)
      * 
      * @param string $type success | failed
      */
@@ -24,7 +20,7 @@ class Alert {
     }
 
     /**
-     * Checking message type 
+     * To check type of alert message
      * 
      * @param string $type success | failed
      */    
@@ -43,7 +39,7 @@ class Alert {
     }
 
     /**
-     * Creating success message 
+     * To show a div with the session value inside where setted name of session is set to success 
      */      
     private static function createSuccess() {
 
@@ -55,7 +51,7 @@ class Alert {
     }
 
     /**
-     * Creating failed message 
+     * To show a div with the session value inside where setted name of session is set to failed 
      */       
     private static function createFailed() {
 

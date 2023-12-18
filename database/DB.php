@@ -1,9 +1,5 @@
 <?php
-/**
- * Database
- * 
- * @author Tim Daniëls
- */
+
 namespace database;
 
 class DB {
@@ -13,13 +9,12 @@ class DB {
     private static $_instance = null;
 
     /**
-     * Creating connection
+     * To create a database connection
      * 
      * @param string $host host
      * @param string $user username
      * @param string $password password
      * @param string $db database name
-     * @return void
      */
     public function __construct($host, $user, $password, $db) {
 
@@ -31,7 +26,7 @@ class DB {
     }
 
     /**
-     * Creating instance
+     * To get database credentials from config.ini file (to create a connection)
      * 
      * @return object DB
      */    
@@ -44,13 +39,8 @@ class DB {
         } 
     }
 
-    public static function getError() {
-
-        return self::$error;
-    }
-
     /**
-     * Executes sql statement
+     * To run sql queries
      * 
      * @param string $sql query
      * @param array $data sql 
@@ -71,7 +61,7 @@ class DB {
     }
 
     /**
-     * Fetching sql statement in array
+     * To fetch sql queries
      */     
     private function fetch_query() {
 
@@ -79,7 +69,7 @@ class DB {
     }
 
     /**
-     * Fetching sql statement in array but first item
+     * To fetch sql queries but fetching first row
      */     
     private function fetch_query_first() {
 
@@ -87,7 +77,7 @@ class DB {
     }
 
     /** 
-     * Adding SELECT columns to query
+     * To add SELECT columns to query
      * 
      * @param string $columns name(s)
      * @return object DB
@@ -101,7 +91,7 @@ class DB {
     }
 
     /** 
-     * Adding SELECT * FROM table to query
+     * To add SELECT * FROM table to query
      * 
      * @param string $table name
      * @return object DB
@@ -113,7 +103,7 @@ class DB {
     }
 
     /** 
-     * Adding FROM table to query
+     * To add FROM table to query
      * 
      * @param string $table name
      * @return object DB
@@ -125,7 +115,7 @@ class DB {
     }
 
     /** 
-     * Adding WHERE column operator to query
+     * To add WHERE column operator to query
      * 
      * @param string $column name
      * @param string $operator value
@@ -141,7 +131,7 @@ class DB {
     }
 
     /** 
-     * Adding WHERE column operator to query
+     * To add WHERE column operator to query
      * 
      * @param string $column name
      * @param string $operator value
@@ -157,7 +147,7 @@ class DB {
     }    
 
     /** 
-     * Adding WHERE column NOT IN values to query
+     * To add WHERE column NOT IN values to query
      * 
      * @param string $column name
      * @param array $values column values
@@ -171,7 +161,7 @@ class DB {
     }
 
     /** 
-     * Adding AND column operator to query
+     * To add AND column operator to query
      * 
      * @param string $column name
      * @param string $operator value
@@ -187,7 +177,7 @@ class DB {
     }
 
     /** 
-     * Adding OR column operator to query
+     * To add OR column operator to query
      * 
      * @param string $column name
      * @param string $operator value
@@ -203,7 +193,7 @@ class DB {
     }
 
     /** 
-     * Adding LIMIT num operator to query
+     * To add LIMIT num operator to query
      * 
      * @param mixed int|string $num 
      * @return object DB
@@ -215,7 +205,7 @@ class DB {
     }
 
     /** 
-     * Adding INSERT INTO table (columns) VALUES (placeholder) to query
+     * To add INSERT INTO table (columns) VALUES (placeholder) to query
      * 
      * @param string $table name
      * @param array $data column names, column values
@@ -238,7 +228,7 @@ class DB {
     }
 
     /** 
-     * Adding UPDATE table to query
+     * To add UPDATE table to query
      * 
      * @param string $table name
      * @return object DB
@@ -250,7 +240,7 @@ class DB {
     }
 
     /** 
-     * Adding DELETE FROM table to query
+     * To add DELETE FROM table to query
      * 
      * @param string $table name
      * @return object DB
@@ -262,7 +252,7 @@ class DB {
     }
 
     /** 
-     * Adding SET set values to query
+     * To add SET set values to query
      * 
      * @param array $data column names, column values
      * @return object DB
@@ -282,7 +272,7 @@ class DB {
     }
 
     /** 
-     * Adding ORDER BY column to query
+     * To add ORDER BY column to query
      * 
      * @param string $column name
      * @return object DB
@@ -294,7 +284,7 @@ class DB {
     }
 
     /** 
-     * Adding DESC to query
+     * To add DESC to query
      * 
      * @return object DB
      */     
@@ -311,7 +301,7 @@ class DB {
     }
 
     /** 
-     * Adding ASC to query
+     * To add ASC to query
      * 
      * @return object DB
      */     
@@ -328,7 +318,7 @@ class DB {
     }
 
     /** 
-     * Adding INNER JOIN table to query
+     * To add INNER JOIN table to query
      * 
      * @param string $table name
      * @return object DB
@@ -340,7 +330,7 @@ class DB {
     }
 
     /** 
-     * Adding LEFT JOIN table to query
+     * To add LEFT JOIN table to query
      * 
      * @param string $table name
      * @return object DB
@@ -352,7 +342,7 @@ class DB {
     }
 
     /** 
-     * Adding ON col1 $operator col2 to query
+     * To add ON col1 $operator col2 to query
      * 
      * @param string $col1 column name
      * @param string $operator value
@@ -366,7 +356,7 @@ class DB {
     }
 
     /** 
-     * Adding SELECT id FROM table ORDER BY id DESC LIMIt 1 to query
+     * To add SELECT id FROM table ORDER BY id DESC LIMIt 1 to query
      * 
      * @param string $table name
      * @return object DB
@@ -378,7 +368,7 @@ class DB {
     }
 
     /** 
-     * Fetching/executing raw sql
+     * To fetch or run raw sql
      * 
      * @param string $sql query
      * @return object DB
@@ -390,7 +380,7 @@ class DB {
     }
 
     /** 
-     * Executing query to fetch first row
+     * To run the execute_query method
      * 
      * @return object DB
      */ 
@@ -400,7 +390,7 @@ class DB {
     }
 
     /** 
-     * Executing query to fetch rows
+     * To run the execute_query method
      * 
      * @param string $operand value
      * @return object DB
@@ -411,7 +401,7 @@ class DB {
     }
 
     /** 
-     * Getting the actual sql code
+     * To show the sql query
      * 
      * @return object DB
      */      
@@ -421,7 +411,7 @@ class DB {
     }
 
     /** 
-     * Executing query
+     * To run the execute_query method
      * 
      * @return object DB
      */    

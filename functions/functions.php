@@ -1,17 +1,11 @@
 <?php
-/**
- * Functions
- * 
- * @author Tim Daniëls
- */
 
 /** 
- * @param string $path header
- * @return void
+ * To redirect to another page
+ * 
+ * @param string $path location path
  */     
 function redirect($path) {
     
-    if($path) {
-        header('location: '.$path);
-    } 
+    header('location: '.$path);
 }

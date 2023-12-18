@@ -9,11 +9,11 @@ class Pagination {
     private static $_pagenationAllArrayItems, $_maxNumberOfArrayItems, $_paginatedArrayItems, $_countPages, $_collectionNumberOfPages;
 
     /** 
-     * Determine number of array items per pagenated page
+     * To get truncated items to not have to scroll down a lot
      * 
+     * @return array $request _GET page
      * @param array $paginationArray array to pagainate 
      * @param array $maxNumberArrayItems number of pages to paginate
-     * @return array $_page paginated data
      */ 
     public static function get($request, $paginationArray, $maxNumberArrayItems) {
 
@@ -36,9 +36,9 @@ class Pagination {
     }
 
     /** 
-     * Determine array items based on request uri get method value of page
+     * To get truncated items but based on get request page value
      * 
-     * @return void
+     * @param array $request _GET page
      */ 
     public static function getNumberedArrayItems($request) {
 
@@ -66,6 +66,8 @@ class Pagination {
     }
 
     /** 
+     * To get the amount of truncated items 
+     * 
      * @return array $paginated number of paginated numbers
      */     
     public static function getPageNumbers() {
