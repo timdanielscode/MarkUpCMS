@@ -23,7 +23,7 @@ class Post extends Model {
 
     private static $_table = 'pages';
     private static $_columns = [];
-    private static $_cdnIds = [], $_cssIds = [], $_jsIds = [], $_widgetIds = [];
+    private static $_metaIds = [], $_cssIds = [], $_jsIds = [], $_widgetIds = [];
 
     public static function ifRowExists($id) {
 
@@ -159,28 +159,28 @@ class Post extends Model {
 
     public static function getCdnIdTitle($id) {
 
-        return DB::try()->select('id, title')->from('cdn')->join('cdn_page')->on("cdn_page.cdn_id", '=', 'cdn.id')->where('cdn_page.page_id', '=', $id)->and('removed', '!=', 1)->fetch();
+        return DB::try()->select('id, title')->from('metas')->join('meta_page')->on("meta_page.meta_id", '=', 'metas.id')->where('meta_page.page_id', '=', $id)->and('removed', '!=', 1)->fetch();
     }
 
-    public static function getNotCdnIdTitle($cdnIdTitle) {
+    public static function getNotCdnIdTitle($metaIdTitle) {
 
-        if(!empty($cdnIdTitle) && $cdnIdTitle !== null) {
+        if(!empty($metaIdTitle) && $metaIdTitle !== null) {
 
-            foreach($cdnIdTitle as $cdn) {
+            foreach($metaIdTitle as $meta) {
 
-                array_push(self::$_cdnIds, $cdn['id']);
+                array_push(self::$_metaIds, $meta['id']);
             }
 
-            $cdnIdsString = implode(',', self::$_cdnIds);
-            return DB::try()->select('id, title')->from('cdn')->whereNotIn('id', $cdnIdsString)->fetch();
+            $metaIdsString = implode(',', self::$_metaIds);
+            return DB::try()->select('id, title')->from('metas')->whereNotIn('id', $metaIdsString)->fetch();
         } else {
-            return DB::try()->select('id, title')->from('cdn')->where('removed', '!=', 1)->fetch();
+            return DB::try()->select('id, title')->from('metas')->where('removed', '!=', 1)->fetch();
         }
     }
 
-    public static function deleteCdn($postId, $cdnId) {
+    public static function deleteCdn($postId, $metaId) {
 
-        return DB::try()->delete('cdn_page')->where('page_id', '=', $postId)->and('cdn_id', '=', $cdnId)->run();
+        return DB::try()->delete('meta_page')->where('page_id', '=', $postId)->and('meta_id', '=', $metaId)->run();
     }
 
     public static function getApplicableWidgetIdTitle($id) {

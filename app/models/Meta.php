@@ -6,7 +6,7 @@ use database\DB;
 
 class Meta extends Model {
 
-    private static $_table = "cdn";
+    private static $_table = "metas";
     private static $_postIds = [];
 
     public static function ifRowExists($id) {
@@ -21,7 +21,7 @@ class Meta extends Model {
 
     public static function getContent($postId) {
 
-        return DB::try()->select('content')->from('cdn')->join('cdn_page')->on('cdn.id', '=', 'cdn_page.cdn_id')->where('cdn_page.page_id', '=', $postId)->fetch();
+        return DB::try()->select('content')->from(self::$_table)->join('meta_page')->on('metas.id', '=', 'meta_page.meta_id')->where('meta_page.page_id', '=', $postId)->fetch();
     }
 
     public static function orderedMetaOnSearch($searchValue = null) {
@@ -49,7 +49,7 @@ class Meta extends Model {
 
     public static function getPostImportedIdTitle($id) {
 
-        return DB::try()->select('id, title')->from('pages')->join('cdn_page')->on('cdn_page.page_id', '=', 'pages.id')->where('cdn_page.cdn_id', '=', $id)->and('pages.removed', '!=', 1)->fetch();
+        return DB::try()->select('id, title')->from('pages')->join('meta_page')->on('meta_page.page_id', '=', 'pages.id')->where('meta_page.meta_id', '=', $id)->and('pages.removed', '!=', 1)->fetch();
     }
 
     public static function getNotPostImportedIdTitle($postImportedIdTitle) {
@@ -71,6 +71,6 @@ class Meta extends Model {
 
     public static function deleteIdPostId($id, $postId) {
         
-        return DB::try()->delete('cdn_page')->where('cdn_page.cdn_id', '=', $id)->and('cdn_page.page_id', '=', $postId)->run();
+        return DB::try()->delete('meta_page')->where('meta_page.meta_id', '=', $id)->and('meta_page.page_id', '=', $postId)->run();
     }
 }

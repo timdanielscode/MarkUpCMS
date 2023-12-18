@@ -62,10 +62,10 @@ class Table {
 
         )')->run();
 
-        DB::try()->raw('CREATE TABLE IF NOT EXISTS cdn_page (
+        DB::try()->raw('CREATE TABLE IF NOT EXISTS meta_page (
                                     
             page_id INT(11) NOT NULL,
-            cdn_id INT(11) NOT NULL
+            meta_id INT(11) NOT NULL
 
         )')->run();
 
@@ -109,7 +109,7 @@ class Table {
 
         )')->run();
 
-        DB::try()->raw('CREATE TABLE IF NOT EXISTS cdn (
+        DB::try()->raw('CREATE TABLE IF NOT EXISTS metas (
                                     
             id INT(11) NOT NULL AUTO_INCREMENT PRIMARY KEY,
             title VARCHAR(50) NOT NULL,

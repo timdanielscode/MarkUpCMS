@@ -38,18 +38,18 @@ class MetaController extends Controller {
      */
     public function index($request) {
 
-        $cdn = Meta::allMetaButOrderedByDate();
+        $meta = Meta::allMetaButOrderedByDate();
 
         $this->_data['search'] = '';
 
         if(!empty($request['search'] ) ) {
 
             $this->_data['search'] = Get::validate($request['search']);
-            $cdn = Meta::orderedMetaOnSearch($this->_data['search']);
+            $meta = Meta::orderedMetaOnSearch($this->_data['search']);
         }
 
-        $this->_data['cdns'] = Pagination::get($request, $cdn, 10);
-        $this->_data['count'] = count($cdn);
+        $this->_data['cdns'] = Pagination::get($request, $meta, 10);
+        $this->_data['count'] = count($meta);
         $this->_data['numberOfPages'] = Pagination::getPageNumbers();
 
         return $this->view('admin/meta/index')->data($this->_data);
@@ -92,7 +92,7 @@ class MetaController extends Controller {
                 'updated_at' => date('Y-m-d H:i:s', $_SERVER['REQUEST_TIME'])
             ]);
 
-            Session::set('success', 'You have successfully created a new cdn!');
+            Session::set('success', 'You have successfully created a new meta!');
             redirect('/admin/meta');
                
         } else {
@@ -163,7 +163,7 @@ class MetaController extends Controller {
                 'updated_at' => date('Y-m-d H:i:s', $_SERVER['REQUEST_TIME'])
             ]);
 
-            Session::set('success', 'You have successfully updated the cdn!');
+            Session::set('success', 'You have successfully updated the meta!');
             redirect("/admin/meta/$id/edit");
 
         } else {
@@ -192,11 +192,11 @@ class MetaController extends Controller {
             PageMeta::insert([
 
                 'page_id' => $pageId,
-                'cdn_id' => $request['id']
+                'meta_id' => $request['id']
             ]);
         }
 
-        Session::set('success', 'You have successfully imported the cdn on the page(s)!');
+        Session::set('success', 'You have successfully imported the meta on the page(s)!');
         redirect("/admin/meta/$id/edit");
     }
 
@@ -210,18 +210,18 @@ class MetaController extends Controller {
         $id = $request['id'];
         $this->ifExists($request['id']);
 
-        PageMeta::delete('cdn_id', $id);
+        PageMeta::delete('meta_id', $id);
 
         foreach(Post::getAll(['id']) as $pageId ) {
 
             PageMeta::insert([
 
                 'page_id' => $pageId['id'],
-                'cdn_id'    => $id
+                'meta_id'    => $id
             ]);
         }
         
-        Session::set('success', 'You have successfully imported the cdn on all pages!');
+        Session::set('success', 'You have successfully imported the meta on all pages!');
         redirect("/admin/meta/$id/edit");
     }
 
@@ -240,7 +240,7 @@ class MetaController extends Controller {
             Meta::deleteIdPostId($id, $pageId);
         }
 
-        Session::set('success', 'You have successfully removed the cdn on the page(s)!');
+        Session::set('success', 'You have successfully removed the meta on the page(s)!');
         redirect("/admin/meta/$id/edit");
     }
 
@@ -254,9 +254,9 @@ class MetaController extends Controller {
         $id = $request['id'];
         $this->ifExists($request['id']);
   
-        PageMeta::delete('cdn_id', $request['id']);
+        PageMeta::delete('meta_id', $request['id']);
 
-        Session::set('success', 'You have successfully removed the cdn on all pages!');
+        Session::set('success', 'You have successfully removed the meta on all pages!');
         redirect("/admin/meta/$id/edit");
     }
 
@@ -279,7 +279,7 @@ class MetaController extends Controller {
             ]);
         }
         
-        Session::set('success', 'You have successfully recovered the cdn(s)!');
+        Session::set('success', 'You have successfully recovered the meta(s)!');
         redirect("/admin/meta");
     }
 
@@ -305,12 +305,12 @@ class MetaController extends Controller {
                         'removed'  => 1
                     ]);
 
-                    Session::set('success', 'You have successfully moved the cdn(s) to the trashcan!');
+                    Session::set('success', 'You have successfully moved the meta(s) to the trashcan!');
 
                 } else if(Meta::getColumns(['removed'], $id)['removed'] === 1) {
 
                     Meta::delete("id", $id);
-                    Session::set('success', 'You have successfully removed the cdn(s)!');
+                    Session::set('success', 'You have successfully removed the meta(s)!');
                 }
             }
         }

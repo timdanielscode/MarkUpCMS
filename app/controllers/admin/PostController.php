@@ -281,11 +281,11 @@ class PostController extends Controller {
             PageMeta::insert([
 
                 'page_id' => $id,
-                'cdn_id' => $cdnId
+                'meta_id' => $cdnId
             ]);
         }
 
-        Session::set('success', 'You have successfully imported the cdn(s) on this page!'); 
+        Session::set('success', 'You have successfully imported the meta(s) on this page!'); 
         redirect("/admin/posts/$id/edit");
     }
 
@@ -305,7 +305,7 @@ class PostController extends Controller {
             Post::deleteCdn($id, $cdnId);
         }
 
-        Session::set('success', 'You have successfully removed the cdn(s) on this page!'); 
+        Session::set('success', 'You have successfully removed the meta(s) on this page!'); 
         redirect("/admin/posts/$id/edit");
     }
 
