@@ -27,7 +27,7 @@ class Validate {
     }
 
     /**
-     * To set html input name aliases to apply these in validation error messages on failed validation
+     * To set html input name aliases
      * 
      * @param string $alias html input value
      * @return mixed object Validate
@@ -42,7 +42,7 @@ class Validate {
     }
 
     /**
-     * To set rules which can be applied to validate html input values
+     * To set rules
      * 
      * @param string $rules type of rules
      */     
@@ -55,21 +55,22 @@ class Validate {
                 switch($rule) {
     
                     case 'required':
+
                         if(empty($this->_value) && $value === true) {
 
                             $this->message($this->_name, "$this->_alias is required.");
                         } 
                     break;
                     case 'min':
-                        $count_str = strlen($this->_value);
-                        if($count_str < $value) {
+
+                        if(strlen($this->_value) < $value) {
 
                             $this->message($this->_name, "$this->_alias must be at least $value characters.");
                         }
                     break;
                     case 'max':
-                        $count_str = strlen($this->_value);
-                        if($count_str > $value) {
+
+                        if(strlen($this->_value) > $value) {
 
                             $this->message($this->_name, "$this->_alias can not be more than $value characters.");
                         }
@@ -91,78 +92,35 @@ class Validate {
                         }
                     break;
                     case 'unique':
+
                         if(!empty($value)) {
                                 
                             $this->message($this->_name, "$this->_alias already exists.");
                         }
                     break;
                     case 'special':
+
                         $regex = '/[#$%^&*()+=\\[\]\';,\/{}|":<>?~\\\\]/';
+
                         if(preg_match($regex, $this->_value)) {
 
                             $this->message($this->_name, "$this->_alias contains special characters.");  
-                            $_POST[$this->_name] = "";
                         }
                     break;
                     case 'special-ini':
+
                         $regex = '/[?{}|&~![()^"]/';
+
                         if(preg_match($regex, $this->_value)) {
+
                             $this->message($this->_name, "$this->_alias contains one of the following special characters: ?{}|&~![()^" . '"');  
-                            $_POST[$this->_name] = "";
                         }
                     break;
                     case 'first':
+
                         if($this->_value[0] !== $value) {
 
                             $this->message($this->_name, "$this->_alias does not start with a $value.");
-                        }
-                    break;
-                    case 'selected':
-
-                        if(empty($_FILES[$this->_name]['name']) && $value === true) {
-
-                            $this->message($this->_name, "No file is selected.");
-                        }
-                    break;
-                    case 'mimes':
-
-                        foreach($_FILES[$this->_name]['type'] as $type) {
-
-                            if(gettype($value) !== 'array') {
-                                
-                                $value = explode(',', $value);
-                            }
-
-                            if(!in_array($type, $value) ) {
-
-                                $value = implode(', ', $value);
-                                $this->message($this->_name, "Type of file must be one of the following: $value.");
-                            }
-                        }
-                    break;
-                    case 'error':
-                        foreach($_FILES[$this->_name]['error'] as $error) {
-
-                            if($error === 1 && $value === true) {
-
-                                $maxUploadSize = ini_get('upload_max_filesize');
-                                $this->message($this->_name, "File size cannot be bigger than " . $maxUploadSize . '.');
-                            }
-                        }
-                    break;
-                    case 'size':
-
-                        foreach($_FILES[$this->_name]['size'] as $size) {
-
-                            if($size > $value) {
-
-                                $mbs = $value / 1000000;
-                                $mbs = number_format((float)$mbs, 1, '.', '');
-                                $filesizeInMbs = $size / 1000000;
-                                $filesizeInMbs = number_format((float)$filesizeInMbs, 1, '.', '');
-    
-                                $this->message($this->_name, "$filesizeInMbs mb is to big to upload, filesize can't be bigger than $mbs mb.");
-                            }
                         }
                     break;
                     case 'min-one-admin':
