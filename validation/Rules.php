@@ -32,10 +32,10 @@ class Rules {
                 
         $validation = new Validate();
                     
-        $validation->input(['host' => $host])->as("Host")->rules(["required" => true, "min" => "1", "max" => "99"]);         
-        $validation->input(['database' => $database])->as("Database name")->rules(["required" => true, "min" => "1", "max" => "99"]);         
-        $validation->input(['username' => $username])->as("Database username")->rules(["required" => true, "min" => "1", "max" => "99", "special-ini" => true]); 
-        $validation->input(['password' => $password])->as("Password")->rules(["required" => true, "min" => "10", "max" => "200", "special-ini" => true]);          
+        $validation->input(['host' => $host])->as("Host")->rules(["required" => true, "min" => 5, "max" => 99]);         
+        $validation->input(['database' => $database])->as("Database name")->rules(["required" => true, "min" => 5, "max" => 99]);         
+        $validation->input(['username' => $username])->as("Database username")->rules(["required" => true, "min" => 5, "max" => 99, "special-ini" => true]); 
+        $validation->input(['password' => $password])->as("Password")->rules(["required" => true, "min" => 16, "max" => 200, "special-ini" => true]);          
         $validation->input(['retypePassword' => $retypePassword])->as("Password")->rules(["required" => true, "match" => $password]);
         $validation->input(['token' => $addedToken])->as('Token')->rules(['csrf' => $csrf]);
                     
@@ -47,9 +47,9 @@ class Rules {
                 
         $validation = new Validate();
                     
-        $validation->input(['username' => $username])->as("Username")->rules(["required" => true, "min" => "6", "max" => "30", "special" => true]);         
-        $validation->input(['email' => $email])->as("Email")->rules(["required" => true, "min" => "6", "max" => "30", "special" => true]);         
-        $validation->input(['password' => $password])->as("Password")->rules(["required" => true, "min" => "16", "max" => "200"]);          
+        $validation->input(['username' => $username])->as("Username")->rules(["required" => true, "min" => 5, "max" => 30, "special" => true]);         
+        $validation->input(['email' => $email])->as("Email")->rules(["required" => true, "min" => 5, "max" => 30, "special" => true]);         
+        $validation->input(['password' => $password])->as("Password")->rules(["required" => true, "min" => 16, "max" => 200]);          
         $validation->input(['retypePassword' => $retypePassword])->as("Password")->rules(["required" => true, "match" => $password]);
         $validation->input(['token' => $addedToken])->as('Token')->rules(['csrf' => $csrf]);
                     
@@ -61,8 +61,8 @@ class Rules {
                     
         $validation = new Validate();
                   
-        $validation->input(['username' => $username])->as("Username")->rules(["required" => true, "min" => "6", "max" => "30", "special" => true]);       
-        $validation->input(['password' => $password])->as("Password")->rules(["required" => true, "min" => "2", "max" => "200"]);
+        $validation->input(['username' => $username])->as("Username")->rules(["required" => true, "min" => 5, "max" => 30, "special" => true]);       
+        $validation->input(['password' => $password])->as("Password")->rules(["required" => true, "min" => 16, "max" => 200]);
         $validation->input(['token' => $addedToken])->as('Token')->rules(['csrf' => $csrf]);
                    
         $this->errors = $validation->errors;
@@ -73,7 +73,7 @@ class Rules {
 
         $validation = new Validate();
   
-        $validation->input(['f_username' => $username])->as('Username')->rules(['required' => true, 'max' => 49, 'special' => true, 'unique' => $uniqueUsername]);
+        $validation->input(['f_username' => $username])->as('Username')->rules(['required' => true, 'min' => 5, 'max' => 49, 'special' => true, 'unique' => $uniqueUsername]);
         $validation->input(['email' => $email])->as('Email')->rules(['required' => true, 'min' => 5, 'max' => 49, 'special' => true, 'unique' => $uniqueEmail]);
   
         $this->errors = $validation->errors;
@@ -94,8 +94,8 @@ class Rules {
 
         $validation = new Validate();
 
-        $validation->input(['password' => $password])->as('Password')->rules(['required' => true, 'min' => 5]);
-        $validation->input(['newPassword' => $newPassword])->as('New passoword')->rules(['required' => true, 'min' => 5]);
+        $validation->input(['password' => $password])->as('Password')->rules(['required' => true, 'min' => 16]);
+        $validation->input(['newPassword' => $newPassword])->as('New passoword')->rules(['required' => true, 'min' => 16]);
         $validation->input(['retypePassword' => $retypePassword])->as('Retype password and new password')->rules(['match' => $newPassword]);
 
         $this->errors = $validation->errors;
@@ -107,9 +107,9 @@ class Rules {
         
         $validation = new Validate();
         
-        $validation->input(['f_username' => $username])->as('Username')->rules(['required' => true, 'max' => 49, 'special' => true, 'unique' => $uniqueUsername]);
+        $validation->input(['f_username' => $username])->as('Username')->rules(['required' => true, 'min' => 5, 'max' => 49, 'special' => true, 'unique' => $uniqueUsername]);
         $validation->input(['email' => $email])->as('Email')->rules(['required' => true, 'min' => 5, 'max' => 49, 'special' => true, 'unique' => $uniqueEmail]);
-        $validation->input(['password' => $password])->as('Password')->rules(['required' => true, 'min' => 16, 'max' => 249]);
+        $validation->input(['password' => $password])->as('Password')->rules(['required' => true, 'min' => 16, 'max' => 200]);
         $validation->input(['password_confirm' => $passwordConfirm])->as('Password')->rules(['required' => true, 'match' => $password]);
         $validation->input(['role' => $role])->as('User role')->rules(['required' => true]);
         
