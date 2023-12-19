@@ -3,6 +3,14 @@ class Sidebar {
     constructor() {
 
         this.openDropdownElements = [];
+
+        for(var element of this.getDropdownItemElements()) {
+
+            if(element.nextElementSibling !== null && element.nextElementSibling.classList.contains('display-none') === false) {
+
+                element.classList.add('active')
+            }
+        }
     }
 
     /*
@@ -55,6 +63,11 @@ class Sidebar {
     openDropdownMenu(element) {
 
         element.nextElementSibling.classList.toggle('display-none')
+
+        if(element.classList.contains('nestedDropdownItem') === false) {
+
+            element.classList.toggle('active')
+        }
     }
 
     /*
@@ -69,6 +82,7 @@ class Sidebar {
             if(element !== openDropdownElement && element.classList.contains('nestedDropdownItem') === false) {
 
                 openDropdownElement.nextElementSibling.classList.add('display-none')
+                openDropdownElement.classList.remove('active')
             }
         }
     }
