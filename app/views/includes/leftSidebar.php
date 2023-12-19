@@ -14,13 +14,15 @@
 <?php $idOfLastUpdatedCss = database\DB::try()->select('id')->from('css')->where('removed', '!=', '1')->order('updated_at')->desc()->first(); ?>
 <?php $idOfLastCreatedJs = database\DB::try()->select('id')->from('js')->where('removed', '!=', '1')->order('created_at')->desc()->first(); ?>
 <?php $idOfLastUpdatedJs = database\DB::try()->select('id')->from('js')->where('removed', '!=', '1')->order('updated_at')->desc()->first(); ?>
+<?php $idOfLastCreatedMeta = database\DB::try()->select('id')->from('metas')->where('removed', '!=', '1')->order('created_at')->desc()->first(); ?>
+<?php $idOfLastUpdatedMeta = database\DB::try()->select('id')->from('metas')->where('removed', '!=', '1')->order('updated_at')->desc()->first(); ?>
 
 <div id="sidebar" class="width-25-L">
     <div class="sidebarContainer">
         <nav id="navigationMenu">
             <ul id="dropdownItems">
-                <li class="dropdownItem"><img src="/assets/img/file.png"/>Pages</li>
-                <ul class="dropdown display-none">
+                <li class="dropdownItem"><img src="/assets/img/page.svg"/>Pages</li>
+                <ul class="dropdown">
                     <?php if(core\Session::get('user_role') === 'admin') { ?>
                     <a href="/admin/posts/create"><li>Add new <img class="add" src="/assets/img/add.png"/></li></a>
                     <?php } ?>
@@ -45,7 +47,7 @@
                         </ul>
                     <?php } ?>
                 </ul>
-                <li class="dropdownItem"><img src="/assets/img/footer.png"/>Menus</li>
+                <li class="dropdownItem"><img src="/assets/img/menu.svg"/>Menus</li>
                 <ul class="dropdown display-none">
                     <?php if(core\Session::get('user_role') === 'admin') { ?>
                         <a href="/admin/menus/create"><li>Add new <img class="add" src="/assets/img/add.png"/></li></a>
@@ -70,7 +72,7 @@
                         </ul>
                     <?php } ?>
                 </ul>
-                <li class="dropdownItem"><img src="/assets/img/menu.png"/>Widgets</li>
+                <li class="dropdownItem"><img src="/assets/img/widget.svg"/>Widgets</li>
                 <ul class="dropdown display-none">
                     <?php if(core\Session::get('user_role') === 'admin') { ?>
                     <a href="/admin/widgets/create"><li>Add new <img class="add" src="/assets/img/add.png"/></li></a>
@@ -95,7 +97,7 @@
                         </ul>
                     <?php } ?>
                 </ul>
-                <li class="dropdownItem"><img src="/assets/img/css.png"/>Css</li>
+                <li class="dropdownItem"><img src="/assets/img/css.svg"/>Css</li>
                 <ul class="dropdown display-none">
                     <?php if(core\Session::get('user_role') === 'admin') { ?>
                     <a href="/admin/css/create"><li>Add new <img class="add" src="/assets/img/add.png"/></li></a>
@@ -104,23 +106,23 @@
                     <?php if(!empty($idOfLastCreatedCss) && $idOfLastCreatedCss !== null) { ?>
                         <li class="dropdownItem nestedDropdownItem"><img src="/assets/img/right-arrow.png"/>Last created</li>
                         <ul class="dropdown display-none">
-                            <a href="/admin/css/<?php echo $idOfLastCreatedCss['id']; ?>/read"><li class="nestedItem">Read file</li></a>
+                            <a href="/admin/css/<?php echo $idOfLastCreatedCss['id']; ?>/read"><li class="nestedItem">Read css file</li></a>
                             <?php if(core\Session::get('user_role') === 'admin') { ?>
-                            <a href="/admin/css/<?php echo $idOfLastCreatedCss['id']; ?>/edit"><li class="nestedItem">Edit file</li></a>
+                            <a href="/admin/css/<?php echo $idOfLastCreatedCss['id']; ?>/edit"><li class="nestedItem">Edit css file</li></a>
                             <?php } ?>
                         </ul>
                     <?php } ?>
                     <?php if(!empty($idOfLastUpdatedCss) && $idOfLastUpdatedCss !== null) { ?>
                         <li class="dropdownItem nestedDropdownItem"><img src="/assets/img/right-arrow.png"/>Last updated</li>
                         <ul class="dropdown display-none">
-                            <a href="/admin/css/<?php echo $idOfLastUpdatedCss['id']; ?>/read"><li class="nestedItem">Read file</li></a>
+                            <a href="/admin/css/<?php echo $idOfLastUpdatedCss['id']; ?>/read"><li class="nestedItem">Read css file</li></a>
                             <?php if(core\Session::get('user_role') === 'admin') { ?>
-                            <a href="/admin/css/<?php echo $idOfLastUpdatedCss['id']; ?>/edit"><li class="nestedItem">Edit file</li></a>
+                            <a href="/admin/css/<?php echo $idOfLastUpdatedCss['id']; ?>/edit"><li class="nestedItem">Edit css file</li></a>
                             <?php } ?>
                         </ul>
                     <?php } ?>
                 </ul>
-                <li class="dropdownItem"><img src="/assets/img/technology.png"/>Js</li>
+                <li class="dropdownItem"><img src="/assets/img/js.svg"/>Js</li>
                 <ul class="dropdown display-none">
                     <?php if(core\Session::get('user_role') === 'admin') { ?>
                     <a href="/admin/js/create"><li>Add new <img class="add" src="/assets/img/add.png"/></li></a>
@@ -129,27 +131,49 @@
                     <?php if(!empty($idOfLastCreatedJs) && $idOfLastCreatedJs !== null) { ?>
                         <li class="dropdownItem nestedDropdownItem"><img src="/assets/img/right-arrow.png"/>Last created</li>
                         <ul class="dropdown display-none">
-                            <a href="/admin/js/<?php echo $idOfLastCreatedJs['id']; ?>/read"><li class="nestedItem">Read file</li></a>
+                            <a href="/admin/js/<?php echo $idOfLastCreatedJs['id']; ?>/read"><li class="nestedItem">Read js file</li></a>
                             <?php if(core\Session::get('user_role') === 'admin') { ?>
-                            <a href="/admin/js/<?php echo $idOfLastCreatedJs['id']; ?>/edit"><li class="nestedItem">Edit file</li></a>
+                            <a href="/admin/js/<?php echo $idOfLastCreatedJs['id']; ?>/edit"><li class="nestedItem">Edit js file</li></a>
                             <?php } ?>
                         </ul>
                     <?php } ?>
                     <?php if(!empty($idOfLastUpdatedJs) && $idOfLastUpdatedJs !== null) { ?>
                         <li class="dropdownItem nestedDropdownItem"><img src="/assets/img/right-arrow.png"/>Last updated</li>
                         <ul class="dropdown display-none">
-                            <a href="/admin/js/<?php echo $idOfLastUpdatedJs['id']; ?>/read"><li class="nestedItem">Read file</li></a>
+                            <a href="/admin/js/<?php echo $idOfLastUpdatedJs['id']; ?>/read"><li class="nestedItem">Read js file</li></a>
                             <?php if(core\Session::get('user_role') === 'admin') { ?>
-                            <a href="/admin/js/<?php echo $idOfLastUpdatedJs['id']; ?>/edit"><li class="nestedItem">Edit file</li></a>
+                            <a href="/admin/js/<?php echo $idOfLastUpdatedJs['id']; ?>/edit"><li class="nestedItem">Edit js file</li></a>
                             <?php } ?>
                         </ul>
                     <?php } ?>
                 </ul>
-                <li class="dropdownItem"><img src="/assets/img/image.png"/>Media</a></li>
+                <li class="dropdownItem"><img src="/assets/img/meta.svg"/>Metas</li>
                 <ul class="dropdown display-none">
-                    <a href="/admin/media"><li>Table overview</li></a>
+                    <?php if(core\Session::get('user_role') === 'admin') { ?>
+                    <a href="/admin/meta/create"><li>Add new <img class="add" src="/assets/img/add.png"/></li></a>
+                    <?php } ?>
+                    <a href="/admin/meta"><li>Table overview</li></a>
+                    <?php if(!empty($idOfLastCreatedMeta) && $idOfLastCreatedMeta !== null) { ?>
+                        <li class="dropdownItem nestedDropdownItem"><img src="/assets/img/right-arrow.png"/>Last created</li>
+                        <ul class="dropdown display-none">
+                            <a href="/admin/meta/<?php echo $idOfLastCreatedMeta['id']; ?>/read"><li class="nestedItem">Read meta</li></a>
+                            <?php if(core\Session::get('user_role') === 'admin') { ?>
+                            <a href="/admin/meta/<?php echo $idOfLastCreatedMeta['id']; ?>/edit"><li class="nestedItem">Edit meta</li></a>
+                            <?php } ?>
+                        </ul>
+                    <?php } ?>
+                    <?php if(!empty($idOfLastUpdatedMeta) && $idOfLastUpdatedMeta !== null) { ?>
+                        <li class="dropdownItem nestedDropdownItem"><img src="/assets/img/right-arrow.png"/>Last updated</li>
+                        <ul class="dropdown display-none">
+                            <a href="/admin/meta/<?php echo $idOfLastUpdatedMeta['id']; ?>/read"><li class="nestedItem">Read meta</li></a>
+                            <?php if(core\Session::get('user_role') === 'admin') { ?>
+                            <a href="/admin/meta/<?php echo $idOfLastUpdatedMeta['id']; ?>/edit"><li class="nestedItem">Edit meta</li></a>
+                            <?php } ?>
+                        </ul>
+                    <?php } ?>
                 </ul>
-                <li class="dropdownItem"><img src="/assets/img/multiple-users-silhouette.png"/>Users</a></li>
+                <a href="/admin/media"><li class="dropdownItem"><img src="/assets/img/media.svg"/>Media</li></a>
+                <li class="dropdownItem"><img src="/assets/img/users.svg"/>Users</a></li>
                 <ul class="dropdown display-none">
                     <?php if(core\Session::get('user_role') === 'admin') { ?>
                     <a href="/admin/users/create"><li>Add new <img class="add" src="/assets/img/add.png"/></li></a>
@@ -157,7 +181,7 @@
                     <a href="/admin/users"><li>Table overview</li></a>
                 </ul>
                 <?php if(core\Session::get('user_role') === 'admin') { ?>
-                <a href="/admin/settings"><li class="dropdownItem"><img src="/assets/img/settingsBlack.png"/>Settings</li></a>
+                    <a href="/admin/settings"><li class="dropdownItem"><img src="/assets/img/settings.svg"/>Settings</li></a>
                 <?php } ?>
             </ul>
         </nav>
