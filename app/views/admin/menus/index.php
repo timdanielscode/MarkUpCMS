@@ -77,10 +77,6 @@
                             <td class="width-20">
                                 <?php echo $menu['position']; ?>
                             </td>
-                            <?php } else { ?>
-                            <td class="width-20">
-                                <span>unset</span>
-                            </td>
                             <?php } ?>
                             <?php if(!empty($menu['ordering']) ) { ?>
                             <td class="width-20">
@@ -88,7 +84,7 @@
                             </td>
                             <?php } else { ?>
                             <td class="width-20">
-                                <span>unset</span>
+                                <span>-</span>
                             </td>
                             <?php } ?>
                             <td class="width-20">

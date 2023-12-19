@@ -84,7 +84,10 @@
                     </td>
                     <?php } ?>
                     <td class="width-15">
-                        <?php if(!empty($post[11]) ) { echo $post[11]; } else { echo '-'; } ?>
+                        <?php if(!empty($post['categoryId']) ) { ?>
+                            
+                            <a href="/admin/categories/<?php echo $post['categoryId']; ?>/apply"><?php echo $post[10]; ?></a>
+                        <?php } else { ?>-<?php } ?>
                     </td>
                     <td class="width-15">
                         <?php echo $post['author']; ?>
