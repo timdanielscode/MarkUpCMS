@@ -367,8 +367,6 @@ h3 {
     background: rgb(174, 35, 35);
 }
 .lightButton {
-    /*background: #8ca2bd;
-    border: 1px solid #657d99;*/
     background: #BBB;
     border: 1px solid #9B9B9B;
 }
@@ -377,9 +375,6 @@ h3 {
     cursor: pointer;
 }
 .darkButton {
-    /*background: #657d99;
-    border: 1px solid #4d688a;
-    */
     background: #9B9B9B;
     border: 1px solid #717171;
 }
@@ -393,6 +388,45 @@ h3 {
 */
 .box-sizing-border-box {
     box-sizing: border-box;
+}
+
+/*
+    Select
+*/
+select {
+    border-radius: 3px 0px 0px 3px;
+    border: 1px solid #a2a2a2;
+    box-sizing: border-box;
+}
+
+select:focus, select:active {
+    outline: none;
+}
+
+/*
+    Input
+*/
+input {
+    border-radius: 3px 0px 0px 3px;
+    border: 1px solid #a2a2a2;
+    box-sizing: border-box;
+}
+
+input:focus, input:active {
+    outline: none;
+}
+
+/*
+    Textarea
+*/
+textarea {
+    border-radius: 3px 0px 0px 3px;
+    border: 1px solid #a2a2a2;
+    box-sizing: border-box;
+}
+
+textarea:focus, textarea:active {
+    outline: none;
 }
 
 /*

@@ -106,5 +106,5 @@
     text-decoration: none;
 }
 .active {
-    background: #f0f0f0 !important;
+    font-weight: bold;
 }

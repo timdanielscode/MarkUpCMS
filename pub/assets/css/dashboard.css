@@ -104,7 +104,16 @@
     color: #333;
     border: 1px solid #d7d7d7;
 }
-
+.cardContainer .bar {
+    position: absolute;
+    height: 7px;
+    border-radius: 30px;
+    border: none;
+    width: 75%;
+    bottom: 8px;
+    left: 20px;
+    z-index: 9;
+}
 .show-item {
     display: block !important;
 }
@@ -118,17 +127,8 @@
     left: 20px;
     z-index: 9;
 }
-.cardContainer .bar {
-    position: absolute;
-    background: #eaeaea;
-    height: 7px;
-    border-radius: 30px;
-    border: none;
-    width: 75%;
-    bottom: 8px;
-    left: 20px;
-    z-index: 9;
-}
+
+
 .cardContainer .layer {
     height: 6px;
     width: 75%;
@@ -154,18 +154,23 @@
     left: -20px;
     padding: 100px;
 }
-progress.red::-moz-progress-bar, progress.red::-webkit-progress-value, progress.red::-webkit-progress-bar {
-    background: #7D858A;
+
+progress {
+    background: #eaeaea;
 }
-progress.darkBlue::-moz-progress-bar, progress.blue::-webkit-progress-value, progress.blue::-webkit-progress-bar {
-    background: #1888E1; 
+progress::-webkit-progress-bar {
+    background: #eaeaea;
 }
-progress.blue::-moz-progress-bar, progress.blue::-webkit-progress-value, progress.blue::-webkit-progress-bar {
-    background: #1888E1; 
+progress::-webkit-progress-value {
+    background: #3375BB !important;
 }
-progress.lightBlue::-moz-progress-bar, progress.blue::-webkit-progress-value, progress.blue::-webkit-progress-bar {
-    background: #1888E1; 
+progress::-moz-progress-bar {
+    background: #3375BB !important;
 }
+progress::-webkit-progress-inner-element {
+    background: #3375BB !important;
+}
+
 
 .cardContainer a {
     text-decoration: none;

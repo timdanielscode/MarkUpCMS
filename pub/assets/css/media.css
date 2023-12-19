@@ -166,9 +166,9 @@
 }
 .filterForm select {
     width: 100%;
-    border: none;
     margin-top: 10px;
     height: 170px;
+    overflow-y: hidden;
 }
 .filterForm option {
     padding: 4px 0 4px 10px;
@@ -285,6 +285,8 @@
     padding: 10px;
     margin-top: 10px;
     font-size: 14px;
+    border-radius: 3px 0px 0px 3px;
+    border: 1px solid #a2a2a2;
 }
 .mainButtonContainer a, .buttonContainer label .deleteForm .button {
     margin-right: 10px;
@@ -306,12 +308,8 @@
     padding: 10px;
     margin-top: 10px;
     font-size: 13px;
-    border: none;
     width: 100%;
     box-sizing: border-box;
-}
-.searchFormCreate input:focus-visible {
-    outline: none;
 }
 #currentFile {
     width: 100%;

@@ -10,7 +10,6 @@
     border: 1px solid #aaa;
     box-sizing: border-box;
     padding: 10px 0px 10px 10px;
-    border-radius: 3px;
 }
 #editorForm {
     position: relative;
@@ -56,14 +55,15 @@
 .updatePositionForm select {
     width: 100%;
     background: #fff;
-    border: none;
+    border: 1px solid #a4a4a4;
     padding: 10px;
-    border-radius: 3px;
     overflow: hidden;
     height: 93px;
 }
 .updatePositionForm .data {
     margin-bottom: 20px;
+    border: 1px solid #a4a4a4;
+    box-sizing: border-box;
 }
 .updateNumberForm input:nth-child(1) {
     width: 100%;
@@ -106,6 +106,8 @@
 }
 .data.ordering {
     margin-bottom: 20px;
+    border-radius: 3px 0px 0px 3px;
+    border: 1px solid #a2a2a2;
 }
 
 @media only screen and (max-width: 750px) {

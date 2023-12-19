@@ -16,6 +16,7 @@
 <?php $idOfLastUpdatedJs = database\DB::try()->select('id')->from('js')->where('removed', '!=', '1')->order('updated_at')->desc()->first(); ?>
 <?php $idOfLastCreatedMeta = database\DB::try()->select('id')->from('metas')->where('removed', '!=', '1')->order('created_at')->desc()->first(); ?>
 <?php $idOfLastUpdatedMeta = database\DB::try()->select('id')->from('metas')->where('removed', '!=', '1')->order('updated_at')->desc()->first(); ?>
+<?php $category = database\DB::try()->getLastId('categories')->first(); ?>
 
 <div id="sidebar" class="width-25-L">
     <div class="sidebarContainer">
@@ -27,7 +28,7 @@
                     <a href="/admin/posts/create"><li>Add new <img class="add" src="/assets/img/add.png"/></li></a>
                     <?php } ?>
                     <a href="/admin/posts"><li>Table overview</li></a>
-                    <a href="/admin/categories"><li>Category overview</li></a>
+                    <a href="/admin/categories<?php if(!empty($category) && $category !== null) { echo '/' . $category['id']; } ?>/apply"><li>Category overview</li></a>
                     <?php if(!empty($idOfLastCreatedPage) && $idOfLastCreatedPage !== null) { ?>
                         <li class="dropdownItem nestedDropdownItem"><img src="/assets/img/right-arrow.png"/>Last created</li>
                         <ul class="dropdown display-none">

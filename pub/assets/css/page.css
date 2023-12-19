@@ -76,6 +76,9 @@
     width: auto;
     padding: 10px;
     margin-top: 10px;
+    border-radius: 3px 0px 0px 3px;
+    border: 1px solid #a2a2a2;
+    box-sizing: border-box;
 }
 .fullSlug {
     padding-right: 20px;
@@ -98,7 +101,6 @@
 }
 .AddCategory select, .linkedCssFilesForm select, .cssFilesForm select, .linkedJsFilesForm select, .jsFilesForm select, .widgetForm select, .cdnForm select {
     width: 100%;
-    border: none;
     margin-top: 10px;
 }
 .AddCategory select option, .cssFilesForm select option, .linkedCssFilesForm select option, .linkedJsFilesForm select option, .jsFilesForm select option, .widgetForm select option, .cdnForm select option {
@@ -124,9 +126,7 @@
     padding: 10px;
     margin-top: 10px;
     font-size: 14px;
-    border: none;
     width: 100%;
-    box-sizing: border-box;
 }
 .updateMetaDataForm .form-parts input {
     margin-bottom: 10px;
@@ -136,13 +136,7 @@
     padding-top: 10px;
     padding-left: 10px;
     height: 100px;
-    border: none;
     margin: 10px 0;
-    box-sizing: border-box;
-}
-.updateSlugForm .form-parts input:focus, .updateMetaDataForm .form-parts input:focus, .updateMetaDataForm .form-parts textarea:focus {
-    border:none;
-    outline: none;
 }
 
 @media only screen and (max-width: 750px) {

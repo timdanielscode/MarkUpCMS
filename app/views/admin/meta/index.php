@@ -42,7 +42,6 @@
         <?php } ?>
     <form action="" method="GET" class="searchForm">
         <input type="text" name="search" placeholder="Search" id="search">
-        <input type="submit" name="submit" value="Search" class="button">
     </form>
     <table>
             <thead>

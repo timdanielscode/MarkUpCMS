@@ -78,9 +78,10 @@ table td .button {
     display: block;
     overflow-y: auto;
     min-height: 250px;
-    border-radius: 3px 0px 0px 3px;
     max-height: 500px;
     overflow-x: hidden;
+    border-radius: 3px 0px 0px 3px;
+    border: 1px solid #a2a2a2;
 }
 
 #sidebar .title {
@@ -200,15 +201,8 @@ table td .button {
 .searchForm input[type="text"] {
     padding: 10px;
     font-size: 14px;
-    border: none;
     width: 100%;
-    box-sizing: border-box;
 }
-
-.searchForm input[type="text"]:focus, .searchForm input[type="text"]:active {
-    outline: none;
-}
-
 .message-container.success {
     color: #42971c;
     margin-bottom: 10px;
@@ -421,4 +415,11 @@ table td .button {
 .message-failed-category-description {
     display: block;
     margin-top: 10px;
+}
+
+@media only screen and (max-width: 750px) {
+
+    .edit-container, #sidebar {
+        display: none !important;
+    }
 }
