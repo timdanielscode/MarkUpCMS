@@ -59,7 +59,9 @@
                             </select>  
                             <input type="hidden" id="categoryIds" name="categoryIds" value=""/>
                             <input type="hidden" name="id" value="<?php echo $categoryId; ?>"/>
-                            <input type="submit" name="submit" value="Apply" class="button darkBlueButton margin-t-20"/>
+                            <?php if(core\Session::get('user_role') === 'admin') { ?>
+                                <input type="submit" name="submit" value="Apply" class="button darkBlueButton margin-t-20"/>
+                            <?php } ?>
                         </form>
                     </div>
                     <div class="col6">
@@ -79,7 +81,9 @@
                             </select>
                             <input type="hidden" id="pageIds" name="pageIds" value=""/>
                             <input type="hidden" name="id" value="<?php echo $categoryId; ?>"/>
-                            <input type="submit" name="submit" value="Apply" class="button darkBlueButton margin-t-20"/>
+                            <?php if(core\Session::get('user_role') === 'admin') { ?>
+                                <input type="submit" name="submit" value="Apply" class="button darkBlueButton margin-t-20"/>
+                            <?php } ?>
                         </form>
                     </div>
                 </div> 
@@ -109,16 +113,20 @@
                             </tr>
                         <?php } ?>
                     </table>
-                    <a class="button darkBlueButton margin-t-20 width-50-px" id="delete">Delete</a>
+                    <?php if(core\Session::get('user_role') === 'admin') { ?>
+                        <a class="button darkBlueButton margin-t-20 width-50-px" id="delete">Delete</a>
+                    <?php } ?>
                 <?php } ?>
-                <form action="/admin/categories/delete" method="POST" class="display-none deleteForm">
-                    <select name="deleteIds[]" multiple>
-                        <?php foreach($categories as $category) { ?>
-                            <option value="<?php echo $category['id']; ?>"><?php echo $category['title']; ?></option>
-                        <?php } ?>
-                    </select>
-                    <input type="submit" name="delete" value="Delete" class="button redButton margin-t-20" onclick="return confirm('Are you sure?');" />
-                </form>
+                <?php if(core\Session::get('user_role') === 'admin') { ?>
+                    <form action="/admin/categories/delete" method="POST" class="display-none deleteForm">
+                        <select name="deleteIds[]" multiple>
+                            <?php foreach($categories as $category) { ?>
+                                <option value="<?php echo $category['id']; ?>"><?php echo $category['title']; ?></option>
+                            <?php } ?>
+                        </select>
+                        <input type="submit" name="delete" value="Delete" class="button redButton margin-t-20" onclick="return confirm('Are you sure?');" />
+                    </form>
+                <?php } ?>
             </div>
         </div>
     </div>

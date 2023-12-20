@@ -203,7 +203,9 @@
                             <form action="/admin/media/update/filename" method="POST">
                                 <input id="currentFilename" type="text" name="filename"/>
                                 <input type="hidden" name="id" id="update" value=""/>
-                                <input type="submit" name="submit" value="Update" class="button darkBlueButton margin-t-10"/>
+                                <?php if(core\Session::get('user_role') === 'admin') { ?>
+                                    <input type="submit" name="submit" value="Update" class="button darkBlueButton margin-t-10"/>
+                                <?php } ?>
                             </form>
                             <span id="currentFolder"></span>
                         </div>
@@ -220,7 +222,9 @@
                                 <span class="infoText">Description: </span>
                                 <textarea type="text" name="description" class="infoData" id="currentDescription"></textarea>
                                 <input type="hidden" name="id" value="" id="updateDescription"/>
-                                <input type="submit" name="submit" value="Update" class="button darkBlueButton margin-t-10"/>
+                                <?php if(core\Session::get('user_role') === 'admin') { ?>
+                                    <input type="submit" name="submit" value="Update" class="button darkBlueButton margin-t-10"/>
+                                <?php } ?>
                             </form>
                         </div>
                     </div>

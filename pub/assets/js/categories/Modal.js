@@ -64,14 +64,17 @@ class Modal {
     setCreateOnclickEvent() {
 
         var modal = this;
-        
-        this.getCreateButtonElement().addEventListener("click", function() { 
-                
-            if(modal.getElement().classList.contains('display-none') === true) {
 
-                modal.showModal('Create', this); 
-            }
-        }); 
+        if(this.getCreateButtonElement() !== null) {
+
+            this.getCreateButtonElement().addEventListener("click", function() { 
+                
+                if(modal.getElement().classList.contains('display-none') === true) {
+    
+                    modal.showModal('Create', this); 
+                }
+            }); 
+        }
     }
 
     /*
@@ -81,13 +84,16 @@ class Modal {
 
         var modal = this;
 
-        this.getEditButtonElement().addEventListener("click", function() { 
+        if(this.getEditButtonElement() !== null) {
 
-            if(modal.getElement().classList.contains('display-none') === true) {
-                
-                modal.showModal('Edit', this); 
-            }
-        }); 
+            this.getEditButtonElement().addEventListener("click", function() { 
+
+                if(modal.getElement().classList.contains('display-none') === true) {
+                    
+                    modal.showModal('Edit', this); 
+                }
+            }); 
+        }
     }
 
     /*
@@ -95,10 +101,13 @@ class Modal {
     */
     setDeleteOnclickEvent() {
 
-        this.getDeleteButtonElement().addEventListener("click", function() { 
+        if(this.getDeleteButtonElement() !== null) {
+
+            this.getDeleteButtonElement().addEventListener("click", function() { 
                 
-            modal.changeListedCategories(modal.getDeleteButtonElement());
-        }); 
+                modal.changeListedCategories(modal.getDeleteButtonElement());
+            }); 
+        }
     }
 
     /*
