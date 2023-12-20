@@ -17,7 +17,6 @@
     <?php $this->stylesheet("/assets/css/style.css"); ?>
     <?php $this->stylesheet("/assets/css/navbar.css"); ?>
     <?php $this->stylesheet("/assets/css/categories.css"); ?>
-    <?php $this->stylesheet("/assets/css/pagination.css"); ?>
     <?php $this->stylesheet("/assets/css/sidebar.css"); ?>
     <?php $this->stylesheet("/assets/css/modal.css"); ?>
     <?php $this->script('/assets/js/categories/Modal.js', true); ?>

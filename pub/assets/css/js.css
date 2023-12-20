@@ -68,20 +68,6 @@
 .removeJsForm select option, .includeJsForm select option {
     padding: 4px 0 4px 10px;
 }
-.text {
-    margin-top: 20px;
-    color: #333;
-    display: block;
-    margin-bottom: 10px;
-    font-size: 14px;
-}
-.data {
-    width: 100%;
-    background: #fff;
-    display: block;
-    padding: 10px;
-    font-size: 14px;
-}
 
 @media only screen and (max-width: 750px) {
 

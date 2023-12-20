@@ -22,7 +22,6 @@
     <?php $this->stylesheet("/assets/css/navbar.css"); ?>
     <?php $this->stylesheet("/assets/css/media.css"); ?>
     <?php $this->stylesheet("/assets/css/sidebar.css"); ?>
-    <?php $this->stylesheet("/assets/css/pagination.css"); ?>
     <?php $this->script('/assets/js/media/Sidebar.js', true); ?>
     <?php $this->script('/assets/js/media/FileContainer.js', true); ?>
     <?php $this->script('/assets/js/media/ReadImageContainer.js', true); ?>
