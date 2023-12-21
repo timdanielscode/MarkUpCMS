@@ -13,11 +13,9 @@ class Middlewares {
 
     public $routeMiddlewares = [
 
-        "login"     =>      "LoginMiddleware",
-        "notLoggedIn"   =>      "NoLoginMiddleware",
-        "auth"      =>      "AuthMiddleware",
-        "user"  => "UserMiddleware",
-        "hasNotDBConn"  => "HasNotDBConnectionMiddleware"
+        "auth"              =>  "AuthMiddleware",
+        "user"              =>  "UserMiddleware",
+        "hasNotDBConn"      =>  "HasNotDBConnectionMiddleware"
     ];
 }
 

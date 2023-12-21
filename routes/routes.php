@@ -27,7 +27,7 @@ if(!empty($postPaths) && $postPaths !== null) {
     }
 } 
 
-Middleware::route('notLoggedIn', function() { 
+Middleware::route(['auth' => 'not'], function() { 
 
     $settedWebsiteSlug = DB::try()->select('slug')->from('websiteSlug')->first();
 
@@ -38,7 +38,7 @@ Middleware::route('notLoggedIn', function() {
     }
 });
 
-Middleware::route('login', function() { 
+Middleware::route('auth', function() { 
 
     new Route(['GET' => '/admin/dashboard'], ['admin\DashboardController' => 'index']);
     new Route(['GET' => '/admin/profile/' . Session::get('username')], ['admin\ProfileController' => 'index']);
@@ -56,7 +56,7 @@ Middleware::route(['auth' => 'admin'], function() {
     new Route(['POST' => '/admin/settings/update-slug'], ['admin\SettingsController' => 'updateSlug']);
 });
 
-Middleware::route('login', function() { 
+Middleware::route('auth', function() { 
 
     new Route(['GET' => '/admin/posts'], ['admin\PostController' => 'index']);
     new Route(['GET' => '/admin/posts/[id]/read'], ['admin\PostController' => 'read']);
@@ -84,7 +84,7 @@ Middleware::route(['auth' => 'admin'], function() {
     new Route(['POST' => '/admin/posts/delete'], ['admin\PostController' => 'delete']);
 });
 
-Middleware::route('login', function() {
+Middleware::route('auth', function() {
 
     new Route(['GET' => '/admin/users'], ['admin\UserController' => 'index']);
     new Route(['GET' => '/admin/users/[id]/read'], ['admin\UserController' => 'read']);
@@ -101,7 +101,7 @@ Middleware::route(['auth' => 'admin'], function() {
     new Route(['POST' => '/admin/users/delete'], ['admin\UserController' => 'delete']);
 });
 
-Middleware::route('login', function() {
+Middleware::route('auth', function() {
 
     new Route(['GET' => '/admin/css'], ['admin\CssController' => 'index']);
     new Route(['GET' => '/admin/css/[id]/read'], ['admin\CssController' => 'read']);
@@ -121,7 +121,7 @@ Middleware::route(['auth' => 'admin'], function() {
     new Route(['POST' => '/admin/css/delete'], ['admin\CssController' => 'delete']);
 });
 
-Middleware::route('login', function() {
+Middleware::route('auth', function() {
 
     new Route(['GET' => '/admin/js'], ['admin\JsController' => 'index']);
     new Route(['GET' => '/admin/js/[id]/read'], ['admin\JsController' => 'read']);
@@ -141,7 +141,7 @@ Middleware::route(['auth' => 'admin'], function() {
     new Route(['POST' => '/admin/js/delete'], ['admin\JsController' => 'delete']);
 });
 
-Middleware::route('login', function() {
+Middleware::route('auth', function() {
 
     new Route(['GET' => '/admin/menus'], ['admin\MenuController' => 'index']);
     new Route(['GET' => '/admin/menus/[id]/read'], ['admin\MenuController' => 'read']);
@@ -159,7 +159,7 @@ Middleware::route(['auth' => 'admin'], function() {
     new Route(['POST' => '/admin/menus/delete'], ['admin\MenuController' => 'delete']);
 });
 
-Middleware::route('login', function() {
+Middleware::route('auth', function() {
 
     new Route(['GET' => '/admin/media'], ['admin\MediaController' => 'index']);
 });
@@ -173,7 +173,7 @@ Middleware::route(['auth' => 'admin'], function() {
     new Route(['POST' => '/admin/media/delete'], ['admin\MediaController' => 'delete']);
 });   
 
-Middleware::route('login', function() {
+Middleware::route('auth', function() {
 
     new Route(['GET' => '/admin/categories/apply'], ['admin\CategoryController' => 'index']);
     new Route(['GET' => '/admin/categories/[id]/apply'], ['admin\CategoryController' => 'index']);
@@ -189,7 +189,7 @@ Middleware::route(['auth' => 'admin'], function() {
     new Route(['POST' => '/admin/categories/delete'], ['admin\CategoryController' => 'delete']);
 }); 
 
-Middleware::route('login', function() {
+Middleware::route('auth', function() {
 
     new Route(['GET' => '/admin/widgets'], ['admin\WidgetController' => 'index']);
     new Route(['GET' => '/admin/widgets/[id]/read'], ['admin\WidgetController' => 'read']);
@@ -205,7 +205,7 @@ Middleware::route(['auth' => 'admin'], function() {
     new Route(['POST' => '/admin/widgets/recover'], ['admin\WidgetController' => 'recover']);
 });
 
-Middleware::route('login', function() {
+Middleware::route('auth', function() {
 
     new Route(['GET' => '/admin/meta'], ['admin\MetaController' => 'index']);
     new Route(['GET' => '/admin/meta/[id]/read'], ['admin\MetaController' => 'read']);
