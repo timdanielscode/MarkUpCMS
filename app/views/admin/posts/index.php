@@ -61,7 +61,7 @@
                     <td>
                         <input class="deleteCheckbox" type="checkbox" name="delete" value="<?php echo $post['id']; ?>" <?php if(core\Session::get('user_role') === 'normal') { echo 'disabled'; } ?>/>
                     </td>
-                    <?php if(core\Session::get('user_role') === 'admin') { ?>
+                    <?php if($post['removed'] !== 1 && core\Session::get('user_role') === 'admin') { ?>
                     <td class="width-25">
                         <a href="/admin/posts/<?php echo $post['id']; ?>/edit" class="font-weight-500"><?php echo $post[1]; ?></a> |
                         <a href="/admin/posts/<?php echo $post['id']; ?>/edit" class="font-weight-300">Edit</a> |

@@ -696,6 +696,8 @@ class PostController extends Controller {
                         'slug'  => ''
                     ]);
 
+                    CategoryPage::delete('page_id', $id);
+
                     Session::set('success', 'You have successfully moved the page(s) to the trashcan!');
             
                 } else if(Post::getColumns(['removed'], $id)['removed'] === 1) {
