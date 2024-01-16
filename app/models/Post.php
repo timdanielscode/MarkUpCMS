@@ -120,7 +120,7 @@ class Post extends Model {
             }
 
             $cssIdsString = implode(',', self::$_cssIds);
-            return DB::try()->select('id, file_name, extension')->from('css')->whereNotIn('id', $cssIdsString)->fetch();
+            return DB::try()->select('id, file_name, extension')->from('css')->whereNotIn('id', $cssIdsString)->and('removed', '!=', 1)->fetch();
         } else {
             return DB::try()->select('id, file_name, extension')->from('css')->where('removed', '!=', 1)->fetch();
         }
@@ -151,7 +151,7 @@ class Post extends Model {
             }
 
             $jsIdsString = implode(',', self::$_jsIds);
-            return DB::try()->select('id, file_name, extension')->from('js')->whereNotIn('id', $jsIdsString)->fetch();
+            return DB::try()->select('id, file_name, extension')->from('js')->whereNotIn('id', $jsIdsString)->and('removed', '!=', 1)->fetch();
         } else {
             return DB::try()->select('id, file_name, extension')->from('js')->where('removed', '!=', 1)->fetch();
         }
@@ -159,7 +159,7 @@ class Post extends Model {
 
     public static function getCdnIdTitle($id) {
 
-        return DB::try()->select('id, title')->from('metas')->join('meta_page')->on("meta_page.meta_id", '=', 'metas.id')->where('meta_page.page_id', '=', $id)->and('removed', '!=', 1)->fetch();
+        return DB::try()->select('id, title')->from('metas')->join('meta_page')->on("meta_page.meta_id", '=', 'metas.id')->where('meta_page.page_id', '=', $id)->and('removed', '=', 0)->fetch();
     }
 
     public static function getNotCdnIdTitle($metaIdTitle) {
@@ -172,7 +172,7 @@ class Post extends Model {
             }
 
             $metaIdsString = implode(',', self::$_metaIds);
-            return DB::try()->select('id, title')->from('metas')->whereNotIn('id', $metaIdsString)->fetch();
+            return DB::try()->select('id, title')->from('metas')->whereNotIn('id', $metaIdsString)->and('removed', '!=', 1)->fetch();
         } else {
             return DB::try()->select('id, title')->from('metas')->where('removed', '!=', 1)->fetch();
         }
@@ -198,7 +198,7 @@ class Post extends Model {
             }
 
             $widgetIdsString = implode(',', self::$_widgetIds);
-            return DB::try()->select('id, title')->from('widgets')->whereNotIn('id', $widgetIdsString)->fetch();
+            return DB::try()->select('id, title')->from('widgets')->whereNotIn('id', $widgetIdsString)->and('removed', '!=', 1)->fetch();
         } else {
             return DB::try()->select('id, title')->from('widgets')->where('removed', '!=', 1)->fetch();
         }

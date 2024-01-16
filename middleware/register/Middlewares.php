@@ -14,8 +14,7 @@ class Middlewares {
     public $routeMiddlewares = [
 
         "auth"              =>  "AuthMiddleware",
-        "user"              =>  "UserMiddleware",
-        "hasNotDBConn"      =>  "HasNotDBConnectionMiddleware"
+        "user"              =>  "UserMiddleware"
     ];
 }
 

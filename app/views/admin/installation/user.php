@@ -8,8 +8,7 @@
 <?php $this->include('closeHeadTagAndOpenBodyTag'); ?>
 
 <div class="container">
-<h1>Register</h1>    
-<p>Welcome, create an admin account to build your website!</p>
+<h1>Sign up</h1>    
     <form action="" method="POST">
         <div class="form-parts">
             <label for="username">Username:</label>

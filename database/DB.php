@@ -5,8 +5,6 @@ namespace database;
 class DB {
 
     private $_pdo, $_stmt, $_query = "", $_data = [], $_columns = [], $_placeholders = [], $_setValues = [];
-    public static $error;
-    private static $_instance = null;
 
     /**
      * To create a database connection
@@ -35,7 +33,7 @@ class DB {
         if(file_exists('../config/database/config.ini') ) {
             
             $ini = parse_ini_file('../config/database/config.ini');
-            return self::$_instance = new DB($ini['host'], $ini['user'], $ini['password'], $ini['db']);
+            return new DB($ini['host'], $ini['user'], $ini['password'], $ini['db']);
         } 
     }
 

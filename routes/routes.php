@@ -5,12 +5,6 @@ use database\DB;
 use core\Session;
 use core\http\Middleware;
 
-Middleware::route('hasNotDBConn', function() { 
-
-    new Route(['GET' => '/'], ['InstallationController' => 'databaseSetup']);
-    new Route(['POST' => '/'], ['InstallationController' => 'createConnection']);
-});
-
 Middleware::route('user', function() { 
 
     new Route(['GET' => '/'], ['InstallationController' => 'createUser']);

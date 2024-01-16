@@ -13,7 +13,6 @@ use app\models\WebsiteSlug;
 class InstallationController extends Controller {
 
     private $_data;
-    private $_configDatabasePath = "../config/database/config.ini";
 
     /**
      * To show the installation (create) user view
@@ -39,6 +38,8 @@ class InstallationController extends Controller {
                     
         if($rules->installation_user($request['username'], $request['email'], $request['password'], $request['retypePassword'], $request['token'], Csrf::get())->validated() ) {
 
+            Table::create();
+
             User::insert([
                     
                 'username' => $request["username"], 
@@ -58,6 +59,16 @@ class InstallationController extends Controller {
             Roles::insert(['name'  => 'normal']);
             Roles::insert(['name'  => 'admin']);
 
+            if(empty(WebsiteSlug::getData(['id']) ) || WebsiteSlug::getData(['id']) === null) { 
+
+                WebsiteSlug::insert([
+
+                    'slug' => '/login',
+                    'created_at' => date('Y-m-d H:i:s', $_SERVER['REQUEST_TIME']),
+                    'updated_at' => date('Y-m-d H:i:s', $_SERVER['REQUEST_TIME'])
+                ]);
+            }
+
             redirect('/login');
 
         } else {
@@ -65,68 +76,5 @@ class InstallationController extends Controller {
             $this->_data["rules"] = $rules->errors;
             return $this->view("admin/installation/user")->data($this->_data);
         }
-    }
-
-    /**
-     * To show the installation (create) database view
-     * 
-     * @return object InstallationController, Controller
-     */
-    public function databaseSetup() {
-
-        $this->_data['rules'] = [];
-        return $this->view('admin/installation/database')->data($this->_data);
-    }
-    
-    /**
-     * To create a config.ini file to write database credentials to and insert necessary tables in database (on successful validation)
-     * 
-     * @param array $request _POST host, database, username, password, retypePassword, token
-     * @return object InstallationController, Controller (on failed validation)
-     */
-    public function createConnection($request) {
-
-        $rules = new Rules();  
-                    
-        if($rules->installation_database($request['host'], $request['database'], $request['username'], $request['password'], $request['retypePassword'], $request['token'], Csrf::get())->validated() ) {
-
-            $this->databaseConfigFile($request);
-                
-            Table::create();
-            WebsiteSlug::insert([
-
-                'slug' => '/login',
-                'created_at' => date('Y-m-d H:i:s', $_SERVER['REQUEST_TIME']),
-                'updated_at' => date('Y-m-d H:i:s', $_SERVER['REQUEST_TIME'])
-            ]);
-    
-            redirect('/');
-        } else {
-
-            $this->_data['rules'] = $rules->errors;
-            return $this->view('admin/installation/database')->data($this->_data);
-        }
-    }
-
-    /**
-     * To create a config.ini file to write database credentials to
-     * 
-     * @param array $request _POST host, database, username, password, retypePassword, token
-     */
-    private function databaseConfigFile($request) {
-
-        if(file_exists($this->_configDatabasePath) === false) {
-
-            $file = fopen($this->_configDatabasePath, "w");
-
-            $content = 
-                "host=" . $request['host'] . "\r\n" .
-                "db=" . $request['database'] . "\r\n" .
-                "user=" . $request['username'] . "\r\n" .
-                "password=" . $request['password'] . "\r\n";
-    
-            fwrite($file, $content);
-            fclose($file);
-        } 
     }
 }
