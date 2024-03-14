@@ -9,6 +9,7 @@ use app\models\UserRole;
 use app\models\Roles;
 use app\models\Table;
 use app\models\WebsiteSlug;
+use app\models\Post;
 
 class InstallationController extends Controller {
 
@@ -27,7 +28,7 @@ class InstallationController extends Controller {
     }
 
     /**
-     * To store the first type of admin user (on successful validation)
+     * To store the first type of admin user and page (on successful validation)
      * 
      * @param array $request _POST username, email, password, retypePassword, token
      * @return object InstallationController, Controller (on failed validation)
@@ -68,6 +69,18 @@ class InstallationController extends Controller {
                     'updated_at' => date('Y-m-d H:i:s', $_SERVER['REQUEST_TIME'])
                 ]);
             }
+
+            Post::insert([
+                    
+                'title' => "homepage", 
+                'slug' => "/",
+                'body' => "<h1>Homepage!</h1>",
+                'has_content' => 1,
+                'author' => $request['username'],
+                'removed' => 0,
+                'created_at' => date('Y-m-d H:i:s', $_SERVER['REQUEST_TIME']),
+                'updated_at' => date('Y-m-d H:i:s', $_SERVER['REQUEST_TIME'])
+            ]);
 
             redirect('/login');
 
