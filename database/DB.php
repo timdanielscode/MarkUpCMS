@@ -46,15 +46,22 @@ class DB {
     private function execute_query() {
 
         $this->_stmt = $this->_pdo->prepare($this->_query);
+    
+        foreach ($this->_data as $key => $value) {
 
-        if(!empty($this->_data) && $this->_data !== null) {
+            if (is_int($value) === true) {
+                
+                $type = \PDO::PARAM_INT;
+            } else {
+                $type = \PDO::PARAM_STR;
+            }
 
-            $this->_stmt->execute($this->_data);
-            $this->_data = [];
-        } else {
-            $this->_stmt->execute();
+            $this->_stmt->bindParam($key + 1, $this->_data[$key], $type);
         }
-
+    
+        $this->_stmt->execute();
+        $this->_data = [];
+    
         return $this;
     }
 

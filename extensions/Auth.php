@@ -2,54 +2,27 @@
 
 namespace extensions;
 
-use core\http\Request;
 use core\Session;
-use app\models\User;
+use database\DB;
 
 class Auth {
-
-    private static $_userCredentialInputName, $_userCredentialInputValue, $_password;
 
     /**
      * To get user credentials
      * 
-     * @param array $roleType expects 'role' as key and value type of admin|normal
-     * @example authenticate(array('role' => 'normal')) || authenticate(array('role' => 'admin'))
-     * @return bool
+     * @param array $roleType type of role
      */
-    public static function authenticate($userRole = null) {
+    public static function success($request, $role = null) {
 
-        self::setUserCredentials(new Request());
+        if(!empty($role) && $role !== null) {
 
-        if($userRole !== null) {
-
-            $sql = User::getCredentialsAndRole(self::$_userCredentialInputName, self::$_userCredentialInputValue, $userRole['role']);
+            $sql = DB::try()->select('*')->from('users')->join('roles')->on('users.role_id', '=', 'roles.id')->where(key($request), '=', $request[key($request)][key($request)])->and('type', '=', $role['role'])->first();
         } else {
-            $sql = User::getCredentials(self::$_userCredentialInputName, self::$_userCredentialInputValue);
+
+            $sql = DB::try()->select('*')->from('users')->where(key($request), '=', $request[key($request)][key($request)])->first();
         }
 
-        return self::verifyPassword($sql);
-    }
-
-    /**
-     * To set user credentials
-     * 
-     * @param object $request Request
-     */
-    public static function setUserCredentials($request) {
-
-        self::$_password = $request->get()['password'];
-
-        if(!empty($request->get()['email']) && $request->get()['email'] !== null) {
-
-            self::$_userCredentialInputName = 'email';
-            self::$_userCredentialInputValue = $request->get()['email'];
-
-        } else if(!empty($request->get()['username']) && $request->get()['username'] !== null) {
-
-            self::$_userCredentialInputName = 'username';
-            self::$_userCredentialInputValue = $request->get()['username'];
-        }
+        return self::verifyPassword($sql, $request[key($request)]['password']);
     }
 
     /**
@@ -59,12 +32,14 @@ class Auth {
      * @param string $password html input password value
      * @return bool
      */
-    public static function verifyPassword($sql) {
+    private static function verifyPassword($sql, $password) {
 
-        if(password_verify(self::$_password, $sql['password']) && Session::exists('failed_login_attempts_timestamp') === false) {
+        self::checkTooManyLoginAttempts();
+  
+        if(!empty($sql) && password_verify($password, $sql['password']) && Session::exists('failed_login_attempts_timestamp') === false) {
 
             Session::set('logged_in', true);
-            Session::set('user_role', $sql['name']);
+            Session::set('user_role', $sql['role_id']);
             Session::set('username', $sql['username']);
 
             return true;
@@ -76,9 +51,7 @@ class Auth {
     /**
      * To count failded login attempts to show failed login attempt messages
      */
-    public static function loginAttempt() {
-
-        self::checkTooManyLoginAttempts();
+    private static function loginAttempt() {
 
         if(Session::exists('failed_login_attempt') === true) {
 
@@ -99,11 +72,11 @@ class Auth {
     /**
      * To set a timeout to prevent brute force
      */
-    public static function checkTooManyLoginAttempts() {
+    private static function checkTooManyLoginAttempts() {
 
         if(Session::exists('failed_login_attempts_timestamp') === true) {
 
-            $timeoutInSeconds = 300;
+            $timeoutInSeconds = 60;
             $currentTime = time();
             $timestampFailedLoginAttempts = Session::get('failed_login_attempts_timestamp');
         
@@ -112,6 +85,21 @@ class Auth {
                 Session::delete('failed_login_attempts_timestamp');
                 Session::set('failed_login_attempt', 0);
             } 
+        }
+    }
+
+    /**
+     * To get failed login messages
+     */
+    public static function getFailedMessages() {
+
+        if(Session::exists("failed_login_attempt") === true && Session::get("failed_login_attempt") > 0 && Session::exists("failed_login_attempts_timestamp") === false) { 
+      
+            return 'Incorrect login credentials!';
+        
+        } else if(Session::exists("failed_login_attempts_timestamp") === true && time() - Session::get("failed_login_attempts_timestamp") < 60) { 
+            
+            return 'Too many failed login attempts!';
         }
     }
 }

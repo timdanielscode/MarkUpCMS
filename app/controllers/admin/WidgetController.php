@@ -2,16 +2,18 @@
 
 namespace app\controllers\admin;
 
-use app\controllers\Controller;
 use app\models\Widget;
 use app\models\PageWidget;
+use app\models\Css;
+use app\models\Js;
+use app\models\Meta;
 use core\Session;
 use extensions\Pagination;
 use validation\Rules;
 use core\http\Response;
 use validation\Get;
 
-class WidgetController extends Controller {
+class WidgetController extends \app\controllers\Controller {
 
     private $_data;
 
@@ -77,7 +79,7 @@ class WidgetController extends Controller {
 
         $rules = new Rules();
 
-        if($rules->widget($request['title'], Widget::whereColumns(['title'], ['title' => $request['title']]))->validated()) {
+        if($rules->widget($request, Widget::whereColumns(['title'], ['title' => $request['title']]))->validated()) {
 
             Widget::insert([
 
@@ -112,6 +114,9 @@ class WidgetController extends Controller {
 
         $this->ifExists($request['id']);
 
+        $this->_data['cssFiles'] = Css::getAll(['file_name', 'extension']);
+        $this->_data['jsFiles'] = Js::getAll(['file_name', 'extension']);
+        $this->_data['metas'] = Meta::allMetaButOrderedByDate();
         $this->_data['widget'] = Widget::get($request['id']);
 
         return $this->view('admin/widgets/read')->data($this->_data);
@@ -146,7 +151,7 @@ class WidgetController extends Controller {
         
         $rules = new Rules();
         
-        if($rules->widget($request['title'], Widget::checkUniqueTitleId($request['title'], $id))->validated()) {
+        if($rules->widget($request, Widget::checkUniqueTitleId($request['title'], $id))->validated()) {
 
             if(!empty($request['content']) ) { $hasContent = 1; } else { $hasContent = 0; }
 

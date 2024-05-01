@@ -15,26 +15,20 @@ class Table {
         DB::try()->raw('CREATE TABLE IF NOT EXISTS users (
             
             id INT(11) NOT NULL AUTO_INCREMENT PRIMARY KEY,
-            username VARCHAR(30) NOT NULL,
-            email VARCHAR(50) NOT NULL,
+            username VARCHAR(255) NOT NULL,
+            email VARCHAR(255) NOT NULL,
             password VARCHAR(255) NOT NULL,
             removed TINYINT NOT NULL,
             created_at DATE NOT NULL,
-            updated_at DATE NOT NULL
+            updated_at DATE NOT NULL,
+            role_id INT(11)
 
         )')->run();
 
         DB::try()->raw('CREATE TABLE IF NOT EXISTS roles (
                             
             id INT(11) NOT NULL AUTO_INCREMENT PRIMARY KEY,
-            name VARCHAR(30) NOT NULL
-
-        )')->run();
-
-        DB::try()->raw('CREATE TABLE IF NOT EXISTS user_role (
-                                    
-            user_id INT(11) NOT NULL,
-            role_id INT(11) NOT NULL
+            type VARCHAR(50) NOT NULL
 
         )')->run();
 
@@ -112,11 +106,11 @@ class Table {
         DB::try()->raw('CREATE TABLE IF NOT EXISTS metas (
                                     
             id INT(11) NOT NULL AUTO_INCREMENT PRIMARY KEY,
-            title VARCHAR(50) NOT NULL,
+            title VARCHAR(255) NOT NULL,
             content MEDIUMTEXT NOT NULL,
             has_content TINYINT NOT NULL,
             removed TINYINT NOT NULL,
-            author VARCHAR(50) NOT NULL,
+            author VARCHAR(255) NOT NULL,
             created_at DATETIME NOT NULL,
             updated_at DATETIME NOT NULL
 
@@ -125,9 +119,9 @@ class Table {
         DB::try()->raw('CREATE TABLE IF NOT EXISTS css (
                                             
             id INT(11) NOT NULL AUTO_INCREMENT PRIMARY KEY,
-            file_name VARCHAR(30) NOT NULL,
-            extension VARCHAR(30) NOT NULL,
-            author VARCHAR(50) NOT NULL,
+            file_name VARCHAR(49) NOT NULL,
+            extension VARCHAR(49) NOT NULL,
+            author VARCHAR(255) NOT NULL,
             has_content TINYINT NOT NULL,
             removed TINYINT NOT NULL,
             created_at DATETIME NOT NULL,
@@ -138,9 +132,9 @@ class Table {
         DB::try()->raw('CREATE TABLE IF NOT EXISTS js (
                                                     
             id INT(11) NOT NULL AUTO_INCREMENT PRIMARY KEY,
-            file_name VARCHAR(30) NOT NULL,
-            extension VARCHAR(30) NOT NULL,
-            author VARCHAR(50) NOT NULL,
+            file_name VARCHAR(49) NOT NULL,
+            extension VARCHAR(49) NOT NULL,
+            author VARCHAR(255) NOT NULL,
             has_content TINYINT NOT NULL,
             removed TINYINT NOT NULL,
             created_at DATETIME NOT NULL,
@@ -153,9 +147,9 @@ class Table {
             id INT(11) NOT NULL AUTO_INCREMENT PRIMARY KEY,
             media_filename VARCHAR(50) NOT NULL,
             media_folder VARCHAR(50) NOT NULL,
-            media_filetype VARCHAR(15) NOT NULL,
-            media_filesize VARCHAR(8) NOT NULL,
-            media_description VARCHAR(100) NOT NULL,
+            media_filetype VARCHAR(50) NOT NULL,
+            media_filesize VARCHAR(50) NOT NULL,
+            media_description VARCHAR(255) NOT NULL,
             created_at DATETIME NOT NULL,
             updated_at DATETIME NOT NULL
 
@@ -174,9 +168,9 @@ class Table {
             title VARCHAR(50) NOT NULL,
             content MEDIUMTEXT NOT NULL,
             has_content TINYINT NOT NULL,
-            position VARCHAR(10) NOT NULL,
+            position VARCHAR(50) NOT NULL,
             ordering INT(11) NOT NULL,
-            author VARCHAR(50) NOT NULL,
+            author VARCHAR(255) NOT NULL,
             removed TINYINT NOT NULL,
             created_at DATETIME NOT NULL,
             updated_at DATETIME NOT NULL
@@ -186,7 +180,7 @@ class Table {
         DB::try()->raw('CREATE TABLE IF NOT EXISTS websiteSlug (
                                                                     
             id INT(11) NOT NULL AUTO_INCREMENT PRIMARY KEY,
-            slug VARCHAR(50) NOT NULL,
+            slug VARCHAR(255) NOT NULL,
             created_at DATETIME NOT NULL,
             updated_at DATETIME NOT NULL
 
@@ -198,7 +192,7 @@ class Table {
             title VARCHAR(50) NOT NULL,
             content MEDIUMTEXT NOT NULL,
             has_content TINYINT NOT NULL,
-            author VARCHAR(50) NOT NULL,
+            author VARCHAR(255) NOT NULL,
             removed TINYINT NOT NULL,
             created_at DATETIME NOT NULL,
             updated_at DATETIME NOT NULL

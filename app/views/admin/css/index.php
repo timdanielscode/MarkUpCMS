@@ -6,7 +6,8 @@
     - to create a selection of css files to move to/from thrashcan or to permanently remove
  --> 
 
-<?php $this->include('openHeadTag'); ?>
+ <?php $this->include('openHeadTag'); ?>
+    <?php $this->title('Css overview page'); ?> 
     <?php $this->stylesheet("/assets/css/style.css"); ?>
     <?php $this->stylesheet("/assets/css/navbar.css"); ?>
     <?php $this->stylesheet("/assets/css/index.css"); ?>
@@ -22,7 +23,7 @@
     <div class="headerContainer">
         <h1>Css</h1><span class="badge css"><?php echo $count; ?></span>
     </div>
-    <?php if(core\Session::get('user_role') === 'admin') { ?>
+    <?php if(core\Session::get('user_role') === 1) { ?>
         <a href="/admin/css/create" class="create">Create</a> 
         <span class="deleteSeparator">|</span> 
         <form action="/admin/css/delete" method="POST" class="indexDeleteForm">
@@ -33,7 +34,7 @@
     <form action="" method="GET" class="thrashcanForm">
         <input type="submit" name="search" value="Thrashcan"/>
     </form>
-    <?php if($search === 'Thrashcan' && core\Session::get('user_role') === 'admin') { ?> | 
+    <?php if($search === 'Thrashcan' && core\Session::get('user_role') === 1) { ?> | 
         <form action="/admin/css/recover" method="POST" class="recoverForm">
             <input type="submit" class="recover" value="Recover"/>
             <input type="hidden" name="recoverIds" id="recoverIds" value=""/>
@@ -56,9 +57,9 @@
                     <?php foreach($cssFiles as $cssFile) { ?>
                         <tr>
                             <td>
-                                <input class="deleteCheckbox" type="checkbox" name="delete" value="<?php echo $cssFile['id']; ?>" <?php if(core\Session::get('user_role') === 'normal') { echo 'disabled'; } ?>/>
+                                <input class="deleteCheckbox" type="checkbox" name="delete" value="<?php echo $cssFile['id']; ?>" <?php if(core\Session::get('user_role') !== 1) { echo 'disabled'; } ?>/>
                             </td>
-                            <?php if($cssFile['removed'] !== 1 && core\Session::get('user_role') === 'admin') { ?>
+                            <?php if($cssFile['removed'] !== 1 && core\Session::get('user_role') === 1) { ?>
                             <td class="width-25">
                                 <a href="/admin/css/<?php echo $cssFile['id']; ?>/edit" class="font-weight-500"><?php echo $cssFile['file_name'] . $cssFile['extension']; ?></a> |
                                 <a href="/admin/css/<?php echo $cssFile['id']; ?>/edit" class="font-weight-300">Edit</a> |

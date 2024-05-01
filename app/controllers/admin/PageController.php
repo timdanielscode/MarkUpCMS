@@ -2,14 +2,14 @@
 
 namespace app\controllers\admin;
 
-use app\controllers\Controller;
 use validation\Rules;
-use app\models\Post;
+use app\models\Page;
 use app\models\CategoryPage;
 use app\models\Category;
 use app\models\PageMeta;
 use app\models\Css;
 use app\models\Js;
+use app\models\Meta;
 use app\models\Widget;
 use app\models\PageWidget;
 use app\models\Menu;
@@ -20,7 +20,7 @@ use extensions\Pagination;
 use core\http\Response;
 use validation\Get;
 
-class PostController extends Controller {
+class PageController extends \app\controllers\Controller {
 
     private $_data;
 
@@ -28,11 +28,11 @@ class PostController extends Controller {
      * To show 404 page with 404 status code (on not existing page)
      * 
      * @param string $id _POST page id
-     * @return object PostController
+     * @return object PageController
      */ 
     private function ifExists($id) {
 
-        if(empty(Post::ifRowExists($id)) ) {
+        if(empty(Page::ifRowExists($id)) ) {
 
             return Response::statusCode(404)->view("/404/404")->data() . exit();
         }
@@ -42,56 +42,56 @@ class PostController extends Controller {
      * To show the page index view
      * 
      * @param array $request _GET search, page
-     * @return object PostController, Controller
+     * @return object PageController, Controller
      */
     public function index($request) {
         
-        $posts = Post::allPostsWithCategories();
+        $pages = Page::allPagesWithCategories();
 
         $this->_data['search'] = '';
 
         if(!empty($request['search'] ) ) {
 
             $this->_data['search'] = Get::validate($request['search']);
-            $posts = Post::allPostsWithCategoriesOnSearch($this->_data['search']);
+            $pages = Page::allPagesWithCategoriesOnSearch($this->_data['search']);
         }
 
-        $this->_data["posts"] = Pagination::get($request, $posts, 10);
-        $this->_data["count"] = count($posts);
+        $this->_data["pages"] = Pagination::get($request, $pages, 10);
+        $this->_data["count"] = count($pages);
         $this->_data['numberOfPages'] = Pagination::getPageNumbers();
 
-        return $this->view('admin/posts/index')->data($this->_data);
+        return $this->view('admin/pages/index')->data($this->_data);
     }
 
     /**
      * To show the page create view
      * 
-     * @return object PostController, Controller
+     * @return object PageController, Controller
      */
     public function create() {
         
         $this->_data['rules'] = [];
-        return $this->view('admin/posts/create')->data($this->_data);
+        return $this->view('admin/pages/create')->data($this->_data);
     }
 
     /**
      * To store a new page (on successful validation)
      * 
      * @param array $request _POST title, body
-     * @return object PostController, Controller (on failed validation)
+     * @return object PageController, Controller (on failed validation)
      */
     public function store($request) {
 
         $rules = new Rules();
     
-        if($rules->post($request['title'], Post::whereColumns(['id', 'title'], ['title' => $request['title']]))->validated()) {
+        if($rules->page($request, Page::whereColumns(['id', 'title'], ['title' => $request['title']]))->validated()) {
                         
-            $slug = "/" . $request['title'];
+            $slug = "/" . strtolower($request['title']);
             $slug = str_replace(" ", "-", $slug);
 
             if(!empty($request['body']) ) { $hasContent = 1; } else { $hasContent = 0; }
 
-            Post::insert([
+            Page::insert([
     
                 'title' => $request['title'],
                 'slug' => $slug,
@@ -104,14 +104,14 @@ class PostController extends Controller {
             ]);
     
             Session::set('success', 'You have successfully created a new page!');            
-            redirect('/admin/posts');
+            redirect('/admin/pages');
         } else {
 
             $this->_data['body'] = $request['body'];
             $this->_data['title'] = $request['title'];
             $this->_data['rules'] = $rules->errors;
 
-            return $this->view('admin/posts/create')->data($this->_data);
+            return $this->view('admin/pages/create')->data($this->_data);
         }
     }
 
@@ -119,26 +119,39 @@ class PostController extends Controller {
      * To show the page read view
      * 
      * @param array $request id (page id), _GET search, page
-     * @return object PostController, Controller
+     * @return object PageController, Controller
      */
     public function read($request) {
 
         $this->ifExists($request['id']);
 
-        $this->_data['post'] = Post::get($request['id']);
-        $this->_data['cssFiles'] = Post::getCssIdFilenameExtension($request['id']);
-        $this->_data['jsFiles'] = Post::getJs($request['id']);
+        $this->_data['page'] = Page::get($request['id']);
+
+        if(!empty(Widget::getPageWidgets($this->_data['page']['id'])) ) {
+
+            foreach(Widget::getPageWidgets($this->_data['page']['id']) as $widget) {
+
+                $widgetId = $widget['widget_id'];
+                $regex = '/@widget\[' . $widgetId . '\];/';
+                $content = Widget::whereColumns(['content'], ['id' => $widgetId]);
+                $this->_data['page']['body'] = preg_replace($regex, $content[0]['content'], $this->_data['page']['body']);
+            }
+        }
+
+        $this->_data['cssFiles'] = Page::getCssIdFilenameExtension($request['id']);
+        $this->_data['jsFiles'] = Page::getJs($request['id']);
+        $this->_data['metas'] = Meta::getContent($request['id']);
         $this->_data['menusTop'] = Menu::getTopMenus();
         $this->_data['menusBottom'] =  Menu::getBottomMenus();
 
-        return $this->view('/admin/posts/read')->data($this->_data);
+        return $this->view('/admin/pages/read')->data($this->_data);
     }
 
     /**
      * To show the page edit view
      * 
      * @param array $request id (page id), _GET search, page
-     * @return object PostController, Controller
+     * @return object PageController, Controller
      */
     public function edit($request) {
 
@@ -148,14 +161,14 @@ class PostController extends Controller {
         $this->_data = $this->getAllData($request['id']);
         $this->_data['rules'] = [];
 
-        return $this->view('admin/posts/edit')->data($this->_data);
+        return $this->view('admin/pages/edit')->data($this->_data);
     }
 
     /**
      * To update page data (on successful validation)
      * 
      * @param array $request id (page id), _POST title, body
-     * @return object PostController, Controller (on failed validation)
+     * @return object PageController, Controller (on failed validation)
      */
     public function update($request) {
 
@@ -165,11 +178,11 @@ class PostController extends Controller {
 
         $rules = new Rules();
 
-        if($rules->post($request['title'], Post::checkUniqueTitleId($request['title'], $id))->validated()) {
+        if($rules->page($request, Page::checkUniqueTitleId($request['title'], $id))->validated()) {
                 
             if(!empty($request['body']) ) { $hasContent = 1; } else { $hasContent = 0; }
 
-            Post::update(['id' => $id], [
+            Page::update(['id' => $id], [
 
                 'title' => $request["title"],
                 'body' => $request["body"],
@@ -178,14 +191,14 @@ class PostController extends Controller {
             ]);
 
             Session::set('success', 'You have successfully updated the page!'); 
-            redirect("/admin/posts/$id/edit");
+            redirect("/admin/pages/$id/edit");
                 
         } else {
 
             $this->_data = $this->getAllData($id, $request);
             $this->_data['rules'] = $rules->errors;
 
-            return $this->view('admin/posts/edit')->data($this->_data);
+            return $this->view('admin/pages/edit')->data($this->_data);
         }
     }
 
@@ -233,34 +246,34 @@ class PostController extends Controller {
      */
     private function getAllData($id, $requestData = null) {
 
-        $postData = Post::get($id);
-        $postSlug = explode('/', $postData['slug']);
-        $postSlug = "/" . $postSlug[array_key_last($postSlug)];
+        $pageData = Page::get($id);
+        $pageSlug = explode('/', $pageData['slug']);
+        $pageSlug = "/" . $pageSlug[array_key_last($pageSlug)];
 
-        $this->_data['data'] = $postData;
+        $this->_data['data'] = $pageData;
 
         if(!empty($requestData['body']) && $requestData['body'] !== null) {
 
             $this->_data['data']['body'] = $requestData['body'];
         }
 
-        $this->_data['data']['postSlug'] = $postSlug;
-        $this->_data['data']['linkedCssFiles'] = Post::getCssIdFilenameExtension($id);
-        $this->_data['data']['notLinkedCssFiles'] = Post::getNotCssIdFilenameExtension(Post::getCssIdFilenameExtension($id));
-        $this->_data['data']['linkedJsFiles'] = Post::getJsIdFilenameExtension($id);
-        $this->_data['data']['notLinkedJsFiles'] = Post::getNotJsIdFilenameExtension(Post::getJsIdFilenameExtension($id));
+        $this->_data['data']['pageSlug'] = $pageSlug;
+        $this->_data['data']['linkedCssFiles'] = Page::getCssIdFilenameExtension($id);
+        $this->_data['data']['notLinkedCssFiles'] = Page::getNotCssIdFilenameExtension(Page::getCssIdFilenameExtension($id));
+        $this->_data['data']['linkedJsFiles'] = Page::getJsIdFilenameExtension($id);
+        $this->_data['data']['notLinkedJsFiles'] = Page::getNotJsIdFilenameExtension(Page::getJsIdFilenameExtension($id));
 
-        if(empty(Post::checkCategory($id))) {
+        if(empty(Page::checkCategory($id))) {
 
             $this->_data['data']['categories'] = Category::getAll(['id', 'title']);
         } else {
-            $this->_data['data']['category'] = Post::getCategoryTitleSlug($id);
+            $this->_data['data']['category'] = Page::getCategoryTitleSlug($id);
         }
 
-        $this->_data['data']['applicableWidgets'] = Post::getApplicableWidgetIdTitle($id);
-        $this->_data['data']['inapplicableWidgets'] = Post::getInapplicableWidgetIdTitle(Post::getApplicableWidgetIdTitle($id));
-        $this->_data['data']['exportCdns'] = Post::getCdnIdTitle($id);
-        $this->_data['data']['importCdns'] = Post::getNotCdnIdTitle(Post::getCdnIdTitle($id));
+        $this->_data['data']['applicableWidgets'] = Page::getApplicableWidgetIdTitle($id);
+        $this->_data['data']['inapplicableWidgets'] = Page::getInapplicableWidgetIdTitle(Page::getApplicableWidgetIdTitle($id));
+        $this->_data['data']['exportCdns'] = Page::getCdnIdTitle($id);
+        $this->_data['data']['importCdns'] = Page::getNotCdnIdTitle(Page::getCdnIdTitle($id));
 
         return $this->_data;
     }
@@ -286,7 +299,7 @@ class PostController extends Controller {
         }
 
         Session::set('success', 'You have successfully imported the meta(s) on this page!'); 
-        redirect("/admin/posts/$id/edit");
+        redirect("/admin/pages/$id/edit");
     }
 
     /** 
@@ -302,11 +315,11 @@ class PostController extends Controller {
 
         foreach($request['cdns'] as $cdnId) {
 
-            Post::deleteCdn($id, $cdnId);
+            Page::deleteCdn($id, $cdnId);
         }
 
         Session::set('success', 'You have successfully removed the meta(s) on this page!'); 
-        redirect("/admin/posts/$id/edit");
+        redirect("/admin/pages/$id/edit");
     }
 
     /**
@@ -334,7 +347,7 @@ class PostController extends Controller {
         }
 
         Session::set('success', 'You have successfully made the widget(s) applicable for this page!'); 
-        redirect("/admin/posts/$id/edit");
+        redirect("/admin/pages/$id/edit");
     }
 
     /**
@@ -353,19 +366,19 @@ class PostController extends Controller {
 
             foreach($request['widgets'] as $widgetId) {
 
-                Widget::removePostwidget($id, $widgetId);
+                Widget::removePagewidget($id, $widgetId);
             }
         }
 
         Session::set('success', 'You have successfully made the widget(s) inapplicable for this page!'); 
-        redirect("/admin/posts/$id/edit");
+        redirect("/admin/pages/$id/edit");
     }
 
     /**
      * To assign category on page (on successful validation)
      * 
      * @param array $request id (page id), _POST categories
-     * @return object PostController, Controller (on failed validation)
+     * @return object PageController, Controller (on failed validation)
      */
     public function assignCategory($request) {
 
@@ -376,11 +389,11 @@ class PostController extends Controller {
 
         $rules = new Rules();
 
-        $slug = explode('/', Post::getColumns(['slug'], $id)['slug']);
+        $slug = explode('/', Page::getColumns(['slug'], $id)['slug']);
         $lastKey = array_key_last($slug);
         $categoryId = $request['categories'];
 
-        if($rules->post_update_category($categoryId, Post::checkUniqueSlugCategory($id, $slug[$lastKey], $categoryId))->validated()) {
+        if($rules->page_update_category($request, Page::checkUniqueSlugCategory($id, $slug[$lastKey], $categoryId))->validated()) {
 
             CategoryPage::insert([
 
@@ -391,19 +404,19 @@ class PostController extends Controller {
             $this->updateSlugCategory($id, $categoryId);
 
             Session::set('success', 'You have successfully assigned the category on this page!'); 
-            redirect("/admin/posts/$id/edit");
+            redirect("/admin/pages/$id/edit");
 
         } else {
 
             $this->_data = $this->getAllData($id);
             $this->_data['rules'] = $rules->errors;
 
-            return $this->view('admin/posts/edit')->data($this->_data);
+            return $this->view('admin/pages/edit')->data($this->_data);
         }
     }
 
     /**
-     * To update post data (slug) after assigning a category
+     * To update page data (slug) after assigning a category
      * 
      * @param string $id page id 
      * @param string $categoryId _POST category id
@@ -421,16 +434,16 @@ class PostController extends Controller {
 
             $subCategorySlugsString = implode('', $subCategorySlugs);
     
-            Post::update(['id' => $id], [
+            Page::update(['id' => $id], [
 
-                'slug'  =>  $subCategorySlugsString . Category::getSlug($categoryId)['slug'] . Post::getColumns(['slug'], $id)['slug']
+                'slug'  =>  $subCategorySlugsString . Category::getSlug($categoryId)['slug'] . Page::getColumns(['slug'], $id)['slug']
             ]);
 
         } else {
 
-            Post::update(['id' => $id], [
+            Page::update(['id' => $id], [
     
-                'slug'  => Category::getSlug($categoryId)['slug'] . Post::getColumns(['slug'], $id)['slug']
+                'slug'  => Category::getSlug($categoryId)['slug'] . Page::getColumns(['slug'], $id)['slug']
             ]);
         }
     }
@@ -449,11 +462,11 @@ class PostController extends Controller {
 
         foreach($request['linkedJsFiles'] as $linkedJsId) {
 
-            Post::deleteJs($id, $linkedJsId);
+            Page::deleteJs($id, $linkedJsId);
         }
             
         Session::set('success', 'You have successfully removed the js file(s) on this page!');
-        redirect("/admin/posts/$id/edit");
+        redirect("/admin/pages/$id/edit");
     }
 
     /**
@@ -478,7 +491,7 @@ class PostController extends Controller {
         }
 
         Session::set('success', 'You have successfully included the js file(s) on this page!');
-        redirect("/admin/posts/$id/edit");
+        redirect("/admin/pages/$id/edit");
     }
 
     /**
@@ -503,7 +516,7 @@ class PostController extends Controller {
         };
 
         Session::set('success', 'You have successfully linked the css file(s) on this page!');
-        redirect("/admin/posts/$id/edit");
+        redirect("/admin/pages/$id/edit");
     }
 
     /**
@@ -520,18 +533,18 @@ class PostController extends Controller {
 
         foreach($request['linkedCssFiles'] as $cssId) {
 
-            Post::deleteCss($id, $cssId);
+            Page::deleteCss($id, $cssId);
         }
 
         Session::set('success', 'You have successfully removed the css file(s) on this page!');
-        redirect("/admin/posts/$id/edit");
+        redirect("/admin/pages/$id/edit");
     }
 
     /**
      * To update page data (slug) (on successful validation)
      * 
-     * @param array $request id (page id), _POST postSlug
-     * @return object PostController, Controller (on failed validation)
+     * @param array $request id (page id), _POST pageSlug
+     * @return object PageController, Controller (on failed validation)
      */
     public function updateSlug($request) {
 
@@ -545,16 +558,16 @@ class PostController extends Controller {
         $slug = explode('/', $request['slug']);
         $lastKey = array_key_last($slug);
 
-        $slug[$lastKey] = $request['postSlug'];
-        $fullPostSlug = implode('/', $slug);
+        $slug[$lastKey] = $request['pageSlug'];
+        $fullPageSlug = implode('/', $slug);
 
-        if($rules->post_slug($request['postSlug'], Post::checkUniqueSlug($fullPostSlug, $id))->validated()) {
+        if($rules->page_slug($request, Page::checkUniqueSlug($fullPageSlug, $id))->validated()) {
 
             $slug = explode('/', "/" . $request['slug']);
-            $slug[array_key_last($slug)] = substr("/" . $request['postSlug'], 1);
+            $slug[array_key_last($slug)] = substr("/" . $request['pageSlug'], 1);
             $slug = implode('/', array_filter($slug));
 
-            Post::update(['id' => $id], [
+            Page::update(['id' => $id], [
 
                 'slug' => "/" . $slug,
                 'updated_at' => date('Y-m-d H:i:s', $_SERVER['REQUEST_TIME'])
@@ -565,18 +578,18 @@ class PostController extends Controller {
             $this->_data = $this->getAllData($id);
             $this->_data['rules'] = $rules->errors;
 
-            return $this->view('admin/posts/edit')->data($this->_data);
+            return $this->view('admin/pages/edit')->data($this->_data);
         }
 
         Session::set('success', 'You have successfully updated the slug on this page!');
-        redirect("/admin/posts/$id/edit");
+        redirect("/admin/pages/$id/edit");
     }
 
     /**
      * To update page data (meta title, meta description, meta keywords) (on successful validation)
      * 
      * @param array $request id (page id), _POST metaTitle, metaDescription, metaKeywords
-     * @return object PostController, Controller (on failed validation)
+     * @return object PageController, Controller (on failed validation)
      */
     public function updateMetadata($request) {
 
@@ -587,9 +600,9 @@ class PostController extends Controller {
 
         $rules = new Rules();
 
-        if($rules->meta($request['metaTitle'], $request['metaDescription'], $request['metaKeywords'])->validated()) {
+        if($rules->seo($request)->validated()) {
 
-            Post::update(['id' => $id], [
+            Page::update(['id' => $id], [
 
                 'metaTitle' => $request['metaTitle'],
                 'metaDescription' => $request['metaDescription'],
@@ -602,18 +615,18 @@ class PostController extends Controller {
             $this->_data = $this->getAllData($id);
             $this->_data['rules'] = $rules->errors;
 
-            return $this->view('admin/posts/edit')->data($this->_data);
+            return $this->view('admin/pages/edit')->data($this->_data);
         }
 
         Session::set('success', 'You have successfully updated the meta data on this page!');
-        redirect("/admin/posts/$id/edit");
+        redirect("/admin/pages/$id/edit");
     }
 
     /**
      * To detach category from page and update page data (slug) (on successful validation)
      * 
      * @param array $request id (page id), _POST slug
-     * @return object PostController, Controller (on failed validation)
+     * @return object PageController, Controller (on failed validation)
      */
     public function detachCategory($request) {
 
@@ -624,13 +637,13 @@ class PostController extends Controller {
 
         $rules = new Rules();
 
-        $slugParts = explode('/', Post::getColumns(['slug'], $id)['slug']);
+        $slugParts = explode('/', Page::getColumns(['slug'], $id)['slug']);
         $lastPageSlugKey = array_key_last($slugParts);
         $lastPageSlugValue = "/" . $slugParts[$lastPageSlugKey];
 
-        if($rules->post_remove_category($request['slug'], Post::checkUniqueSlug($lastPageSlugValue, $id))->validated()) {
+        if($rules->page_remove_category($request, Page::checkUniqueSlug($lastPageSlugValue, $id))->validated()) {
             
-            Post::update(['id' => $id], [
+            Page::update(['id' => $id], [
 
                 'slug'  => $lastPageSlugValue,
             ]);
@@ -638,14 +651,14 @@ class PostController extends Controller {
             CategoryPage::delete('page_id', $id);
     
             Session::set('success', 'You have successfully removed the category on this page!');
-            redirect("/admin/posts/$id/edit");
+            redirect("/admin/pages/$id/edit");
 
         } else {
                 
             $this->_data = $this->getAllData($id);
             $this->_data['rules'] = $rules->errors;
 
-            return $this->view('admin/posts/edit')->data($this->_data);
+            return $this->view('admin/pages/edit')->data($this->_data);
         }
     }
 
@@ -662,15 +675,15 @@ class PostController extends Controller {
 
             $this->ifExists($id);
             
-            Post::update(['id' => $id], [
+            Page::update(['id' => $id], [
             
                 'removed'  => 0,
-                'slug' => "/" . Post::getColumns(['title'], $id)['title']
+                'slug' => "/" . Page::getColumns(['title'], $id)['title']
             ]);
         }
         
         Session::set('success', 'You have successfully recovered the page(s)!');
-        redirect("/admin/posts");
+        redirect("/admin/pages");
     }
 
     /**
@@ -688,9 +701,9 @@ class PostController extends Controller {
 
                 $this->ifExists($id);
 
-                if(Post::getColumns(['removed'], $id)['removed'] !== 1) {
+                if(Page::getColumns(['removed'], $id)['removed'] !== 1) {
             
-                    Post::update(['id' => $id], [
+                    Page::update(['id' => $id], [
             
                         'removed'  => 1,
                         'slug'  => ''
@@ -700,9 +713,9 @@ class PostController extends Controller {
 
                     Session::set('success', 'You have successfully moved the page(s) to the trashcan!');
             
-                } else if(Post::getColumns(['removed'], $id)['removed'] === 1) {
+                } else if(Page::getColumns(['removed'], $id)['removed'] === 1) {
             
-                    Post::delete("id", $id);
+                    Page::delete("id", $id);
                     CategoryPage::delete('page_id', $id);
 
                     Session::set('success', 'You have successfully removed the page(s)!');
@@ -710,6 +723,6 @@ class PostController extends Controller {
             }
         }
 
-        redirect("/admin/posts");
+        redirect("/admin/pages");
     }
 }

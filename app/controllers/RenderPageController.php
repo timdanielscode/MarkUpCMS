@@ -3,7 +3,7 @@
 namespace app\controllers;
 
 use app\controllers\Controller;
-use app\models\Post;
+use app\models\Page;
 use app\models\Css;
 use app\models\Js;
 use app\models\Menu;
@@ -20,28 +20,44 @@ class RenderPageController extends Controller {
      * 
      * @return object RenderPageController, Controller
      */
-    public function render() {
+    public function render($path) {
 
-        $request = new Request();
-        $this->_data['post'] = Post::where(['slug' => $request->getUri()]);
+        $this->_data['page'] = $this->getPage($path);
 
-        if(!empty(Widget::getPostWidgets($this->_data['post'][0]['id'])) ) {
+        if(!empty(Widget::getPageWidgets($this->_data['page'][0]['id'])) ) {
 
-            foreach(Widget::getPostWidgets($this->_data['post'][0]['id']) as $widget) {
+            foreach(Widget::getPageWidgets($this->_data['page'][0]['id']) as $widget) {
 
                 $widgetId = $widget['widget_id'];
                 $regex = '/@widget\[' . $widgetId . '\];/';
                 $content = Widget::whereColumns(['content'], ['id' => $widgetId]);
-                $this->_data['post'][0]['body'] = preg_replace($regex, $content[0]['content'], $this->_data['post'][0]['body']);
+                $this->_data['page'][0]['body'] = preg_replace($regex, $content[0]['content'], $this->_data['page'][0]['body']);
             }
         }
 
-        $this->_data['metas'] = Meta::getContent($this->_data['post'][0]['id']);
-        $this->_data['cssFiles'] = Css::getFilenameExtension($this->_data['post'][0]['id']);
-        $this->_data['jsFiles'] = Js::getFilenameExtension($this->_data['post'][0]['id']);
+        $this->_data['metas'] = Meta::getContent($this->_data['page'][0]['id']);
+        $this->_data['cssFiles'] = Css::getFilenameExtension($this->_data['page'][0]['id']);
+        $this->_data['jsFiles'] = Js::getFilenameExtension($this->_data['page'][0]['id']);
         $this->_data['menusTop'] = Menu::getTopMenus();
         $this->_data['menusBottom'] = Menu::getBottomMenus();
 
         return $this->view('page')->data($this->_data);
+    }
+
+    /**
+     * To get the page
+     * 
+     * @return array page data
+     */
+    private function getPage($path) {
+
+        if(!empty($path) && $path !== null) {
+
+            return Page::where(['slug' => '/' . $path['path']]);
+        } else {
+
+            $request = new Request();
+            return Page::where(['slug' => $request->getUri()]);
+        }
     }
 }

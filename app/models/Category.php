@@ -20,7 +20,7 @@ class Category extends Model {
 
     private static $_table = "categories";
     private static $_columns = [];
-    private static $_postIds = [], $_subIds = [];
+    private static $_pageIds = [], $_subIds = [];
 
     public static function ifRowExists($id) {
 
@@ -47,7 +47,7 @@ class Category extends Model {
         return DB::try()->select('id')->from('categories')->first();
     }
 
-    public function allCategoriesWithPosts($id) {
+    public function allCategoriesWithPages($id) {
 
         return DB::try()->select('pages.title', 'pages.id')->from('pages')->join('category_page')->on('category_page.page_id', '=', 'pages.id')->join(self::$_table)->on('category_page.category_id', '=', 'categories.id')->where('categories.id', '=', $id)->fetch();
     }
@@ -78,33 +78,33 @@ class Category extends Model {
         return DB::try()->select('title')->from(self::$_table)->where('title', '=', $title)->and('id', '!=', $id)->fetch();
     }
 
-    public static function getPostAssignedIdTitle($id) {
+    public static function getPageAssignedIdTitle($id) {
 
         return DB::try()->select('id, title')->from('pages')->join('category_page')->on('pages.id', '=', 'category_page.page_id')->where('category_id', '=', $id)->and('pages.removed', '!=', 1)->fetch();
     }
 
-    public static function getNotPostAssignedIdTitle() {
+    public static function getNotPageAssignedIdTitle() {
 
-        if(!empty(self::getAssignedPostIds())  ) {
+        if(!empty(self::getAssignedPageIds())  ) {
 
-            $postIdsString = implode(',', self::getAssignedPostIds());
-            return DB::try()->select('id, title')->from('pages')->whereNotIn('id', $postIdsString)->and('removed', '!=', 1)->fetch();
+            $pageIdsString = implode(',', self::getAssignedPageIds());
+            return DB::try()->select('id, title')->from('pages')->whereNotIn('id', $pageIdsString)->and('removed', '!=', 1)->fetch();
 
         } else {
             return DB::try()->select('id, title')->from('pages')->where('removed', '!=', 1)->fetch();
         }
     }
 
-    private static function getAssignedPostIds() {
+    private static function getAssignedPageIds() {
 
-        $assignedPostIds = DB::try()->select('page_id')->from('category_page')->fetch();
+        $assignedPageIds = DB::try()->select('page_id')->from('category_page')->fetch();
 
-        foreach($assignedPostIds as $postId) {
+        foreach($assignedPageIds as $pageId) {
 
-            array_push(self::$_postIds, $postId['page_id']); 
+            array_push(self::$_pageIds, $pageId['page_id']); 
         }
 
-        return self::$_postIds;
+        return self::$_pageIds;
     }
 
     public static function getSubIdTitleSlug($id) {
@@ -128,19 +128,19 @@ class Category extends Model {
         }
     }
 
-    public static function checkPostAssingedId($id, $postId) {
+    public static function checkPageAssingedId($id, $pageId) {
 
-        return DB::try()->select('*')->from('category_page')->where('category_id', '=', $id)->and('page_id', '=', $postId)->first();
+        return DB::try()->select('*')->from('category_page')->where('category_id', '=', $id)->and('page_id', '=', $pageId)->first();
     }
 
-    public static function checkPostAssinged($id) {
+    public static function checkPageAssinged($id) {
 
         return DB::try()->select('*')->from('category_page')->where('category_id', '=', $id)->first(); 
     }
 
-    public static function deletePost($postId, $categoryId) {
+    public static function deletePage($pageId, $categoryId) {
 
-        return DB::try()->delete('category_page')->where('page_id', '=', $postId)->and('category_id', '=', $categoryId)->run();
+        return DB::try()->delete('category_page')->where('page_id', '=', $pageId)->and('category_id', '=', $categoryId)->run();
     }
     
     public static function checkSubId($id, $subId) {

@@ -2,7 +2,8 @@
     - to add a username and password to submit and authenticate to login
  --> 
 
-<?php $this->include('openHeadTag'); ?>  
+ <?php $this->include('openHeadTag'); ?>  
+  <?php $this->title('Login'); ?>
   <?php $this->stylesheet("/assets/css/style.css"); ?>
   <?php $this->stylesheet("/assets/css/login.css"); ?>
 <?php $this->include('closeHeadTagAndOpenBodyTag'); ?>
@@ -22,12 +23,11 @@
             <input type="password" name="password"/>
         <div class="form-rules">               
             <?php echo validation\Errors::get($rules, "password"); ?> 
-            <?php echo $failedLoginMessage; ?>
-        </div>                
+            <?php if(!empty($username) && empty($rules) ) { echo extensions\Auth::getFailedMessages(); } ?>  
         </div>                
         <div class="form-parts">             
             <button type="submit" name="submit">Sign in</button>             
             <input type="hidden" name="token" value="<?php core\Csrf::token(); ?>"/>
-        </div>                
+        </div>      
     </form>    
 </div>

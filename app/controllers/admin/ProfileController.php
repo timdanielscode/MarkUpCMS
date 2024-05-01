@@ -2,7 +2,6 @@
                 
 namespace app\controllers\admin;
 
-use app\controllers\Controller;
 use core\Session; 
 use core\http\Response;
 use validation\Rules;
@@ -11,7 +10,7 @@ use app\models\UserRole;
 use extensions\Auth;
 use app\models\WebsiteSlug;
                 
-class ProfileController extends Controller {
+class ProfileController extends \app\controllers\Controller {
 
     private $_data;
 
@@ -23,7 +22,7 @@ class ProfileController extends Controller {
      */ 
     private function ifExists($id) {
 
-        if(empty(Post::ifRowExists($id)) ) {
+        if(empty(User::ifRowExists($id)) ) {
 
             return Response::statusCode(404)->view("/404/404")->data() . exit();
         }
@@ -34,9 +33,12 @@ class ProfileController extends Controller {
      * 
      * @return object ProfileController, Controller
      */
-    public function index() { 
+    public function index($request) { 
+
+        $this->ifExists($request['id']);
     
         $this->_data['user'] = User::getLoggedInUserAndRole(Session::get('username'));
+        $this->_data['id'] = $request['id'];
         $this->_data['rules'] = [];
 
         return $this->view("/admin/profile/index")->data($this->_data);    
@@ -54,7 +56,7 @@ class ProfileController extends Controller {
 
         $rules = new Rules();
 
-        if($rules->user_edit(User::checkUniqueUsername($request["f_username"], $id), User::checkUniqueEmail($request['email'], $id))->validated()) {
+        if($rules->profile_edit($request, User::checkUniqueUsername($request["f_username"], $id), User::checkUniqueEmail($request['email'], $id))->validated()) {
 
             User::update(['id' => $id], [
 
@@ -64,7 +66,8 @@ class ProfileController extends Controller {
 
             Session::set('username', $request['f_username']);
             Session::set('success', 'You have successfully updated your profile details!');
-            redirect('/admin/profile/' . $request['f_username']);
+
+            redirect('/admin/profile/' . $request['id']);
 
         } else {
 
@@ -83,19 +86,21 @@ class ProfileController extends Controller {
      */
     public function updateRole($request) {
 
+        $id = $request['id'];
+
         $rules = new Rules();
 
-        if($rules->profile_edit_role($request['role'], UserRole::where(['role_id' => 2]))->validated()) {
+        if($rules->profile_edit_role($request['role'], User::where(['role_id' => 1]))->validated()) {
 
-            UserRole::update(['user_id' => $request['id']], [
+            User::update(['id' => $id], [
 
                 'role_id'  =>  1,
-                'user_id' => $request['id']
             ]);
             
-            Session::set('user_role', 'normal');
+            Session::set('user_role', null);
             Session::set('success', 'You have successfully updated your user role!');
-            redirect('/admin/profile/' . Session::get('username'));
+
+            redirect("/admin/profile/$id");
 
         } else {
 
@@ -111,7 +116,9 @@ class ProfileController extends Controller {
      * 
      * @return object ProfileController, Controller
      */
-    public function editPassword() {
+    public function editPassword($request) {
+
+        $this->ifExists($request['id']);
 
         $this->_data['user'] = User::getLoggedInUserAndRole(Session::get('username'));
         $this->_data['rules'] = [];
@@ -129,11 +136,23 @@ class ProfileController extends Controller {
 
         $rules = new Rules();
 
-        if($rules->profile_password($request['password'], $request['newPassword'], $request['retypePassword'])->validated() === true) {
+        if($rules->profile_password($request)->validated() === true && Auth::success(["username" => $request]) === true) {
 
-            $this->authenticate($rules, $request['id'], $request['newPassword']);
+            User::update(['username' => Session::get('username')], [
+
+                'password' => password_hash($request['newPassword'], PASSWORD_DEFAULT)
+            ]);
+
+            Session::delete('logged_in');
+            Session::delete('username');
+            Session::delete('user_role');
+
+            $websiteSlug = WebsiteSlug::getColumns(['slug'], 1);
+            redirect($websiteSlug['slug']) . exit();
+
         } else {
 
+            $this->_data['username'] = Session::get('username');
             $this->_data['user'] = User::getLoggedInUserAndRole(Session::get('username'));
             $this->_data['rules'] = $rules->errors;
 
@@ -142,97 +161,29 @@ class ProfileController extends Controller {
     }
 
     /**
-     * To authenticate user (before update user password)
-     * 
-     * @param object $rules validation rules
-     * @param string id _POST user id
-     * @param string $password _POST newPassword
-     * @return object ProfileController, Controller (on failed authentication)
-     */
-    private function authenticate($rules, $id, $password) {
-
-        if(Auth::authenticate() ) {
-
-            $this->updateCurrentPassword($id, $password);
-        } else {
-
-            $this->_data['user'] = User::getLoggedInUserAndRole(Session::get('username'));
-            $rules->errors[] = ['retypePassword' => $this->getFailedLoginAttemptMessages()];
-            $this->_data['rules'] = $rules->errors;
-
-            return $this->view('/admin/profile/changePassword')->data($this->_data);
-        }
-    }
-
-    /**
-     * To update user data (password)
-     * 
-     * @param string id _POST user id
-     * @param string $password _POST newPassword
-     */
-    private function updateCurrentPassword($id, $password) {
-
-        if(!empty($id) && $id !== null && !empty($password) && $password !== null) {
-
-            User::update(['id' => $id], [
-
-                'password' => password_hash($password, PASSWORD_DEFAULT)
-            ]);
-        }
-        
-        Session::delete('logged_in');
-        Session::delete('username');
-        Session::delete('user_role');
-            
-        $this->redirectLoginPage();
-    }
-
-    /**
-     * To show failed login validation error messages
-     * 
-     * @return string $message validation error message
-     */
-    private function getFailedLoginAttemptMessages() {
-
-        if(Session::exists('failed_login_attempt') === true && Session::exists('failed_login_attempts_timestamp') === false) {
-
-            $message = "Incorrect credentials.";
-        } else if(Session::exists('failed_login_attempt') === true && Session::exists('failed_login_attempts_timestamp') === true) {
-            $message = "Too many failed attempts.";
-        } else {
-            $message = "";
-        }
-
-        return $message;
-    }
-
-    /**
-     * To redirect to 'login' view (after successfully updated password)
-     */
-    private function redirectLoginPage() {
-
-        $websiteSlug = WebsiteSlug::getColumns(['slug'], 1);
-
-        if(!empty($websiteSlug) && $websiteSlug !== null) {
-
-            redirect($websiteSlug['slug']);
-        } 
-    }
-
-    /**
      * To remove a user 
      * 
      * @param array $request _POST id (user id)
      */
-    public function delete($request) {
+    public function delete() {
 
-        User::delete('username', Session::get('username'));
-        UserRole::delete('user_id', $request['id']);
+        if(count(User::where(['role_id' => '1'])) > 1) {
 
-        Session::delete('username');
-        Session::delete('user_role');
-        Session::delete("logged_in");
+            User::delete('username', Session::get('username'));
 
-        redirect('/');
+            Session::delete('username');
+            Session::delete('user_role');
+            Session::delete("logged_in");
+    
+            redirect('/');
+        } else {
+
+            $rules = new Rules();
+            $rules->errors[] = ['role' => 'There should be at least one admin.'];
+            $this->_data['user'] = User::getLoggedInUserAndRole(Session::get('username'));
+            $this->_data['rules'] = $rules->errors;
+
+            return $this->view('/admin/profile/index')->data($this->_data);
+        }
     }
 }  

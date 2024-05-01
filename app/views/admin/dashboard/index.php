@@ -10,6 +10,7 @@
 -->
 
 <?php $this->include('openHeadTag'); ?>
+    <?php $this->title('Dashboard page'); ?>
     <?php $this->stylesheet("/assets/css/style.css"); ?>
     <?php $this->stylesheet("/assets/css/navbar.css"); ?> 
     <?php $this->stylesheet("/assets/css/sidebar.css"); ?>
@@ -43,17 +44,17 @@
                                 <div class="progressContainer">
                                     <div class="layer"></div>
                                     <span class="label">Meta title</span>
-                                    <progress class="bar lightBlue" value="<?php echo $numberOfAppliedMetaTitle; ?>" max="<?php echo $numberOfPages; ?>"></progress>
+                                    <progress class="bar lightBlue" value="<?php echo $numberOfAppliedMetaTitle; ?>" max="<?php echo count($pages); ?>"></progress>
                                 </div>
                                 <div class="progressContainer">
                                     <div class="layer"></div>
                                     <span class="label">Meta description</span>
-                                    <progress class="bar lightBlue" value="<?php echo $numberOfAppliedMetaDescription; ?>" max="<?php echo $numberOfPages; ?>"></progress>
+                                    <progress class="bar lightBlue" value="<?php echo $numberOfAppliedMetaDescription; ?>" max="<?php echo count($pages); ?>"></progress>
                                 </div>
                                 <div class="progressContainer">
                                     <div class="layer"></div>
                                     <span class="label">Meta keywords</span>
-                                    <progress class="bar lightBlue" value="<?php echo $numberOfAppliedMetaKeywords; ?>" max="<?php echo $numberOfPages; ?>"></progress>
+                                    <progress class="bar lightBlue" value="<?php echo $numberOfAppliedMetaKeywords; ?>" max="<?php echo count($pages); ?>"></progress>
                                 </div>
                                 <div class="progressContainer">
                                     <div class="layer"></div>
@@ -122,11 +123,7 @@
                                 <div class="stopMousemoveEvent"></div>
                                 <div class="progressContainer"></div>
                                 <div class="progressContainer"></div>
-                                <div class="progressContainer">
-                                    <div class="layer"></div>
-                                    <span class="label">Linked</span>
-                                    <progress class="bar darkBlue" value="<?php echo $numberOfLinkedCss; ?>" max="<?php echo count($css); ?>"></progress>
-                                </div>
+                                <div class="progressContainer"></div>
                                 <div class="progressContainer">
                                     <div class="layer"></div>
                                     <span class="label">Content</span>
@@ -146,11 +143,7 @@
                                 <div class="stopMousemoveEvent"></div>
                                 <div class="progressContainer"></div>
                                 <div class="progressContainer"></div>
-                                <div class="progressContainer">
-                                    <div class="layer"></div>
-                                    <span class="label">Included </span>
-                                    <progress class="bar darkBlue" value="<?php echo $numberOfIncludedJs; ?>" max="<?php echo count($menus); ?>"></progress>
-                                </div>
+                                <div class="progressContainer"></div>
                                 <div class="progressContainer">
                                     <div class="layer"></div>
                                     <span class="label">Content</span>

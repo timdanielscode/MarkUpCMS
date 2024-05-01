@@ -1,3 +1,8 @@
 var navbar = new Navbar();
 
-navbar.setOnclickEvent();
+if(navbar.getElement() !== null) {
+
+    navbar.setOnclickEvent();
+}
+
+navbar.adjustLogoSpacing();

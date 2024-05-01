@@ -20,7 +20,7 @@ class Js extends Model {
 
     private static $_table = "js";
     private static $_columns = [];
-    private static $_postIds = [];
+    private static $_pageIds = [];
 
     public static function ifRowExists($id) {
 
@@ -38,9 +38,9 @@ class Js extends Model {
         return DB::try()->select(self::$_columns)->from(self::$_table)->fetch();
     }
 
-    public static function getFilenameExtension($postId) {
+    public static function getFilenameExtension($pageId) {
 
-        return DB::try()->select('file_name', 'extension')->from('js')->join('js_page')->on('js_page.js_id', '=', 'js.id')->where('js_page.page_id', '=', $postId)->fetch();
+        return DB::try()->select('file_name', 'extension')->from('js')->join('js_page')->on('js_page.js_id', '=', 'js.id')->where('js_page.page_id', '=', $pageId)->fetch();
     }
 
     public static function jsFilesOnSearch($searchValue) {
@@ -66,30 +66,25 @@ class Js extends Model {
         return DB::try()->select('file_name')->from(self::$_table)->where('file_name', '=', $filename)->and('id', '!=', $id)->fetch();
     }
 
-    public static function getPostAssignedIdTitle($id) {
+    public static function getPageAssignedIdTitle($id) {
 
         return DB::try()->select('id, title')->from('pages')->join('js_page')->on('pages.id', '=', 'js_page.page_id')->where('js_page.js_id', '=', $id)->and('pages.removed', '!=', 1)->fetch();
     }
 
-    public static function getNotPostAssingedIdTitle($postAssignedIdTitle) {
+    public static function getNotPageAssingedIdTitle($pageAssignedIdTitle) {
 
-        if(!empty($postAssignedIdTitle) && $postAssignedIdTitle !== null) {
+        if(!empty($pageAssignedIdTitle) && $pageAssignedIdTitle !== null) {
 
-            foreach($postAssignedIdTitle as $post) {
+            foreach($pageAssignedIdTitle as $page) {
 
-                array_push(self::$_postIds, $post['id']);
+                array_push(self::$_pageIds, $page['id']);
             }
 
-            $postIdsString = implode(',', self::$_postIds);
+            $pageIdsString = implode(',', self::$_pageIds);
 
-            return DB::try()->select('id, title')->from('pages')->whereNotIn('id', $postIdsString)->and('pages.removed', '!=', 1)->fetch();
+            return DB::try()->select('id, title')->from('pages')->whereNotIn('id', $pageIdsString)->and('pages.removed', '!=', 1)->fetch();
         } else {
             return DB::try()->select('id, title')->from('pages')->where('pages.removed', '!=', 1)->fetch();
         }
-    }
-
-    public static function getIdIncludedNotNull() {
-
-        return DB::try()->select('id')->from('js')->joinLeft('js_page')->on("js_page.js_id", '=', 'js.id')->where('js_page.js_id', 'IS NOT', NULL)->fetch();
     }
 }

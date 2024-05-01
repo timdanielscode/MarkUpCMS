@@ -1,66 +1,88 @@
 <?php
-            
+
 namespace middleware;
-                
-use core\Session; 
+
+use core\Session;
+use core\http\Request;
+use database\DB;
 
 class AuthMiddleware {
-                
-    public function __construct($run, $value = null) {
- 
-        if($value === 'admin') {
-
-            $this->checkLoggedInAndUserRole($run, $value);
-
-        } else if ($value === 'not') {
-
-            $this->checkNotLoggedIn($run);
-        } else {
-            $this->checkLoggedIn($run);
-        }
-    }  
 
     /** 
-     * To check user is logged in and type of user to restrict routes
+     * To restrict routes
      * 
      * @param object $run App, Closure Object
-     * @param string $role type of user role
-     * @return object $run App, Closure Object
-     */ 
-    private function checkLoggedInAndUserRole($run, $role) {
+     * @param string $role role type
+     */
+    public function __construct($run, $role = null) {
 
-        if(Session::exists("logged_in") === true && Session::get("user_role") === $role) {
-
-            return $run();
-        }   
-    }
-    
-    /** 
-     * To check user is logged in to restrict routes
-     * 
-     * @param object $run App, Closure Object
-     * @param string $role type of user role
-     * @return object $run App, Closure Object
-     */ 
-    private function checkLoggedIn($run) {
+        if(Session::exists("logged_in") === true && Session::get("logged_in") === true) {
         
-        if(Session::exists("logged_in") === true) {
-
-            return $run();
+            $this->checkRoleType($role, $run);
+        }
+    }
+  
+    /** 
+     * To check type of user role 
+     * 
+     * @param string $role role type
+     * @param object $run App, Closure Object
+     */ 
+    private function checkRoleType($role, $run) {
+  
+        if($role === null) {
+        
+            $this->checkRoleTypeNull($run);
+        
+        } else if($role === "admin") {
+        
+            $this->checkRoleTypeAdmin($run, $role);
+        }
+    }
+  
+    /** 
+     * To check if type of role is null
+     * 
+     * @param object $run App, Closure Object
+     */ 
+    private function checkRoleTypeNull($run) {
+    
+        if(Session::get("user_role") === null && Session::get("username") ) {
+        
+            $run();
         }
     }
 
     /** 
-     * To check user is not logged in to restrict routes
+     * To check if type of role is admin
      * 
+     * @param string $role role type
      * @param object $run App, Closure Object
-     * @return object $run App, Closure Object
      */ 
-    private function checkNotLoggedIn($run) {
-
-        if(Session::exists("logged_in") === false) {
-            
-            return $run();
+    private function checkRoleTypeAdmin($run, $role) {
+  
+        $data = DB::try()->select("type")->from("roles")->where("id", "=", Session::get("user_role"))->first();
+    
+        if(!empty($data) && $data["type"] === $role && Session::get("username") ) {
+    
+            $run();
         }
     }
-}  
+  
+    /** 
+     * To get the route key value
+     * 
+     * @param int $position uri part position
+     * @return string $uri route key value
+     */ 
+    /*private function getRouteKeyValue($position) {
+  
+        $request = new Request();
+        $uri = explode("/", $request->getUri());
+    
+        if(!empty($uri[$position]) && $uri[$position] !== null) {
+        
+            return $uri[$position];
+        }
+    }*/
+}

@@ -13,6 +13,7 @@ class Middlewares {
 
     public $routeMiddlewares = [
 
+        "login"              =>  "LoginMiddleware",
         "auth"              =>  "AuthMiddleware",
         "user"              =>  "UserMiddleware"
     ];

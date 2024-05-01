@@ -2,8 +2,7 @@
 
 namespace app\controllers\admin;
 
-use app\controllers\Controller;
-use app\models\Post;
+use app\models\Page;
 use app\models\Menu;
 use app\models\Widget;
 use app\models\Category;
@@ -12,7 +11,7 @@ use app\models\Js;
 use app\models\Media;
 use app\models\User;
                     
-class DashboardController extends Controller {
+class DashboardController extends \app\controllers\Controller {
 
     private $_data; 
     private $_pageIds = [], $_metaTitles = [], $_metaDescriptions = [], $_metaKeyWords = [], $_cssIds = [], $_jsIds = [];
@@ -26,9 +25,9 @@ class DashboardController extends Controller {
      */
     public function index() {    
 
-        $this->_data['pages'] = Post::getAll(['id']);
-        $this->_data['contentAppliedPages'] = Post::whereColumns(['id'], ['has_content' => 1]);
-        $this->_data['removedPages'] = Post::whereColumns(['id'], ['removed' => 1]);
+        $this->_data['pages'] = Page::getAll(['id']);
+        $this->_data['contentAppliedPages'] = Page::whereColumns(['id'], ['has_content' => 1]);
+        $this->_data['removedPages'] = Page::whereColumns(['id'], ['removed' => 1]);
         $this->_data['numberOfPages'] = $this->getNumberOfPages();
         $this->_data['numberOfAppliedMetaTitle'] = $this->getNumberOfNotAppliedMetaTitle();
         $this->_data['numberOfAppliedMetaDescription'] = $this->getNumberOfNotAppliedMetaDescription();
@@ -48,12 +47,10 @@ class DashboardController extends Controller {
         $this->_data['css'] = Css::getAll(['id']);
         $this->_data['removedCss'] = Css::whereColumns(['id'], ['removed' => 1]);
         $this->_data['contentAppliedCss'] = Css::whereColumns(['id'], ['has_content' => 1]);
-        $this->_data['numberOfLinkedCss'] = $this->getNumberOfLinkedCss();
 
         $this->_data['js'] = Js::getAll(['id']);
         $this->_data['removedJs'] = Js::whereColumns(['id'], ['removed' => 1]);
         $this->_data['contentAppliedJs'] = Js::whereColumns(['id'], ['has_content' => 1]);
-        $this->_data['numberOfIncludedJs'] = $this->getNumberOfIncludedJs();
 
         $this->_data['users'] = User::getAll(['id']);
         $this->_data['percentageOfNormalUsers'] = count(User::getIdNormalRoles()) / count(User::getAll(['id'])) * 100;
@@ -95,7 +92,7 @@ class DashboardController extends Controller {
      */
     private function getNumberOfNotAppliedMetaTitle() {
 
-        foreach(Post::getMetaTitleNotNullEmpty() as $metaTitle) {
+        foreach(Page::getMetaTitleNotNullEmpty() as $metaTitle) {
 
             array_push($this->_metaTitles, $metaTitle);
         }
@@ -110,7 +107,7 @@ class DashboardController extends Controller {
      */
     private function getNumberOfNotAppliedMetaDescription() {
     
-        foreach(Post::getMetaDescriptionNotNullEmpty() as $metaDescription) {
+        foreach(Page::getMetaDescriptionNotNullEmpty() as $metaDescription) {
 
             array_push($this->_metaDescriptions, $metaDescription);
         }
@@ -125,42 +122,12 @@ class DashboardController extends Controller {
      */
     private function getNumberOfNotAppliedMetaKeywords() {
 
-        foreach(Post::getMetaKeyWordsNotNullEmpty() as $metaKeyWord) {
+        foreach(Page::getMetaKeyWordsNotNullEmpty() as $metaKeyWord) {
 
             array_push($this->_metaKeyWords, $metaKeyWord);
         }
 
         return count($this->_metaKeyWords);
-    }
-
-    /**
-     * To get the amount of css files
-     * 
-     * @return int _cssIds counted css
-     */
-    private function getNumberOfLinkedCss() {
-
-        foreach(Css::getIdLinkedNotNull() as $id) {
-
-            array_push($this->_cssIds, $id);
-        }
-
-        return count($this->_cssIds);
-    }
-
-    /**
-     * To get the amount of js files
-     * 
-     * @return int _jsIds counted js
-     */
-    private function getNumberOfIncludedJs() {
-
-        foreach(Js::getIdIncludedNotNull() as $id) {
-
-            array_push($this->_jsIds, $id);
-        }
-
-        return count($this->_jsIds);
     }
 
     /**

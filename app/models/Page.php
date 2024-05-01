@@ -19,7 +19,7 @@ namespace app\models;
 
 use database\DB;
 
-class Post extends Model {
+class Page extends Model {
 
     private static $_table = 'pages';
     private static $_columns = [];
@@ -36,12 +36,12 @@ class Post extends Model {
         return DB::try()->select(self::$_columns)->from(self::$_table)->fetch();
     }
 
-    public static function allPostsWithCategories() {
+    public static function allPagesWithCategories() {
 
         return DB::try()->select('pages.id, pages.title, pages.slug, pages.author, pages.metaTitle, pages.metaDescription, pages.removed, pages.created_at, pages.updated_at, categories.id AS categoryId, categories.title')->from(self::$_table)->joinLeft('category_page')->on('category_page.page_id', '=', 'pages.id')->joinLeft('categories')->on('categories.id', '=', 'category_page.category_id')->where('removed', '=', 0)->order('updated_at')->desc()->fetch();
     }
 
-    public static function allPostsWithCategoriesOnSearch($searchValue = null) {
+    public static function allPagesWithCategoriesOnSearch($searchValue = null) {
 
         if(!empty($searchValue) && $searchValue !== null) {
 
@@ -59,9 +59,9 @@ class Post extends Model {
         return DB::try()->select('id, title')->from(self::$_table)->where('title', '=', $title)->and('id', '!=', $id)->fetch();
     } 
 
-    public static function checkUniqueSlugCategory($id, $postSlug, $categoryId) {
+    public static function checkUniqueSlugCategory($id, $pageSlug, $categoryId) {
 
-        return DB::try()->select('pages.slug')->from(self::$_table)->join('category_page')->on('category_page.page_id', '=', 'pages.id')->where('slug', 'LIKE', '%'.$postSlug)->and('id', '!=', $id)->and('category_id', '=', $categoryId)->first();
+        return DB::try()->select('pages.slug')->from(self::$_table)->join('category_page')->on('category_page.page_id', '=', 'pages.id')->where('slug', 'LIKE', '%'.$pageSlug)->and('id', '!=', $id)->and('category_id', '=', $categoryId)->first();
     }
 
     public static function checkUniqueSlug($slug, $id) {
@@ -95,9 +95,9 @@ class Post extends Model {
         return DB::try()->select('pages.slug')->from(self::$_table)->join('category_page')->on('category_page.page_id', '=', 'pages.id')->where('slug', 'LIKE', '%'.$lastPartSlug)->and('id', '!=', $id)->first();
     }
 
-    public static function getCategoryTitleSlug($postId) {
+    public static function getCategoryTitleSlug($pageId) {
 
-        return DB::try()->select('categories.title, categories.slug')->from('categories')->join('category_page')->on('category_page.category_id', '=', 'categories.id')->where('category_page.page_id', '=', $postId)->first();
+        return DB::try()->select('categories.title, categories.slug')->from('categories')->join('category_page')->on('category_page.category_id', '=', 'categories.id')->where('category_page.page_id', '=', $pageId)->first();
     }
 
     public static function deleteCss($id, $cssId) {
@@ -105,9 +105,9 @@ class Post extends Model {
         return DB::try()->delete('css_page')->where('page_id', '=', $id)->and('css_id', '=', $cssId)->run();
     }
 
-    public static function getCssIdFilenameExtension($postId) {
+    public static function getCssIdFilenameExtension($pageId) {
 
-        return DB::try()->select('id, file_name', 'extension')->from('css')->join('css_page')->on('css_page.css_id', '=', 'css.id')->where('css_page.page_id', '=', $postId)->and('removed', '!=', 1)->fetch();
+        return DB::try()->select('id, file_name', 'extension')->from('css')->join('css_page')->on('css_page.css_id', '=', 'css.id')->where('css_page.page_id', '=', $pageId)->and('removed', '!=', 1)->fetch();
     }
 
     public static function getNotCssIdFilenameExtension($cssIdFilenameExtension) {
@@ -178,9 +178,9 @@ class Post extends Model {
         }
     }
 
-    public static function deleteCdn($postId, $metaId) {
+    public static function deleteCdn($pageId, $metaId) {
 
-        return DB::try()->delete('meta_page')->where('page_id', '=', $postId)->and('meta_id', '=', $metaId)->run();
+        return DB::try()->delete('meta_page')->where('page_id', '=', $pageId)->and('meta_id', '=', $metaId)->run();
     }
 
     public static function getApplicableWidgetIdTitle($id) {

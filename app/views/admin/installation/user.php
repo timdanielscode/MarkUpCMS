@@ -3,6 +3,7 @@
 --> 
 
 <?php $this->include('openHeadTag'); ?> 
+    <?php $this->title('Installation page'); ?>
    <?php $this->stylesheet("/assets/css/style.css"); ?>
    <?php $this->stylesheet("/assets/css/installation.css"); ?>
 <?php $this->include('closeHeadTagAndOpenBodyTag'); ?>

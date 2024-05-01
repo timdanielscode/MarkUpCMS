@@ -2,15 +2,17 @@
 
 namespace app\controllers\admin;
 
-use app\controllers\Controller;
 use validation\Rules;
 use app\models\Menu;
+use app\models\Css;
+use app\models\Js;
+use app\models\Meta;
 use core\Session;
 use extensions\Pagination;
 use core\http\Response;
 use validation\Get;
 
-class MenuController extends Controller {
+class MenuController extends \app\controllers\Controller {
 
     private $_data;
 
@@ -74,7 +76,7 @@ class MenuController extends Controller {
 
         $rules = new Rules(); 
 
-        if($rules->menu($request['title'], Menu::whereColumns(['title'], ['title' => $request['title']]))->validated()) {
+        if($rules->menu($request, Menu::whereColumns(['title'], ['title' => $request['title']]))->validated()) {
                     
             if(!empty($request['content']) ) { $hasContent = 1; } else { $hasContent = 0; }
 
@@ -114,6 +116,9 @@ class MenuController extends Controller {
 
         $this->ifExists($request['id']);
 
+        $this->_data['cssFiles'] = Css::getAll(['file_name', 'extension']);
+        $this->_data['jsFiles'] = Js::getAll(['file_name', 'extension']);
+        $this->_data['metas'] = Meta::allMetaButOrderedByDate();
         $this->_data['menu'] = Menu::get($request['id']);
 
         return $this->view('/admin/menus/read')->data($this->_data);
@@ -148,7 +153,7 @@ class MenuController extends Controller {
 
         $rules = new Rules();
         
-        if($rules->menu($request['title'], Menu::checkUniqueTitleId($request['title'], $id))->validated()) {
+        if($rules->menu($request, Menu::checkUniqueTitleId($request['title'], $id))->validated()) {
                     
             if(!empty($request['content']) ) { $hasContent = 1; } else { $hasContent = 0; }
 

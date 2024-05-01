@@ -2,13 +2,12 @@
 
 namespace app\controllers\admin;
 
-use app\controllers\Controller;
-use app\models\Post;
+use app\models\Page;
 use app\models\WebsiteSlug;
 use validation\Rules;
 use core\Session;
                     
-class SettingsController extends Controller {
+class SettingsController extends \app\controllers\Controller {
 
     private $_data;
          
@@ -36,7 +35,7 @@ class SettingsController extends Controller {
 
         $rules = new Rules();
 
-        if($rules->settings_slug($request['slug'], Post::whereColumns(['slug'], ['slug' => "/" . $request['slug']]))->validated()) {
+        if($rules->settings_slug($request, Page::whereColumns(['slug'], ['slug' => "/" . $request['slug']]))->validated()) {
 
             WebsiteSlug::update(['id' => WebsiteSlug::getData(['id'])['id']], [
 

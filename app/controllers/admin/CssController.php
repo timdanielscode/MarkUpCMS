@@ -2,17 +2,16 @@
 
 namespace app\controllers\admin;
 
-use app\controllers\Controller;
 use app\models\Css;
 use app\models\CssPage;
-use app\models\Post;
+use app\models\Page;
 use validation\Rules;
 use core\Session;
 use extensions\Pagination;
 use core\http\Response;
 use validation\Get;
 
-class CssController extends Controller {
+class CssController extends \app\controllers\Controller {
 
     private $_data;
     private $_fileExtension = ".css";
@@ -78,7 +77,7 @@ class CssController extends Controller {
 
         $rules = new Rules();
         
-        if($rules->css($request['filename'], Css::whereColumns(['file_name'], ['file_name' => $request['filename']]))->validated()) {
+        if($rules->css($request, Css::whereColumns(['file_name'], ['file_name' => $request['filename']]))->validated()) {
                     
             $filename = "/".$request['filename'];
             $filename = str_replace(" ", "-", $filename);
@@ -162,8 +161,8 @@ class CssController extends Controller {
 
         $this->_data['data'] = Css::get($request['id']);
         $this->_data['data']['code'] = $this->getFileContent(Css::get($request['id'])['file_name']);
-        $this->_data['data']['pages'] = Css::getNotPostAssingedIdTitle(Css::getPostAssignedIdTitle($request['id']));
-        $this->_data['data']['assingedPages'] = Css::getPostAssignedIdTitle($request['id']);
+        $this->_data['data']['pages'] = Css::getNotPageAssingedIdTitle(Css::getPageAssignedIdTitle($request['id']));
+        $this->_data['data']['assingedPages'] = Css::getPageAssignedIdTitle($request['id']);
         $this->_data['rules'] = [];
 
         return $this->view('admin/css/edit')->data($this->_data);
@@ -185,7 +184,7 @@ class CssController extends Controller {
 
         $rules = new Rules();
         
-        if($rules->css($request['filename'], Css::checkUniqueFilenameId($request['filename'], $id))->validated()) {
+        if($rules->css($request, Css::checkUniqueFilenameId($request['filename'], $id))->validated()) {
 
             rename($this->_folderLocation . $currentCssFileName . $this->_fileExtension, $this->_folderLocation . $filename . $this->_fileExtension);
 
@@ -211,8 +210,8 @@ class CssController extends Controller {
             $code = file_get_contents($filePath);
 
             $this->_data['data'] = Css::get($id);
-            $this->_data['data']['assingedPages'] = Css::getPostAssignedIdTitle($request['id']);
-            $this->_data['data']['pages'] = Css::getNotPostAssingedIdTitle(Css::getPostAssignedIdTitle($request['id']));         
+            $this->_data['data']['assingedPages'] = Css::getPageAssignedIdTitle($request['id']);
+            $this->_data['data']['pages'] = Css::getNotPageAssingedIdTitle(Css::getPageAssignedIdTitle($request['id']));         
             $this->_data['data']['code'] = $code;
             $this->_data['rules'] = $rules->errors;
                 
@@ -232,9 +231,9 @@ class CssController extends Controller {
 
         CssPage::delete('css_id', $id);
 
-        if(!empty(Post::getAll(['id'])) && Post::getAll(['id']) !== null) {
+        if(!empty(Page::getAll(['id'])) && Page::getAll(['id']) !== null) {
 
-            foreach(Post::getAll(['id']) as $pageId) {
+            foreach(Page::getAll(['id']) as $pageId) {
 
                 CssPage::insert([
 
@@ -278,7 +277,7 @@ class CssController extends Controller {
 
             foreach($request['pages'] as $pageId) {
 
-                CssPage::delete('page_id', $pageId);
+                Page::deleteCss($pageId, $request['id']);
             }
         }
 

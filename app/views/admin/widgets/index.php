@@ -7,6 +7,7 @@
 -->
 
 <?php $this->include('openHeadTag'); ?> 
+    <?php $this->title('Widgets overview page'); ?>
     <?php $this->stylesheet("/assets/css/style.css"); ?> 
     <?php $this->stylesheet("/assets/css/navbar.css"); ?> 
     <?php $this->stylesheet("/assets/css/index.css"); ?> 
@@ -22,7 +23,7 @@
     <div class="headerContainer">
         <h1>Widgets</h1><span class="badge widgets"><?php echo $count; ?></span>
     </div>
-    <?php if(core\Session::get('user_role') === 'admin') { ?>
+    <?php if(core\Session::get('user_role') === 1) { ?>
         <a href="/admin/widgets/create" class="create">Create</a> 
         <span class="deleteSeparator">|</span> 
         <form action="/admin/widgets/delete" method="POST" class="indexDeleteForm">
@@ -33,7 +34,7 @@
         <form action="" method="GET" class="thrashcanForm">
             <input type="submit" name="search" value="Thrashcan"/>
         </form>
-        <?php if($search === 'Thrashcan' && core\Session::get('user_role') === 'admin') { ?> | 
+        <?php if($search === 'Thrashcan' && core\Session::get('user_role') === 1) { ?> | 
             <form action="/admin/widgets/recover" method="POST" class="recoverForm">
                 <input type="submit" class="recover" value="Recover"/>
                 <input type="hidden" name="recoverIds" id="recoverIds" value=""/>
@@ -57,12 +58,12 @@
                     <?php foreach($widgets as $widget) { ?>
                         <tr>
                             <td>
-                                <input class="deleteCheckbox" type="checkbox" name="delete" value="<?php echo $widget['id']; ?>" <?php if(core\Session::get('user_role') === 'normal') { echo 'disabled'; } ?>/>
+                                <input class="deleteCheckbox" type="checkbox" name="delete" value="<?php echo $widget['id']; ?>" <?php if(core\Session::get('user_role') !== 1) { echo 'disabled'; } ?>/>
                             </td>
                             <td class="width-5">
                                 <?php echo $widget['id']; ?>
                             </td>
-                            <?php if($widget['removed'] !== 1 && core\Session::get('user_role') === 'admin') { ?>
+                            <?php if($widget['removed'] !== 1 && core\Session::get('user_role') === 1) { ?>
                                 <td class="width-25">
                                     <a href="/admin/widgets/<?php echo $widget['id']; ?>/edit" class="font-weight-500"><?php echo $widget['title']; ?></a> |
                                     <a href="/admin/widgets/<?php echo $widget['id']; ?>/edit" class="font-weight-300">Edit</a> |

@@ -5,6 +5,7 @@
 --> 
 
 <?php $this->include('openHeadTag'); ?>  
+    <?php $this->title('Users create page'); ?>
     <?php $this->stylesheet("/assets/css/style.css"); ?> 
     <?php $this->stylesheet("/assets/css/navbar.css"); ?> 
     <?php $this->stylesheet("/assets/css/users.css"); ?> 
@@ -40,17 +41,17 @@
                     </div>
                 </div>
                 <div class="form-parts">
-                    <label for="password_confirm">Retype password:</label>
-                    <input name="password_confirm" type="password" id="password_confirm">
+                    <label for="retypePassword">Retype password:</label>
+                    <input name="retypePassword" type="password" id="retypePassword">
                     <div class="error-messages">
-                        <?php echo validation\Errors::get($rules, 'password_confirm'); ?>
+                        <?php echo validation\Errors::get($rules, 'retypePassword'); ?>
                     </div>
                 </div>
                 <div class="form-parts">
                     <label for="role">Role:</label>
                     <select name="role" id="role">
-                        <option>Normal</option>
-                        <option>Admin</option>
+                        <option value="null" selected="selected">Normal</option>
+                        <option value="1">Admin</option>
                     </select>
                 </div>
                 <div class="form-parts">

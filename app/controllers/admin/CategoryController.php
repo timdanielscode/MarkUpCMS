@@ -2,9 +2,8 @@
 
 namespace app\controllers\admin;
 
-use app\controllers\Controller;
 use app\models\Category;
-use app\models\Post;
+use app\models\Page;
 use app\models\CategoryPage;
 use app\models\CategorySub;
 use core\Session;
@@ -13,7 +12,7 @@ use validation\Rules;
 use core\http\Response;
 use validation\Get;
 
-class CategoryController extends Controller {
+class CategoryController extends \app\controllers\Controller {
 
     private $_data;
 
@@ -57,8 +56,8 @@ class CategoryController extends Controller {
             $this->_data['categories'] = Category::categoriesFilesOnSearch(Get::validate($request['search']));
         }
 
-        $this->_data['assignedPages'] = Category::getPostAssignedIdTitle($request['id']);
-        $this->_data['notAssingedPages'] = Category::getNotPostAssignedIdTitle();
+        $this->_data['assignedPages'] = Category::getPageAssignedIdTitle($request['id']);
+        $this->_data['notAssingedPages'] = Category::getNotPageAssignedIdTitle();
         $this->_data['assingedSubCategories'] = Category::getSubIdTitleSlug($request['id']);
         $this->_data['notAssingedSubs'] = Category::getNotSubIdTitleSlug(Category::getSubIdTitleSlug($request['id']), $request['id']);
 
@@ -74,9 +73,7 @@ class CategoryController extends Controller {
 
         $rules = new Rules();
 
-        $id = $request['id'];
-        
-        if($rules->category($request['title'], $request['description'], Category::whereColumns(['title'], ['title' => $request['title']]))->validated()) {
+        if($rules->category($request, Category::whereColumns(['title'], ['title' => $request['title']]))->validated()) {
 
             Category::insert([
 
@@ -93,9 +90,11 @@ class CategoryController extends Controller {
             Session::set('failed', "Title can't be empty, must be unique, max 49 characters, no special characters! Description max 99 characters, no special characters!");
         }
 
-        if(empty($id) || $id === null) {
+        if(empty($request['id']) || $request['id'] === null) {
             
             $id = Category::getLastRegisteredCategoryId()['id'];
+        } else {
+            $id = $request['id'];
         }
 
         redirect("/admin/categories/$id/apply");
@@ -113,7 +112,7 @@ class CategoryController extends Controller {
 
         $rules = new Rules();
 
-        if($rules->category($request['title'], $request['description'], Category::checkUniqueTitleId($request['title'], $id))->validated()) {
+        if($rules->category($request, Category::checkUniqueTitleId($request['title'], $id))->validated()) {
 
             Category::update(['id' => $request['id']], [
 
@@ -146,11 +145,11 @@ class CategoryController extends Controller {
 
             foreach($pageIds as $pageId) {
 
-                if(!empty(Category::checkPostAssingedId($request['id'], $pageId)) ) {
+                if(!empty(Category::checkPageAssingedId($request['id'], $pageId)) ) {
                     
-                    $this->detachPost($request['id'], Post::getColumns(['id, slug'], $pageId));
-                } else if(empty(Category::checkPostAssingedId($request['id'], $pageId)) ) {
-                    $this->attachPost($request['id'], Post::getColumns(['id', 'slug'], $pageId));
+                    $this->detachPage($request['id'], Page::getColumns(['id, slug'], $pageId));
+                } else if(empty(Category::checkPageAssingedId($request['id'], $pageId)) ) {
+                    $this->attachPage($request['id'], Page::getColumns(['id', 'slug'], $pageId));
                 } 
             }
         }
@@ -164,20 +163,20 @@ class CategoryController extends Controller {
      * @param string $id _POST category id
      * @param array $pageData _POST id, slug
      */
-    private function detachPost($id, $pageData) {
+    private function detachPage($id, $pageData) {
 
         $slugParts = explode('/', $pageData['slug']);
         $lastPageSlugKey = array_key_last($slugParts);
         $lastPageSlugValue = "/" . $slugParts[$lastPageSlugKey];
 
-        if(empty(Post::checkUniqueSlug($lastPageSlugValue, $pageData['id'])) === true) {
+        if(empty(Page::checkUniqueSlug($lastPageSlugValue, $pageData['id'])) === true) {
 
-            Post::update(['id' => $pageData['id']], [
+            Page::update(['id' => $pageData['id']], [
 
                 'slug'  => $lastPageSlugValue
             ]);
     
-            Category::deletePost($pageData['id'], $id);
+            Category::deletePage($pageData['id'], $id);
 
             Session::set('success', 'You have successfuly detached page(s) from the category!');
         } else {
@@ -191,12 +190,12 @@ class CategoryController extends Controller {
      * @param string $id _POST category id
      * @param array $pageData _POST id, slug
      */
-    private function attachPost($id, $pageData) {
+    private function attachPage($id, $pageData) {
 
         $slug = explode('/', $pageData['slug']);
         $lastKey = array_key_last($slug);
 
-        if(empty(Post::checkUniqueSlugDetach($pageData['id'], $slug[$lastKey])) === true) {
+        if(empty(Page::checkUniqueSlugDetach($pageData['id'], $slug[$lastKey])) === true) {
 
             CategoryPage::insert([
 
@@ -229,14 +228,14 @@ class CategoryController extends Controller {
 
             $subSlugsString = implode('', $subSlugs);
 
-            Post::update(['id' => $pageData['id']], [
+            Page::update(['id' => $pageData['id']], [
 
                 'slug'  =>  $subSlugsString . Category::getSlug($id)['slug'] . $pageData['slug']
             ]);
 
         } else {
 
-            Post::update(['id' => $pageData['id']], [
+            Page::update(['id' => $pageData['id']], [
 
                 'slug'  =>  Category::getSlug($id)['slug'] . $pageData['slug']
             ]);
@@ -258,7 +257,7 @@ class CategoryController extends Controller {
 
         $categoryIds = array_filter(explode(',', $request['categoryIds']));
 
-        if(!empty($categoryIds) && $categoryIds !== null && !empty(Category::checkPostAssinged($id)) === false) {
+        if(!empty($categoryIds) && $categoryIds !== null && !empty(Category::checkPageAssinged($id)) === false) {
 
             foreach($categoryIds as $categoryId) {
 
@@ -300,14 +299,14 @@ class CategoryController extends Controller {
   
             if($rules->category_slug($request['slug'])->validated()) {
          
-                if(!empty(Post::getAssignedCategoryIdSlug($id)) && Post::getAssignedCategoryIdSlug($id) !== null) {
+                if(!empty(Page::getAssignedCategoryIdSlug($id)) && Page::getAssignedCategoryIdSlug($id) !== null) {
 
-                    $this->updateCategoriesPostSlug(Category::getColumns(['slug'], $id), $request, Post::getAssignedCategoryIdSlug($id));
+                    $this->updateCategoriesPageSlug(Category::getColumns(['slug'], $id), $request, Page::getAssignedCategoryIdSlug($id));
                 } 
                 
-                if(!empty(Post::getAssignedSubCategoryIdSlug($id)) && Post::getAssignedSubCategoryIdSlug($id) !== null) {
+                if(!empty(Page::getAssignedSubCategoryIdSlug($id)) && Page::getAssignedSubCategoryIdSlug($id) !== null) {
 
-                    $this->updateCategoriesPostSlug(Category::getColumns(['slug'], $id), $request, Post::getAssignedSubCategoryIdSlug($id));
+                    $this->updateCategoriesPageSlug(Category::getColumns(['slug'], $id), $request, Page::getAssignedSubCategoryIdSlug($id));
                 }
 
                 Category::update(['id' => $id], [
@@ -328,7 +327,7 @@ class CategoryController extends Controller {
      * @param array $request _POST id (category id), slug
      * @param array $pages assigned pages (id, slug)
      */
-    private function updateCategoriesPostSlug($currentSlug, $request, $pages) {
+    private function updateCategoriesPageSlug($currentSlug, $request, $pages) {
 
         foreach($pages as $page) {
         
@@ -337,9 +336,9 @@ class CategoryController extends Controller {
             $slugParts[$categorySlugKey] = substr("/" . $request['slug'], 1);
             $slug = implode('/', $slugParts);
             
-            if(!empty(Post::checkUniqueSlug($slug, $page['id'])) === false) {
+            if(!empty(Page::checkUniqueSlug($slug, $page['id'])) === false) {
 
-                Post::update(['id' => $page['id']], [
+                Page::update(['id' => $page['id']], [
         
                     'slug'  => $slug
                 ]);
@@ -370,14 +369,15 @@ class CategoryController extends Controller {
             CategorySub::delete('category_id', $id);
         }
 
-        $id = Category::getFirstInsertedCategoryId()['id'];
+        if(empty(Category::getFirstInsertedCategoryId()) || Category::getFirstInsertedCategoryId() === null) {
 
-        if(!empty($id) && $id !== null) {
+            redirect('/admin/categories/apply');
+        } else {
 
-            redirect("/admin/categories/$id/apply") . exit();
+            $id = Category::getFirstInsertedCategoryId()['id'];
+
+            redirect("/admin/categories/$id/apply");
         }
-
-        redirect('/admin/categories/apply');
     }
 
     /**
@@ -387,15 +387,15 @@ class CategoryController extends Controller {
      */
     private function updateSlugAssingedCategory($categoryId) {
 
-        if(!empty(Post::getAssignedCategoryIdSlug($categoryId)) && Post::getAssignedCategoryIdSlug($categoryId) !== null) {
+        if(!empty(Page::getAssignedCategoryIdSlug($categoryId)) && Page::getAssignedCategoryIdSlug($categoryId) !== null) {
             
-            foreach(Post::getAssignedCategoryIdSlug($categoryId) as $page) {
+            foreach(Page::getAssignedCategoryIdSlug($categoryId) as $page) {
     
                 $slugParts = explode('/', $page['slug']);
                 $lastPageSlugKey = array_key_last($slugParts);
                 $lastPageSlugValue = "/" . $slugParts[$lastPageSlugKey];
     
-                Post::update(['id' => $page['id']], [
+                Page::update(['id' => $page['id']], [
                 
                     'slug'  => $lastPageSlugValue
                 ]);
@@ -410,16 +410,16 @@ class CategoryController extends Controller {
      */
     private function updateSlugAssingedSubCategories($categoryId) {
 
-        if(!empty(Post::getAssignedSubCategoryIdSlug($categoryId)) && Post::getAssignedSubCategoryIdSlug($categoryId) !== null) {
+        if(!empty(Page::getAssignedSubCategoryIdSlug($categoryId)) && Page::getAssignedSubCategoryIdSlug($categoryId) !== null) {
 
-            foreach(Post::getAssignedSubCategoryIdSlug($categoryId) as $page) {
+            foreach(Page::getAssignedSubCategoryIdSlug($categoryId) as $page) {
         
                 $slugParts = explode('/', $page['slug']);
                 $categorySlugKey = array_search(substr(Category::getColumns(['slug'], $categoryId)['slug'], 1), $slugParts);
                 unset($slugParts[$categorySlugKey]);
                 $slugMinusSubCategorySlug = implode('/', $slugParts);
             
-                Post::update(['id' => $page['id']], [
+                Page::update(['id' => $page['id']], [
                 
                     'slug'  => $slugMinusSubCategorySlug
                 ]);

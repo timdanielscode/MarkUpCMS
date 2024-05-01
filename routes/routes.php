@@ -2,7 +2,6 @@
 
 use core\http\Route;
 use database\DB;
-use core\Session;
 use core\http\Middleware;
 
 Middleware::route('user', function() { 
@@ -21,7 +20,7 @@ if(!empty($postPaths) && $postPaths !== null) {
     }
 } 
 
-Middleware::route(['auth' => 'not'], function() { 
+Middleware::route(['login' => false], function() { 
 
     $settedWebsiteSlug = DB::try()->select('slug')->from('websiteSlug')->first();
 
@@ -32,16 +31,20 @@ Middleware::route(['auth' => 'not'], function() {
     }
 });
 
-Middleware::route('auth', function() { 
+Middleware::route(['login' => true], function() { 
+
+    new Route(['GET' => '/logout'], ['LogoutController' => 'logout']);
+});
+
+Middleware::route(['login' => true], function() { 
 
     new Route(['GET' => '/admin/dashboard'], ['admin\DashboardController' => 'index']);
-    new Route(['GET' => '/admin/profile/' . Session::get('username')], ['admin\ProfileController' => 'index']);
-    new Route(['POST' => '/admin/profile/' . Session::get('username') . '/update'], ['admin\ProfileController' => 'updateDetails']);
-    new Route(['POST' => '/admin/profile/' . Session::get('username') . '/update-role'], ['admin\ProfileController' => 'updateRole']);
-    new Route(['GET' => '/admin/profile/' . Session::get('username') . '/change-password'], ['admin\ProfileController' => 'editPassword']);
-    new Route(['POST' => '/admin/profile/' . Session::get('username') . '/change-password'], ['admin\ProfileController' => 'updatePassword']);
-    new Route(['POST' => '/admin/profile/' . Session::get('username') . '/delete'], ['admin\ProfileController' => 'delete']);
-    new Route(['GET' => '/logout'], ['LogoutController' => 'logout']);
+    new Route(['GET' => '/admin/profile/[id]'], ['admin\ProfileController' => 'index']);
+    new Route(['POST' => '/admin/profile/[id]/update'], ['admin\ProfileController' => 'updateDetails']);
+    new Route(['POST' => '/admin/profile/[id]/update-role'], ['admin\ProfileController' => 'updateRole']);
+    new Route(['GET' => '/admin/profile/[id]/change-password'], ['admin\ProfileController' => 'editPassword']);
+    new Route(['POST' => '/admin/profile/[id]/change-password'], ['admin\ProfileController' => 'updatePassword']);
+    new Route(['POST' => '/admin/profile/[id]/delete'], ['admin\ProfileController' => 'delete']);
 });
 
 Middleware::route(['auth' => 'admin'], function() { 
@@ -50,35 +53,35 @@ Middleware::route(['auth' => 'admin'], function() {
     new Route(['POST' => '/admin/settings/update-slug'], ['admin\SettingsController' => 'updateSlug']);
 });
 
-Middleware::route('auth', function() { 
+Middleware::route(['login' => true], function() { 
 
-    new Route(['GET' => '/admin/posts'], ['admin\PostController' => 'index']);
-    new Route(['GET' => '/admin/posts/[id]/read'], ['admin\PostController' => 'read']);
+    new Route(['GET' => '/admin/pages'], ['admin\PageController' => 'index']);
+    new Route(['GET' => '/admin/pages/[id]/read'], ['admin\PageController' => 'read']);
 });
 
 Middleware::route(['auth' => 'admin'], function() { 
 
-    new Route(['GET' => '/admin/posts/create'], ['admin\PostController' => 'create']);
-    new Route(['POST' => '/admin/posts/store'], ['admin\PostController' => 'store']);
-    new Route(['GET' => '/admin/posts/[id]/edit'], ['admin\PostController' => 'edit']);
-    new Route(['POST' => '/admin/posts/[id]/update'], ['admin\PostController' => 'update']);
-    new Route(['POST' => '/admin/posts/[id]/assign-category'], ['admin\PostController' => 'assignCategory']);
-    new Route(['POST' => '/admin/posts/[id]/detach-category'], ['admin\PostController' => 'detachCategory']);
-    new Route(['POST' => '/admin/posts/[id]/update-slug'], ['admin\PostController' => 'updateSlug']);
-    new Route(['POST' => '/admin/posts/[id]/update-metadata'], ['admin\PostController' => 'updateMetadata']);
-    new Route(['POST' => '/admin/posts/[id]/link-css'], ['admin\PostController' => 'linkCss']);
-    new Route(['POST' => '/admin/posts/[id]/unlink-css'], ['admin\PostController' => 'unLinkCss']);
-    new Route(['POST' => '/admin/posts/[id]/include-js'], ['admin\PostController' => 'includeJs']);
-    new Route(['POST' => '/admin/posts/[id]/remove-js'], ['admin\PostController' => 'removeJs']);
-    new Route(['POST' => '/admin/posts/[id]/add-widget'], ['admin\PostController' => 'addWidget']);
-    new Route(['POST' => '/admin/posts/[id]/remove-widget'], ['admin\PostController' => 'removeWidget']);
-    new Route(['POST' => '/admin/posts/[id]/import-cdns'], ['admin\PostController' => 'importCdns']);
-    new Route(['POST' => '/admin/posts/[id]/export-cdns'], ['admin\PostController' => 'exportCdns']);
-    new Route(['POST' => '/admin/posts/recover'], ['admin\PostController' => 'recover']);
-    new Route(['POST' => '/admin/posts/delete'], ['admin\PostController' => 'delete']);
+    new Route(['GET' => '/admin/pages/create'], ['admin\PageController' => 'create']);
+    new Route(['POST' => '/admin/pages/store'], ['admin\PageController' => 'store']);
+    new Route(['GET' => '/admin/pages/[id]/edit'], ['admin\PageController' => 'edit']);
+    new Route(['POST' => '/admin/pages/[id]/update'], ['admin\PageController' => 'update']);
+    new Route(['POST' => '/admin/pages/[id]/assign-category'], ['admin\PageController' => 'assignCategory']);
+    new Route(['POST' => '/admin/pages/[id]/detach-category'], ['admin\PageController' => 'detachCategory']);
+    new Route(['POST' => '/admin/pages/[id]/update-slug'], ['admin\PageController' => 'updateSlug']);
+    new Route(['POST' => '/admin/pages/[id]/update-metadata'], ['admin\PageController' => 'updateMetadata']);
+    new Route(['POST' => '/admin/pages/[id]/link-css'], ['admin\PageController' => 'linkCss']);
+    new Route(['POST' => '/admin/pages/[id]/unlink-css'], ['admin\PageController' => 'unLinkCss']);
+    new Route(['POST' => '/admin/pages/[id]/include-js'], ['admin\PageController' => 'includeJs']);
+    new Route(['POST' => '/admin/pages/[id]/remove-js'], ['admin\PageController' => 'removeJs']);
+    new Route(['POST' => '/admin/pages/[id]/add-widget'], ['admin\PageController' => 'addWidget']);
+    new Route(['POST' => '/admin/pages/[id]/remove-widget'], ['admin\PageController' => 'removeWidget']);
+    new Route(['POST' => '/admin/pages/[id]/import-cdns'], ['admin\PageController' => 'importCdns']);
+    new Route(['POST' => '/admin/pages/[id]/export-cdns'], ['admin\PageController' => 'exportCdns']);
+    new Route(['POST' => '/admin/pages/recover'], ['admin\PageController' => 'recover']);
+    new Route(['POST' => '/admin/pages/delete'], ['admin\PageController' => 'delete']);
 });
 
-Middleware::route('auth', function() {
+Middleware::route(['login' => true], function() {
 
     new Route(['GET' => '/admin/users'], ['admin\UserController' => 'index']);
     new Route(['GET' => '/admin/users/[id]/read'], ['admin\UserController' => 'read']);
@@ -88,14 +91,14 @@ Middleware::route(['auth' => 'admin'], function() {
 
     new Route(['GET' => '/admin/users/create'], ['admin\UserController' => 'create']);
     new Route(['POST' => '/admin/users/store'], ['admin\UserController' => 'store']);
-    new Route(['GET' => '/admin/users/[username]/edit'], ['admin\UserController' => 'edit']);
-    new Route(['POST' => '/admin/users/[username]/update'], ['admin\UserController' => 'update']);
-    new Route(['POST' => '/admin/users/[username]/update-role'], ['admin\UserController' => 'updateRole']);
+    new Route(['GET' => '/admin/users/[id]/edit'], ['admin\UserController' => 'edit']);
+    new Route(['POST' => '/admin/users/[id]/update'], ['admin\UserController' => 'update']);
+    new Route(['POST' => '/admin/users/[id]/update-role'], ['admin\UserController' => 'updateRole']);
     new Route(['POST' => '/admin/users/recover'], ['admin\UserController' => 'recover']);
     new Route(['POST' => '/admin/users/delete'], ['admin\UserController' => 'delete']);
 });
 
-Middleware::route('auth', function() {
+Middleware::route(['login' => true], function() {
 
     new Route(['GET' => '/admin/css'], ['admin\CssController' => 'index']);
     new Route(['GET' => '/admin/css/[id]/read'], ['admin\CssController' => 'read']);
@@ -115,7 +118,7 @@ Middleware::route(['auth' => 'admin'], function() {
     new Route(['POST' => '/admin/css/delete'], ['admin\CssController' => 'delete']);
 });
 
-Middleware::route('auth', function() {
+Middleware::route(['login' => true], function() {
 
     new Route(['GET' => '/admin/js'], ['admin\JsController' => 'index']);
     new Route(['GET' => '/admin/js/[id]/read'], ['admin\JsController' => 'read']);
@@ -135,7 +138,7 @@ Middleware::route(['auth' => 'admin'], function() {
     new Route(['POST' => '/admin/js/delete'], ['admin\JsController' => 'delete']);
 });
 
-Middleware::route('auth', function() {
+Middleware::route(['login' => true], function() {
 
     new Route(['GET' => '/admin/menus'], ['admin\MenuController' => 'index']);
     new Route(['GET' => '/admin/menus/[id]/read'], ['admin\MenuController' => 'read']);
@@ -153,7 +156,7 @@ Middleware::route(['auth' => 'admin'], function() {
     new Route(['POST' => '/admin/menus/delete'], ['admin\MenuController' => 'delete']);
 });
 
-Middleware::route('auth', function() {
+Middleware::route(['login' => true], function() {
 
     new Route(['GET' => '/admin/media'], ['admin\MediaController' => 'index']);
 });
@@ -167,7 +170,7 @@ Middleware::route(['auth' => 'admin'], function() {
     new Route(['POST' => '/admin/media/delete'], ['admin\MediaController' => 'delete']);
 });   
 
-Middleware::route('auth', function() {
+Middleware::route(['login' => true], function() {
 
     new Route(['GET' => '/admin/categories/apply'], ['admin\CategoryController' => 'index']);
     new Route(['GET' => '/admin/categories/[id]/apply'], ['admin\CategoryController' => 'index']);
@@ -183,7 +186,7 @@ Middleware::route(['auth' => 'admin'], function() {
     new Route(['POST' => '/admin/categories/delete'], ['admin\CategoryController' => 'delete']);
 }); 
 
-Middleware::route('auth', function() {
+Middleware::route(['login' => true], function() {
 
     new Route(['GET' => '/admin/widgets'], ['admin\WidgetController' => 'index']);
     new Route(['GET' => '/admin/widgets/[id]/read'], ['admin\WidgetController' => 'read']);
@@ -199,22 +202,22 @@ Middleware::route(['auth' => 'admin'], function() {
     new Route(['POST' => '/admin/widgets/recover'], ['admin\WidgetController' => 'recover']);
 });
 
-Middleware::route('auth', function() {
+Middleware::route(['login' => true], function() {
 
-    new Route(['GET' => '/admin/meta'], ['admin\MetaController' => 'index']);
-    new Route(['GET' => '/admin/meta/[id]/read'], ['admin\MetaController' => 'read']);
+    new Route(['GET' => '/admin/metas'], ['admin\MetaController' => 'index']);
+    new Route(['GET' => '/admin/metas/[id]/read'], ['admin\MetaController' => 'read']);
 });
 
 Middleware::route(['auth' => 'admin'], function() {
 
-    new Route(['GET' => '/admin/meta/create'], ['admin\MetaController' => 'create']);
-    new Route(['POST' => '/admin/meta/store'], ['admin\MetaController' => 'store']);
-    new Route(['GET' => '/admin/meta/[id]/edit'], ['admin\MetaController' => 'edit']);
-    new Route(['POST' => '/admin/meta/[id]/update'], ['admin\MetaController' => 'update']);
-    new Route(['POST' => '/admin/meta/[id]/import-pages'], ['admin\MetaController' => 'importPage']);
-    new Route(['POST' => '/admin/meta/[id]/export-pages'], ['admin\MetaController' => 'exportPage']);
-    new Route(['POST' => '/admin/meta/delete'], ['admin\MetaController' => 'delete']);
-    new Route(['POST' => '/admin/meta/recover'], ['admin\MetaController' => 'recover']);
-    new Route(['POST' => '/admin/meta/[id]/import-all'], ['admin\MetaController' => 'importAll']);
-    new Route(['POST' => '/admin/meta/[id]/export-all'], ['admin\MetaController' => 'exportAll']);
+    new Route(['GET' => '/admin/metas/create'], ['admin\MetaController' => 'create']);
+    new Route(['POST' => '/admin/metas/store'], ['admin\MetaController' => 'store']);
+    new Route(['GET' => '/admin/metas/[id]/edit'], ['admin\MetaController' => 'edit']);
+    new Route(['POST' => '/admin/metas/[id]/update'], ['admin\MetaController' => 'update']);
+    new Route(['POST' => '/admin/metas/[id]/import-pages'], ['admin\MetaController' => 'importPage']);
+    new Route(['POST' => '/admin/metas/[id]/export-pages'], ['admin\MetaController' => 'exportPage']);
+    new Route(['POST' => '/admin/metas/delete'], ['admin\MetaController' => 'delete']);
+    new Route(['POST' => '/admin/metas/recover'], ['admin\MetaController' => 'recover']);
+    new Route(['POST' => '/admin/metas/[id]/import-all'], ['admin\MetaController' => 'importAll']);
+    new Route(['POST' => '/admin/metas/[id]/export-all'], ['admin\MetaController' => 'exportAll']);
 });

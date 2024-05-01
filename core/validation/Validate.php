@@ -65,7 +65,7 @@ class Validate {
 
                         if(strlen($this->_value) < $value) {
 
-                            $this->message($this->_name, "$this->_alias must be at least $value characters.");
+                            $this->message($this->_name, "$this->_alias must contain at least $value characters.");
                         }
                     break;
                     case 'max':
@@ -100,27 +100,20 @@ class Validate {
                     break;
                     case 'special':
 
-                        $regex = '/[#$%^&*()+=\\[\]\';,\/{}|":<>?~\\\\]/';
+                        $regex = '/^[a-zA-Z0-9@!#$^*()_+{}:;,.?]+$/';
 
-                        if(preg_match($regex, $this->_value)) {
+                        if(!preg_match($regex, $this->_value)) {
 
-                            $this->message($this->_name, "$this->_alias contains special characters.");  
+                            $this->message($this->_name, "$this->_alias can only contain the following special characters: @!#$^*()_+{}:;,.?");  
                         }
                     break;
-                    case 'special-ini':
+                    case 'alphanumeric':
 
-                        $regex = '/[?{}|&~![()^"]/';
+                        $regex = '/^[a-zA-Z0-9 ]+$/';
 
-                        if(preg_match($regex, $this->_value)) {
+                        if(!preg_match($regex, $this->_value)) {
 
-                            $this->message($this->_name, "$this->_alias contains one of the following special characters: ?{}|&~![()^" . '"');  
-                        }
-                    break;
-                    case 'first':
-
-                        if($this->_value[0] !== $value) {
-
-                            $this->message($this->_name, "$this->_alias does not start with a $value.");
+                            $this->message($this->_name, "$this->_alias can not contain any special characters");  
                         }
                     break;
                     case 'min-one-admin':

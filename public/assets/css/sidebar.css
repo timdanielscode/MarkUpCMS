@@ -17,7 +17,7 @@
     overflow: hidden;
 }
 #navbar .navbarItems {
-    left: calc(0% - 10%);
+    display: none;
 }
 .mainButtonContainer {
     width: 100%;
@@ -27,36 +27,6 @@
     margin-bottom: 20px;
 }
 
-@media only screen and (max-width: 1500px) {
-
-    #navbar .navbarItems {
-        left: calc(0% - 12.5%) !important;
-    }
-} 
-@media only screen and (max-width: 1250px) {
-
-    #navbar .navbarItems {
-        left: calc(0% - 15%) !important;
-    }
-
-    #navbar .navbarItems li {
-        margin-right: 0 !important;
-        margin-left: 0 !important;
-    }
-} 
-@media only screen and (max-width: 1000px) {
-
-    #navbar .navbarItems {
-        left: calc(0% - 18%) !important;
-    }
-
-    #navbar .navbarItems li {
-        margin-left: 0 !important;
-    }
-    #navbar .navbarItems li a { 
-        padding-left: 0 !important;
-    }
-} 
 @media only screen and (max-width: 750px) {
 
      #navbar {

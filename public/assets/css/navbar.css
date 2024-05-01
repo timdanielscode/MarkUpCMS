@@ -8,11 +8,17 @@
     top: 0;
 }
 #navbar #logo {
-    margin-left: 5%;
-    margin-top: 5px;
-    width: 40px;
+    width: 146px;
     position: relative;
     z-index: 9999999;
+    margin-top: 13px;
+    margin-left: 5%;
+}
+.navbarSmall #logo.lessSpacing {
+    margin-left: 4.25% !important;
+}
+.navbarSmall #logo.lesserSpacing {
+    margin-left: 50px !important;
 }
 #navbar .navbarItems {
     position: absolute;
@@ -23,8 +29,6 @@
 #navbar .navbarItems li {
     list-style-type: none;
     display: inline-block;
-    margin-left: 10px;
-    margin-right: 10px;
 }
 #navbar .navbarItems li:nth-child(1), #navbar .navbarItems li:nth-child(1) a {
     padding-left: 0;
@@ -133,3 +137,12 @@
 .show-dropdown {
     display: block !important;
 }
+
+@media only screen and (max-width: 1000px) {
+
+    #navbar .navbarItems {
+ 
+        width: auto !important;
+        right: 5%;
+    }
+} 

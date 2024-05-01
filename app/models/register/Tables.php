@@ -9,7 +9,7 @@ class Tables {
 
     public $tables = [
 
-        "Post"          =>      "pages",
+        "Page"          =>      "pages",
         "Menu"          =>      "menus",
         "Category"      =>      "categories",
         "CategorySub"   =>      "category_sub",
@@ -25,7 +25,6 @@ class Tables {
         "Media"         =>      "media",
         "MediaFolder"   =>      "mediaFolders",
         "User"          =>      "users",
-        "UserRole"      =>      "user_role",
         "WebsiteSlug"   =>      "websiteSlug",
         "Roles"         =>      "roles"
     ];

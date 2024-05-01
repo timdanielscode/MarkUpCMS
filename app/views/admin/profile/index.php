@@ -7,6 +7,7 @@
 --> 
 
 <?php $this->include('openHeadTag'); ?>
+    <?php $this->title('Profile page'); ?>
     <?php $this->stylesheet("/assets/css/style.css"); ?>
     <?php $this->stylesheet("/assets/css/navbar.css"); ?>
     <?php $this->stylesheet("/assets/css/sidebar.css"); ?>
@@ -21,7 +22,7 @@
     <div class="edit-container">
         <?php core\Alert::message('success'); ?>
         <h1 class="margin-b-30">Update details</h1>
-            <form action="/admin/profile/<?php echo core\Session::get('username'); ?>/update" method="POST" class="usersEditForm">
+            <form action="/admin/profile/<?php echo $id; ?>/update" method="POST" class="usersEditForm">
                 <div class="form-parts">
                     <label for="username">Username:</label>
                     <input name="f_username" type="text" id="username" value="<?php echo $user['username']; ?>">
@@ -51,8 +52,8 @@
                     <a href="/admin/dashboard" class="button blueButton">Back</a>
                 </div>
                 <div class="buttonContainer">
-                    <a href="/admin/profile/<?php echo core\Session::get('username'); ?>/change-password" class="button darkButton margin-r-10">Password</a>
-                    <form action="/admin/profile/<?php echo core\Session::get('username'); ?>/delete" method="POST" class="deleteAccountForm">
+                    <a href="/admin/profile/<?php echo $id; ?>/change-password" class="button darkButton margin-r-10">Password</a>
+                    <form action="/admin/profile/<?php echo $id; ?>/delete" method="POST" class="deleteAccountForm">
                         <input type="hidden" name="id" value="<?php echo $user["id"]; ?>"> 
                         <input type="submit" name="delete" class="button lightButton" value="Delete account" onclick="return confirm('Are you sure?');"/>
                     </form>
@@ -61,10 +62,12 @@
                 <span class="data"><?php echo $user['username']; ?></span>
                 <span class="text">Email:</span>
                 <span class="data"><?php echo $user['email']; ?></span>
-                <span class="text">Role:</span>
-                <span class="data"><?php echo $user['name']; ?></span>
-                <?php if(core\Session::get('user_role') === 'admin') { ?>
-                    <form action="/admin/profile/<?php echo core\Session::get('username'); ?>/update-role" method="POST" class="profileUpdateRoleForm">
+                <?php if($user['type'] === 1) { ?>
+                    <span class="text">Role:</span>
+                    <span class="data"><?php echo $user['type']; ?></span>
+                <?php } ?>
+                <?php if(core\Session::get('user_role') === 1) { ?>
+                    <form action="/admin/profile/<?php echo $id; ?>/update-role" method="POST" class="profileUpdateRoleForm">
                         <div class="form-parts">
                             <label for="role">Update role:</label>
                             <select name="role" multiple>

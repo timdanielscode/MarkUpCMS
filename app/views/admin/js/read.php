@@ -2,20 +2,23 @@
     - to show contents of js file
  --> 
 
-<?php $this->include('openHeadTag'); ?> 
+ <?php $this->include('openHeadTag'); ?> 
+    <?php $this->title('Js read page'); ?>
     <?php $this->stylesheet("/assets/css/style.css"); ?>
     <?php $this->stylesheet("/assets/css/navbar.css"); ?>
     <?php $this->stylesheet("/assets/css/js.css"); ?>
     <?php $this->stylesheet("/assets/css/sidebar.css"); ?>
+    <?php $this->script("/assets/js/navbar/Navbar.js", true); ?>
+    <?php $this->script("/assets/js/navbar/main.js", true); ?>
     <?php $this->script("/assets/js/sidebar/Editor.js", true); ?>
     <?php $this->script("/assets/js/sidebar/Section.js", true); ?>
     <?php $this->script("/assets/js/sidebar/Button.js", true); ?>
     <?php $this->script("/assets/js/sidebar/main.js", true); ?>
-    <?php $this->stylesheet("/assets/css/codemirror/codemirror.css"); ?>
-    <?php $this->stylesheet("/assets/css/codemirror/shadowfox.css"); ?>
-    <?php $this->script("/assets/js/codemirror/codemirror.js"); ?>
-    <?php $this->script("/assets/js/codemirror/css.js"); ?>
-    <?php $this->script("/assets/js/codemirror/closebrackets.js"); ?>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/codemirror/6.65.7/codemirror.min.css" integrity="sha512-uf06llspW44/LZpHzHT6qBOIVODjWtv4MxCricRxkzvopAlSWnTf6hpZTFxuuZcuNE9CBQhqE0Seu1CoRk84nQ==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/codemirror/6.65.7/theme/shadowfox.min.css" integrity="sha512-Xt1Gi99yJFMZ0ocjkdHqKWLjtb/l8pzJo5cCmHV2GvBFwJiOCLR2HXQBrcFmqY6i8+gXnRaKTGzoBVOl3YUwjw==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/6.65.7/codemirror.min.js" integrity="sha512-8RnEqURPUc5aqFEN04aQEiPlSAdE0jlFS/9iGgUyNtwFnSKCXhmB6ZTNl7LnDtDWKabJIASzXrzD0K+LYexU9g==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/6.65.7/mode/css/css.min.js" integrity="sha512-rQImvJlBa8MV1Tl1SXR5zD2bWfmgCEIzTieFegGg89AAt7j/NBEe50M5CqYQJnRwtkjKMmuYgHBqtD1Ubbk5ww==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/6.65.7/addon/edit/closebrackets.min.js" integrity="sha512-tsjcYO5hFvViRssxiM7Jhd8601epWOx1He3Hl4yuI5dKKPxr43KxkOhc9GZeeqzlYJm9ABb7UPA9697NiqZZ7Q==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
 <?php $this->include("closeHeadTagAndOpenBodyTag"); ?>
 
 <?php $this->include('navbar'); ?>

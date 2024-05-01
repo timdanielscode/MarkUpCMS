@@ -9,7 +9,7 @@ use app\models\UserRole;
 use app\models\Roles;
 use app\models\Table;
 use app\models\WebsiteSlug;
-use app\models\Post;
+use app\models\Page;
 
 class InstallationController extends Controller {
 
@@ -37,7 +37,7 @@ class InstallationController extends Controller {
 
         $rules = new Rules();  
                     
-        if($rules->installation_user($request['username'], $request['email'], $request['password'], $request['retypePassword'], $request['token'], Csrf::get())->validated() ) {
+        if($rules->installation_user($request, Csrf::get())->validated() ) {
 
             Table::create();
 
@@ -48,17 +48,11 @@ class InstallationController extends Controller {
                 'password' => password_hash($request["password"], PASSWORD_DEFAULT),
                 'removed'   => 0,
                 'created_at' => date("Y-m-d H:i:s"), 
-                'updated_at' => date("Y-m-d H:i:s")
+                'updated_at' => date("Y-m-d H:i:s"),
+                'role_id'   => 1
             ]); 
 
-            UserRole::insert([
-    
-                'user_id' => User::getLastUserId()['id'],
-                'role_id' => 2
-            ]);
-
-            Roles::insert(['name'  => 'normal']);
-            Roles::insert(['name'  => 'admin']);
+            Roles::insert(['type'  => 'admin']);
 
             if(empty(WebsiteSlug::getData(['id']) ) || WebsiteSlug::getData(['id']) === null) { 
 
@@ -70,7 +64,7 @@ class InstallationController extends Controller {
                 ]);
             }
 
-            Post::insert([
+            Page::insert([
                     
                 'title' => "homepage", 
                 'slug' => "/",

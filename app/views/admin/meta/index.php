@@ -7,6 +7,7 @@
 --> 
 
 <?php $this->include('openHeadTag'); ?>
+    <?php $this->title('Metas overview page'); ?>
     <?php $this->stylesheet("/assets/css/style.css"); ?>
     <?php $this->stylesheet("/assets/css/navbar.css"); ?>
     <?php $this->stylesheet("/assets/css/index.css"); ?>
@@ -20,13 +21,13 @@
 <div class="index-container">
     <?php core\Alert::message('success'); ?>
     <div class="headerContainer">
-        <h1>Meta</h1><span class="badge meta"><?php echo $count; ?></span>
+        <h1>Metas</h1><span class="badge meta"><?php echo $count; ?></span>
     </div>
 
-    <?php if(core\Session::get('user_role') === 'admin') { ?>
-        <a href="/admin/meta/create" class="create">Create</a> 
+    <?php if(core\Session::get('user_role') === 1) { ?>
+        <a href="/admin/metas/create" class="create">Create</a> 
         <span class="deleteSeparator">|</span> 
-        <form action="/admin/meta/delete" method="POST" class="indexDeleteForm">
+        <form action="/admin/metas/delete" method="POST" class="indexDeleteForm">
             <input type="submit" class="delete" value="<?php if($search === 'Thrashcan') { echo 'Delete permanently'; } else { echo 'Delete'; } ?>" <?php if($search === 'Thrashcan') { echo 'onclick="return confirm(' . "'Are you sure?'" . ');"'; } ?>/>
             <input type="hidden" name="deleteIds" id="deleteIds" value=""/>
         </form> | 
@@ -34,8 +35,8 @@
         <form action="" method="GET" class="thrashcanForm">
             <input type="submit" name="search" value="Thrashcan"/>
         </form>
-        <?php if($search === 'Thrashcan' && core\Session::get('user_role') === 'admin') { ?> | 
-            <form action="/admin/meta/recover" method="POST" class="recoverForm">
+        <?php if($search === 'Thrashcan' && core\Session::get('user_role') === 1) { ?> | 
+            <form action="/admin/metas/recover" method="POST" class="recoverForm">
                 <input type="submit" class="recover" value="Recover"/>
                 <input type="hidden" name="recoverIds" id="recoverIds" value=""/>
             </form> 
@@ -57,18 +58,18 @@
                     <?php foreach($cdns as $cdn) { ?>
                         <tr>
                             <td>
-                                <input class="deleteCheckbox" type="checkbox" name="delete" value="<?php echo $cdn['id']; ?>" <?php if(core\Session::get('user_role') === 'normal') { echo 'disabled'; } ?>/>
+                                <input class="deleteCheckbox" type="checkbox" name="delete" value="<?php echo $cdn['id']; ?>" <?php if(core\Session::get('user_role') !== 1) { echo 'disabled'; } ?>/>
                             </td>
-                            <?php if($cdn['removed'] !== 1 && core\Session::get('user_role') === 'admin') { ?>
+                            <?php if($cdn['removed'] !== 1 && core\Session::get('user_role') === 1) { ?>
                             <td class="width-25">
-                                <a href="/admin/meta/<?php echo $cdn['id']; ?>/edit" class="font-weight-500"><?php echo $cdn['title']; ?></a> |
-                                <a href="/admin/meta/<?php echo $cdn['id']; ?>/edit" class="font-weight-300">Edit</a> |
-                                <a href="/admin/meta/<?php echo $cdn['id']; ?>/read" class="font-weight-300">Read</a>
+                                <a href="/admin/metas/<?php echo $cdn['id']; ?>/edit" class="font-weight-500"><?php echo $cdn['title']; ?></a> |
+                                <a href="/admin/metas/<?php echo $cdn['id']; ?>/edit" class="font-weight-300">Edit</a> |
+                                <a href="/admin/metas/<?php echo $cdn['id']; ?>/read" class="font-weight-300">Read</a>
                             </td>
                             <?php } else { ?>
                                 <td class="width-25">
                                 <span class="font-weight-500"><?php echo $cdn['title']; ?></span> |
-                                <a href="/admin/meta/<?php echo $cdn['id']; ?>/read" class="font-weight-300">Read</a>
+                                <a href="/admin/metas/<?php echo $cdn['id']; ?>/read" class="font-weight-300">Read</a>
                             </td>
                             <?php } ?>
                             <td class="width-60">
@@ -98,9 +99,9 @@
                         foreach($numberOfPages as $page) {
 
                             if(!empty($search) ) {
-                                echo '<li class="page-item"><a href="/admin/meta?search=' . $search . '&page='.$page.'">'.$page.'</a></li>';
+                                echo '<li class="page-item"><a href="/admin/metas?search=' . $search . '&page='.$page.'">'.$page.'</a></li>';
                             } else {
-                                echo '<li class="page-item"><a href="/admin/meta?page='.$page.'">'.$page.'</a></li>';
+                                echo '<li class="page-item"><a href="/admin/metas?page='.$page.'">'.$page.'</a></li>';
                             }
                         }  
                     ?>

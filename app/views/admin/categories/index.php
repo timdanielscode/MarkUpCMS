@@ -14,11 +14,14 @@
 -->
 
 <?php $this->include('openHeadTag'); ?>
+    <?php $this->title('Categories page'); ?>
     <?php $this->stylesheet("/assets/css/style.css"); ?>
     <?php $this->stylesheet("/assets/css/navbar.css"); ?>
     <?php $this->stylesheet("/assets/css/categories.css"); ?>
     <?php $this->stylesheet("/assets/css/sidebar.css"); ?>
     <?php $this->stylesheet("/assets/css/modal.css"); ?>
+    <?php $this->script("/assets/js/navbar/Navbar.js", true); ?>
+    <?php $this->script("/assets/js/navbar/main.js", true); ?>
     <?php $this->script('/assets/js/categories/Modal.js', true); ?>
     <?php $this->script('/assets/js/categories/Category.js', true); ?>
     <?php $this->script('/assets/js/categories/Page.js', true); ?>
@@ -58,7 +61,7 @@
                             </select>  
                             <input type="hidden" id="categoryIds" name="categoryIds" value=""/>
                             <input type="hidden" name="id" value="<?php echo $categoryId; ?>"/>
-                            <?php if(core\Session::get('user_role') === 'admin') { ?>
+                            <?php if(core\Session::get('user_role') === 1) { ?>
                                 <input type="submit" name="submit" value="Apply" class="button darkBlueButton margin-t-20"/>
                             <?php } ?>
                         </form>
@@ -80,7 +83,7 @@
                             </select>
                             <input type="hidden" id="pageIds" name="pageIds" value=""/>
                             <input type="hidden" name="id" value="<?php echo $categoryId; ?>"/>
-                            <?php if(core\Session::get('user_role') === 'admin') { ?>
+                            <?php if(core\Session::get('user_role') === 1) { ?>
                                 <input type="submit" name="submit" value="Apply" class="button darkBlueButton margin-t-20"/>
                             <?php } ?>
                         </form>
@@ -93,11 +96,11 @@
         <div id="sidebar" class="width-25">
             <div class="sidebarContainer">
                 <div class="mainButtonContainer">
-                    <?php if(core\Session::get('user_role') === 'admin') { ?>
+                    <?php if(core\Session::get('user_role') === 1) { ?>
                         <a class="create button greenButton margin-r-10" id="create" data-id="<?php if(!empty($categoryId) && $categoryId !== null) { echo $categoryId; } ?>">Create</a>
                         <a data-id="<?php echo $categoryId; ?>" data-title="<?php echo $title; ?>" data-description="<?php echo $description; ?>" class="edit button darkBlueButton margin-r-10">Edit</a>
                     <?php } ?>
-                        <a href="/admin/posts" class="button blueButton">Back</a>
+                        <a href="/admin/pages" class="button blueButton">Back</a>
                 </div>
                 <span class="title">Categories: </span>
                 <form class="searchForm" action="" method="GET">
@@ -112,11 +115,11 @@
                             </tr>
                         <?php } ?>
                     </table>
-                    <?php if(core\Session::get('user_role') === 'admin') { ?>
+                    <?php if(core\Session::get('user_role') === 1) { ?>
                         <a class="button darkBlueButton margin-t-20 width-50-px" id="delete">Delete</a>
                     <?php } ?>
                 <?php } ?>
-                <?php if(core\Session::get('user_role') === 'admin') { ?>
+                <?php if(core\Session::get('user_role') === 1) { ?>
                     <form action="/admin/categories/delete" method="POST" class="display-none deleteForm">
                         <select name="deleteIds[]" multiple>
                             <?php foreach($categories as $category) { ?>

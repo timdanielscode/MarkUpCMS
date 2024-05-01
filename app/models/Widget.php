@@ -42,9 +42,9 @@ class Widget extends Model {
         return DB::try()->select(self::$_columns)->from(self::$_table)->fetch();
     }
 
-    public static function getPostWidgets($postId) {
+    public static function getPageWidgets($pageId) {
 
-        return DB::try()->select('widget_id')->from('page_widget')->where('page_id', '=', $postId)->fetch();
+        return DB::try()->select('widget_id')->from('page_widget')->where('page_id', '=', $pageId)->fetch();
     }
 
     public static function allWidgetsButOrderedOnDate() {
@@ -70,11 +70,11 @@ class Widget extends Model {
         return DB::try()->select('id, title')->from(self::$_table)->where('removed', '!=', 1)->fetch();
     }
 
-    public static function getPostWidgetIdTitleNotRemoved($postId) {
+    public static function getPageWidgetIdTitleNotRemoved($pageId) {
 
-        if(!empty($postId) && $postId !== null) {
+        if(!empty($pageId) && $pageId !== null) {
 
-            return DB::try()->select('widgets.id, widgets.title')->from(self::$_table)->join('page_widget')->on('page_widget.widget_id', '=', 'widgets.id')->where('page_widget.page_id', '=', $postId)->and('widgets.removed', '!=', 1)->fetch();
+            return DB::try()->select('widgets.id, widgets.title')->from(self::$_table)->join('page_widget')->on('page_widget.widget_id', '=', 'widgets.id')->where('page_widget.page_id', '=', $pageId)->and('widgets.removed', '!=', 1)->fetch();
         }
     }
 
@@ -83,9 +83,9 @@ class Widget extends Model {
         return DB::try()->select('id, title')->from(self::$_table)->where('removed', '!=', 1)->fetch();
     }
 
-    public static function removePostWidget($postId, $widgetId) {
+    public static function removePageWidget($pageId, $widgetId) {
 
-        return DB::try()->delete('page_widget')->where('widget_id', '=', $widgetId)->and('page_id', '=', $postId)->run();
+        return DB::try()->delete('page_widget')->where('widget_id', '=', $widgetId)->and('page_id', '=', $pageId)->run();
     }
 
     public static function checkUniqueTitleId($title, $id) {

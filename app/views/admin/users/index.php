@@ -7,13 +7,14 @@
 -->
 
 <?php $this->include('openHeadTag'); ?>
+    <?php $this->title('Users overview page'); ?>
     <?php $this->stylesheet("/assets/css/style.css"); ?>
     <?php $this->stylesheet("/assets/css/navbar.css"); ?>
     <?php $this->stylesheet("/assets/css/index.css"); ?>
     <?php $this->stylesheet("/assets/css/users.css"); ?>
     <?php $this->stylesheet("/assets/css/pagination.css"); ?>
-    <?php $this->script("/assets/js/delete.js", true); ?>
-    <?php $this->script("/assets/js/recover.js", true); ?>
+    <?php $this->script("/assets/js/checkbox/Checkbox.js", true); ?>
+    <?php $this->script("/assets/js/checkbox/main.js", true); ?>
 <?php $this->include('closeHeadTagAndOpenBodyTag'); ?>
 
 <?php $this->include('navbar'); ?>
@@ -24,18 +25,18 @@
         <h1>Users</h1>
         <span class="badge pages"><?php echo $count; ?></span>
     </div>
-    <?php if(core\Session::get('user_role') === 'admin') { ?>
+    <?php if(core\Session::get('user_role') === 1) { ?>
         <a href="/admin/users/create" class="create">Create</a> 
         <span class="deleteSeparator">|</span> 
         <form action="/admin/users/delete" method="POST" class="indexDeleteForm">
-            <input type="submit" class="delete" value="<?php if($search === 'Thrashcan') { echo 'Delete permanently'; } else { echo 'Delete'; } ?>"/>
+            <input type="submit" class="delete" value="<?php if($search === 'Thrashcan') { echo 'Delete permanently'; } else { echo 'Delete'; } ?>" <?php if($search === 'Thrashcan') { echo 'onclick="return confirm(' . "'Are you sure?'" . ');"'; } ?>/>
             <input type="hidden" name="deleteIds" id="deleteIds" value=""/>
         </form> | 
     <?php } ?>
         <form action="" method="GET" class="thrashcanForm">
             <input type="submit" name="search" value="Thrashcan"/>
         </form>
-        <?php if($search === 'Thrashcan' && core\Session::get('user_role') === 'admin') { ?> | 
+        <?php if($search === 'Thrashcan' && core\Session::get('user_role') === 1) { ?> | 
             <form action="/admin/users/recover" method="POST" class="recoverForm">
                 <input type="submit" class="recover" value="Recover"/>
                 <input type="hidden" name="recoverIds" id="recoverIds" value=""/>
@@ -55,20 +56,21 @@
             </thead>
             <tbody>
                 <?php if(!empty($allUsers) && $allUsers !== null) { ?>
+
                     <?php foreach($allUsers as $user) { ?>
                         <tr>
                             <td>
-                                <?php if($user['name'] === 'normal') { ?>
-                                    <input class="deleteCheckbox" type="checkbox" name="delete" value="<?php echo $user['id']; ?>"/>
+                                <?php if($user['type'] === null) { ?>
+                                    <input class="deleteCheckbox" type="checkbox" name="delete" value="<?php echo $user[0]; ?>"/>
                                 <?php } else { ?>
                                     <input class="deleteCheckbox" type="checkbox" disabled/>
                                 <?php } ?>
                             </td>
                             <td class="width-20">
-                            <?php if($user['name'] === 'admin' || $user['removed'] === 1) { ?>
+                            <?php if($user['type'] === 'admin') { ?>
                                 <?php echo $user['username'] . ' | <span class="isAdmin">admin</span>'; ?>
                             <?php } else { ?>
-                                <a href="/admin/users/<?php echo $user['username']; ?>/edit" class="font-weight-500"><?php echo $user['username']; ?></a>
+                                <a href="/admin/users/<?php echo $user[0]; ?>/edit" class="font-weight-500"><?php echo $user['username']; ?></a>
                             <?php } ?>
                             <td class="width-65">
                                 <?php echo $user['email']; ?>
@@ -85,7 +87,6 @@
                         <td class="width-20">-</td>
                         <td class="width-20">-</td>
                         <td class="width-50">-</td>
-                        <td class="width-10">-</td>
                     </tr>
                 <?php } ?>
             </tbody>

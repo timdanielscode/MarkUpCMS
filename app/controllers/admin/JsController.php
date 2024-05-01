@@ -2,17 +2,16 @@
 
 namespace app\controllers\admin;
 
-use app\controllers\Controller;
 use app\models\Js;
 use app\models\JsPage;
-use app\models\Post;
+use app\models\Page;
 use validation\Rules;
 use core\Session;
 use extensions\Pagination;
 use core\http\Response;
 use validation\Get;
 
-class JsController extends Controller {
+class JsController extends \app\controllers\Controller {
 
     private $_data;
     private $_fileExtension = ".js";
@@ -94,7 +93,7 @@ class JsController extends Controller {
 
         $rules = new Rules();
 
-        if($rules->js($request['filename'], Js::whereColumns(['file_name'], ['file_name' => $request['filename']]))->validated()) {
+        if($rules->js($request, Js::whereColumns(['file_name'], ['file_name' => $request['filename']]))->validated()) {
                     
             $filename = "/".$request['filename'];
             $filename = str_replace(" ", "-", $filename);
@@ -160,8 +159,8 @@ class JsController extends Controller {
         $this->ifExists($request['id']);
 
         $this->_data['data'] = Js::get($request['id']);
-        $this->_data['data']['pages'] = Js::getNotPostAssingedIdTitle(Js::getPostAssignedIdTitle($request['id']));
-        $this->_data['data']['assingedPages'] = Js::getPostAssignedIdTitle($request['id']); 
+        $this->_data['data']['pages'] = Js::getNotPageAssingedIdTitle(Js::getPageAssignedIdTitle($request['id']));
+        $this->_data['data']['assingedPages'] = Js::getPageAssignedIdTitle($request['id']); 
         $this->_data['data']['code'] = $this->getFileContent(Js::get($request['id'])['file_name']);
         $this->_data['rules'] = [];
 
@@ -184,9 +183,9 @@ class JsController extends Controller {
 
         $rules = new Rules();
 
-        if($rules->Js($request['filename'], Js::checkUniqueFilenameId($request['filename'], $id))->validated()) {
+        if($rules->Js($request, Js::checkUniqueFilenameId($request['filename'], $id))->validated()) {
 
-            rename($this->_folderLocation . $currentJsFileName . $this->_fileExtension, $this->_folderLocation . $filename . $this->_fileExtension);
+            rename($this->_folderLocation . $currentJsFileName['file_name'] . $this->_fileExtension, $this->_folderLocation . $filename . $this->_fileExtension);
 
             if(!empty($request['code']) ) { $hasContent = 1; } else { $hasContent = 0; }
 
@@ -207,8 +206,8 @@ class JsController extends Controller {
         } else {
                 
             $this->_data['data'] = Js::get($id);
-            $this->_data['data']['assingedPages'] = Js::getPostAssignedIdTitle($request['id']); 
-            $this->_data['data']['pages'] = Js::getNotPostAssingedIdTitle(Js::getPostAssignedIdTitle($request['id']));
+            $this->_data['data']['assingedPages'] = Js::getPageAssignedIdTitle($request['id']); 
+            $this->_data['data']['pages'] = Js::getNotPageAssingedIdTitle(Js::getPageAssignedIdTitle($request['id']));
             $this->_data['data']['code'] = file_get_contents($this->_folderLocation . $currentJsFileName . $this->_fileExtension);
             $this->_data['rules'] = $rules->errors;
                 
@@ -256,7 +255,7 @@ class JsController extends Controller {
 
             foreach($request['pages'] as $pageId) {
 
-                JsPage::delete('page_id', $pageId);
+                Page::deleteJs($pageId, $request['id']);
             }
         }
 
@@ -276,9 +275,9 @@ class JsController extends Controller {
 
         JsPage::delete('js_id', $id);
 
-        if(!empty(Post::getAll(['id'])) && Post::getAll(['id']) !== null) {
+        if(!empty(Page::getAll(['id'])) && Page::getAll(['id']) !== null) {
 
-            foreach(Post::getAll(['id']) as $pageId) {
+            foreach(Page::getAll(['id']) as $pageId) {
 
                 JsPage::insert([
 

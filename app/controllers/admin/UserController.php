@@ -2,16 +2,14 @@
 
 namespace app\controllers\admin;
 
-use app\controllers\Controller;
 use app\models\User;
-use app\models\UserRole;
 use core\Session;
 use validation\Rules;
 use core\http\Response;
 use extensions\Pagination;
 use validation\Get;
 
-class UserController extends Controller {
+class UserController extends \app\controllers\Controller {
 
     private $_data;
 
@@ -25,7 +23,7 @@ class UserController extends Controller {
 
         if(empty(User::ifRowExists($id)) ) {
 
-            return Response::statusCode(404)->view("/404/404")->data . exit();
+            return Response::statusCode(404)->view("/404/404")->data() . exit();
         }
     }
 
@@ -74,9 +72,11 @@ class UserController extends Controller {
     public function store($request) {
 
         $rules = new Rules();
-            
-        if($rules->user($request['f_username'], $request['email'], $request['password'], $request['password_confirm'], $request['role'], User::where(['username' => $request['f_username']]), User::where(['email' => $request['email']]))->validated()) {
+
+        if($rules->user($request, User::where(['username' => $request['f_username']]), User::where(['email' => $request['email']]))->validated()) {
                     
+            if($request['role'] === 'null') { $request['role'] = NULL; }  
+
             User::insert([
 
                 'username' => $request['f_username'],
@@ -84,15 +84,8 @@ class UserController extends Controller {
                 'password' => password_hash($request['password'], PASSWORD_DEFAULT),
                 'removed'   => 0,
                 'created_at' => date("Y-m-d H:i:s"),
-                'updated_at' => date("Y-m-d H:i:s")
-            ]);
-
-            if($request['role'] === 'Normal') { $roleId = 1; } else { $roleId = 2; }
-
-            UserRole::insert([
-
-                'user_id' => User::getLastRegisteredUserId()['id'],
-                'role_id' => $roleId
+                'updated_at' => date("Y-m-d H:i:s"),
+                'role_id' => $request['role']
             ]);
 
             Session::set('success', 'You have successfully created a new user!');           
@@ -111,14 +104,14 @@ class UserController extends Controller {
     /**
      * To show the user edit view
      * 
-     * @param array $request username
+     * @param array $request id
      * @return object UserController, Controller
      */
     public function edit($request) {
 
-        $this->ifExists($request['username']);
+        $this->ifExists($request['id']);
 
-        $this->_data['user'] = User::userAndRole('username', $request['username']);
+        $this->_data['user'] = User::normalUser('id', $request['id']);
         $this->_data['rules'] = [];
 
         return $this->view('admin/users/edit')->data($this->_data);
@@ -137,7 +130,7 @@ class UserController extends Controller {
 
         $rules = new Rules();
 
-        if($rules->user_edit($request['f_username'], $request['email'], User::checkUniqueUsername($request["f_username"], $id), User::checkUniqueEmail($request['email'], $id))->validated()) {
+        if($rules->user_edit($request, User::checkUniqueUsername($request["f_username"], $id), User::checkUniqueEmail($request['email'], $id))->validated()) {
 
             User::update(['id' => $id], [
 
@@ -145,7 +138,7 @@ class UserController extends Controller {
                 'email' => $request['email']
             ]);
 
-            redirect("/admin/users/" . $request['f_username'] . "/edit"); 
+            redirect("/admin/users/$id/edit"); 
             Session::set('success', 'You have successfully updated the user details!');
 
         } else {
@@ -168,10 +161,9 @@ class UserController extends Controller {
         $id = $request['id'];
         $this->ifExists($id);
 
-        UserRole::update(['user_id' => $id], [
+        User::update(['id' => $id], [
 
-            'role_id'  =>  2,
-            'user_id' => $id
+            'role_id'  =>  1
         ]);
             
         Session::set('success', 'You have successfully updated the user role!');

@@ -8,6 +8,7 @@
 --> 
 
 <?php $this->include('openHeadTag'); ?>   
+    <?php $this->title('Users edit page'); ?>
     <?php $this->stylesheet("/assets/css/style.css"); ?>
     <?php $this->stylesheet("/assets/css/navbar.css"); ?>
     <?php $this->stylesheet("/assets/css/users.css"); ?>
@@ -21,7 +22,7 @@
     <div class="edit-container">
     <?php core\Alert::message('success'); ?>
     <h1 class="margin-b-30">Update details</h1>
-            <form action="/admin/users/<?php echo $user['username']; ?>/update" method="POST" class="usersEditForm">
+            <form action="/admin/users/<?php echo $user['id']; ?>/update" method="POST" class="usersEditForm">
                 <div class="form-parts">
                     <label for="username">Username:</label>
                     <input name="f_username" type="text" id="username" value="<?php echo $user['username']; ?>">
@@ -54,9 +55,7 @@
                 <span class="data"><?php echo $user['username']; ?></span>
                 <span class="text">Email:</span>
                 <span class="data"><?php echo $user['email']; ?></span>
-                <span class="text">Role:</span>
-                <span class="data"><?php echo $user['name']; ?></span>
-                <form action="/admin/users/<?php echo $user['username']; ?>/update-role" method="POST" class="profileUpdateRoleForm">
+                <form action="/admin/users/<?php echo $user['id']; ?>/update-role" method="POST" class="profileUpdateRoleForm">
                     <div class="form-parts">
                         <label for="role">Update role:</label>
                         <select name="role" multiple>

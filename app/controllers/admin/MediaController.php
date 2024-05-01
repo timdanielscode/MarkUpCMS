@@ -2,7 +2,6 @@
 
 namespace app\controllers\admin;
 
-use app\controllers\Controller;
 use app\models\Media;
 use app\models\MediaFolder;
 use core\Session;
@@ -11,7 +10,7 @@ use validation\Rules;
 use validation\Get;
 use core\http\Response;
 
-class MediaController extends Controller {
+class MediaController extends \app\controllers\Controller {
 
     private $_data, $_search = '',$_type = false, $_folder = 'website/assets';
 
@@ -204,14 +203,38 @@ class MediaController extends Controller {
      */
     public function folder($request) {
 
+        $rules = new Rules();
+
+        if($rules->media_folder($request['P_folder'])->validated() ) {
+
+            $this->deleteOrAdd($request);
+
+        } else {
+
+            $this->_data['folders'] = glob($this->getFolder($request) . '/*', GLOB_ONLYDIR);
+            $this->_data['files'] = Media::where(['media_folder' => $this->getFolder($request)]);
+            $this->_data['types'] = $this->getTypes($request);
+            $this->_data['rules'] = $rules->errors;
+
+            return $this->view('admin/media/index')->data($this->_data);
+        }
+
+        redirect('/admin/media?folder=' . $this->getFolder($request));
+    }
+
+    /**
+     * To check for to delete a folder or remove a folder (on successful validation)
+     * 
+     * @param array $request _POST P_folder, _GET folder
+     */
+    private function deleteOrAdd($request) {
+
         if(file_exists($this->getFolder($request) . '/' . $request['P_folder']) === true) {
 
             $this->deleteFolder($request);
         } else {
             $this->addFolder($request);
-        }   
-  
-        redirect('/admin/media?folder=' . $this->getFolder($request));
+        }  
     }
 
     /**
@@ -233,22 +256,9 @@ class MediaController extends Controller {
      */
     private function addFolder($request) {
 
-        $rules = new Rules();
-
-        if($rules->media_folder($request['P_folder'])->validated() ) {
-
-            $this->insertFolder($request['P_folder']);
-            Session::set('success', 'You have successfully added the folder!');
-            mkdir($this->getFolder($request) . '/' . $request['P_folder'], 0777, true); 
-
-        } else {
-
-            $this->_data['folders'] = glob($this->getFolder($request) . '/*', GLOB_ONLYDIR);
-            $this->_data['files'] = Media::where(['media_folder' => $this->getFolder($request)]);
-            $this->_data['rules'] = $rules->errors;
-
-            return $this->view('admin/media/index')->data($this->_data);
-        }
+        $this->insertFolder($request['P_folder']);
+        Session::set('success', 'You have successfully added the folder!');
+        mkdir($this->getFolder($request) . '/' . $request['P_folder'], 0777, true); 
     }
 
     /**
@@ -403,7 +413,7 @@ class MediaController extends Controller {
 
         $rules = new Rules();
 
-        if($rules->media_filename($request['filename'], Media::checkMediaFilenameOnId($request['filename'], $request['id']))->validated()) {
+        if($rules->media_filename($request, Media::checkMediaFilenameOnId($request['filename'], $request['id']))->validated()) {
         
             rename(Media::getColumns(['media_folder'], $request['id'])['media_folder'] . '/' . Media::getColumns(['media_filename'], $request['id'])['media_filename'], Media::getColumns(['media_folder'], $request['id'])['media_folder'] . '/' . $request['filename']);
         
@@ -459,6 +469,6 @@ class MediaController extends Controller {
         }
 
         Session::set('success', 'You have successfully removed the file(s)!');
-        redirect('/admin/media?folder=' . $request['folder']);
+        redirect('/admin/media?folder=' . $file[0]['media_folder']);
     }
 }

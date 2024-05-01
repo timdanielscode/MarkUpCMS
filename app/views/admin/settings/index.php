@@ -3,6 +3,7 @@
 --> 
 
 <?php $this->include('openHeadTag'); ?>  
+    <?php $this->title('Settings page'); ?>
     <?php $this->stylesheet("/assets/css/style.css"); ?> 
     <?php $this->stylesheet("/assets/css/navbar.css"); ?> 
     <?php $this->stylesheet("/assets/css/sidebar.css"); ?> 

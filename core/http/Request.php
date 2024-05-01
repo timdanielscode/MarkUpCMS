@@ -6,7 +6,7 @@ use validation\request\Rules;
 
 class Request {
 
-    private $_postData = [], $_getData = [], $_getValues = [];
+    private $_postData = [], $_getData = [], $_postValues = [], $_getValues = [];
 
     /** 
      * To get the type of request method

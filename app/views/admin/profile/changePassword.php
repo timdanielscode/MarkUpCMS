@@ -3,6 +3,7 @@
 -->
 
 <?php $this->include('openHeadTag'); ?>  
+    <?php $this->title('Profile change password page'); ?>
     <?php $this->stylesheet("/assets/css/style.css"); ?>
     <?php $this->stylesheet("/assets/css/navbar.css"); ?>
     <?php $this->stylesheet("/assets/css/users.css"); ?>
@@ -15,13 +16,14 @@
     <div class="col10 col10-L- col9-L col8-S">
     <div class="edit-container">
         <h1 class="margin-b-30">Update password</h1>
-            <form action="/admin/profile/<?php echo $user['username']; ?>/change-password" method="POST" class="usersEditForm">
+            <form action="/admin/profile/<?php echo $user[0]; ?>/change-password" method="POST" class="usersEditForm">
                 <div class="form-parts">
                     <label for="currentPassword">Current password: </label>
                     <input id="currentPassword" type="password" name="password">
                     <input type="hidden" name="username" value="<?php echo core\Session::get('username'); ?>">
                     <div class="error-messages">
                         <?php echo validation\Errors::get($rules, 'password'); ?>
+                        <?php if(!empty($username) && empty($rules) ) { echo extensions\Auth::getFailedMessages(); } ?> 
                     </div>
                 </div>
                 <div class="form-parts">
@@ -40,7 +42,7 @@
                 </div>
                 <div class="form-parts">
                     <button name="submit" type="submit" id="submit" class="display-none"></button>
-                    <input type="hidden" name="id" value="<?php echo $user['id']; ?>"/>
+                    <input type="hidden" name="id" value="<?php echo $user[0]; ?>"/>
                 </div>
             </form>
             </div>
@@ -50,14 +52,16 @@
             <div class="sidebarContainer">
                 <div class="mainButtonContainer">
                     <label for="submit" class="button greenButton margin-r-10">Update</label>
-                    <a href="/admin/profile/<?php echo core\Session::get('username'); ?>" class="button darkBlueButton">Back</a>
+                    <a href="/admin/profile/<?php echo $user[0]; ?>" class="button darkBlueButton">Back</a>
                 </div>
                 <span class="text margin-t-50">Username:</span>
                 <span class="data"><?php echo $user['username']; ?></span>
                 <span class="text">Email:</span>
                 <span class="data"><?php echo $user['email']; ?></span>
-                <span class="text">Role:</span>
-                <span class="data"><?php echo $user['name']; ?></span>
+                <?php if(core\Session::get('user_role') === 1) { ?>
+                    <span class="text">Role:</span>
+                    <span class="data"><?php echo $user['type']; ?></span>
+                <?php } ?>
             </div>
         </div>
     </div>

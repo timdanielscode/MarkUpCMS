@@ -18,10 +18,13 @@
 --> 
 
 <?php $this->include('openHeadTag'); ?>  
+    <?php $this->title('Media page'); ?>
     <?php $this->stylesheet("/assets/css/style.css"); ?>
     <?php $this->stylesheet("/assets/css/navbar.css"); ?>
     <?php $this->stylesheet("/assets/css/media.css"); ?>
     <?php $this->stylesheet("/assets/css/sidebar.css"); ?>
+    <?php $this->script("/assets/js/navbar/Navbar.js", true); ?>
+    <?php $this->script("/assets/js/navbar/main.js", true); ?>
     <?php $this->script('/assets/js/media/Sidebar.js', true); ?>
     <?php $this->script('/assets/js/media/FileContainer.js', true); ?>
     <?php $this->script('/assets/js/media/ReadImageContainer.js', true); ?>
@@ -55,7 +58,7 @@
             } else { ?>
                 <div class="crumPath"><span>/website</span><span class="separator">/</span><a class="folderPath" href="?folder=website/assets">assets</a></div>
             <?php } ?>
-        <?php if(core\Session::get('user_role') === 'admin') { ?>
+        <?php if(core\Session::get('user_role') === 1) { ?>
             <form action="/admin/media/folder?<?php echo "folder=" . $folder; ?>" method="POST" class="folderForm">
                 <input type="text" placeholder="Folder" name="P_folder">
                 <input type="submit" name="submitFolder" value="Folder &plusmn"/>
@@ -124,7 +127,7 @@
                             <?php } else if($type === 'application') { ?>
                                 <img class="file mediaFile pdfFile" data-id="<?php echo $file['id']; ?>" data-filename="<?php echo $file['media_filename']; ?>" data-folder="<?php echo $file['media_folder']; ?>" data-filetype="<?php echo $file['media_filetype']; ?>" data-filesize="<?php echo $file['media_filesize']; ?>" src="/assets/img/pdf.png" data-description="<?php if(!empty($file['media_description']) && $file['media_description'] !== null) { echo $file['media_description']; } else { echo '-'; } ?>" loading="lazy"></iframe>
                             <?php } ?>
-                            <input class="deleteSelection <?php if(core\Session::get('user_role') === 'normal') { echo 'display-none-important'; } ?>" type="checkbox"/>
+                            <input class="deleteSelection <?php if(core\Session::get('user_role') !== 1) { echo 'display-none-important'; } ?>" type="checkbox"/>
                         </div>
                 <?php } ?>
                 <?php } ?>
@@ -138,16 +141,16 @@
         <div id="sidebar" class="width-25">
             <div class="sidebarContainer">
                 <div class="mainButtonContainer">
-                    <label for="submit" class="button greenButton margin-r-10 <?php if(core\Session::get('user_role') === 'normal') { echo 'display-none-important'; } ?>">Upload</label>
+                    <label for="submit" class="button greenButton margin-r-10 <?php if(core\Session::get('user_role') !== 1) { echo 'display-none-important'; } ?>">Upload</label>
                     <form action="/admin/media/delete?<?php echo "folder=" . $folder; ?>" method="POST" class="deleteForm display-none">
                         <input id="selectedFiles" type="hidden" name="deleteIds" value=""/>
                         <input type="submit" name="submitDelete" class="button redButton margin-r-10" value="Delete"/>
                     </form>
                     <a href="#" class="button read blueButton display-none-important">Read</a>
                     <a href="#" class="button close blueButton display-none-important">Close</a>
-                    <a href="/admin/posts" class="button back blueButton">Back</a>
+                    <a href="/admin/dashboard" class="button back blueButton">Back</a>
                 </div>
-                    <form action="" method="POST" class="uploadFileForm <?php if(core\Session::get('user_role') === 'normal') { echo 'display-none-important'; } ?>" enctype="multipart/form-data">
+                    <form action="" method="POST" class="uploadFileForm <?php if(core\Session::get('user_role') !== 1) { echo 'display-none-important'; } ?>" enctype="multipart/form-data">
                         <div class="form-parts">
                             <label>Description: </label>
                             <textarea name="media_description" type="text" id="media_description" autofocus placeholder="Optional"></textarea>
@@ -166,11 +169,11 @@
                             <input name="file[]" type="file" multiple="true" id="file" class="display-none">
                         </div>
                         <div class="form-parts">
-                            <button name="submit" id="submit" type="submit" class="display-none <?php if(core\Session::get('user_role') === 'normal') { echo 'display-none-important'; } ?>"></button>
+                            <button name="submit" id="submit" type="submit" class="display-none <?php if(core\Session::get('user_role') !== 1) { echo 'display-none-important'; } ?>"></button>
                         </div>
                     </form>
                 <div class="buttonContainer">
-                <label for="file" class="button darkButton margin-t-10 <?php if(core\Session::get('user_role') === 'normal') { echo 'display-none-important'; } ?>">Select files</label>
+                <label for="file" class="button darkButton margin-t-10 <?php if(core\Session::get('user_role') !== 1) { echo 'display-none-important'; } ?>">Select files</label>
                 </div>
                 <div class="totalContainer">
                     <span class="text">Total: </span>
@@ -202,7 +205,7 @@
                             <form action="/admin/media/update/filename" method="POST">
                                 <input id="currentFilename" type="text" name="filename"/>
                                 <input type="hidden" name="id" id="update" value=""/>
-                                <?php if(core\Session::get('user_role') === 'admin') { ?>
+                                <?php if(core\Session::get('user_role') === 1) { ?>
                                     <input type="submit" name="submit" value="Update" class="button darkBlueButton margin-t-10"/>
                                 <?php } ?>
                             </form>
@@ -221,7 +224,7 @@
                                 <span class="infoText">Description: </span>
                                 <textarea type="text" name="description" class="infoData" id="currentDescription"></textarea>
                                 <input type="hidden" name="id" value="" id="updateDescription"/>
-                                <?php if(core\Session::get('user_role') === 'admin') { ?>
+                                <?php if(core\Session::get('user_role') === 1) { ?>
                                     <input type="submit" name="submit" value="Update" class="button darkBlueButton margin-t-10"/>
                                 <?php } ?>
                             </form>

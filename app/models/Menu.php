@@ -75,6 +75,6 @@ class Menu extends Model {
 
     public static function getOrderingIsNotNull() {
 
-        return DB::try()->select('id')->from(self::$_table)->where('ordering', 'IS NOT', NULL)->fetch();
+        return DB::try()->select('id')->from(self::$_table)->where('ordering', 'IS NOT', NULL)->and('ordering', '!=', 0)->fetch();
     }
 }

@@ -2,9 +2,8 @@
 
 namespace app\controllers\admin;
 
-use app\controllers\Controller;
 use app\models\Meta;
-use app\models\Post;
+use app\models\Page;
 use extensions\Pagination;
 use app\models\PageMeta;
 use validation\Rules;
@@ -12,7 +11,7 @@ use core\Session;
 use core\http\Response;
 use validation\Get;
 
-class MetaController extends Controller {
+class MetaController extends \app\controllers\Controller {
 
     private $_data;
 
@@ -79,7 +78,7 @@ class MetaController extends Controller {
 
         if(!empty($request['content']) && $request['content'] !== null) { $hasContent = 1; } else { $hasContent = 0; }
 
-        if($rules->cdn($request['title'], Meta::whereColumns(['title'], ['title' => $request['title']]))->validated() ) {
+        if($rules->meta($request, Meta::whereColumns(['title'], ['title' => $request['title']]))->validated() ) {
 
             Meta::insert([
 
@@ -93,7 +92,7 @@ class MetaController extends Controller {
             ]);
 
             Session::set('success', 'You have successfully created a new meta!');
-            redirect('/admin/meta');
+            redirect('/admin/metas');
                
         } else {
 
@@ -131,8 +130,8 @@ class MetaController extends Controller {
         $this->ifExists($request['id']);
 
         $this->_data['cdn'] = Meta::get($request['id']);
-        $this->_data['importedPages'] = Meta::getPostImportedIdTitle($request['id']);
-        $this->_data['pages'] = Meta::getNotPostImportedIdTitle(Meta::getPostImportedIdTitle($request['id']));
+        $this->_data['importedPages'] = Meta::getPageImportedIdTitle($request['id']);
+        $this->_data['pages'] = Meta::getNotPageImportedIdTitle(Meta::getPageImportedIdTitle($request['id']));
         $this->_data['rules'] = [];
 
         return $this->view('admin/meta/edit')->data($this->_data);
@@ -153,7 +152,7 @@ class MetaController extends Controller {
         
         if(!empty($request['content']) && $request['content'] !== null) { $hasContent = 1; } else { $hasContent = 0; }
 
-        if($rules->cdn($request['title'], Meta::checkUniqueTitleId($request['title'], $id))->validated() ) {
+        if($rules->meta($request, Meta::checkUniqueTitleId($request['title'], $id))->validated() ) {
 
             Meta::update(['id' => $id], [
 
@@ -164,13 +163,13 @@ class MetaController extends Controller {
             ]);
 
             Session::set('success', 'You have successfully updated the meta!');
-            redirect("/admin/meta/$id/edit");
+            redirect("/admin/metas/$id/edit");
 
         } else {
 
             $this->_data['cdn'] = Meta::get($request['id']);
-            $this->_data['importedPages'] = Meta::getPostImportedIdTitle($request['id']);
-            $this->_data['pages'] = Meta::getNotPostImportedIdTitle(Meta::getPostImportedIdTitle($request['id']));
+            $this->_data['importedPages'] = Meta::getPageImportedIdTitle($request['id']);
+            $this->_data['pages'] = Meta::getNotPageImportedIdTitle(Meta::getPageImportedIdTitle($request['id']));
             $this->_data['rules'] = $rules->errors;
 
             return $this->view('admin/meta/edit')->data($this->_data);
@@ -197,7 +196,7 @@ class MetaController extends Controller {
         }
 
         Session::set('success', 'You have successfully imported the meta on the page(s)!');
-        redirect("/admin/meta/$id/edit");
+        redirect("/admin/metas/$id/edit");
     }
 
     /**
@@ -212,7 +211,7 @@ class MetaController extends Controller {
 
         PageMeta::delete('meta_id', $id);
 
-        foreach(Post::getAll(['id']) as $pageId ) {
+        foreach(Page::getAll(['id']) as $pageId ) {
 
             PageMeta::insert([
 
@@ -222,7 +221,7 @@ class MetaController extends Controller {
         }
         
         Session::set('success', 'You have successfully imported the meta on all pages!');
-        redirect("/admin/meta/$id/edit");
+        redirect("/admin/metas/$id/edit");
     }
 
     /**
@@ -237,11 +236,11 @@ class MetaController extends Controller {
 
         foreach($request['pages'] as $pageId) {
 
-            Meta::deleteIdPostId($id, $pageId);
+            Meta::deleteIdPageId($id, $pageId);
         }
 
         Session::set('success', 'You have successfully removed the meta on the page(s)!');
-        redirect("/admin/meta/$id/edit");
+        redirect("/admin/metas/$id/edit");
     }
 
     /**
@@ -257,7 +256,7 @@ class MetaController extends Controller {
         PageMeta::delete('meta_id', $request['id']);
 
         Session::set('success', 'You have successfully removed the meta on all pages!');
-        redirect("/admin/meta/$id/edit");
+        redirect("/admin/metas/$id/edit");
     }
 
     /**
@@ -280,7 +279,7 @@ class MetaController extends Controller {
         }
         
         Session::set('success', 'You have successfully recovered the meta(s)!');
-        redirect("/admin/meta");
+        redirect("/admin/metas");
     }
 
     /**
@@ -315,6 +314,6 @@ class MetaController extends Controller {
             }
         }
 
-        redirect("/admin/meta");
+        redirect("/admin/metas");
     }
 }
