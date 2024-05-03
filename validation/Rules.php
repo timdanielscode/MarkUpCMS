@@ -151,7 +151,6 @@ class Rules {
         $validation = new Validate();
         
         $validation->input(['title' => $request['title']])->as('Title')->rules(['required' => true, 'max' => 49, 'alphanumeric' => true, 'unique' => $title]);
-        $validation->input(['description' => $request['description']])->as('Description')->rules(['max' => 99, 'alphanumeric' => true]);
         
         $this->errors = $validation->errors;
         return $this;
